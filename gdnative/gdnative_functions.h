@@ -1,3 +1,13 @@
+extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
+extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
+
+void setInitialise(GDNativeInitialization *init) {
+    init->initialize = goInitialise;
+}
+void setDeinitialize(GDNativeInitialization *init) {
+    init->deinitialize = goDeinitialize;
+}
+
 // Since Go can't call C function pointers directly, we need to create wrapper functions for them.
 void variant_call(
     GDNativeInterface *api,

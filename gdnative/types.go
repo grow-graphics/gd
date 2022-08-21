@@ -9,7 +9,11 @@ package gdnative
 	}
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
+
+type InitializationLevel C.GDNativeInitializationLevel
 
 var api *C.GDNativeInterface
 
@@ -176,11 +180,17 @@ func (ob Object) Call(method Method, args ...any) any {
 	return nil
 }
 
-
 func Return[Result any](object Object, method Method, args ...any) Result {
 	var result Result
 	return result
 }
 
 func Call(object Object, method Method, args ...any) {
+}
+
+func load(intf, library, init unsafe.Pointer) {
+	api = (*C.GDNativeInterface)(intf)
+	ini := (*C.GDNativeInitialization)(init)
+	C.setInitialise(ini)
+	C.setDeinitialize(ini)
 }

@@ -1,0 +1,7 @@
+[configuration]
+
+entry_symbol = "loadExtension"
+
+[libraries]
+
+linux.64 = "bin/hello.so"
