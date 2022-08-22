@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
 extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
 
@@ -79,6 +81,15 @@ void free_instance_func(void *p_userdata, GDExtensionClassInstancePtr p_instance
 
 void object_destroy(GDNativeInterface *api, uintptr_t p_o) {
     api->object_destroy((GDNativeObjectPtr)p_o);
+}
+
+uintptr_t classdb_get_method_bind(
+    GDNativeInterface *api,
+    const char *p_classname, 
+    const char *p_methodname, 
+    GDNativeInt p_hash
+) {
+    return (uintptr_t)(api->classdb_get_method_bind(p_classname, p_methodname, p_hash));
 }
 
 void classdb_register_extension_class(

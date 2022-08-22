@@ -18,6 +18,14 @@ func loadExtension(api, library, init unsafe.Pointer) uint8 {
 //export goInitialise
 func goInitialise(userdata unsafe.Pointer, level InitializationLevel) {
 	fmt.Println("initialising ", level)
+	if level == 3 {
+		for _, f := range onload {
+			f()
+		}
+		for _, f := range oninit {
+			f()
+		}
+	}
 }
 
 //export goDeinitialize
@@ -37,3 +45,9 @@ func goClassFreeInstance(userdata, instance uintptr) {
 
 // Main should be called in your extension's main function.
 func Main() {}
+
+var oninit []func()
+
+func OnLoad(fn func()) {
+	oninit = append(oninit, fn)
+}

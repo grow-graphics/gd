@@ -10,6 +10,8 @@ package gdnative
 */
 import "C"
 import (
+	"fmt"
+	"reflect"
 	"runtime/cgo"
 	"unsafe"
 )
@@ -28,9 +30,7 @@ func Init(bridge *C.GDNativeInterface) {
 	newStringName = C.variant_get_ptr_constructor(api, C.GDNATIVE_VARIANT_TYPE_STRING_NAME, 2)
 }
 
-type Method struct {
-	ptr C.GDNativeMethodBindPtr
-}
+type Method uintptr
 
 type (
 	Nil struct {
@@ -203,10 +203,6 @@ func load(intf, library, init unsafe.Pointer) {
 	C.setDeinitialize(ini)
 
 	loaded = true
-
-	for _, f := range onload {
-		f()
-	}
 }
 
 // New returns a new object of the given class name.
@@ -247,4 +243,23 @@ func RegisterClass(name, parent string, class Class) {
 		return
 	}
 	C.classdb_register_extension_class(api, db, C.ConstChar(name+"\000"), C.ConstChar(parent+"\000"), C.uintptr_t(cgo.NewHandle(class)))
+}
+
+func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID) reflect.Value) {
+	if !loaded {
+		onload = append(onload, func() {
+			RegisterMethod(class, method, lookup)
+		})
+		return
+	}
+	//C.classdb_register_method(api, db, C.ConstChar(class+"\000"), C.ConstChar(method.Name+"\000"), C.uintptr_t(cgo.NewHandle(method)), C.uintptr_t(cgo.NewHandle(lookup)))
+}
+
+// MethodOf arguments must be null-terminated.
+func MethodOf(class, method string, hash int64) Method {
+	result := Method(C.classdb_get_method_bind(api, C.ConstChar(class), C.ConstChar(method), C.GDNativeInt(hash)))
+	if result == 0 {
+		fmt.Println("Method not found:", class, method)
+	}
+	return result
 }

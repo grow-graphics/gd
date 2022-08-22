@@ -85,6 +85,9 @@ type Class interface {
 
 type Extension[T Class] struct {
 	rtype reflect.Type
+	ptype reflect.Type // pointer type.
+	otype reflect.Type // owning class type.
+
 	class string        // base class name, cached on register.
 	owner string        // owner class name, cached on register.
 	slice []Instance[T] // slice of instantiated instances.
@@ -127,14 +130,24 @@ func (ext *Extension[T]) Delete(id gdnative.InstanceID) {
 	ext.slice[id-1].alive = false
 }
 
+func (ext *Extension[T]) Lookup(id gdnative.InstanceID) reflect.Value {
+	return reflect.ValueOf(&ext.slice[id-1].value)
+}
+
 func (ext *Extension[T]) register() {
 	var native T
 
 	ext.rtype = reflect.TypeOf(native)
+	ext.ptype = reflect.TypeOf(&native)
+	ext.otype = ext.rtype.Field(0).Type
 	ext.class = ext.rtype.Name()
 	ext.owner = native.class()
 
 	gdnative.RegisterClass(ext.class, ext.owner, ext)
+	for i := 0; i < ext.ptype.NumMethod(); i++ {
+		method := ext.rtype.Method(i)
+		gdnative.RegisterMethod(ext.class, method, ext.Lookup)
+	}
 }
 
 type extension interface {
