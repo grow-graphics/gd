@@ -5,6 +5,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime/cgo"
 	"unsafe"
 )
 
@@ -23,3 +24,16 @@ func goInitialise(userdata unsafe.Pointer, level InitializationLevel) {
 func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {
 	fmt.Println("deinitialize ", level)
 }
+
+//export goClassCreateInstance
+func goClassCreateInstance(userdata uintptr) uintptr {
+	return uintptr(cgo.Handle(userdata).Value().(Class).Create())
+}
+
+//export goClassFreeInstance
+func goClassFreeInstance(userdata, instance uintptr) {
+	cgo.Handle(userdata).Value().(Class).Delete(InstanceID(instance))
+}
+
+// Main should be called in your extension's main function.
+func Main() {}

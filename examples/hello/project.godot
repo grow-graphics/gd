@@ -11,5 +11,6 @@ config_version=5
 [application]
 
 config/name="HelloWorld"
+run/main_scene="res://node_2d.tscn"
 config/features=PackedStringArray("4.0", "Vulkan Clustered")
 config/icon="res://icon.png"

@@ -740,6 +740,7 @@ const (
 )
 
 type AESContext gdnative.Object
+func (AESContext) class() string { return `AESContext` }
 
 var methodAESContext [4]gdnative.Method
 
@@ -758,6 +759,7 @@ func (gdClass AESContext) GetIvState() []byte { return gdnative.Return[[]byte](g
 func (gdClass AESContext) Finish()  { gdnative.Call(gdnative.Object(gdClass), methodAESContext[3]) }
 
 type AStar2D gdnative.Object
+func (AStar2D) class() string { return `AStar2D` }
 
 var methodAStar2D [25]gdnative.Method
 func (gdClass AStar2D) EstimateCostImplementation(from_id int64, to_id int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAStar2D[0], from_id, to_id) }
@@ -787,6 +789,7 @@ func (gdClass AStar2D) GetPointPath(from_id int64, to_id int64) []Vector2 { retu
 func (gdClass AStar2D) GetIdPath(from_id int64, to_id int64) []int64 { return gdnative.Return[[]int64](gdnative.Object(gdClass), methodAStar2D[24], from_id, to_id) }
 
 type AStar3D gdnative.Object
+func (AStar3D) class() string { return `AStar3D` }
 
 var methodAStar3D [25]gdnative.Method
 func (gdClass AStar3D) EstimateCostImplementation(from_id int64, to_id int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAStar3D[0], from_id, to_id) }
@@ -816,6 +819,7 @@ func (gdClass AStar3D) GetPointPath(from_id int64, to_id int64) []Vector3 { retu
 func (gdClass AStar3D) GetIdPath(from_id int64, to_id int64) []int64 { return gdnative.Return[[]int64](gdnative.Object(gdClass), methodAStar3D[24], from_id, to_id) }
 
 type AcceptDialog gdnative.Object
+func (AcceptDialog) class() string { return `AcceptDialog` }
 
 var methodAcceptDialog [16]gdnative.Method
 func (gdClass AcceptDialog) GetOkButton() Button { return gdnative.Return[Button](gdnative.Object(gdClass), methodAcceptDialog[0]) }
@@ -836,18 +840,21 @@ func (gdClass AcceptDialog) SetOkButtonText(text string)  { gdnative.Call(gdnati
 func (gdClass AcceptDialog) GetOkButtonText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodAcceptDialog[15]) }
 
 type AnimatableBody2D gdnative.Object
+func (AnimatableBody2D) class() string { return `AnimatableBody2D` }
 
 var methodAnimatableBody2D [2]gdnative.Method
 func (gdClass AnimatableBody2D) SetSyncToPhysics(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatableBody2D[0], enable) }
 func (gdClass AnimatableBody2D) IsSyncToPhysicsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimatableBody2D[1]) }
 
 type AnimatableBody3D gdnative.Object
+func (AnimatableBody3D) class() string { return `AnimatableBody3D` }
 
 var methodAnimatableBody3D [2]gdnative.Method
 func (gdClass AnimatableBody3D) SetSyncToPhysics(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatableBody3D[0], enable) }
 func (gdClass AnimatableBody3D) IsSyncToPhysicsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimatableBody3D[1]) }
 
 type AnimatedSprite2D gdnative.Object
+func (AnimatedSprite2D) class() string { return `AnimatedSprite2D` }
 
 var methodAnimatedSprite2D [20]gdnative.Method
 func (gdClass AnimatedSprite2D) SetSpriteFrames(sprite_frames SpriteFrames)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite2D[0], sprite_frames) }
@@ -872,6 +879,7 @@ func (gdClass AnimatedSprite2D) SetSpeedScale(speed_scale float64)  { gdnative.C
 func (gdClass AnimatedSprite2D) GetSpeedScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAnimatedSprite2D[19]) }
 
 type AnimatedSprite3D gdnative.Object
+func (AnimatedSprite3D) class() string { return `AnimatedSprite3D` }
 
 var methodAnimatedSprite3D [9]gdnative.Method
 func (gdClass AnimatedSprite3D) SetSpriteFrames(sprite_frames SpriteFrames)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite3D[0], sprite_frames) }
@@ -885,6 +893,7 @@ func (gdClass AnimatedSprite3D) SetFrame(frame int64)  { gdnative.Call(gdnative.
 func (gdClass AnimatedSprite3D) GetFrame() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimatedSprite3D[8]) }
 
 type AnimatedTexture gdnative.Object
+func (AnimatedTexture) class() string { return `AnimatedTexture` }
 
 var methodAnimatedTexture [14]gdnative.Method
 func (gdClass AnimatedTexture) SetFrames(frames int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedTexture[0], frames) }
@@ -903,6 +912,7 @@ func (gdClass AnimatedTexture) SetFrameDelay(frame int64, delay float64)  { gdna
 func (gdClass AnimatedTexture) GetFrameDelay(frame int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAnimatedTexture[13], frame) }
 
 type Animation gdnative.Object
+func (Animation) class() string { return `Animation` }
 
 var methodAnimation [71]gdnative.Method
 
@@ -1024,6 +1034,7 @@ func (gdClass Animation) CopyTrack(track_idx int64, to_animation Animation)  { g
 func (gdClass Animation) Compress(page_size int64, fps int64, split_tolerance float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimation[70], page_size, fps, split_tolerance) }
 
 type AnimationLibrary gdnative.Object
+func (AnimationLibrary) class() string { return `AnimationLibrary` }
 
 var methodAnimationLibrary [6]gdnative.Method
 func (gdClass AnimationLibrary) AddAnimation(name string, animation Animation) error { return gdnative.Return[error](gdnative.Object(gdClass), methodAnimationLibrary[0], name, animation) }
@@ -1034,6 +1045,7 @@ func (gdClass AnimationLibrary) GetAnimation(name string) Animation { return gdn
 func (gdClass AnimationLibrary) GetAnimationList() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodAnimationLibrary[5]) }
 
 type AnimationNode gdnative.Object
+func (AnimationNode) class() string { return `AnimationNode` }
 
 var methodAnimationNode [20]gdnative.Method
 
@@ -1067,14 +1079,17 @@ func (gdClass AnimationNode) SetParameter(name string, value any)  { gdnative.Ca
 func (gdClass AnimationNode) GetParameter(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodAnimationNode[19], name) }
 
 type AnimationNodeAdd2 gdnative.Object
+func (AnimationNodeAdd2) class() string { return `AnimationNodeAdd2` }
 
 var methodAnimationNodeAdd2 [0]gdnative.Method
 
 type AnimationNodeAdd3 gdnative.Object
+func (AnimationNodeAdd3) class() string { return `AnimationNodeAdd3` }
 
 var methodAnimationNodeAdd3 [0]gdnative.Method
 
 type AnimationNodeAnimation gdnative.Object
+func (AnimationNodeAnimation) class() string { return `AnimationNodeAnimation` }
 
 var methodAnimationNodeAnimation [4]gdnative.Method
 
@@ -1090,14 +1105,17 @@ func (gdClass AnimationNodeAnimation) SetPlayMode(mode AnimationNodeAnimationPla
 func (gdClass AnimationNodeAnimation) GetPlayMode() AnimationNodeAnimationPlayMode { return gdnative.Return[AnimationNodeAnimationPlayMode](gdnative.Object(gdClass), methodAnimationNodeAnimation[3]) }
 
 type AnimationNodeBlend2 gdnative.Object
+func (AnimationNodeBlend2) class() string { return `AnimationNodeBlend2` }
 
 var methodAnimationNodeBlend2 [0]gdnative.Method
 
 type AnimationNodeBlend3 gdnative.Object
+func (AnimationNodeBlend3) class() string { return `AnimationNodeBlend3` }
 
 var methodAnimationNodeBlend3 [0]gdnative.Method
 
 type AnimationNodeBlendSpace1D gdnative.Object
+func (AnimationNodeBlendSpace1D) class() string { return `AnimationNodeBlendSpace1D` }
 
 var methodAnimationNodeBlendSpace1D [17]gdnative.Method
 func (gdClass AnimationNodeBlendSpace1D) AddBlendPoint(node AnimationRootNode, pos float64, at_index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendSpace1D[0], node, pos, at_index) }
@@ -1119,6 +1137,7 @@ func (gdClass AnimationNodeBlendSpace1D) SetUseSync(enable bool)  { gdnative.Cal
 func (gdClass AnimationNodeBlendSpace1D) IsUsingSync() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationNodeBlendSpace1D[16]) }
 
 type AnimationNodeBlendSpace2D gdnative.Object
+func (AnimationNodeBlendSpace2D) class() string { return `AnimationNodeBlendSpace2D` }
 
 var methodAnimationNodeBlendSpace2D [27]gdnative.Method
 
@@ -1158,6 +1177,7 @@ func (gdClass AnimationNodeBlendSpace2D) SetUseSync(enable bool)  { gdnative.Cal
 func (gdClass AnimationNodeBlendSpace2D) IsUsingSync() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationNodeBlendSpace2D[26]) }
 
 type AnimationNodeBlendTree gdnative.Object
+func (AnimationNodeBlendTree) class() string { return `AnimationNodeBlendTree` }
 
 var methodAnimationNodeBlendTree [11]gdnative.Method
 func (gdClass AnimationNodeBlendTree) AddNode(name string, node AnimationNode, position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendTree[0], name, node, position) }
@@ -1173,6 +1193,7 @@ func (gdClass AnimationNodeBlendTree) SetGraphOffset(offset Vector2)  { gdnative
 func (gdClass AnimationNodeBlendTree) GetGraphOffset() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodAnimationNodeBlendTree[10]) }
 
 type AnimationNodeOneShot gdnative.Object
+func (AnimationNodeOneShot) class() string { return `AnimationNodeOneShot` }
 
 var methodAnimationNodeOneShot [12]gdnative.Method
 
@@ -1196,10 +1217,12 @@ func (gdClass AnimationNodeOneShot) SetMixMode(mode AnimationNodeOneShotMixMode)
 func (gdClass AnimationNodeOneShot) GetMixMode() AnimationNodeOneShotMixMode { return gdnative.Return[AnimationNodeOneShotMixMode](gdnative.Object(gdClass), methodAnimationNodeOneShot[11]) }
 
 type AnimationNodeOutput gdnative.Object
+func (AnimationNodeOutput) class() string { return `AnimationNodeOutput` }
 
 var methodAnimationNodeOutput [0]gdnative.Method
 
 type AnimationNodeStateMachine gdnative.Object
+func (AnimationNodeStateMachine) class() string { return `AnimationNodeStateMachine` }
 
 var methodAnimationNodeStateMachine [19]gdnative.Method
 func (gdClass AnimationNodeStateMachine) AddNode(name string, node AnimationNode, position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachine[0], name, node, position) }
@@ -1223,6 +1246,7 @@ func (gdClass AnimationNodeStateMachine) SetGraphOffset(offset Vector2)  { gdnat
 func (gdClass AnimationNodeStateMachine) GetGraphOffset() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodAnimationNodeStateMachine[18]) }
 
 type AnimationNodeStateMachinePlayback gdnative.Object
+func (AnimationNodeStateMachinePlayback) class() string { return `AnimationNodeStateMachinePlayback` }
 
 var methodAnimationNodeStateMachinePlayback [8]gdnative.Method
 func (gdClass AnimationNodeStateMachinePlayback) Travel(to_node string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachinePlayback[0], to_node) }
@@ -1235,6 +1259,7 @@ func (gdClass AnimationNodeStateMachinePlayback) GetCurrentLength() float64 { re
 func (gdClass AnimationNodeStateMachinePlayback) GetTravelPath() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodAnimationNodeStateMachinePlayback[7]) }
 
 type AnimationNodeStateMachineTransition gdnative.Object
+func (AnimationNodeStateMachineTransition) class() string { return `AnimationNodeStateMachineTransition` }
 
 var methodAnimationNodeStateMachineTransition [16]gdnative.Method
 
@@ -1263,20 +1288,24 @@ func (gdClass AnimationNodeStateMachineTransition) SetAdvanceExpressionBaseNode(
 func (gdClass AnimationNodeStateMachineTransition) GetAdvanceExpressionBaseNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodAnimationNodeStateMachineTransition[15]) }
 
 type AnimationNodeSync gdnative.Object
+func (AnimationNodeSync) class() string { return `AnimationNodeSync` }
 
 var methodAnimationNodeSync [2]gdnative.Method
 func (gdClass AnimationNodeSync) SetUseSync(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeSync[0], enable) }
 func (gdClass AnimationNodeSync) IsUsingSync() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationNodeSync[1]) }
 
 type AnimationNodeTimeScale gdnative.Object
+func (AnimationNodeTimeScale) class() string { return `AnimationNodeTimeScale` }
 
 var methodAnimationNodeTimeScale [0]gdnative.Method
 
 type AnimationNodeTimeSeek gdnative.Object
+func (AnimationNodeTimeSeek) class() string { return `AnimationNodeTimeSeek` }
 
 var methodAnimationNodeTimeSeek [0]gdnative.Method
 
 type AnimationNodeTransition gdnative.Object
+func (AnimationNodeTransition) class() string { return `AnimationNodeTransition` }
 
 var methodAnimationNodeTransition [10]gdnative.Method
 func (gdClass AnimationNodeTransition) SetEnabledInputs(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeTransition[0], amount) }
@@ -1291,6 +1320,7 @@ func (gdClass AnimationNodeTransition) SetFromStart(from_start bool)  { gdnative
 func (gdClass AnimationNodeTransition) IsFromStart() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationNodeTransition[9]) }
 
 type AnimationPlayer gdnative.Object
+func (AnimationPlayer) class() string { return `AnimationPlayer` }
 
 var methodAnimationPlayer [50]gdnative.Method
 
@@ -1360,14 +1390,17 @@ func (gdClass AnimationPlayer) Seek(seconds float64, update bool)  { gdnative.Ca
 func (gdClass AnimationPlayer) Advance(delta float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationPlayer[49], delta) }
 
 type AnimationRootNode gdnative.Object
+func (AnimationRootNode) class() string { return `AnimationRootNode` }
 
 var methodAnimationRootNode [0]gdnative.Method
 
 type AnimationTrackEditPlugin gdnative.Object
+func (AnimationTrackEditPlugin) class() string { return `AnimationTrackEditPlugin` }
 
 var methodAnimationTrackEditPlugin [0]gdnative.Method
 
 type AnimationTree gdnative.Object
+func (AnimationTree) class() string { return `AnimationTree` }
 
 var methodAnimationTree [15]gdnative.Method
 
@@ -1395,6 +1428,7 @@ func (gdClass AnimationTree) RenameParameter(old_name string, new_name string)  
 func (gdClass AnimationTree) Advance(delta float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationTree[14], delta) }
 
 type Area2D gdnative.Object
+func (Area2D) class() string { return `Area2D` }
 
 var methodArea2D [34]gdnative.Method
 
@@ -1443,6 +1477,7 @@ func (gdClass Area2D) SetAudioBusOverride(enable bool)  { gdnative.Call(gdnative
 func (gdClass Area2D) IsOverridingAudioBus() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodArea2D[33]) }
 
 type Area3D gdnative.Object
+func (Area3D) class() string { return `Area3D` }
 
 var methodArea3D [48]gdnative.Method
 
@@ -1505,6 +1540,7 @@ func (gdClass Area3D) SetReverbUniformity(amount float64)  { gdnative.Call(gdnat
 func (gdClass Area3D) GetReverbUniformity() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodArea3D[47]) }
 
 type ArrayMesh gdnative.Object
+func (ArrayMesh) class() string { return `ArrayMesh` }
 
 var methodArrayMesh [25]gdnative.Method
 func (gdClass ArrayMesh) AddBlendShape(name string)  { gdnative.Call(gdnative.Object(gdClass), methodArrayMesh[0], name) }
@@ -1534,6 +1570,7 @@ func (gdClass ArrayMesh) SetShadowMesh(mesh ArrayMesh)  { gdnative.Call(gdnative
 func (gdClass ArrayMesh) GetShadowMesh() ArrayMesh { return gdnative.Return[ArrayMesh](gdnative.Object(gdClass), methodArrayMesh[24]) }
 
 type ArrayOccluder3D gdnative.Object
+func (ArrayOccluder3D) class() string { return `ArrayOccluder3D` }
 
 var methodArrayOccluder3D [3]gdnative.Method
 func (gdClass ArrayOccluder3D) SetArrays(vertices []Vector3, indices []int32)  { gdnative.Call(gdnative.Object(gdClass), methodArrayOccluder3D[0], vertices, indices) }
@@ -1541,6 +1578,7 @@ func (gdClass ArrayOccluder3D) SetVertices(vertices []Vector3)  { gdnative.Call(
 func (gdClass ArrayOccluder3D) SetIndices(indices []int32)  { gdnative.Call(gdnative.Object(gdClass), methodArrayOccluder3D[2], indices) }
 
 type AspectRatioContainer gdnative.Object
+func (AspectRatioContainer) class() string { return `AspectRatioContainer` }
 
 var methodAspectRatioContainer [8]gdnative.Method
 
@@ -1570,6 +1608,7 @@ func (gdClass AspectRatioContainer) SetAlignmentVertical(alignment_vertical Aspe
 func (gdClass AspectRatioContainer) GetAlignmentVertical() AspectRatioContainerAlignmentMode { return gdnative.Return[AspectRatioContainerAlignmentMode](gdnative.Object(gdClass), methodAspectRatioContainer[7]) }
 
 type AtlasTexture gdnative.Object
+func (AtlasTexture) class() string { return `AtlasTexture` }
 
 var methodAtlasTexture [8]gdnative.Method
 func (gdClass AtlasTexture) SetAtlas(atlas Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodAtlasTexture[0], atlas) }
@@ -1582,29 +1621,35 @@ func (gdClass AtlasTexture) SetFilterClip(enable bool)  { gdnative.Call(gdnative
 func (gdClass AtlasTexture) HasFilterClip() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAtlasTexture[7]) }
 
 type AudioBusLayout gdnative.Object
+func (AudioBusLayout) class() string { return `AudioBusLayout` }
 
 var methodAudioBusLayout [0]gdnative.Method
 
 type AudioEffect gdnative.Object
+func (AudioEffect) class() string { return `AudioEffect` }
 
 var methodAudioEffect [1]gdnative.Method
 func (gdClass AudioEffect) InstantiateImplementation() AudioEffectInstance { return gdnative.Return[AudioEffectInstance](gdnative.Object(gdClass), methodAudioEffect[0]) }
 
 type AudioEffectAmplify gdnative.Object
+func (AudioEffectAmplify) class() string { return `AudioEffectAmplify` }
 
 var methodAudioEffectAmplify [2]gdnative.Method
 func (gdClass AudioEffectAmplify) SetVolumeDb(volume float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectAmplify[0], volume) }
 func (gdClass AudioEffectAmplify) GetVolumeDb() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectAmplify[1]) }
 
 type AudioEffectBandLimitFilter gdnative.Object
+func (AudioEffectBandLimitFilter) class() string { return `AudioEffectBandLimitFilter` }
 
 var methodAudioEffectBandLimitFilter [0]gdnative.Method
 
 type AudioEffectBandPassFilter gdnative.Object
+func (AudioEffectBandPassFilter) class() string { return `AudioEffectBandPassFilter` }
 
 var methodAudioEffectBandPassFilter [0]gdnative.Method
 
 type AudioEffectCapture gdnative.Object
+func (AudioEffectCapture) class() string { return `AudioEffectCapture` }
 
 var methodAudioEffectCapture [9]gdnative.Method
 func (gdClass AudioEffectCapture) CanGetBuffer(frames int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioEffectCapture[0], frames) }
@@ -1618,6 +1663,7 @@ func (gdClass AudioEffectCapture) GetBufferLengthFrames() int64 { return gdnativ
 func (gdClass AudioEffectCapture) GetPushedFrames() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioEffectCapture[8]) }
 
 type AudioEffectChorus gdnative.Object
+func (AudioEffectChorus) class() string { return `AudioEffectChorus` }
 
 var methodAudioEffectChorus [18]gdnative.Method
 func (gdClass AudioEffectChorus) SetVoiceCount(voices int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectChorus[0], voices) }
@@ -1640,6 +1686,7 @@ func (gdClass AudioEffectChorus) SetDry(amount float64)  { gdnative.Call(gdnativ
 func (gdClass AudioEffectChorus) GetDry() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectChorus[17]) }
 
 type AudioEffectCompressor gdnative.Object
+func (AudioEffectCompressor) class() string { return `AudioEffectCompressor` }
 
 var methodAudioEffectCompressor [14]gdnative.Method
 func (gdClass AudioEffectCompressor) SetThreshold(threshold float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectCompressor[0], threshold) }
@@ -1658,6 +1705,7 @@ func (gdClass AudioEffectCompressor) SetSidechain(sidechain string)  { gdnative.
 func (gdClass AudioEffectCompressor) GetSidechain() string { return gdnative.Return[string](gdnative.Object(gdClass), methodAudioEffectCompressor[13]) }
 
 type AudioEffectDelay gdnative.Object
+func (AudioEffectDelay) class() string { return `AudioEffectDelay` }
 
 var methodAudioEffectDelay [26]gdnative.Method
 func (gdClass AudioEffectDelay) SetDry(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectDelay[0], amount) }
@@ -1688,6 +1736,7 @@ func (gdClass AudioEffectDelay) SetFeedbackLowpass(amount float64)  { gdnative.C
 func (gdClass AudioEffectDelay) GetFeedbackLowpass() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectDelay[25]) }
 
 type AudioEffectDistortion gdnative.Object
+func (AudioEffectDistortion) class() string { return `AudioEffectDistortion` }
 
 var methodAudioEffectDistortion [10]gdnative.Method
 
@@ -1712,6 +1761,7 @@ func (gdClass AudioEffectDistortion) SetPostGain(post_gain float64)  { gdnative.
 func (gdClass AudioEffectDistortion) GetPostGain() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectDistortion[9]) }
 
 type AudioEffectEQ gdnative.Object
+func (AudioEffectEQ) class() string { return `AudioEffectEQ` }
 
 var methodAudioEffectEQ [3]gdnative.Method
 func (gdClass AudioEffectEQ) SetBandGainDb(band_idx int64, volume_db float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectEQ[0], band_idx, volume_db) }
@@ -1719,18 +1769,22 @@ func (gdClass AudioEffectEQ) GetBandGainDb(band_idx int64) float64 { return gdna
 func (gdClass AudioEffectEQ) GetBandCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioEffectEQ[2]) }
 
 type AudioEffectEQ10 gdnative.Object
+func (AudioEffectEQ10) class() string { return `AudioEffectEQ10` }
 
 var methodAudioEffectEQ10 [0]gdnative.Method
 
 type AudioEffectEQ21 gdnative.Object
+func (AudioEffectEQ21) class() string { return `AudioEffectEQ21` }
 
 var methodAudioEffectEQ21 [0]gdnative.Method
 
 type AudioEffectEQ6 gdnative.Object
+func (AudioEffectEQ6) class() string { return `AudioEffectEQ6` }
 
 var methodAudioEffectEQ6 [0]gdnative.Method
 
 type AudioEffectFilter gdnative.Object
+func (AudioEffectFilter) class() string { return `AudioEffectFilter` }
 
 var methodAudioEffectFilter [8]gdnative.Method
 
@@ -1752,20 +1806,24 @@ func (gdClass AudioEffectFilter) SetDb(amount AudioEffectFilterFilterDB)  { gdna
 func (gdClass AudioEffectFilter) GetDb() AudioEffectFilterFilterDB { return gdnative.Return[AudioEffectFilterFilterDB](gdnative.Object(gdClass), methodAudioEffectFilter[7]) }
 
 type AudioEffectHighPassFilter gdnative.Object
+func (AudioEffectHighPassFilter) class() string { return `AudioEffectHighPassFilter` }
 
 var methodAudioEffectHighPassFilter [0]gdnative.Method
 
 type AudioEffectHighShelfFilter gdnative.Object
+func (AudioEffectHighShelfFilter) class() string { return `AudioEffectHighShelfFilter` }
 
 var methodAudioEffectHighShelfFilter [0]gdnative.Method
 
 type AudioEffectInstance gdnative.Object
+func (AudioEffectInstance) class() string { return `AudioEffectInstance` }
 
 var methodAudioEffectInstance [2]gdnative.Method
 func (gdClass AudioEffectInstance) ProcessImplementation(src_buffer []byte, dst_buffer *AudioFrame, frame_count int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectInstance[0], src_buffer, dst_buffer, frame_count) }
 func (gdClass AudioEffectInstance) ProcessSilenceImplementation() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioEffectInstance[1]) }
 
 type AudioEffectLimiter gdnative.Object
+func (AudioEffectLimiter) class() string { return `AudioEffectLimiter` }
 
 var methodAudioEffectLimiter [8]gdnative.Method
 func (gdClass AudioEffectLimiter) SetCeilingDb(ceiling float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectLimiter[0], ceiling) }
@@ -1778,24 +1836,29 @@ func (gdClass AudioEffectLimiter) SetSoftClipRatio(soft_clip float64)  { gdnativ
 func (gdClass AudioEffectLimiter) GetSoftClipRatio() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectLimiter[7]) }
 
 type AudioEffectLowPassFilter gdnative.Object
+func (AudioEffectLowPassFilter) class() string { return `AudioEffectLowPassFilter` }
 
 var methodAudioEffectLowPassFilter [0]gdnative.Method
 
 type AudioEffectLowShelfFilter gdnative.Object
+func (AudioEffectLowShelfFilter) class() string { return `AudioEffectLowShelfFilter` }
 
 var methodAudioEffectLowShelfFilter [0]gdnative.Method
 
 type AudioEffectNotchFilter gdnative.Object
+func (AudioEffectNotchFilter) class() string { return `AudioEffectNotchFilter` }
 
 var methodAudioEffectNotchFilter [0]gdnative.Method
 
 type AudioEffectPanner gdnative.Object
+func (AudioEffectPanner) class() string { return `AudioEffectPanner` }
 
 var methodAudioEffectPanner [2]gdnative.Method
 func (gdClass AudioEffectPanner) SetPan(cpanume float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPanner[0], cpanume) }
 func (gdClass AudioEffectPanner) GetPan() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectPanner[1]) }
 
 type AudioEffectPhaser gdnative.Object
+func (AudioEffectPhaser) class() string { return `AudioEffectPhaser` }
 
 var methodAudioEffectPhaser [10]gdnative.Method
 func (gdClass AudioEffectPhaser) SetRangeMinHz(hz float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPhaser[0], hz) }
@@ -1810,6 +1873,7 @@ func (gdClass AudioEffectPhaser) SetDepth(depth float64)  { gdnative.Call(gdnati
 func (gdClass AudioEffectPhaser) GetDepth() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectPhaser[9]) }
 
 type AudioEffectPitchShift gdnative.Object
+func (AudioEffectPitchShift) class() string { return `AudioEffectPitchShift` }
 
 var methodAudioEffectPitchShift [6]gdnative.Method
 
@@ -1831,6 +1895,7 @@ func (gdClass AudioEffectPitchShift) SetFftSize(size AudioEffectPitchShiftFFTSiz
 func (gdClass AudioEffectPitchShift) GetFftSize() AudioEffectPitchShiftFFTSize { return gdnative.Return[AudioEffectPitchShiftFFTSize](gdnative.Object(gdClass), methodAudioEffectPitchShift[5]) }
 
 type AudioEffectRecord gdnative.Object
+func (AudioEffectRecord) class() string { return `AudioEffectRecord` }
 
 var methodAudioEffectRecord [5]gdnative.Method
 func (gdClass AudioEffectRecord) SetRecordingActive(record bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectRecord[0], record) }
@@ -1840,6 +1905,7 @@ func (gdClass AudioEffectRecord) GetFormat() AudioStreamWAVFormat { return gdnat
 func (gdClass AudioEffectRecord) GetRecording() AudioStreamWAV { return gdnative.Return[AudioStreamWAV](gdnative.Object(gdClass), methodAudioEffectRecord[4]) }
 
 type AudioEffectReverb gdnative.Object
+func (AudioEffectReverb) class() string { return `AudioEffectReverb` }
 
 var methodAudioEffectReverb [16]gdnative.Method
 func (gdClass AudioEffectReverb) SetPredelayMsec(msec float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectReverb[0], msec) }
@@ -1860,6 +1926,7 @@ func (gdClass AudioEffectReverb) SetHpf(amount float64)  { gdnative.Call(gdnativ
 func (gdClass AudioEffectReverb) GetHpf() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectReverb[15]) }
 
 type AudioEffectSpectrumAnalyzer gdnative.Object
+func (AudioEffectSpectrumAnalyzer) class() string { return `AudioEffectSpectrumAnalyzer` }
 
 var methodAudioEffectSpectrumAnalyzer [6]gdnative.Method
 
@@ -1881,6 +1948,7 @@ func (gdClass AudioEffectSpectrumAnalyzer) SetFftSize(size AudioEffectSpectrumAn
 func (gdClass AudioEffectSpectrumAnalyzer) GetFftSize() AudioEffectSpectrumAnalyzerFFTSize { return gdnative.Return[AudioEffectSpectrumAnalyzerFFTSize](gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzer[5]) }
 
 type AudioEffectSpectrumAnalyzerInstance gdnative.Object
+func (AudioEffectSpectrumAnalyzerInstance) class() string { return `AudioEffectSpectrumAnalyzerInstance` }
 
 var methodAudioEffectSpectrumAnalyzerInstance [1]gdnative.Method
 
@@ -1893,6 +1961,7 @@ const (
 func (gdClass AudioEffectSpectrumAnalyzerInstance) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode AudioEffectSpectrumAnalyzerInstanceMagnitudeMode) Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzerInstance[0], from_hz, to_hz, mode) }
 
 type AudioEffectStereoEnhance gdnative.Object
+func (AudioEffectStereoEnhance) class() string { return `AudioEffectStereoEnhance` }
 
 var methodAudioEffectStereoEnhance [6]gdnative.Method
 func (gdClass AudioEffectStereoEnhance) SetPanPullout(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectStereoEnhance[0], amount) }
@@ -1903,6 +1972,7 @@ func (gdClass AudioEffectStereoEnhance) SetSurround(amount float64)  { gdnative.
 func (gdClass AudioEffectStereoEnhance) GetSurround() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectStereoEnhance[5]) }
 
 type AudioListener2D gdnative.Object
+func (AudioListener2D) class() string { return `AudioListener2D` }
 
 var methodAudioListener2D [3]gdnative.Method
 func (gdClass AudioListener2D) MakeCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener2D[0]) }
@@ -1910,6 +1980,7 @@ func (gdClass AudioListener2D) ClearCurrent()  { gdnative.Call(gdnative.Object(g
 func (gdClass AudioListener2D) IsCurrent() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioListener2D[2]) }
 
 type AudioListener3D gdnative.Object
+func (AudioListener3D) class() string { return `AudioListener3D` }
 
 var methodAudioListener3D [4]gdnative.Method
 func (gdClass AudioListener3D) MakeCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener3D[0]) }
@@ -1918,6 +1989,7 @@ func (gdClass AudioListener3D) IsCurrent() bool { return gdnative.Return[bool](g
 func (gdClass AudioListener3D) GetListenerTransform() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodAudioListener3D[3]) }
 
 type AudioServer gdnative.Object
+func (AudioServer) class() string { return `AudioServer` }
 
 var methodAudioServer [47]gdnative.Method
 
@@ -1978,6 +2050,7 @@ func (gdClass AudioServer) GenerateBusLayout() AudioBusLayout { return gdnative.
 func (gdClass AudioServer) SetEnableTaggingUsedAudioStreams(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioServer[46], enable) }
 
 type AudioStream gdnative.Object
+func (AudioStream) class() string { return `AudioStream` }
 
 var methodAudioStream [9]gdnative.Method
 func (gdClass AudioStream) InstantiatePlaybackImplementation() AudioStreamPlayback { return gdnative.Return[AudioStreamPlayback](gdnative.Object(gdClass), methodAudioStream[0]) }
@@ -1991,6 +2064,7 @@ func (gdClass AudioStream) IsMonophonic() bool { return gdnative.Return[bool](gd
 func (gdClass AudioStream) InstantiatePlayback() AudioStreamPlayback { return gdnative.Return[AudioStreamPlayback](gdnative.Object(gdClass), methodAudioStream[8]) }
 
 type AudioStreamGenerator gdnative.Object
+func (AudioStreamGenerator) class() string { return `AudioStreamGenerator` }
 
 var methodAudioStreamGenerator [4]gdnative.Method
 func (gdClass AudioStreamGenerator) SetMixRate(hz float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamGenerator[0], hz) }
@@ -1999,6 +2073,7 @@ func (gdClass AudioStreamGenerator) SetBufferLength(seconds float64)  { gdnative
 func (gdClass AudioStreamGenerator) GetBufferLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioStreamGenerator[3]) }
 
 type AudioStreamGeneratorPlayback gdnative.Object
+func (AudioStreamGeneratorPlayback) class() string { return `AudioStreamGeneratorPlayback` }
 
 var methodAudioStreamGeneratorPlayback [6]gdnative.Method
 func (gdClass AudioStreamGeneratorPlayback) PushFrame(frame Vector2) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioStreamGeneratorPlayback[0], frame) }
@@ -2009,6 +2084,7 @@ func (gdClass AudioStreamGeneratorPlayback) GetSkips() int64 { return gdnative.R
 func (gdClass AudioStreamGeneratorPlayback) ClearBuffer()  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamGeneratorPlayback[5]) }
 
 type AudioStreamMP3 gdnative.Object
+func (AudioStreamMP3) class() string { return `AudioStreamMP3` }
 
 var methodAudioStreamMP3 [12]gdnative.Method
 func (gdClass AudioStreamMP3) SetData(data []byte)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamMP3[0], data) }
@@ -2025,10 +2101,12 @@ func (gdClass AudioStreamMP3) SetBarBeats(count int64)  { gdnative.Call(gdnative
 func (gdClass AudioStreamMP3) GetBarBeats() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioStreamMP3[11]) }
 
 type AudioStreamMicrophone gdnative.Object
+func (AudioStreamMicrophone) class() string { return `AudioStreamMicrophone` }
 
 var methodAudioStreamMicrophone [0]gdnative.Method
 
 type AudioStreamOggVorbis gdnative.Object
+func (AudioStreamOggVorbis) class() string { return `AudioStreamOggVorbis` }
 
 var methodAudioStreamOggVorbis [12]gdnative.Method
 func (gdClass AudioStreamOggVorbis) SetPacketSequence(packet_sequence OggPacketSequence)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamOggVorbis[0], packet_sequence) }
@@ -2045,6 +2123,7 @@ func (gdClass AudioStreamOggVorbis) SetBarBeats(count int64)  { gdnative.Call(gd
 func (gdClass AudioStreamOggVorbis) GetBarBeats() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioStreamOggVorbis[11]) }
 
 type AudioStreamPlayback gdnative.Object
+func (AudioStreamPlayback) class() string { return `AudioStreamPlayback` }
 
 var methodAudioStreamPlayback [8]gdnative.Method
 func (gdClass AudioStreamPlayback) StartImplementation(from_pos float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayback[0], from_pos) }
@@ -2057,10 +2136,12 @@ func (gdClass AudioStreamPlayback) MixImplementation(buffer *AudioFrame, rate_sc
 func (gdClass AudioStreamPlayback) TagUsedStreamsImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayback[7]) }
 
 type AudioStreamPlaybackOggVorbis gdnative.Object
+func (AudioStreamPlaybackOggVorbis) class() string { return `AudioStreamPlaybackOggVorbis` }
 
 var methodAudioStreamPlaybackOggVorbis [0]gdnative.Method
 
 type AudioStreamPlaybackResampled gdnative.Object
+func (AudioStreamPlaybackResampled) class() string { return `AudioStreamPlaybackResampled` }
 
 var methodAudioStreamPlaybackResampled [3]gdnative.Method
 func (gdClass AudioStreamPlaybackResampled) MixResampledImplementation(dst_buffer *AudioFrame, frame_count int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioStreamPlaybackResampled[0], dst_buffer, frame_count) }
@@ -2068,6 +2149,7 @@ func (gdClass AudioStreamPlaybackResampled) GetStreamSamplingRateImplementation(
 func (gdClass AudioStreamPlaybackResampled) BeginResample()  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlaybackResampled[2]) }
 
 type AudioStreamPlayer gdnative.Object
+func (AudioStreamPlayer) class() string { return `AudioStreamPlayer` }
 
 var methodAudioStreamPlayer [22]gdnative.Method
 
@@ -2102,6 +2184,7 @@ func (gdClass AudioStreamPlayer) GetMaxPolyphony() int64 { return gdnative.Retur
 func (gdClass AudioStreamPlayer) GetStreamPlayback() AudioStreamPlayback { return gdnative.Return[AudioStreamPlayback](gdnative.Object(gdClass), methodAudioStreamPlayer[21]) }
 
 type AudioStreamPlayer2D gdnative.Object
+func (AudioStreamPlayer2D) class() string { return `AudioStreamPlayer2D` }
 
 var methodAudioStreamPlayer2D [28]gdnative.Method
 func (gdClass AudioStreamPlayer2D) SetStream(stream AudioStream)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer2D[0], stream) }
@@ -2134,6 +2217,7 @@ func (gdClass AudioStreamPlayer2D) GetPanningStrength() float64 { return gdnativ
 func (gdClass AudioStreamPlayer2D) GetStreamPlayback() AudioStreamPlayback { return gdnative.Return[AudioStreamPlayback](gdnative.Object(gdClass), methodAudioStreamPlayer2D[27]) }
 
 type AudioStreamPlayer3D gdnative.Object
+func (AudioStreamPlayer3D) class() string { return `AudioStreamPlayer3D` }
 
 var methodAudioStreamPlayer3D [44]gdnative.Method
 
@@ -2199,6 +2283,7 @@ func (gdClass AudioStreamPlayer3D) GetPanningStrength() float64 { return gdnativ
 func (gdClass AudioStreamPlayer3D) GetStreamPlayback() AudioStreamPlayback { return gdnative.Return[AudioStreamPlayback](gdnative.Object(gdClass), methodAudioStreamPlayer3D[43]) }
 
 type AudioStreamRandomizer gdnative.Object
+func (AudioStreamRandomizer) class() string { return `AudioStreamRandomizer` }
 
 var methodAudioStreamRandomizer [15]gdnative.Method
 
@@ -2226,6 +2311,7 @@ func (gdClass AudioStreamRandomizer) SetPlaybackMode(mode AudioStreamRandomizerP
 func (gdClass AudioStreamRandomizer) GetPlaybackMode() AudioStreamRandomizerPlaybackMode { return gdnative.Return[AudioStreamRandomizerPlaybackMode](gdnative.Object(gdClass), methodAudioStreamRandomizer[14]) }
 
 type AudioStreamWAV gdnative.Object
+func (AudioStreamWAV) class() string { return `AudioStreamWAV` }
 
 var methodAudioStreamWAV [15]gdnative.Method
 
@@ -2262,6 +2348,7 @@ func (gdClass AudioStreamWAV) IsStereo() bool { return gdnative.Return[bool](gdn
 func (gdClass AudioStreamWAV) SaveToWav(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodAudioStreamWAV[14], path) }
 
 type BackBufferCopy gdnative.Object
+func (BackBufferCopy) class() string { return `BackBufferCopy` }
 
 var methodBackBufferCopy [4]gdnative.Method
 
@@ -2278,6 +2365,7 @@ func (gdClass BackBufferCopy) SetCopyMode(copy_mode BackBufferCopyCopyMode)  { g
 func (gdClass BackBufferCopy) GetCopyMode() BackBufferCopyCopyMode { return gdnative.Return[BackBufferCopyCopyMode](gdnative.Object(gdClass), methodBackBufferCopy[3]) }
 
 type BaseButton gdnative.Object
+func (BaseButton) class() string { return `BaseButton` }
 
 var methodBaseButton [25]gdnative.Method
 
@@ -2324,6 +2412,7 @@ func (gdClass BaseButton) SetShortcutContext(node Node)  { gdnative.Call(gdnativ
 func (gdClass BaseButton) GetShortcutContext() Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodBaseButton[24]) }
 
 type BaseMaterial3D gdnative.Object
+func (BaseMaterial3D) class() string { return `BaseMaterial3D` }
 
 var methodBaseMaterial3D [134]gdnative.Method
 
@@ -2655,6 +2744,7 @@ func (gdClass BaseMaterial3D) SetDistanceFadeMinDistance(distance float64)  { gd
 func (gdClass BaseMaterial3D) GetDistanceFadeMinDistance() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodBaseMaterial3D[133]) }
 
 type BitMap gdnative.Object
+func (BitMap) class() string { return `BitMap` }
 
 var methodBitMap [11]gdnative.Method
 func (gdClass BitMap) Create(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodBitMap[0], size) }
@@ -2670,6 +2760,7 @@ func (gdClass BitMap) ConvertToImage() Image { return gdnative.Return[Image](gdn
 func (gdClass BitMap) OpaqueToPolygons(rect Rect2, epsilon float64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodBitMap[10], rect, epsilon) }
 
 type Bone2D gdnative.Object
+func (Bone2D) class() string { return `Bone2D` }
 
 var methodBone2D [13]gdnative.Method
 func (gdClass Bone2D) SetRest(rest Transform2D)  { gdnative.Call(gdnative.Object(gdClass), methodBone2D[0], rest) }
@@ -2687,6 +2778,7 @@ func (gdClass Bone2D) SetBoneAngle(angle float64)  { gdnative.Call(gdnative.Obje
 func (gdClass Bone2D) GetBoneAngle() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodBone2D[12]) }
 
 type BoneAttachment3D gdnative.Object
+func (BoneAttachment3D) class() string { return `BoneAttachment3D` }
 
 var methodBoneAttachment3D [13]gdnative.Method
 func (gdClass BoneAttachment3D) SetBoneName(bone_name string)  { gdnative.Call(gdnative.Object(gdClass), methodBoneAttachment3D[0], bone_name) }
@@ -2704,6 +2796,7 @@ func (gdClass BoneAttachment3D) SetExternalSkeleton(external_skeleton NodePath) 
 func (gdClass BoneAttachment3D) GetExternalSkeleton() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodBoneAttachment3D[12]) }
 
 type BoneMap gdnative.Object
+func (BoneMap) class() string { return `BoneMap` }
 
 var methodBoneMap [5]gdnative.Method
 func (gdClass BoneMap) GetProfile() SkeletonProfile { return gdnative.Return[SkeletonProfile](gdnative.Object(gdClass), methodBoneMap[0]) }
@@ -2713,6 +2806,7 @@ func (gdClass BoneMap) SetSkeletonBoneName(profile_bone_name string, skeleton_bo
 func (gdClass BoneMap) FindProfileBoneName(skeleton_bone_name string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodBoneMap[4], skeleton_bone_name) }
 
 type BoxContainer gdnative.Object
+func (BoxContainer) class() string { return `BoxContainer` }
 
 var methodBoxContainer [3]gdnative.Method
 
@@ -2728,6 +2822,7 @@ func (gdClass BoxContainer) GetAlignment() BoxContainerAlignmentMode { return gd
 func (gdClass BoxContainer) SetAlignment(alignment BoxContainerAlignmentMode)  { gdnative.Call(gdnative.Object(gdClass), methodBoxContainer[2], alignment) }
 
 type BoxMesh gdnative.Object
+func (BoxMesh) class() string { return `BoxMesh` }
 
 var methodBoxMesh [8]gdnative.Method
 func (gdClass BoxMesh) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxMesh[0], size) }
@@ -2740,18 +2835,21 @@ func (gdClass BoxMesh) SetSubdivideDepth(divisions int64)  { gdnative.Call(gdnat
 func (gdClass BoxMesh) GetSubdivideDepth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodBoxMesh[7]) }
 
 type BoxOccluder3D gdnative.Object
+func (BoxOccluder3D) class() string { return `BoxOccluder3D` }
 
 var methodBoxOccluder3D [2]gdnative.Method
 func (gdClass BoxOccluder3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxOccluder3D[0], size) }
 func (gdClass BoxOccluder3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodBoxOccluder3D[1]) }
 
 type BoxShape3D gdnative.Object
+func (BoxShape3D) class() string { return `BoxShape3D` }
 
 var methodBoxShape3D [2]gdnative.Method
 func (gdClass BoxShape3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxShape3D[0], size) }
 func (gdClass BoxShape3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodBoxShape3D[1]) }
 
 type Button gdnative.Object
+func (Button) class() string { return `Button` }
 
 var methodButton [20]gdnative.Method
 func (gdClass Button) SetText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodButton[0], text) }
@@ -2776,12 +2874,14 @@ func (gdClass Button) SetExpandIcon(enabled bool)  { gdnative.Call(gdnative.Obje
 func (gdClass Button) IsExpandIcon() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodButton[19]) }
 
 type ButtonGroup gdnative.Object
+func (ButtonGroup) class() string { return `ButtonGroup` }
 
 var methodButtonGroup [2]gdnative.Method
 func (gdClass ButtonGroup) GetPressedButton() BaseButton { return gdnative.Return[BaseButton](gdnative.Object(gdClass), methodButtonGroup[0]) }
 func (gdClass ButtonGroup) GetButtons() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodButtonGroup[1]) }
 
 type CPUParticles2D gdnative.Object
+func (CPUParticles2D) class() string { return `CPUParticles2D` }
 
 var methodCPUParticles2D [68]gdnative.Method
 
@@ -2900,6 +3000,7 @@ func (gdClass CPUParticles2D) SetScaleCurveY(scale_curve Curve)  { gdnative.Call
 func (gdClass CPUParticles2D) ConvertFromParticles(particles Node)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles2D[67], particles) }
 
 type CPUParticles3D gdnative.Object
+func (CPUParticles3D) class() string { return `CPUParticles3D` }
 
 var methodCPUParticles3D [80]gdnative.Method
 
@@ -3032,6 +3133,7 @@ func (gdClass CPUParticles3D) SetScaleCurveZ(scale_curve Curve)  { gdnative.Call
 func (gdClass CPUParticles3D) ConvertFromParticles(particles Node)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles3D[79], particles) }
 
 type CSGBox3D gdnative.Object
+func (CSGBox3D) class() string { return `CSGBox3D` }
 
 var methodCSGBox3D [4]gdnative.Method
 func (gdClass CSGBox3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodCSGBox3D[0], size) }
@@ -3040,10 +3142,12 @@ func (gdClass CSGBox3D) SetMaterial(material Material)  { gdnative.Call(gdnative
 func (gdClass CSGBox3D) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodCSGBox3D[3]) }
 
 type CSGCombiner3D gdnative.Object
+func (CSGCombiner3D) class() string { return `CSGCombiner3D` }
 
 var methodCSGCombiner3D [0]gdnative.Method
 
 type CSGCylinder3D gdnative.Object
+func (CSGCylinder3D) class() string { return `CSGCylinder3D` }
 
 var methodCSGCylinder3D [12]gdnative.Method
 func (gdClass CSGCylinder3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGCylinder3D[0], radius) }
@@ -3060,6 +3164,7 @@ func (gdClass CSGCylinder3D) SetSmoothFaces(smooth_faces bool)  { gdnative.Call(
 func (gdClass CSGCylinder3D) GetSmoothFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGCylinder3D[11]) }
 
 type CSGMesh3D gdnative.Object
+func (CSGMesh3D) class() string { return `CSGMesh3D` }
 
 var methodCSGMesh3D [4]gdnative.Method
 func (gdClass CSGMesh3D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodCSGMesh3D[0], mesh) }
@@ -3068,6 +3173,7 @@ func (gdClass CSGMesh3D) SetMaterial(material Material)  { gdnative.Call(gdnativ
 func (gdClass CSGMesh3D) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodCSGMesh3D[3]) }
 
 type CSGPolygon3D gdnative.Object
+func (CSGPolygon3D) class() string { return `CSGPolygon3D` }
 
 var methodCSGPolygon3D [32]gdnative.Method
 
@@ -3127,12 +3233,14 @@ func (gdClass CSGPolygon3D) SetSmoothFaces(smooth_faces bool)  { gdnative.Call(g
 func (gdClass CSGPolygon3D) GetSmoothFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGPolygon3D[31]) }
 
 type CSGPrimitive3D gdnative.Object
+func (CSGPrimitive3D) class() string { return `CSGPrimitive3D` }
 
 var methodCSGPrimitive3D [2]gdnative.Method
 func (gdClass CSGPrimitive3D) SetFlipFaces(flip_faces bool)  { gdnative.Call(gdnative.Object(gdClass), methodCSGPrimitive3D[0], flip_faces) }
 func (gdClass CSGPrimitive3D) GetFlipFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGPrimitive3D[1]) }
 
 type CSGShape3D gdnative.Object
+func (CSGShape3D) class() string { return `CSGShape3D` }
 
 var methodCSGShape3D [18]gdnative.Method
 
@@ -3163,6 +3271,7 @@ func (gdClass CSGShape3D) IsCalculatingTangents() bool { return gdnative.Return[
 func (gdClass CSGShape3D) GetMeshes() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodCSGShape3D[17]) }
 
 type CSGSphere3D gdnative.Object
+func (CSGSphere3D) class() string { return `CSGSphere3D` }
 
 var methodCSGSphere3D [10]gdnative.Method
 func (gdClass CSGSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGSphere3D[0], radius) }
@@ -3177,6 +3286,7 @@ func (gdClass CSGSphere3D) SetMaterial(material Material)  { gdnative.Call(gdnat
 func (gdClass CSGSphere3D) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodCSGSphere3D[9]) }
 
 type CSGTorus3D gdnative.Object
+func (CSGTorus3D) class() string { return `CSGTorus3D` }
 
 var methodCSGTorus3D [12]gdnative.Method
 func (gdClass CSGTorus3D) SetInnerRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGTorus3D[0], radius) }
@@ -3193,11 +3303,13 @@ func (gdClass CSGTorus3D) SetSmoothFaces(smooth_faces bool)  { gdnative.Call(gdn
 func (gdClass CSGTorus3D) GetSmoothFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGTorus3D[11]) }
 
 type CallbackTweener gdnative.Object
+func (CallbackTweener) class() string { return `CallbackTweener` }
 
 var methodCallbackTweener [1]gdnative.Method
 func (gdClass CallbackTweener) SetDelay(delay float64) CallbackTweener { return gdnative.Return[CallbackTweener](gdnative.Object(gdClass), methodCallbackTweener[0], delay) }
 
 type Camera2D gdnative.Object
+func (Camera2D) class() string { return `Camera2D` }
 
 var methodCamera2D [43]gdnative.Method
 
@@ -3259,6 +3371,7 @@ func (gdClass Camera2D) SetMarginDrawingEnabled(margin_drawing_enabled bool)  { 
 func (gdClass Camera2D) IsMarginDrawingEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCamera2D[42]) }
 
 type Camera3D gdnative.Object
+func (Camera3D) class() string { return `Camera3D` }
 
 var methodCamera3D [46]gdnative.Method
 
@@ -3332,6 +3445,7 @@ func (gdClass Camera3D) SetCullMaskValue(layer_number int64, value bool)  { gdna
 func (gdClass Camera3D) GetCullMaskValue(layer_number int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCamera3D[45], layer_number) }
 
 type CameraEffects gdnative.Object
+func (CameraEffects) class() string { return `CameraEffects` }
 
 var methodCameraEffects [18]gdnative.Method
 func (gdClass CameraEffects) SetDofBlurFarEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodCameraEffects[0], enabled) }
@@ -3354,6 +3468,7 @@ func (gdClass CameraEffects) SetOverrideExposure(exposure float64)  { gdnative.C
 func (gdClass CameraEffects) GetOverrideExposure() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCameraEffects[17]) }
 
 type CameraFeed gdnative.Object
+func (CameraFeed) class() string { return `CameraFeed` }
 
 var methodCameraFeed [8]gdnative.Method
 
@@ -3383,6 +3498,7 @@ func (gdClass CameraFeed) SetTransform(transform Transform2D)  { gdnative.Call(g
 func (gdClass CameraFeed) GetDatatype() CameraFeedFeedDataType { return gdnative.Return[CameraFeedFeedDataType](gdnative.Object(gdClass), methodCameraFeed[7]) }
 
 type CameraServer gdnative.Object
+func (CameraServer) class() string { return `CameraServer` }
 
 var methodCameraServer [5]gdnative.Method
 
@@ -3401,6 +3517,7 @@ func (gdClass CameraServer) AddFeed(feed CameraFeed)  { gdnative.Call(gdnative.O
 func (gdClass CameraServer) RemoveFeed(feed CameraFeed)  { gdnative.Call(gdnative.Object(gdClass), methodCameraServer[4], feed) }
 
 type CameraTexture gdnative.Object
+func (CameraTexture) class() string { return `CameraTexture` }
 
 var methodCameraTexture [6]gdnative.Method
 func (gdClass CameraTexture) SetCameraFeedId(feed_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodCameraTexture[0], feed_id) }
@@ -3411,6 +3528,7 @@ func (gdClass CameraTexture) SetCameraActive(active bool)  { gdnative.Call(gdnat
 func (gdClass CameraTexture) GetCameraActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCameraTexture[5]) }
 
 type CanvasGroup gdnative.Object
+func (CanvasGroup) class() string { return `CanvasGroup` }
 
 var methodCanvasGroup [6]gdnative.Method
 func (gdClass CanvasGroup) SetFitMargin(fit_margin float64)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasGroup[0], fit_margin) }
@@ -3421,6 +3539,7 @@ func (gdClass CanvasGroup) SetUseMipmaps(use_mipmaps bool)  { gdnative.Call(gdna
 func (gdClass CanvasGroup) IsUsingMipmaps() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCanvasGroup[5]) }
 
 type CanvasItem gdnative.Object
+func (CanvasItem) class() string { return `CanvasItem` }
 
 var methodCanvasItem [75]gdnative.Method
 
@@ -3523,6 +3642,7 @@ func (gdClass CanvasItem) SetClipChildren(enable bool)  { gdnative.Call(gdnative
 func (gdClass CanvasItem) IsClippingChildren() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCanvasItem[74]) }
 
 type CanvasItemMaterial gdnative.Object
+func (CanvasItemMaterial) class() string { return `CanvasItemMaterial` }
 
 var methodCanvasItemMaterial [12]gdnative.Method
 
@@ -3557,6 +3677,7 @@ func (gdClass CanvasItemMaterial) SetParticlesAnimLoop(loop bool)  { gdnative.Ca
 func (gdClass CanvasItemMaterial) GetParticlesAnimLoop() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCanvasItemMaterial[11]) }
 
 type CanvasLayer gdnative.Object
+func (CanvasLayer) class() string { return `CanvasLayer` }
 
 var methodCanvasLayer [21]gdnative.Method
 func (gdClass CanvasLayer) SetLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasLayer[0], layer) }
@@ -3582,12 +3703,14 @@ func (gdClass CanvasLayer) GetCustomViewport() Node { return gdnative.Return[Nod
 func (gdClass CanvasLayer) GetCanvas() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodCanvasLayer[20]) }
 
 type CanvasModulate gdnative.Object
+func (CanvasModulate) class() string { return `CanvasModulate` }
 
 var methodCanvasModulate [2]gdnative.Method
 func (gdClass CanvasModulate) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasModulate[0], color) }
 func (gdClass CanvasModulate) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodCanvasModulate[1]) }
 
 type CanvasTexture gdnative.Object
+func (CanvasTexture) class() string { return `CanvasTexture` }
 
 var methodCanvasTexture [14]gdnative.Method
 func (gdClass CanvasTexture) SetDiffuseTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasTexture[0], texture) }
@@ -3606,6 +3729,7 @@ func (gdClass CanvasTexture) SetTextureRepeat(repeat CanvasItemTextureRepeat)  {
 func (gdClass CanvasTexture) GetTextureRepeat() CanvasItemTextureRepeat { return gdnative.Return[CanvasItemTextureRepeat](gdnative.Object(gdClass), methodCanvasTexture[13]) }
 
 type CapsuleMesh gdnative.Object
+func (CapsuleMesh) class() string { return `CapsuleMesh` }
 
 var methodCapsuleMesh [8]gdnative.Method
 func (gdClass CapsuleMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleMesh[0], radius) }
@@ -3618,6 +3742,7 @@ func (gdClass CapsuleMesh) SetRings(rings int64)  { gdnative.Call(gdnative.Objec
 func (gdClass CapsuleMesh) GetRings() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCapsuleMesh[7]) }
 
 type CapsuleShape2D gdnative.Object
+func (CapsuleShape2D) class() string { return `CapsuleShape2D` }
 
 var methodCapsuleShape2D [4]gdnative.Method
 func (gdClass CapsuleShape2D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape2D[0], radius) }
@@ -3626,6 +3751,7 @@ func (gdClass CapsuleShape2D) SetHeight(height float64)  { gdnative.Call(gdnativ
 func (gdClass CapsuleShape2D) GetHeight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCapsuleShape2D[3]) }
 
 type CapsuleShape3D gdnative.Object
+func (CapsuleShape3D) class() string { return `CapsuleShape3D` }
 
 var methodCapsuleShape3D [4]gdnative.Method
 func (gdClass CapsuleShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape3D[0], radius) }
@@ -3634,12 +3760,14 @@ func (gdClass CapsuleShape3D) SetHeight(height float64)  { gdnative.Call(gdnativ
 func (gdClass CapsuleShape3D) GetHeight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCapsuleShape3D[3]) }
 
 type CenterContainer gdnative.Object
+func (CenterContainer) class() string { return `CenterContainer` }
 
 var methodCenterContainer [2]gdnative.Method
 func (gdClass CenterContainer) SetUseTopLeft(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodCenterContainer[0], enable) }
 func (gdClass CenterContainer) IsUsingTopLeft() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCenterContainer[1]) }
 
 type CharFXTransform gdnative.Object
+func (CharFXTransform) class() string { return `CharFXTransform` }
 
 var methodCharFXTransform [22]gdnative.Method
 func (gdClass CharFXTransform) GetRange() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodCharFXTransform[0]) }
@@ -3666,6 +3794,7 @@ func (gdClass CharFXTransform) GetFont() RID { return gdnative.Return[RID](gdnat
 func (gdClass CharFXTransform) SetFont(font RID)  { gdnative.Call(gdnative.Object(gdClass), methodCharFXTransform[21], font) }
 
 type CharacterBody2D gdnative.Object
+func (CharacterBody2D) class() string { return `CharacterBody2D` }
 
 var methodCharacterBody2D [47]gdnative.Method
 
@@ -3732,6 +3861,7 @@ func (gdClass CharacterBody2D) GetSlideCollision(slide_idx int64) KinematicColli
 func (gdClass CharacterBody2D) GetLastSlideCollision() KinematicCollision2D { return gdnative.Return[KinematicCollision2D](gdnative.Object(gdClass), methodCharacterBody2D[46]) }
 
 type CharacterBody3D gdnative.Object
+func (CharacterBody3D) class() string { return `CharacterBody3D` }
 
 var methodCharacterBody3D [47]gdnative.Method
 
@@ -3798,20 +3928,24 @@ func (gdClass CharacterBody3D) GetSlideCollision(slide_idx int64) KinematicColli
 func (gdClass CharacterBody3D) GetLastSlideCollision() KinematicCollision3D { return gdnative.Return[KinematicCollision3D](gdnative.Object(gdClass), methodCharacterBody3D[46]) }
 
 type CheckBox gdnative.Object
+func (CheckBox) class() string { return `CheckBox` }
 
 var methodCheckBox [0]gdnative.Method
 
 type CheckButton gdnative.Object
+func (CheckButton) class() string { return `CheckButton` }
 
 var methodCheckButton [0]gdnative.Method
 
 type CircleShape2D gdnative.Object
+func (CircleShape2D) class() string { return `CircleShape2D` }
 
 var methodCircleShape2D [2]gdnative.Method
 func (gdClass CircleShape2D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCircleShape2D[0], radius) }
 func (gdClass CircleShape2D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCircleShape2D[1]) }
 
 type ClassDB gdnative.Object
+func (ClassDB) class() string { return `ClassDB` }
 
 var methodClassDB [23]gdnative.Method
 func (gdClass ClassDB) GetClassList() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodClassDB[0]) }
@@ -3839,6 +3973,7 @@ func (gdClass ClassDB) ClassGetIntegerConstantEnum(class string, name string, no
 func (gdClass ClassDB) IsClassEnabled(class string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodClassDB[22], class) }
 
 type CodeEdit gdnative.Object
+func (CodeEdit) class() string { return `CodeEdit` }
 
 var methodCodeEdit [99]gdnative.Method
 
@@ -3957,6 +4092,7 @@ func (gdClass CodeEdit) GetTextForSymbolLookup() string { return gdnative.Return
 func (gdClass CodeEdit) SetSymbolLookupWordAsValid(valid bool)  { gdnative.Call(gdnative.Object(gdClass), methodCodeEdit[98], valid) }
 
 type CodeHighlighter gdnative.Object
+func (CodeHighlighter) class() string { return `CodeHighlighter` }
 
 var methodCodeHighlighter [28]gdnative.Method
 func (gdClass CodeHighlighter) AddKeywordColor(keyword string, color Color)  { gdnative.Call(gdnative.Object(gdClass), methodCodeHighlighter[0], keyword, color) }
@@ -3989,6 +4125,7 @@ func (gdClass CodeHighlighter) SetMemberVariableColor(color Color)  { gdnative.C
 func (gdClass CodeHighlighter) GetMemberVariableColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodCodeHighlighter[27]) }
 
 type CollisionObject2D gdnative.Object
+func (CollisionObject2D) class() string { return `CollisionObject2D` }
 
 var methodCollisionObject2D [33]gdnative.Method
 
@@ -4034,6 +4171,7 @@ func (gdClass CollisionObject2D) ShapeOwnerClearShapes(owner_id int64)  { gdnati
 func (gdClass CollisionObject2D) ShapeFindOwner(shape_index int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCollisionObject2D[32], shape_index) }
 
 type CollisionObject3D gdnative.Object
+func (CollisionObject3D) class() string { return `CollisionObject3D` }
 
 var methodCollisionObject3D [31]gdnative.Method
 
@@ -4077,6 +4215,7 @@ func (gdClass CollisionObject3D) ShapeOwnerClearShapes(owner_id int64)  { gdnati
 func (gdClass CollisionObject3D) ShapeFindOwner(shape_index int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCollisionObject3D[30], shape_index) }
 
 type CollisionPolygon2D gdnative.Object
+func (CollisionPolygon2D) class() string { return `CollisionPolygon2D` }
 
 var methodCollisionPolygon2D [10]gdnative.Method
 
@@ -4098,6 +4237,7 @@ func (gdClass CollisionPolygon2D) SetOneWayCollisionMargin(margin float64)  { gd
 func (gdClass CollisionPolygon2D) GetOneWayCollisionMargin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCollisionPolygon2D[9]) }
 
 type CollisionPolygon3D gdnative.Object
+func (CollisionPolygon3D) class() string { return `CollisionPolygon3D` }
 
 var methodCollisionPolygon3D [8]gdnative.Method
 func (gdClass CollisionPolygon3D) SetDepth(depth float64)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionPolygon3D[0], depth) }
@@ -4110,6 +4250,7 @@ func (gdClass CollisionPolygon3D) SetMargin(margin float64)  { gdnative.Call(gdn
 func (gdClass CollisionPolygon3D) GetMargin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCollisionPolygon3D[7]) }
 
 type CollisionShape2D gdnative.Object
+func (CollisionShape2D) class() string { return `CollisionShape2D` }
 
 var methodCollisionShape2D [8]gdnative.Method
 func (gdClass CollisionShape2D) SetShape(shape Shape2D)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape2D[0], shape) }
@@ -4122,6 +4263,7 @@ func (gdClass CollisionShape2D) SetOneWayCollisionMargin(margin float64)  { gdna
 func (gdClass CollisionShape2D) GetOneWayCollisionMargin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCollisionShape2D[7]) }
 
 type CollisionShape3D gdnative.Object
+func (CollisionShape3D) class() string { return `CollisionShape3D` }
 
 var methodCollisionShape3D [6]gdnative.Method
 func (gdClass CollisionShape3D) ResourceChanged(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape3D[0], resource) }
@@ -4132,6 +4274,7 @@ func (gdClass CollisionShape3D) IsDisabled() bool { return gdnative.Return[bool]
 func (gdClass CollisionShape3D) MakeConvexFromSiblings()  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape3D[5]) }
 
 type ColorPicker gdnative.Object
+func (ColorPicker) class() string { return `ColorPicker` }
 
 var methodColorPicker [17]gdnative.Method
 
@@ -4171,6 +4314,7 @@ func (gdClass ColorPicker) SetPickerShape(shape ColorPickerPickerShapeType)  { g
 func (gdClass ColorPicker) GetPickerShape() ColorPickerPickerShapeType { return gdnative.Return[ColorPickerPickerShapeType](gdnative.Object(gdClass), methodColorPicker[16]) }
 
 type ColorPickerButton gdnative.Object
+func (ColorPickerButton) class() string { return `ColorPickerButton` }
 
 var methodColorPickerButton [6]gdnative.Method
 func (gdClass ColorPickerButton) SetPickColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodColorPickerButton[0], color) }
@@ -4181,48 +4325,57 @@ func (gdClass ColorPickerButton) SetEditAlpha(show bool)  { gdnative.Call(gdnati
 func (gdClass ColorPickerButton) IsEditingAlpha() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodColorPickerButton[5]) }
 
 type ColorRect gdnative.Object
+func (ColorRect) class() string { return `ColorRect` }
 
 var methodColorRect [2]gdnative.Method
 func (gdClass ColorRect) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodColorRect[0], color) }
 func (gdClass ColorRect) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodColorRect[1]) }
 
 type CompressedCubemap gdnative.Object
+func (CompressedCubemap) class() string { return `CompressedCubemap` }
 
 var methodCompressedCubemap [0]gdnative.Method
 
 type CompressedCubemapArray gdnative.Object
+func (CompressedCubemapArray) class() string { return `CompressedCubemapArray` }
 
 var methodCompressedCubemapArray [0]gdnative.Method
 
 type CompressedTexture2D gdnative.Object
+func (CompressedTexture2D) class() string { return `CompressedTexture2D` }
 
 var methodCompressedTexture2D [2]gdnative.Method
 func (gdClass CompressedTexture2D) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTexture2D[0], path) }
 func (gdClass CompressedTexture2D) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTexture2D[1]) }
 
 type CompressedTexture2DArray gdnative.Object
+func (CompressedTexture2DArray) class() string { return `CompressedTexture2DArray` }
 
 var methodCompressedTexture2DArray [0]gdnative.Method
 
 type CompressedTexture3D gdnative.Object
+func (CompressedTexture3D) class() string { return `CompressedTexture3D` }
 
 var methodCompressedTexture3D [2]gdnative.Method
 func (gdClass CompressedTexture3D) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTexture3D[0], path) }
 func (gdClass CompressedTexture3D) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTexture3D[1]) }
 
 type CompressedTextureLayered gdnative.Object
+func (CompressedTextureLayered) class() string { return `CompressedTextureLayered` }
 
 var methodCompressedTextureLayered [2]gdnative.Method
 func (gdClass CompressedTextureLayered) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTextureLayered[0], path) }
 func (gdClass CompressedTextureLayered) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTextureLayered[1]) }
 
 type ConcavePolygonShape2D gdnative.Object
+func (ConcavePolygonShape2D) class() string { return `ConcavePolygonShape2D` }
 
 var methodConcavePolygonShape2D [2]gdnative.Method
 func (gdClass ConcavePolygonShape2D) SetSegments(segments []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodConcavePolygonShape2D[0], segments) }
 func (gdClass ConcavePolygonShape2D) GetSegments() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodConcavePolygonShape2D[1]) }
 
 type ConcavePolygonShape3D gdnative.Object
+func (ConcavePolygonShape3D) class() string { return `ConcavePolygonShape3D` }
 
 var methodConcavePolygonShape3D [4]gdnative.Method
 func (gdClass ConcavePolygonShape3D) SetFaces(faces []Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodConcavePolygonShape3D[0], faces) }
@@ -4231,6 +4384,7 @@ func (gdClass ConcavePolygonShape3D) SetBackfaceCollisionEnabled(enabled bool)  
 func (gdClass ConcavePolygonShape3D) IsBackfaceCollisionEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodConcavePolygonShape3D[3]) }
 
 type ConeTwistJoint3D gdnative.Object
+func (ConeTwistJoint3D) class() string { return `ConeTwistJoint3D` }
 
 var methodConeTwistJoint3D [2]gdnative.Method
 
@@ -4248,6 +4402,7 @@ func (gdClass ConeTwistJoint3D) SetParam(param ConeTwistJoint3DParam, value floa
 func (gdClass ConeTwistJoint3D) GetParam(param ConeTwistJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodConeTwistJoint3D[1], param) }
 
 type ConfigFile gdnative.Object
+func (ConfigFile) class() string { return `ConfigFile` }
 
 var methodConfigFile [16]gdnative.Method
 func (gdClass ConfigFile) SetValue(section string, key string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodConfigFile[0], section, key, value) }
@@ -4268,6 +4423,7 @@ func (gdClass ConfigFile) SaveEncryptedPass(path string, password string) error 
 func (gdClass ConfigFile) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodConfigFile[15]) }
 
 type ConfirmationDialog gdnative.Object
+func (ConfirmationDialog) class() string { return `ConfirmationDialog` }
 
 var methodConfirmationDialog [3]gdnative.Method
 func (gdClass ConfirmationDialog) GetCancelButton() Button { return gdnative.Return[Button](gdnative.Object(gdClass), methodConfirmationDialog[0]) }
@@ -4275,6 +4431,7 @@ func (gdClass ConfirmationDialog) SetCancelButtonText(text string)  { gdnative.C
 func (gdClass ConfirmationDialog) GetCancelButtonText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodConfirmationDialog[2]) }
 
 type Container gdnative.Object
+func (Container) class() string { return `Container` }
 
 var methodContainer [4]gdnative.Method
 func (gdClass Container) GetAllowedSizeFlagsHorizontalImplementation() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodContainer[0]) }
@@ -4283,6 +4440,7 @@ func (gdClass Container) QueueSort()  { gdnative.Call(gdnative.Object(gdClass), 
 func (gdClass Container) FitChildInRect(child Control, rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodContainer[3], child, rect) }
 
 type Control gdnative.Object
+func (Control) class() string { return `Control` }
 
 var methodControl [128]gdnative.Method
 
@@ -4527,6 +4685,7 @@ func (gdClass Control) SetAutoTranslate(enable bool)  { gdnative.Call(gdnative.O
 func (gdClass Control) IsAutoTranslating() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodControl[127]) }
 
 type ConvexPolygonShape2D gdnative.Object
+func (ConvexPolygonShape2D) class() string { return `ConvexPolygonShape2D` }
 
 var methodConvexPolygonShape2D [3]gdnative.Method
 func (gdClass ConvexPolygonShape2D) SetPointCloud(point_cloud []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodConvexPolygonShape2D[0], point_cloud) }
@@ -4534,12 +4693,14 @@ func (gdClass ConvexPolygonShape2D) SetPoints(points []Vector2)  { gdnative.Call
 func (gdClass ConvexPolygonShape2D) GetPoints() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodConvexPolygonShape2D[2]) }
 
 type ConvexPolygonShape3D gdnative.Object
+func (ConvexPolygonShape3D) class() string { return `ConvexPolygonShape3D` }
 
 var methodConvexPolygonShape3D [2]gdnative.Method
 func (gdClass ConvexPolygonShape3D) SetPoints(points []Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodConvexPolygonShape3D[0], points) }
 func (gdClass ConvexPolygonShape3D) GetPoints() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodConvexPolygonShape3D[1]) }
 
 type Crypto gdnative.Object
+func (Crypto) class() string { return `Crypto` }
 
 var methodCrypto [9]gdnative.Method
 func (gdClass Crypto) GenerateRandomBytes(size int64) []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodCrypto[0], size) }
@@ -4553,6 +4714,7 @@ func (gdClass Crypto) HmacDigest(hash_type HashingContextHashType, key []byte, m
 func (gdClass Crypto) ConstantTimeCompare(trusted []byte, received []byte) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCrypto[8], trusted, received) }
 
 type CryptoKey gdnative.Object
+func (CryptoKey) class() string { return `CryptoKey` }
 
 var methodCryptoKey [5]gdnative.Method
 func (gdClass CryptoKey) Save(path string, public_only bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCryptoKey[0], path, public_only) }
@@ -4562,14 +4724,17 @@ func (gdClass CryptoKey) SaveToString(public_only bool) string { return gdnative
 func (gdClass CryptoKey) LoadFromString(string_key string, public_only bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCryptoKey[4], string_key, public_only) }
 
 type Cubemap gdnative.Object
+func (Cubemap) class() string { return `Cubemap` }
 
 var methodCubemap [0]gdnative.Method
 
 type CubemapArray gdnative.Object
+func (CubemapArray) class() string { return `CubemapArray` }
 
 var methodCubemapArray [0]gdnative.Method
 
 type Curve gdnative.Object
+func (Curve) class() string { return `Curve` }
 
 var methodCurve [26]gdnative.Method
 
@@ -4608,6 +4773,7 @@ func (gdClass Curve) GetBakeResolution() int64 { return gdnative.Return[int64](g
 func (gdClass Curve) SetBakeResolution(resolution int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve[25], resolution) }
 
 type Curve2D gdnative.Object
+func (Curve2D) class() string { return `Curve2D` }
 
 var methodCurve2D [21]gdnative.Method
 func (gdClass Curve2D) GetPointCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve2D[0]) }
@@ -4633,6 +4799,7 @@ func (gdClass Curve2D) GetClosestOffset(to_point Vector2) float64 { return gdnat
 func (gdClass Curve2D) Tessellate(max_stages int64, tolerance_degrees float64) []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodCurve2D[20], max_stages, tolerance_degrees) }
 
 type Curve3D gdnative.Object
+func (Curve3D) class() string { return `Curve3D` }
 
 var methodCurve3D [28]gdnative.Method
 func (gdClass Curve3D) GetPointCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve3D[0]) }
@@ -4665,6 +4832,7 @@ func (gdClass Curve3D) GetClosestOffset(to_point Vector3) float64 { return gdnat
 func (gdClass Curve3D) Tessellate(max_stages int64, tolerance_degrees float64) []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodCurve3D[27], max_stages, tolerance_degrees) }
 
 type CurveTexture gdnative.Object
+func (CurveTexture) class() string { return `CurveTexture` }
 
 var methodCurveTexture [5]gdnative.Method
 
@@ -4681,6 +4849,7 @@ func (gdClass CurveTexture) SetTextureMode(texture_mode CurveTextureTextureMode)
 func (gdClass CurveTexture) GetTextureMode() CurveTextureTextureMode { return gdnative.Return[CurveTextureTextureMode](gdnative.Object(gdClass), methodCurveTexture[4]) }
 
 type CurveXYZTexture gdnative.Object
+func (CurveXYZTexture) class() string { return `CurveXYZTexture` }
 
 var methodCurveXYZTexture [7]gdnative.Method
 func (gdClass CurveXYZTexture) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurveXYZTexture[0], width) }
@@ -4692,6 +4861,7 @@ func (gdClass CurveXYZTexture) SetCurveZ(curve Curve)  { gdnative.Call(gdnative.
 func (gdClass CurveXYZTexture) GetCurveZ() Curve { return gdnative.Return[Curve](gdnative.Object(gdClass), methodCurveXYZTexture[6]) }
 
 type CylinderMesh gdnative.Object
+func (CylinderMesh) class() string { return `CylinderMesh` }
 
 var methodCylinderMesh [14]gdnative.Method
 func (gdClass CylinderMesh) SetTopRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderMesh[0], radius) }
@@ -4710,6 +4880,7 @@ func (gdClass CylinderMesh) SetCapBottom(cap_bottom bool)  { gdnative.Call(gdnat
 func (gdClass CylinderMesh) IsCapBottom() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCylinderMesh[13]) }
 
 type CylinderShape3D gdnative.Object
+func (CylinderShape3D) class() string { return `CylinderShape3D` }
 
 var methodCylinderShape3D [4]gdnative.Method
 func (gdClass CylinderShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderShape3D[0], radius) }
@@ -4718,12 +4889,14 @@ func (gdClass CylinderShape3D) SetHeight(height float64)  { gdnative.Call(gdnati
 func (gdClass CylinderShape3D) GetHeight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCylinderShape3D[3]) }
 
 type DTLSServer gdnative.Object
+func (DTLSServer) class() string { return `DTLSServer` }
 
 var methodDTLSServer [2]gdnative.Method
 func (gdClass DTLSServer) Setup(key CryptoKey, certificate X509Certificate, chain X509Certificate) error { return gdnative.Return[error](gdnative.Object(gdClass), methodDTLSServer[0], key, certificate, chain) }
 func (gdClass DTLSServer) TakeConnection(udp_peer PacketPeerUDP) PacketPeerDTLS { return gdnative.Return[PacketPeerDTLS](gdnative.Object(gdClass), methodDTLSServer[1], udp_peer) }
 
 type DampedSpringJoint2D gdnative.Object
+func (DampedSpringJoint2D) class() string { return `DampedSpringJoint2D` }
 
 var methodDampedSpringJoint2D [8]gdnative.Method
 func (gdClass DampedSpringJoint2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodDampedSpringJoint2D[0], length) }
@@ -4736,6 +4909,7 @@ func (gdClass DampedSpringJoint2D) SetDamping(damping float64)  { gdnative.Call(
 func (gdClass DampedSpringJoint2D) GetDamping() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodDampedSpringJoint2D[7]) }
 
 type Decal gdnative.Object
+func (Decal) class() string { return `Decal` }
 
 var methodDecal [24]gdnative.Method
 
@@ -4774,12 +4948,14 @@ func (gdClass Decal) SetCullMask(mask int64)  { gdnative.Call(gdnative.Object(gd
 func (gdClass Decal) GetCullMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodDecal[23]) }
 
 type DirectionalLight2D gdnative.Object
+func (DirectionalLight2D) class() string { return `DirectionalLight2D` }
 
 var methodDirectionalLight2D [2]gdnative.Method
 func (gdClass DirectionalLight2D) SetMaxDistance(pixels float64)  { gdnative.Call(gdnative.Object(gdClass), methodDirectionalLight2D[0], pixels) }
 func (gdClass DirectionalLight2D) GetMaxDistance() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodDirectionalLight2D[1]) }
 
 type DirectionalLight3D gdnative.Object
+func (DirectionalLight3D) class() string { return `DirectionalLight3D` }
 
 var methodDirectionalLight3D [6]gdnative.Method
 
@@ -4806,6 +4982,7 @@ func (gdClass DirectionalLight3D) SetSkyMode(mode DirectionalLight3DSkyMode)  { 
 func (gdClass DirectionalLight3D) GetSkyMode() DirectionalLight3DSkyMode { return gdnative.Return[DirectionalLight3DSkyMode](gdnative.Object(gdClass), methodDirectionalLight3D[5]) }
 
 type Directory gdnative.Object
+func (Directory) class() string { return `Directory` }
 
 var methodDirectory [24]gdnative.Method
 func (gdClass Directory) Open(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodDirectory[0], path) }
@@ -4834,6 +5011,7 @@ func (gdClass Directory) SetIncludeHidden(enable bool)  { gdnative.Call(gdnative
 func (gdClass Directory) GetIncludeHidden() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodDirectory[23]) }
 
 type DisplayServer gdnative.Object
+func (DisplayServer) class() string { return `DisplayServer` }
 
 var methodDisplayServer [142]gdnative.Method
 
@@ -5122,6 +5300,7 @@ func (gdClass DisplayServer) TabletGetCurrentDriver() string { return gdnative.R
 func (gdClass DisplayServer) TabletSetCurrentDriver(name string)  { gdnative.Call(gdnative.Object(gdClass), methodDisplayServer[141], name) }
 
 type ENetConnection gdnative.Object
+func (ENetConnection) class() string { return `ENetConnection` }
 
 var methodENetConnection [17]gdnative.Method
 
@@ -5172,6 +5351,7 @@ func (gdClass ENetConnection) GetLocalPort() int64 { return gdnative.Return[int6
 func (gdClass ENetConnection) GetPeers() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodENetConnection[16]) }
 
 type ENetMultiplayerPeer gdnative.Object
+func (ENetMultiplayerPeer) class() string { return `ENetMultiplayerPeer` }
 
 var methodENetMultiplayerPeer [10]gdnative.Method
 func (gdClass ENetMultiplayerPeer) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetMultiplayerPeer[0], port, max_clients, max_channels, in_bandwidth, out_bandwidth) }
@@ -5186,6 +5366,7 @@ func (gdClass ENetMultiplayerPeer) GetHost() ENetConnection { return gdnative.Re
 func (gdClass ENetMultiplayerPeer) GetPeer(id int64) ENetPacketPeer { return gdnative.Return[ENetPacketPeer](gdnative.Object(gdClass), methodENetMultiplayerPeer[9], id) }
 
 type ENetPacketPeer gdnative.Object
+func (ENetPacketPeer) class() string { return `ENetPacketPeer` }
 
 var methodENetPacketPeer [13]gdnative.Method
 
@@ -5237,12 +5418,14 @@ func (gdClass ENetPacketPeer) GetChannels() int64 { return gdnative.Return[int64
 func (gdClass ENetPacketPeer) IsActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodENetPacketPeer[12]) }
 
 type EditorCommandPalette gdnative.Object
+func (EditorCommandPalette) class() string { return `EditorCommandPalette` }
 
 var methodEditorCommandPalette [2]gdnative.Method
 func (gdClass EditorCommandPalette) AddCommand(command_name string, key_name string, binded_callable Callable, shortcut_text string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorCommandPalette[0], command_name, key_name, binded_callable, shortcut_text) }
 func (gdClass EditorCommandPalette) RemoveCommand(key_name string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorCommandPalette[1], key_name) }
 
 type EditorDebuggerPlugin gdnative.Object
+func (EditorDebuggerPlugin) class() string { return `EditorDebuggerPlugin` }
 
 var methodEditorDebuggerPlugin [7]gdnative.Method
 func (gdClass EditorDebuggerPlugin) SendMessage(message string, data Array)  { gdnative.Call(gdnative.Object(gdClass), methodEditorDebuggerPlugin[0], message, data) }
@@ -5254,6 +5437,7 @@ func (gdClass EditorDebuggerPlugin) IsDebuggable() bool { return gdnative.Return
 func (gdClass EditorDebuggerPlugin) IsSessionActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorDebuggerPlugin[6]) }
 
 type EditorExportPlugin gdnative.Object
+func (EditorExportPlugin) class() string { return `EditorExportPlugin` }
 
 var methodEditorExportPlugin [14]gdnative.Method
 func (gdClass EditorExportPlugin) ExportFileImplementation(path string, atype string, features []string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorExportPlugin[0], path, atype, features) }
@@ -5272,6 +5456,7 @@ func (gdClass EditorExportPlugin) AddMacosPluginFile(path string)  { gdnative.Ca
 func (gdClass EditorExportPlugin) Skip()  { gdnative.Call(gdnative.Object(gdClass), methodEditorExportPlugin[13]) }
 
 type EditorFeatureProfile gdnative.Object
+func (EditorFeatureProfile) class() string { return `EditorFeatureProfile` }
 
 var methodEditorFeatureProfile [11]gdnative.Method
 
@@ -5300,6 +5485,7 @@ func (gdClass EditorFeatureProfile) SaveToFile(path string) error { return gdnat
 func (gdClass EditorFeatureProfile) LoadFromFile(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodEditorFeatureProfile[10], path) }
 
 type EditorFileDialog gdnative.Object
+func (EditorFileDialog) class() string { return `EditorFileDialog` }
 
 var methodEditorFileDialog [20]gdnative.Method
 
@@ -5349,6 +5535,7 @@ func (gdClass EditorFileDialog) IsOverwriteWarningDisabled() bool { return gdnat
 func (gdClass EditorFileDialog) Invalidate()  { gdnative.Call(gdnative.Object(gdClass), methodEditorFileDialog[19]) }
 
 type EditorFileSystem gdnative.Object
+func (EditorFileSystem) class() string { return `EditorFileSystem` }
 
 var methodEditorFileSystem [10]gdnative.Method
 func (gdClass EditorFileSystem) GetFilesystem() EditorFileSystemDirectory { return gdnative.Return[EditorFileSystemDirectory](gdnative.Object(gdClass), methodEditorFileSystem[0]) }
@@ -5363,6 +5550,7 @@ func (gdClass EditorFileSystem) UpdateScriptClasses()  { gdnative.Call(gdnative.
 func (gdClass EditorFileSystem) ReimportFiles(files []string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorFileSystem[9], files) }
 
 type EditorFileSystemDirectory gdnative.Object
+func (EditorFileSystemDirectory) class() string { return `EditorFileSystemDirectory` }
 
 var methodEditorFileSystemDirectory [14]gdnative.Method
 func (gdClass EditorFileSystemDirectory) GetSubdirCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorFileSystemDirectory[0]) }
@@ -5381,6 +5569,7 @@ func (gdClass EditorFileSystemDirectory) FindFileIndex(name string) int64 { retu
 func (gdClass EditorFileSystemDirectory) FindDirIndex(name string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorFileSystemDirectory[13], name) }
 
 type EditorFileSystemImportFormatSupportQuery gdnative.Object
+func (EditorFileSystemImportFormatSupportQuery) class() string { return `EditorFileSystemImportFormatSupportQuery` }
 
 var methodEditorFileSystemImportFormatSupportQuery [3]gdnative.Method
 func (gdClass EditorFileSystemImportFormatSupportQuery) IsActiveImplementation() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorFileSystemImportFormatSupportQuery[0]) }
@@ -5388,6 +5577,7 @@ func (gdClass EditorFileSystemImportFormatSupportQuery) GetFileExtensionsImpleme
 func (gdClass EditorFileSystemImportFormatSupportQuery) QueryImplementation() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorFileSystemImportFormatSupportQuery[2]) }
 
 type EditorImportPlugin gdnative.Object
+func (EditorImportPlugin) class() string { return `EditorImportPlugin` }
 
 var methodEditorImportPlugin [12]gdnative.Method
 func (gdClass EditorImportPlugin) GetImporterNameImplementation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorImportPlugin[0]) }
@@ -5404,10 +5594,12 @@ func (gdClass EditorImportPlugin) GetOptionVisibilityImplementation(path string,
 func (gdClass EditorImportPlugin) ImportImplementation(source_file string, save_path string, options Dictionary, platform_variants Array, gen_files Array) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorImportPlugin[11], source_file, save_path, options, platform_variants, gen_files) }
 
 type EditorInspector gdnative.Object
+func (EditorInspector) class() string { return `EditorInspector` }
 
 var methodEditorInspector [0]gdnative.Method
 
 type EditorInspectorPlugin gdnative.Object
+func (EditorInspectorPlugin) class() string { return `EditorInspectorPlugin` }
 
 var methodEditorInspectorPlugin [9]gdnative.Method
 func (gdClass EditorInspectorPlugin) CanHandleImplementation(object any) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorInspectorPlugin[0], object) }
@@ -5421,6 +5613,7 @@ func (gdClass EditorInspectorPlugin) AddPropertyEditor(property string, editor C
 func (gdClass EditorInspectorPlugin) AddPropertyEditorForMultipleProperties(label string, properties []string, editor Control)  { gdnative.Call(gdnative.Object(gdClass), methodEditorInspectorPlugin[8], label, properties, editor) }
 
 type EditorInterface gdnative.Object
+func (EditorInterface) class() string { return `EditorInterface` }
 
 var methodEditorInterface [37]gdnative.Method
 func (gdClass EditorInterface) InspectObject(object Object, for_property string, inspector_only bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorInterface[0], object, for_property, inspector_only) }
@@ -5462,6 +5655,7 @@ func (gdClass EditorInterface) SetDistractionFreeMode(enter bool)  { gdnative.Ca
 func (gdClass EditorInterface) IsDistractionFreeModeEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorInterface[36]) }
 
 type EditorNode3DGizmo gdnative.Object
+func (EditorNode3DGizmo) class() string { return `EditorNode3DGizmo` }
 
 var methodEditorNode3DGizmo [24]gdnative.Method
 func (gdClass EditorNode3DGizmo) RedrawImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodEditorNode3DGizmo[0]) }
@@ -5490,6 +5684,7 @@ func (gdClass EditorNode3DGizmo) IsSubgizmoSelected(id int64) bool { return gdna
 func (gdClass EditorNode3DGizmo) GetSubgizmoSelection() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodEditorNode3DGizmo[23]) }
 
 type EditorNode3DGizmoPlugin gdnative.Object
+func (EditorNode3DGizmoPlugin) class() string { return `EditorNode3DGizmoPlugin` }
 
 var methodEditorNode3DGizmoPlugin [22]gdnative.Method
 func (gdClass EditorNode3DGizmoPlugin) HasGizmoImplementation(for_node_3d Node3D) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorNode3DGizmoPlugin[0], for_node_3d) }
@@ -5516,6 +5711,7 @@ func (gdClass EditorNode3DGizmoPlugin) AddMaterial(name string, material Standar
 func (gdClass EditorNode3DGizmoPlugin) GetMaterial(name string, gizmo EditorNode3DGizmo) StandardMaterial3D { return gdnative.Return[StandardMaterial3D](gdnative.Object(gdClass), methodEditorNode3DGizmoPlugin[21], name, gizmo) }
 
 type EditorPaths gdnative.Object
+func (EditorPaths) class() string { return `EditorPaths` }
 
 var methodEditorPaths [6]gdnative.Method
 func (gdClass EditorPaths) GetDataDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorPaths[0]) }
@@ -5526,6 +5722,7 @@ func (gdClass EditorPaths) GetSelfContainedFile() string { return gdnative.Retur
 func (gdClass EditorPaths) GetProjectSettingsDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorPaths[5]) }
 
 type EditorPlugin gdnative.Object
+func (EditorPlugin) class() string { return `EditorPlugin` }
 
 var methodEditorPlugin [64]gdnative.Method
 
@@ -5625,6 +5822,7 @@ func (gdClass EditorPlugin) AddDebuggerPlugin(script Script)  { gdnative.Call(gd
 func (gdClass EditorPlugin) RemoveDebuggerPlugin(script Script)  { gdnative.Call(gdnative.Object(gdClass), methodEditorPlugin[63], script) }
 
 type EditorProperty gdnative.Object
+func (EditorProperty) class() string { return `EditorProperty` }
 
 var methodEditorProperty [22]gdnative.Method
 func (gdClass EditorProperty) UpdatePropertyImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodEditorProperty[0]) }
@@ -5651,6 +5849,7 @@ func (gdClass EditorProperty) SetBottomEditor(editor Control)  { gdnative.Call(g
 func (gdClass EditorProperty) EmitChanged(property string, value any, field string, changing bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorProperty[21], property, value, field, changing) }
 
 type EditorResourceConversionPlugin gdnative.Object
+func (EditorResourceConversionPlugin) class() string { return `EditorResourceConversionPlugin` }
 
 var methodEditorResourceConversionPlugin [3]gdnative.Method
 func (gdClass EditorResourceConversionPlugin) ConvertsToImplementation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorResourceConversionPlugin[0]) }
@@ -5658,6 +5857,7 @@ func (gdClass EditorResourceConversionPlugin) HandlesImplementation(resource Res
 func (gdClass EditorResourceConversionPlugin) ConvertImplementation(resource Resource) Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodEditorResourceConversionPlugin[2], resource) }
 
 type EditorResourcePicker gdnative.Object
+func (EditorResourcePicker) class() string { return `EditorResourcePicker` }
 
 var methodEditorResourcePicker [12]gdnative.Method
 func (gdClass EditorResourcePicker) SetCreateOptionsImplementation(menu_node Object)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePicker[0], menu_node) }
@@ -5674,6 +5874,7 @@ func (gdClass EditorResourcePicker) SetEditable(enable bool)  { gdnative.Call(gd
 func (gdClass EditorResourcePicker) IsEditable() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorResourcePicker[11]) }
 
 type EditorResourcePreview gdnative.Object
+func (EditorResourcePreview) class() string { return `EditorResourcePreview` }
 
 var methodEditorResourcePreview [5]gdnative.Method
 func (gdClass EditorResourcePreview) QueueResourcePreview(path string, receiver Object, receiver_func string, userdata any)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePreview[0], path, receiver, receiver_func, userdata) }
@@ -5683,6 +5884,7 @@ func (gdClass EditorResourcePreview) RemovePreviewGenerator(generator EditorReso
 func (gdClass EditorResourcePreview) CheckForInvalidation(path string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePreview[4], path) }
 
 type EditorResourcePreviewGenerator gdnative.Object
+func (EditorResourcePreviewGenerator) class() string { return `EditorResourcePreviewGenerator` }
 
 var methodEditorResourcePreviewGenerator [5]gdnative.Method
 func (gdClass EditorResourcePreviewGenerator) HandlesImplementation(atype string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorResourcePreviewGenerator[0], atype) }
@@ -5692,6 +5894,7 @@ func (gdClass EditorResourcePreviewGenerator) GenerateSmallPreviewAutomaticallyI
 func (gdClass EditorResourcePreviewGenerator) CanGenerateSmallPreviewImplementation() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorResourcePreviewGenerator[4]) }
 
 type EditorSceneFormatImporter gdnative.Object
+func (EditorSceneFormatImporter) class() string { return `EditorSceneFormatImporter` }
 
 var methodEditorSceneFormatImporter [5]gdnative.Method
 func (gdClass EditorSceneFormatImporter) GetImportFlagsImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorSceneFormatImporter[0]) }
@@ -5701,24 +5904,29 @@ func (gdClass EditorSceneFormatImporter) GetImportOptionsImplementation(path str
 func (gdClass EditorSceneFormatImporter) GetOptionVisibilityImplementation(path string, for_animation bool, option string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodEditorSceneFormatImporter[4], path, for_animation, option) }
 
 type EditorSceneFormatImporterBlend gdnative.Object
+func (EditorSceneFormatImporterBlend) class() string { return `EditorSceneFormatImporterBlend` }
 
 var methodEditorSceneFormatImporterBlend [0]gdnative.Method
 
 type EditorSceneFormatImporterFBX gdnative.Object
+func (EditorSceneFormatImporterFBX) class() string { return `EditorSceneFormatImporterFBX` }
 
 var methodEditorSceneFormatImporterFBX [0]gdnative.Method
 
 type EditorSceneFormatImporterGLTF gdnative.Object
+func (EditorSceneFormatImporterGLTF) class() string { return `EditorSceneFormatImporterGLTF` }
 
 var methodEditorSceneFormatImporterGLTF [0]gdnative.Method
 
 type EditorScenePostImport gdnative.Object
+func (EditorScenePostImport) class() string { return `EditorScenePostImport` }
 
 var methodEditorScenePostImport [2]gdnative.Method
 func (gdClass EditorScenePostImport) PostImportImplementation(scene Node) Object { return gdnative.Return[Object](gdnative.Object(gdClass), methodEditorScenePostImport[0], scene) }
 func (gdClass EditorScenePostImport) GetSourceFile() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorScenePostImport[1]) }
 
 type EditorScenePostImportPlugin gdnative.Object
+func (EditorScenePostImportPlugin) class() string { return `EditorScenePostImportPlugin` }
 
 var methodEditorScenePostImportPlugin [11]gdnative.Method
 
@@ -5747,6 +5955,7 @@ func (gdClass EditorScenePostImportPlugin) AddImportOption(name string, value an
 func (gdClass EditorScenePostImportPlugin) AddImportOptionAdvanced(atype VariantType, name string, default_value any, hint PropertyHint, hint_string string, usage_flags int64)  { gdnative.Call(gdnative.Object(gdClass), methodEditorScenePostImportPlugin[10], atype, name, default_value, hint, hint_string, usage_flags) }
 
 type EditorScript gdnative.Object
+func (EditorScript) class() string { return `EditorScript` }
 
 var methodEditorScript [4]gdnative.Method
 func (gdClass EditorScript) RunImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodEditorScript[0]) }
@@ -5755,12 +5964,14 @@ func (gdClass EditorScript) GetScene() Node { return gdnative.Return[Node](gdnat
 func (gdClass EditorScript) GetEditorInterface() EditorInterface { return gdnative.Return[EditorInterface](gdnative.Object(gdClass), methodEditorScript[3]) }
 
 type EditorScriptPicker gdnative.Object
+func (EditorScriptPicker) class() string { return `EditorScriptPicker` }
 
 var methodEditorScriptPicker [2]gdnative.Method
 func (gdClass EditorScriptPicker) SetScriptOwner(owner_node Node)  { gdnative.Call(gdnative.Object(gdClass), methodEditorScriptPicker[0], owner_node) }
 func (gdClass EditorScriptPicker) GetScriptOwner() Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodEditorScriptPicker[1]) }
 
 type EditorSelection gdnative.Object
+func (EditorSelection) class() string { return `EditorSelection` }
 
 var methodEditorSelection [5]gdnative.Method
 func (gdClass EditorSelection) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodEditorSelection[0]) }
@@ -5770,6 +5981,7 @@ func (gdClass EditorSelection) GetSelectedNodes() Array { return gdnative.Return
 func (gdClass EditorSelection) GetTransformableSelectedNodes() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodEditorSelection[4]) }
 
 type EditorSettings gdnative.Object
+func (EditorSettings) class() string { return `EditorSettings` }
 
 var methodEditorSettings [18]gdnative.Method
 func (gdClass EditorSettings) HasSetting(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorSettings[0], name) }
@@ -5792,6 +6004,7 @@ func (gdClass EditorSettings) GetChangedSettings() Array { return gdnative.Retur
 func (gdClass EditorSettings) MarkSettingChanged(setting string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSettings[17], setting) }
 
 type EditorSpinSlider gdnative.Object
+func (EditorSpinSlider) class() string { return `EditorSpinSlider` }
 
 var methodEditorSpinSlider [10]gdnative.Method
 func (gdClass EditorSpinSlider) SetLabel(label string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSpinSlider[0], label) }
@@ -5806,18 +6019,21 @@ func (gdClass EditorSpinSlider) SetHideSlider(hide_slider bool)  { gdnative.Call
 func (gdClass EditorSpinSlider) IsHidingSlider() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorSpinSlider[9]) }
 
 type EditorSyntaxHighlighter gdnative.Object
+func (EditorSyntaxHighlighter) class() string { return `EditorSyntaxHighlighter` }
 
 var methodEditorSyntaxHighlighter [2]gdnative.Method
 func (gdClass EditorSyntaxHighlighter) GetNameImplementation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorSyntaxHighlighter[0]) }
 func (gdClass EditorSyntaxHighlighter) GetSupportedLanguagesImplementation() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodEditorSyntaxHighlighter[1]) }
 
 type EditorTranslationParserPlugin gdnative.Object
+func (EditorTranslationParserPlugin) class() string { return `EditorTranslationParserPlugin` }
 
 var methodEditorTranslationParserPlugin [2]gdnative.Method
 func (gdClass EditorTranslationParserPlugin) ParseFileImplementation(path string, msgids Array, msgids_context_plural Array)  { gdnative.Call(gdnative.Object(gdClass), methodEditorTranslationParserPlugin[0], path, msgids, msgids_context_plural) }
 func (gdClass EditorTranslationParserPlugin) GetRecognizedExtensionsImplementation() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodEditorTranslationParserPlugin[1]) }
 
 type EditorVCSInterface gdnative.Object
+func (EditorVCSInterface) class() string { return `EditorVCSInterface` }
 
 var methodEditorVCSInterface [11]gdnative.Method
 func (gdClass EditorVCSInterface) IsAddonReady() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorVCSInterface[0]) }
@@ -5833,12 +6049,14 @@ func (gdClass EditorVCSInterface) GetProjectName() string { return gdnative.Retu
 func (gdClass EditorVCSInterface) GetVcsName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorVCSInterface[10]) }
 
 type EncodedObjectAsID gdnative.Object
+func (EncodedObjectAsID) class() string { return `EncodedObjectAsID` }
 
 var methodEncodedObjectAsID [2]gdnative.Method
 func (gdClass EncodedObjectAsID) SetObjectId(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodEncodedObjectAsID[0], id) }
 func (gdClass EncodedObjectAsID) GetObjectId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEncodedObjectAsID[1]) }
 
 type Engine gdnative.Object
+func (Engine) class() string { return `Engine` }
 
 var methodEngine [34]gdnative.Method
 func (gdClass Engine) SetPhysicsTicksPerSecond(physics_ticks_per_second int64)  { gdnative.Call(gdnative.Object(gdClass), methodEngine[0], physics_ticks_per_second) }
@@ -5877,6 +6095,7 @@ func (gdClass Engine) SetPrintErrorMessages(enabled bool)  { gdnative.Call(gdnat
 func (gdClass Engine) IsPrintingErrorMessages() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEngine[33]) }
 
 type EngineDebugger gdnative.Object
+func (EngineDebugger) class() string { return `EngineDebugger` }
 
 var methodEngineDebugger [11]gdnative.Method
 func (gdClass EngineDebugger) IsActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEngineDebugger[0]) }
@@ -5892,6 +6111,7 @@ func (gdClass EngineDebugger) HasCapture(name string) bool { return gdnative.Ret
 func (gdClass EngineDebugger) SendMessage(message string, data Array)  { gdnative.Call(gdnative.Object(gdClass), methodEngineDebugger[10], message, data) }
 
 type EngineProfiler gdnative.Object
+func (EngineProfiler) class() string { return `EngineProfiler` }
 
 var methodEngineProfiler [3]gdnative.Method
 func (gdClass EngineProfiler) ToggleImplementation(enable bool, options Array)  { gdnative.Call(gdnative.Object(gdClass), methodEngineProfiler[0], enable, options) }
@@ -5899,6 +6119,7 @@ func (gdClass EngineProfiler) AddFrameImplementation(data Array)  { gdnative.Cal
 func (gdClass EngineProfiler) TickImplementation(frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)  { gdnative.Call(gdnative.Object(gdClass), methodEngineProfiler[2], frame_time, process_time, physics_time, physics_frame_time) }
 
 type Environment gdnative.Object
+func (Environment) class() string { return `Environment` }
 
 var methodEnvironment [180]gdnative.Method
 
@@ -6139,6 +6360,7 @@ func (gdClass Environment) SetAdjustmentColorCorrection(color_correction Texture
 func (gdClass Environment) GetAdjustmentColorCorrection() Texture { return gdnative.Return[Texture](gdnative.Object(gdClass), methodEnvironment[179]) }
 
 type Expression gdnative.Object
+func (Expression) class() string { return `Expression` }
 
 var methodExpression [4]gdnative.Method
 func (gdClass Expression) Parse(expression string, input_names []string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodExpression[0], expression, input_names) }
@@ -6147,6 +6369,7 @@ func (gdClass Expression) HasExecuteFailed() bool { return gdnative.Return[bool]
 func (gdClass Expression) GetErrorText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodExpression[3]) }
 
 type FastNoiseLite gdnative.Object
+func (FastNoiseLite) class() string { return `FastNoiseLite` }
 
 var methodFastNoiseLite [42]gdnative.Method
 
@@ -6250,6 +6473,7 @@ func (gdClass FastNoiseLite) SetDomainWarpFractalGain(domain_warp_gain float64) 
 func (gdClass FastNoiseLite) GetDomainWarpFractalGain() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodFastNoiseLite[41]) }
 
 type File gdnative.Object
+func (File) class() string { return `File` }
 
 var methodFile [47]gdnative.Method
 
@@ -6319,6 +6543,7 @@ func (gdClass File) FileExists(path string) bool { return gdnative.Return[bool](
 func (gdClass File) GetModifiedTime(file string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodFile[46], file) }
 
 type FileDialog gdnative.Object
+func (FileDialog) class() string { return `FileDialog` }
 
 var methodFileDialog [24]gdnative.Method
 
@@ -6365,16 +6590,19 @@ func (gdClass FileDialog) DeselectAll()  { gdnative.Call(gdnative.Object(gdClass
 func (gdClass FileDialog) Invalidate()  { gdnative.Call(gdnative.Object(gdClass), methodFileDialog[23]) }
 
 type FileSystemDock gdnative.Object
+func (FileSystemDock) class() string { return `FileSystemDock` }
 
 var methodFileSystemDock [1]gdnative.Method
 func (gdClass FileSystemDock) NavigateToPath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodFileSystemDock[0], path) }
 
 type FlowContainer gdnative.Object
+func (FlowContainer) class() string { return `FlowContainer` }
 
 var methodFlowContainer [1]gdnative.Method
 func (gdClass FlowContainer) GetLineCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodFlowContainer[0]) }
 
 type FogMaterial gdnative.Object
+func (FogMaterial) class() string { return `FogMaterial` }
 
 var methodFogMaterial [12]gdnative.Method
 func (gdClass FogMaterial) SetDensity(density float64)  { gdnative.Call(gdnative.Object(gdClass), methodFogMaterial[0], density) }
@@ -6391,6 +6619,7 @@ func (gdClass FogMaterial) SetDensityTexture(density_texture Texture3D)  { gdnat
 func (gdClass FogMaterial) GetDensityTexture() Texture3D { return gdnative.Return[Texture3D](gdnative.Object(gdClass), methodFogMaterial[11]) }
 
 type FogVolume gdnative.Object
+func (FogVolume) class() string { return `FogVolume` }
 
 var methodFogVolume [6]gdnative.Method
 func (gdClass FogVolume) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodFogVolume[0], extents) }
@@ -6401,6 +6630,7 @@ func (gdClass FogVolume) SetMaterial(material Material)  { gdnative.Call(gdnativ
 func (gdClass FogVolume) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodFogVolume[5]) }
 
 type Font gdnative.Object
+func (Font) class() string { return `Font` }
 
 var methodFont [31]gdnative.Method
 func (gdClass Font) SetFallbacks(fallbacks Array)  { gdnative.Call(gdnative.Object(gdClass), methodFont[0], fallbacks) }
@@ -6436,6 +6666,7 @@ func (gdClass Font) GetSupportedVariationList() Dictionary { return gdnative.Ret
 func (gdClass Font) GetFaceCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodFont[30]) }
 
 type FontFile gdnative.Object
+func (FontFile) class() string { return `FontFile` }
 
 var methodFontFile [89]gdnative.Method
 func (gdClass FontFile) LoadBitmapFont(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFontFile[0], path) }
@@ -6529,6 +6760,7 @@ func (gdClass FontFile) GetOpentypeFeatureOverrides() Dictionary { return gdnati
 func (gdClass FontFile) GetGlyphIndex(size int64, char int64, variation_selector int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodFontFile[88], size, char, variation_selector) }
 
 type FontVariation gdnative.Object
+func (FontVariation) class() string { return `FontVariation` }
 
 var methodFontVariation [12]gdnative.Method
 func (gdClass FontVariation) SetBaseFont(font Font)  { gdnative.Call(gdnative.Object(gdClass), methodFontVariation[0], font) }
@@ -6545,21 +6777,25 @@ func (gdClass FontVariation) SetOpentypeFeatures(features Dictionary)  { gdnativ
 func (gdClass FontVariation) SetSpacing(spacing TextServerSpacingType, value int64)  { gdnative.Call(gdnative.Object(gdClass), methodFontVariation[11], spacing, value) }
 
 type GDScript gdnative.Object
+func (GDScript) class() string { return `GDScript` }
 
 var methodGDScript [2]gdnative.Method
 func (gdClass GDScript) New() any { return gdnative.Return[any](gdnative.Object(gdClass), methodGDScript[0]) }
 func (gdClass GDScript) GetAsByteCode() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodGDScript[1]) }
 
 type GDScriptEditorTranslationParserPlugin gdnative.Object
+func (GDScriptEditorTranslationParserPlugin) class() string { return `GDScriptEditorTranslationParserPlugin` }
 
 var methodGDScriptEditorTranslationParserPlugin [0]gdnative.Method
 
 type GDScriptNativeClass gdnative.Object
+func (GDScriptNativeClass) class() string { return `GDScriptNativeClass` }
 
 var methodGDScriptNativeClass [1]gdnative.Method
 func (gdClass GDScriptNativeClass) New() any { return gdnative.Return[any](gdnative.Object(gdClass), methodGDScriptNativeClass[0]) }
 
 type GLTFAccessor gdnative.Object
+func (GLTFAccessor) class() string { return `GLTFAccessor` }
 
 var methodGLTFAccessor [28]gdnative.Method
 func (gdClass GLTFAccessor) GetBufferView() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFAccessor[0]) }
@@ -6592,12 +6828,14 @@ func (gdClass GLTFAccessor) GetSparseValuesByteOffset() int64 { return gdnative.
 func (gdClass GLTFAccessor) SetSparseValuesByteOffset(sparse_values_byte_offset int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFAccessor[27], sparse_values_byte_offset) }
 
 type GLTFAnimation gdnative.Object
+func (GLTFAnimation) class() string { return `GLTFAnimation` }
 
 var methodGLTFAnimation [2]gdnative.Method
 func (gdClass GLTFAnimation) GetLoop() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGLTFAnimation[0]) }
 func (gdClass GLTFAnimation) SetLoop(loop bool)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFAnimation[1], loop) }
 
 type GLTFBufferView gdnative.Object
+func (GLTFBufferView) class() string { return `GLTFBufferView` }
 
 var methodGLTFBufferView [10]gdnative.Method
 func (gdClass GLTFBufferView) GetBuffer() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFBufferView[0]) }
@@ -6612,6 +6850,7 @@ func (gdClass GLTFBufferView) GetIndices() bool { return gdnative.Return[bool](g
 func (gdClass GLTFBufferView) SetIndices(indices bool)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFBufferView[9], indices) }
 
 type GLTFCamera gdnative.Object
+func (GLTFCamera) class() string { return `GLTFCamera` }
 
 var methodGLTFCamera [8]gdnative.Method
 func (gdClass GLTFCamera) GetPerspective() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGLTFCamera[0]) }
@@ -6624,6 +6863,7 @@ func (gdClass GLTFCamera) GetDepthNear() float64 { return gdnative.Return[float6
 func (gdClass GLTFCamera) SetDepthNear(zdepth_near float64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFCamera[7], zdepth_near) }
 
 type GLTFDocument gdnative.Object
+func (GLTFDocument) class() string { return `GLTFDocument` }
 
 var methodGLTFDocument [8]gdnative.Method
 func (gdClass GLTFDocument) AppendFromFile(path string, state GLTFState, flags int64, bake_fps int64, base_path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodGLTFDocument[0], path, state, flags, bake_fps, base_path) }
@@ -6636,6 +6876,7 @@ func (gdClass GLTFDocument) SetExtensions(extensions Array)  { gdnative.Call(gdn
 func (gdClass GLTFDocument) GetExtensions() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodGLTFDocument[7]) }
 
 type GLTFDocumentExtension gdnative.Object
+func (GLTFDocumentExtension) class() string { return `GLTFDocumentExtension` }
 
 var methodGLTFDocumentExtension [7]gdnative.Method
 func (gdClass GLTFDocumentExtension) ImportPreflightImplementation(state GLTFState) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFDocumentExtension[0], state) }
@@ -6647,10 +6888,12 @@ func (gdClass GLTFDocumentExtension) ExportNodeImplementation(state GLTFState, g
 func (gdClass GLTFDocumentExtension) ExportPostImplementation(state GLTFState) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFDocumentExtension[6], state) }
 
 type GLTFDocumentExtensionConvertImporterMesh gdnative.Object
+func (GLTFDocumentExtensionConvertImporterMesh) class() string { return `GLTFDocumentExtensionConvertImporterMesh` }
 
 var methodGLTFDocumentExtensionConvertImporterMesh [0]gdnative.Method
 
 type GLTFLight gdnative.Object
+func (GLTFLight) class() string { return `GLTFLight` }
 
 var methodGLTFLight [12]gdnative.Method
 func (gdClass GLTFLight) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodGLTFLight[0]) }
@@ -6667,6 +6910,7 @@ func (gdClass GLTFLight) GetOuterConeAngle() float64 { return gdnative.Return[fl
 func (gdClass GLTFLight) SetOuterConeAngle(outer_cone_angle float64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFLight[11], outer_cone_angle) }
 
 type GLTFMesh gdnative.Object
+func (GLTFMesh) class() string { return `GLTFMesh` }
 
 var methodGLTFMesh [6]gdnative.Method
 func (gdClass GLTFMesh) GetMesh() ImporterMesh { return gdnative.Return[ImporterMesh](gdnative.Object(gdClass), methodGLTFMesh[0]) }
@@ -6677,6 +6921,7 @@ func (gdClass GLTFMesh) GetInstanceMaterials() Array { return gdnative.Return[Ar
 func (gdClass GLTFMesh) SetInstanceMaterials(instance_materials Array)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFMesh[5], instance_materials) }
 
 type GLTFNode gdnative.Object
+func (GLTFNode) class() string { return `GLTFNode` }
 
 var methodGLTFNode [26]gdnative.Method
 func (gdClass GLTFNode) GetParent() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFNode[0]) }
@@ -6707,6 +6952,7 @@ func (gdClass GLTFNode) GetLight() int64 { return gdnative.Return[int64](gdnativ
 func (gdClass GLTFNode) SetLight(light int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFNode[25], light) }
 
 type GLTFSkeleton gdnative.Object
+func (GLTFSkeleton) class() string { return `GLTFSkeleton` }
 
 var methodGLTFSkeleton [11]gdnative.Method
 func (gdClass GLTFSkeleton) GetJoints() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodGLTFSkeleton[0]) }
@@ -6722,6 +6968,7 @@ func (gdClass GLTFSkeleton) GetBoneAttachmentCount() int64 { return gdnative.Ret
 func (gdClass GLTFSkeleton) GetBoneAttachment(idx int64) BoneAttachment3D { return gdnative.Return[BoneAttachment3D](gdnative.Object(gdClass), methodGLTFSkeleton[10], idx) }
 
 type GLTFSkin gdnative.Object
+func (GLTFSkin) class() string { return `GLTFSkin` }
 
 var methodGLTFSkin [20]gdnative.Method
 func (gdClass GLTFSkin) GetSkinRoot() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFSkin[0]) }
@@ -6746,6 +6993,7 @@ func (gdClass GLTFSkin) GetGodotSkin() Skin { return gdnative.Return[Skin](gdnat
 func (gdClass GLTFSkin) SetGodotSkin(godot_skin Skin)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFSkin[19], godot_skin) }
 
 type GLTFSpecGloss gdnative.Object
+func (GLTFSpecGloss) class() string { return `GLTFSpecGloss` }
 
 var methodGLTFSpecGloss [10]gdnative.Method
 func (gdClass GLTFSpecGloss) GetDiffuseImg() Image { return gdnative.Return[Image](gdnative.Object(gdClass), methodGLTFSpecGloss[0]) }
@@ -6760,6 +7008,7 @@ func (gdClass GLTFSpecGloss) GetSpecGlossImg() Image { return gdnative.Return[Im
 func (gdClass GLTFSpecGloss) SetSpecGlossImg(spec_gloss_img Image)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFSpecGloss[9], spec_gloss_img) }
 
 type GLTFState gdnative.Object
+func (GLTFState) class() string { return `GLTFState` }
 
 var methodGLTFState [53]gdnative.Method
 func (gdClass GLTFState) GetJson() Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodGLTFState[0]) }
@@ -6817,12 +7066,14 @@ func (gdClass GLTFState) SetAnimations(animations Array)  { gdnative.Call(gdnati
 func (gdClass GLTFState) GetSceneNode(idx int64) Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodGLTFState[52], idx) }
 
 type GLTFTexture gdnative.Object
+func (GLTFTexture) class() string { return `GLTFTexture` }
 
 var methodGLTFTexture [2]gdnative.Method
 func (gdClass GLTFTexture) GetSrcImage() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFTexture[0]) }
 func (gdClass GLTFTexture) SetSrcImage(src_image int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFTexture[1], src_image) }
 
 type GPUParticles2D gdnative.Object
+func (GPUParticles2D) class() string { return `GPUParticles2D` }
 
 var methodGPUParticles2D [47]gdnative.Method
 
@@ -6892,6 +7143,7 @@ func (gdClass GPUParticles2D) SetTrailSectionSubdivisions(subdivisions int64)  {
 func (gdClass GPUParticles2D) GetTrailSectionSubdivisions() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGPUParticles2D[46]) }
 
 type GPUParticles3D gdnative.Object
+func (GPUParticles3D) class() string { return `GPUParticles3D` }
 
 var methodGPUParticles3D [49]gdnative.Method
 
@@ -6973,6 +7225,7 @@ func (gdClass GPUParticles3D) SetTransformAlign(align GPUParticles3DTransformAli
 func (gdClass GPUParticles3D) GetTransformAlign() GPUParticles3DTransformAlign { return gdnative.Return[GPUParticles3DTransformAlign](gdnative.Object(gdClass), methodGPUParticles3D[48]) }
 
 type GPUParticlesAttractor3D gdnative.Object
+func (GPUParticlesAttractor3D) class() string { return `GPUParticlesAttractor3D` }
 
 var methodGPUParticlesAttractor3D [8]gdnative.Method
 func (gdClass GPUParticlesAttractor3D) SetCullMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractor3D[0], mask) }
@@ -6985,18 +7238,21 @@ func (gdClass GPUParticlesAttractor3D) SetDirectionality(amount float64)  { gdna
 func (gdClass GPUParticlesAttractor3D) GetDirectionality() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGPUParticlesAttractor3D[7]) }
 
 type GPUParticlesAttractorBox3D gdnative.Object
+func (GPUParticlesAttractorBox3D) class() string { return `GPUParticlesAttractorBox3D` }
 
 var methodGPUParticlesAttractorBox3D [2]gdnative.Method
 func (gdClass GPUParticlesAttractorBox3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorBox3D[0], extents) }
 func (gdClass GPUParticlesAttractorBox3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesAttractorBox3D[1]) }
 
 type GPUParticlesAttractorSphere3D gdnative.Object
+func (GPUParticlesAttractorSphere3D) class() string { return `GPUParticlesAttractorSphere3D` }
 
 var methodGPUParticlesAttractorSphere3D [2]gdnative.Method
 func (gdClass GPUParticlesAttractorSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorSphere3D[0], radius) }
 func (gdClass GPUParticlesAttractorSphere3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGPUParticlesAttractorSphere3D[1]) }
 
 type GPUParticlesAttractorVectorField3D gdnative.Object
+func (GPUParticlesAttractorVectorField3D) class() string { return `GPUParticlesAttractorVectorField3D` }
 
 var methodGPUParticlesAttractorVectorField3D [4]gdnative.Method
 func (gdClass GPUParticlesAttractorVectorField3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorVectorField3D[0], extents) }
@@ -7005,18 +7261,21 @@ func (gdClass GPUParticlesAttractorVectorField3D) SetTexture(texture Texture3D) 
 func (gdClass GPUParticlesAttractorVectorField3D) GetTexture() Texture3D { return gdnative.Return[Texture3D](gdnative.Object(gdClass), methodGPUParticlesAttractorVectorField3D[3]) }
 
 type GPUParticlesCollision3D gdnative.Object
+func (GPUParticlesCollision3D) class() string { return `GPUParticlesCollision3D` }
 
 var methodGPUParticlesCollision3D [2]gdnative.Method
 func (gdClass GPUParticlesCollision3D) SetCullMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollision3D[0], mask) }
 func (gdClass GPUParticlesCollision3D) GetCullMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGPUParticlesCollision3D[1]) }
 
 type GPUParticlesCollisionBox3D gdnative.Object
+func (GPUParticlesCollisionBox3D) class() string { return `GPUParticlesCollisionBox3D` }
 
 var methodGPUParticlesCollisionBox3D [2]gdnative.Method
 func (gdClass GPUParticlesCollisionBox3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionBox3D[0], extents) }
 func (gdClass GPUParticlesCollisionBox3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesCollisionBox3D[1]) }
 
 type GPUParticlesCollisionHeightField3D gdnative.Object
+func (GPUParticlesCollisionHeightField3D) class() string { return `GPUParticlesCollisionHeightField3D` }
 
 var methodGPUParticlesCollisionHeightField3D [8]gdnative.Method
 
@@ -7048,6 +7307,7 @@ func (gdClass GPUParticlesCollisionHeightField3D) SetFollowCameraEnabled(enabled
 func (gdClass GPUParticlesCollisionHeightField3D) IsFollowCameraEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGPUParticlesCollisionHeightField3D[7]) }
 
 type GPUParticlesCollisionSDF3D gdnative.Object
+func (GPUParticlesCollisionSDF3D) class() string { return `GPUParticlesCollisionSDF3D` }
 
 var methodGPUParticlesCollisionSDF3D [12]gdnative.Method
 
@@ -7076,12 +7336,14 @@ func (gdClass GPUParticlesCollisionSDF3D) SetBakeMaskValue(layer_number int64, v
 func (gdClass GPUParticlesCollisionSDF3D) GetBakeMaskValue(layer_number int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGPUParticlesCollisionSDF3D[11], layer_number) }
 
 type GPUParticlesCollisionSphere3D gdnative.Object
+func (GPUParticlesCollisionSphere3D) class() string { return `GPUParticlesCollisionSphere3D` }
 
 var methodGPUParticlesCollisionSphere3D [2]gdnative.Method
 func (gdClass GPUParticlesCollisionSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionSphere3D[0], radius) }
 func (gdClass GPUParticlesCollisionSphere3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGPUParticlesCollisionSphere3D[1]) }
 
 type Generic6DOFJoint3D gdnative.Object
+func (Generic6DOFJoint3D) class() string { return `Generic6DOFJoint3D` }
 
 var methodGeneric6DOFJoint3D [12]gdnative.Method
 
@@ -7138,6 +7400,7 @@ func (gdClass Generic6DOFJoint3D) SetFlagZ(flag Generic6DOFJoint3DFlag, value bo
 func (gdClass Generic6DOFJoint3D) GetFlagZ(flag Generic6DOFJoint3DFlag) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGeneric6DOFJoint3D[11], flag) }
 
 type Geometry2D gdnative.Object
+func (Geometry2D) class() string { return `Geometry2D` }
 
 var methodGeometry2D [22]gdnative.Method
 
@@ -7191,6 +7454,7 @@ func (gdClass Geometry2D) OffsetPolyline(polyline []Vector2, delta float64, join
 func (gdClass Geometry2D) MakeAtlas(sizes []Vector2) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodGeometry2D[21], sizes) }
 
 type Geometry3D gdnative.Object
+func (Geometry3D) class() string { return `Geometry3D` }
 
 var methodGeometry3D [12]gdnative.Method
 func (gdClass Geometry3D) BuildBoxPlanes(extents Vector3) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodGeometry3D[0], extents) }
@@ -7207,6 +7471,7 @@ func (gdClass Geometry3D) SegmentIntersectsConvex(from Vector3, to Vector3, plan
 func (gdClass Geometry3D) ClipPolygon(points []Vector3, plane Plane) []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodGeometry3D[11], points, plane) }
 
 type GeometryInstance3D gdnative.Object
+func (GeometryInstance3D) class() string { return `GeometryInstance3D` }
 
 var methodGeometryInstance3D [31]gdnative.Method
 
@@ -7277,14 +7542,17 @@ func (gdClass GeometryInstance3D) IsIgnoringOcclusionCulling() bool { return gdn
 func (gdClass GeometryInstance3D) SetCustomAabb(aabb AABB)  { gdnative.Call(gdnative.Object(gdClass), methodGeometryInstance3D[30], aabb) }
 
 type GodotPhysicsServer2D gdnative.Object
+func (GodotPhysicsServer2D) class() string { return `GodotPhysicsServer2D` }
 
 var methodGodotPhysicsServer2D [0]gdnative.Method
 
 type GodotPhysicsServer3D gdnative.Object
+func (GodotPhysicsServer3D) class() string { return `GodotPhysicsServer3D` }
 
 var methodGodotPhysicsServer3D [0]gdnative.Method
 
 type Gradient gdnative.Object
+func (Gradient) class() string { return `Gradient` }
 
 var methodGradient [15]gdnative.Method
 
@@ -7312,6 +7580,7 @@ func (gdClass Gradient) SetInterpolationMode(interpolation_mode GradientInterpol
 func (gdClass Gradient) GetInterpolationMode() GradientInterpolationMode { return gdnative.Return[GradientInterpolationMode](gdnative.Object(gdClass), methodGradient[14]) }
 
 type GradientTexture1D gdnative.Object
+func (GradientTexture1D) class() string { return `GradientTexture1D` }
 
 var methodGradientTexture1D [5]gdnative.Method
 func (gdClass GradientTexture1D) SetGradient(gradient Gradient)  { gdnative.Call(gdnative.Object(gdClass), methodGradientTexture1D[0], gradient) }
@@ -7321,6 +7590,7 @@ func (gdClass GradientTexture1D) SetUseHdr(enabled bool)  { gdnative.Call(gdnati
 func (gdClass GradientTexture1D) IsUsingHdr() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGradientTexture1D[4]) }
 
 type GradientTexture2D gdnative.Object
+func (GradientTexture2D) class() string { return `GradientTexture2D` }
 
 var methodGradientTexture2D [14]gdnative.Method
 
@@ -7354,6 +7624,7 @@ func (gdClass GradientTexture2D) SetRepeat(repeat GradientTexture2DRepeat)  { gd
 func (gdClass GradientTexture2D) GetRepeat() GradientTexture2DRepeat { return gdnative.Return[GradientTexture2DRepeat](gdnative.Object(gdClass), methodGradientTexture2D[13]) }
 
 type GraphEdit gdnative.Object
+func (GraphEdit) class() string { return `GraphEdit` }
 
 var methodGraphEdit [54]gdnative.Method
 
@@ -7419,6 +7690,7 @@ func (gdClass GraphEdit) ArrangeNodes()  { gdnative.Call(gdnative.Object(gdClass
 func (gdClass GraphEdit) SetSelected(node Node)  { gdnative.Call(gdnative.Object(gdClass), methodGraphEdit[53], node) }
 
 type GraphNode gdnative.Object
+func (GraphNode) class() string { return `GraphNode` }
 
 var methodGraphNode [45]gdnative.Method
 
@@ -7476,12 +7748,14 @@ func (gdClass GraphNode) SetOverlay(overlay GraphNodeOverlay)  { gdnative.Call(g
 func (gdClass GraphNode) GetOverlay() GraphNodeOverlay { return gdnative.Return[GraphNodeOverlay](gdnative.Object(gdClass), methodGraphNode[44]) }
 
 type GridContainer gdnative.Object
+func (GridContainer) class() string { return `GridContainer` }
 
 var methodGridContainer [2]gdnative.Method
 func (gdClass GridContainer) SetColumns(columns int64)  { gdnative.Call(gdnative.Object(gdClass), methodGridContainer[0], columns) }
 func (gdClass GridContainer) GetColumns() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGridContainer[1]) }
 
 type GridMap gdnative.Object
+func (GridMap) class() string { return `GridMap` }
 
 var methodGridMap [44]gdnative.Method
 func (gdClass GridMap) SetCollisionLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodGridMap[0], layer) }
@@ -7530,6 +7804,7 @@ func (gdClass GridMap) ClearBakedMeshes()  { gdnative.Call(gdnative.Object(gdCla
 func (gdClass GridMap) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size float64)  { gdnative.Call(gdnative.Object(gdClass), methodGridMap[43], gen_lightmap_uv, lightmap_uv_texel_size) }
 
 type GrooveJoint2D gdnative.Object
+func (GrooveJoint2D) class() string { return `GrooveJoint2D` }
 
 var methodGrooveJoint2D [4]gdnative.Method
 func (gdClass GrooveJoint2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodGrooveJoint2D[0], length) }
@@ -7538,14 +7813,17 @@ func (gdClass GrooveJoint2D) SetInitialOffset(offset float64)  { gdnative.Call(g
 func (gdClass GrooveJoint2D) GetInitialOffset() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGrooveJoint2D[3]) }
 
 type HBoxContainer gdnative.Object
+func (HBoxContainer) class() string { return `HBoxContainer` }
 
 var methodHBoxContainer [0]gdnative.Method
 
 type HFlowContainer gdnative.Object
+func (HFlowContainer) class() string { return `HFlowContainer` }
 
 var methodHFlowContainer [0]gdnative.Method
 
 type HMACContext gdnative.Object
+func (HMACContext) class() string { return `HMACContext` }
 
 var methodHMACContext [3]gdnative.Method
 func (gdClass HMACContext) Start(hash_type HashingContextHashType, key []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHMACContext[0], hash_type, key) }
@@ -7553,22 +7831,27 @@ func (gdClass HMACContext) Update(data []byte) error { return gdnative.Return[er
 func (gdClass HMACContext) Finish() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodHMACContext[2]) }
 
 type HScrollBar gdnative.Object
+func (HScrollBar) class() string { return `HScrollBar` }
 
 var methodHScrollBar [0]gdnative.Method
 
 type HSeparator gdnative.Object
+func (HSeparator) class() string { return `HSeparator` }
 
 var methodHSeparator [0]gdnative.Method
 
 type HSlider gdnative.Object
+func (HSlider) class() string { return `HSlider` }
 
 var methodHSlider [0]gdnative.Method
 
 type HSplitContainer gdnative.Object
+func (HSplitContainer) class() string { return `HSplitContainer` }
 
 var methodHSplitContainer [0]gdnative.Method
 
 type HTTPClient gdnative.Object
+func (HTTPClient) class() string { return `HTTPClient` }
 
 var methodHTTPClient [22]gdnative.Method
 
@@ -7691,6 +7974,7 @@ func (gdClass HTTPClient) SetHttpsProxy(host string, port int64)  { gdnative.Cal
 func (gdClass HTTPClient) QueryStringFromDict(fields Dictionary) string { return gdnative.Return[string](gdnative.Object(gdClass), methodHTTPClient[21], fields) }
 
 type HTTPRequest gdnative.Object
+func (HTTPRequest) class() string { return `HTTPRequest` }
 
 var methodHTTPRequest [22]gdnative.Method
 
@@ -7736,6 +8020,7 @@ func (gdClass HTTPRequest) SetHttpProxy(host string, port int64)  { gdnative.Cal
 func (gdClass HTTPRequest) SetHttpsProxy(host string, port int64)  { gdnative.Call(gdnative.Object(gdClass), methodHTTPRequest[21], host, port) }
 
 type HashingContext gdnative.Object
+func (HashingContext) class() string { return `HashingContext` }
 
 var methodHashingContext [3]gdnative.Method
 
@@ -7751,6 +8036,7 @@ func (gdClass HashingContext) Update(chunk []byte) error { return gdnative.Retur
 func (gdClass HashingContext) Finish() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodHashingContext[2]) }
 
 type HeightMapShape3D gdnative.Object
+func (HeightMapShape3D) class() string { return `HeightMapShape3D` }
 
 var methodHeightMapShape3D [6]gdnative.Method
 func (gdClass HeightMapShape3D) SetMapWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodHeightMapShape3D[0], width) }
@@ -7761,6 +8047,7 @@ func (gdClass HeightMapShape3D) SetMapData(data []float32)  { gdnative.Call(gdna
 func (gdClass HeightMapShape3D) GetMapData() []float32 { return gdnative.Return[[]float32](gdnative.Object(gdClass), methodHeightMapShape3D[5]) }
 
 type HingeJoint3D gdnative.Object
+func (HingeJoint3D) class() string { return `HingeJoint3D` }
 
 var methodHingeJoint3D [4]gdnative.Method
 
@@ -7791,6 +8078,7 @@ func (gdClass HingeJoint3D) SetFlag(flag HingeJoint3DFlag, enabled bool)  { gdna
 func (gdClass HingeJoint3D) GetFlag(flag HingeJoint3DFlag) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodHingeJoint3D[3], flag) }
 
 type IP gdnative.Object
+func (IP) class() string { return `IP` }
 
 var methodIP [10]gdnative.Method
 
@@ -7823,10 +8111,12 @@ func (gdClass IP) GetLocalInterfaces() Array { return gdnative.Return[Array](gdn
 func (gdClass IP) ClearCache(hostname string)  { gdnative.Call(gdnative.Object(gdClass), methodIP[9], hostname) }
 
 type IPUnix gdnative.Object
+func (IPUnix) class() string { return `IPUnix` }
 
 var methodIPUnix [0]gdnative.Method
 
 type Image gdnative.Object
+func (Image) class() string { return `Image` }
 
 var methodImage [64]gdnative.Method
 
@@ -7982,6 +8272,7 @@ func (gdClass Image) LoadTgaFromBuffer(buffer []byte) error { return gdnative.Re
 func (gdClass Image) LoadBmpFromBuffer(buffer []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodImage[63], buffer) }
 
 type ImageTexture gdnative.Object
+func (ImageTexture) class() string { return `ImageTexture` }
 
 var methodImageTexture [5]gdnative.Method
 func (gdClass ImageTexture) CreateFromImage(image Image) ImageTexture { return gdnative.Return[ImageTexture](gdnative.Object(gdClass), methodImageTexture[0], image) }
@@ -7991,18 +8282,21 @@ func (gdClass ImageTexture) Update(image Image)  { gdnative.Call(gdnative.Object
 func (gdClass ImageTexture) SetSizeOverride(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodImageTexture[4], size) }
 
 type ImageTexture3D gdnative.Object
+func (ImageTexture3D) class() string { return `ImageTexture3D` }
 
 var methodImageTexture3D [2]gdnative.Method
 func (gdClass ImageTexture3D) Create(format ImageFormat, width int64, height int64, depth int64, use_mipmaps bool, data Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodImageTexture3D[0], format, width, height, depth, use_mipmaps, data) }
 func (gdClass ImageTexture3D) Update(data Array)  { gdnative.Call(gdnative.Object(gdClass), methodImageTexture3D[1], data) }
 
 type ImageTextureLayered gdnative.Object
+func (ImageTextureLayered) class() string { return `ImageTextureLayered` }
 
 var methodImageTextureLayered [2]gdnative.Method
 func (gdClass ImageTextureLayered) CreateFromImages(images Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodImageTextureLayered[0], images) }
 func (gdClass ImageTextureLayered) UpdateLayer(image Image, layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodImageTextureLayered[1], image, layer) }
 
 type ImmediateMesh gdnative.Object
+func (ImmediateMesh) class() string { return `ImmediateMesh` }
 
 var methodImmediateMesh [10]gdnative.Method
 func (gdClass ImmediateMesh) SurfaceBegin(primitive MeshPrimitiveType, material Material)  { gdnative.Call(gdnative.Object(gdClass), methodImmediateMesh[0], primitive, material) }
@@ -8017,6 +8311,7 @@ func (gdClass ImmediateMesh) SurfaceEnd()  { gdnative.Call(gdnative.Object(gdCla
 func (gdClass ImmediateMesh) ClearSurfaces()  { gdnative.Call(gdnative.Object(gdClass), methodImmediateMesh[9]) }
 
 type ImporterMesh gdnative.Object
+func (ImporterMesh) class() string { return `ImporterMesh` }
 
 var methodImporterMesh [23]gdnative.Method
 func (gdClass ImporterMesh) AddBlendShape(name string)  { gdnative.Call(gdnative.Object(gdClass), methodImporterMesh[0], name) }
@@ -8044,6 +8339,7 @@ func (gdClass ImporterMesh) SetLightmapSizeHint(size Vector2i)  { gdnative.Call(
 func (gdClass ImporterMesh) GetLightmapSizeHint() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodImporterMesh[22]) }
 
 type ImporterMeshInstance3D gdnative.Object
+func (ImporterMeshInstance3D) class() string { return `ImporterMeshInstance3D` }
 
 var methodImporterMeshInstance3D [6]gdnative.Method
 func (gdClass ImporterMeshInstance3D) SetMesh(mesh ImporterMesh)  { gdnative.Call(gdnative.Object(gdClass), methodImporterMeshInstance3D[0], mesh) }
@@ -8054,6 +8350,7 @@ func (gdClass ImporterMeshInstance3D) SetSkeletonPath(skeleton_path NodePath)  {
 func (gdClass ImporterMeshInstance3D) GetSkeletonPath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodImporterMeshInstance3D[5]) }
 
 type Input gdnative.Object
+func (Input) class() string { return `Input` }
 
 var methodInput [46]gdnative.Method
 
@@ -8136,6 +8433,7 @@ func (gdClass Input) IsUsingAccumulatedInput() bool { return gdnative.Return[boo
 func (gdClass Input) FlushBufferedEvents()  { gdnative.Call(gdnative.Object(gdClass), methodInput[45]) }
 
 type InputEvent gdnative.Object
+func (InputEvent) class() string { return `InputEvent` }
 
 var methodInputEvent [13]gdnative.Method
 func (gdClass InputEvent) SetDevice(device int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEvent[0], device) }
@@ -8153,6 +8451,7 @@ func (gdClass InputEvent) Accumulate(with_event InputEvent) bool { return gdnati
 func (gdClass InputEvent) XformedBy(xform Transform2D, local_ofs Vector2) InputEvent { return gdnative.Return[InputEvent](gdnative.Object(gdClass), methodInputEvent[12], xform, local_ofs) }
 
 type InputEventAction gdnative.Object
+func (InputEventAction) class() string { return `InputEventAction` }
 
 var methodInputEventAction [5]gdnative.Method
 func (gdClass InputEventAction) SetAction(action string)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventAction[0], action) }
@@ -8162,18 +8461,21 @@ func (gdClass InputEventAction) SetStrength(strength float64)  { gdnative.Call(g
 func (gdClass InputEventAction) GetStrength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodInputEventAction[4]) }
 
 type InputEventFromWindow gdnative.Object
+func (InputEventFromWindow) class() string { return `InputEventFromWindow` }
 
 var methodInputEventFromWindow [2]gdnative.Method
 func (gdClass InputEventFromWindow) SetWindowId(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventFromWindow[0], id) }
 func (gdClass InputEventFromWindow) GetWindowId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventFromWindow[1]) }
 
 type InputEventGesture gdnative.Object
+func (InputEventGesture) class() string { return `InputEventGesture` }
 
 var methodInputEventGesture [2]gdnative.Method
 func (gdClass InputEventGesture) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventGesture[0], position) }
 func (gdClass InputEventGesture) GetPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventGesture[1]) }
 
 type InputEventJoypadButton gdnative.Object
+func (InputEventJoypadButton) class() string { return `InputEventJoypadButton` }
 
 var methodInputEventJoypadButton [5]gdnative.Method
 func (gdClass InputEventJoypadButton) SetButtonIndex(button_index JoyButton)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadButton[0], button_index) }
@@ -8183,6 +8485,7 @@ func (gdClass InputEventJoypadButton) GetPressure() float64 { return gdnative.Re
 func (gdClass InputEventJoypadButton) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadButton[4], pressed) }
 
 type InputEventJoypadMotion gdnative.Object
+func (InputEventJoypadMotion) class() string { return `InputEventJoypadMotion` }
 
 var methodInputEventJoypadMotion [4]gdnative.Method
 func (gdClass InputEventJoypadMotion) SetAxis(axis JoyAxis)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadMotion[0], axis) }
@@ -8191,6 +8494,7 @@ func (gdClass InputEventJoypadMotion) SetAxisValue(axis_value float64)  { gdnati
 func (gdClass InputEventJoypadMotion) GetAxisValue() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodInputEventJoypadMotion[3]) }
 
 type InputEventKey gdnative.Object
+func (InputEventKey) class() string { return `InputEventKey` }
 
 var methodInputEventKey [10]gdnative.Method
 func (gdClass InputEventKey) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventKey[0], pressed) }
@@ -8205,6 +8509,7 @@ func (gdClass InputEventKey) GetKeycodeWithModifiers() Key { return gdnative.Ret
 func (gdClass InputEventKey) GetPhysicalKeycodeWithModifiers() Key { return gdnative.Return[Key](gdnative.Object(gdClass), methodInputEventKey[9]) }
 
 type InputEventMIDI gdnative.Object
+func (InputEventMIDI) class() string { return `InputEventMIDI` }
 
 var methodInputEventMIDI [16]gdnative.Method
 func (gdClass InputEventMIDI) SetChannel(channel int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMIDI[0], channel) }
@@ -8225,12 +8530,14 @@ func (gdClass InputEventMIDI) SetControllerValue(controller_value int64)  { gdna
 func (gdClass InputEventMIDI) GetControllerValue() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventMIDI[15]) }
 
 type InputEventMagnifyGesture gdnative.Object
+func (InputEventMagnifyGesture) class() string { return `InputEventMagnifyGesture` }
 
 var methodInputEventMagnifyGesture [2]gdnative.Method
 func (gdClass InputEventMagnifyGesture) SetFactor(factor float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMagnifyGesture[0], factor) }
 func (gdClass InputEventMagnifyGesture) GetFactor() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodInputEventMagnifyGesture[1]) }
 
 type InputEventMouse gdnative.Object
+func (InputEventMouse) class() string { return `InputEventMouse` }
 
 var methodInputEventMouse [6]gdnative.Method
 func (gdClass InputEventMouse) SetButtonMask(button_mask MouseButton)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouse[0], button_mask) }
@@ -8241,6 +8548,7 @@ func (gdClass InputEventMouse) SetGlobalPosition(global_position Vector2)  { gdn
 func (gdClass InputEventMouse) GetGlobalPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventMouse[5]) }
 
 type InputEventMouseButton gdnative.Object
+func (InputEventMouseButton) class() string { return `InputEventMouseButton` }
 
 var methodInputEventMouseButton [7]gdnative.Method
 func (gdClass InputEventMouseButton) SetFactor(factor float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseButton[0], factor) }
@@ -8252,6 +8560,7 @@ func (gdClass InputEventMouseButton) SetDoubleClick(double_click bool)  { gdnati
 func (gdClass InputEventMouseButton) IsDoubleClick() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputEventMouseButton[6]) }
 
 type InputEventMouseMotion gdnative.Object
+func (InputEventMouseMotion) class() string { return `InputEventMouseMotion` }
 
 var methodInputEventMouseMotion [10]gdnative.Method
 func (gdClass InputEventMouseMotion) SetTilt(tilt Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseMotion[0], tilt) }
@@ -8266,12 +8575,14 @@ func (gdClass InputEventMouseMotion) SetVelocity(velocity Vector2)  { gdnative.C
 func (gdClass InputEventMouseMotion) GetVelocity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventMouseMotion[9]) }
 
 type InputEventPanGesture gdnative.Object
+func (InputEventPanGesture) class() string { return `InputEventPanGesture` }
 
 var methodInputEventPanGesture [2]gdnative.Method
 func (gdClass InputEventPanGesture) SetDelta(delta Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventPanGesture[0], delta) }
 func (gdClass InputEventPanGesture) GetDelta() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventPanGesture[1]) }
 
 type InputEventScreenDrag gdnative.Object
+func (InputEventScreenDrag) class() string { return `InputEventScreenDrag` }
 
 var methodInputEventScreenDrag [8]gdnative.Method
 func (gdClass InputEventScreenDrag) SetIndex(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenDrag[0], index) }
@@ -8284,6 +8595,7 @@ func (gdClass InputEventScreenDrag) SetVelocity(velocity Vector2)  { gdnative.Ca
 func (gdClass InputEventScreenDrag) GetVelocity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventScreenDrag[7]) }
 
 type InputEventScreenTouch gdnative.Object
+func (InputEventScreenTouch) class() string { return `InputEventScreenTouch` }
 
 var methodInputEventScreenTouch [5]gdnative.Method
 func (gdClass InputEventScreenTouch) SetIndex(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenTouch[0], index) }
@@ -8293,12 +8605,14 @@ func (gdClass InputEventScreenTouch) GetPosition() Vector2 { return gdnative.Ret
 func (gdClass InputEventScreenTouch) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenTouch[4], pressed) }
 
 type InputEventShortcut gdnative.Object
+func (InputEventShortcut) class() string { return `InputEventShortcut` }
 
 var methodInputEventShortcut [2]gdnative.Method
 func (gdClass InputEventShortcut) SetShortcut(shortcut Shortcut)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventShortcut[0], shortcut) }
 func (gdClass InputEventShortcut) GetShortcut() Shortcut { return gdnative.Return[Shortcut](gdnative.Object(gdClass), methodInputEventShortcut[1]) }
 
 type InputEventWithModifiers gdnative.Object
+func (InputEventWithModifiers) class() string { return `InputEventWithModifiers` }
 
 var methodInputEventWithModifiers [12]gdnative.Method
 func (gdClass InputEventWithModifiers) SetStoreCommand(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventWithModifiers[0], enable) }
@@ -8315,6 +8629,7 @@ func (gdClass InputEventWithModifiers) SetCommandPressed(pressed bool)  { gdnati
 func (gdClass InputEventWithModifiers) IsCommandPressed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputEventWithModifiers[11]) }
 
 type InputMap gdnative.Object
+func (InputMap) class() string { return `InputMap` }
 
 var methodInputMap [13]gdnative.Method
 func (gdClass InputMap) HasAction(action string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputMap[0], action) }
@@ -8332,6 +8647,7 @@ func (gdClass InputMap) EventIsAction(event InputEvent, action string, exact_mat
 func (gdClass InputMap) LoadFromProjectSettings()  { gdnative.Call(gdnative.Object(gdClass), methodInputMap[12]) }
 
 type InstancePlaceholder gdnative.Object
+func (InstancePlaceholder) class() string { return `InstancePlaceholder` }
 
 var methodInstancePlaceholder [3]gdnative.Method
 func (gdClass InstancePlaceholder) GetStoredValues(with_order bool) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodInstancePlaceholder[0], with_order) }
@@ -8339,10 +8655,12 @@ func (gdClass InstancePlaceholder) CreateInstance(replace bool, custom_scene Pac
 func (gdClass InstancePlaceholder) GetInstancePath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodInstancePlaceholder[2]) }
 
 type IntervalTweener gdnative.Object
+func (IntervalTweener) class() string { return `IntervalTweener` }
 
 var methodIntervalTweener [0]gdnative.Method
 
 type ItemList gdnative.Object
+func (ItemList) class() string { return `ItemList` }
 
 var methodItemList [69]gdnative.Method
 
@@ -8430,10 +8748,12 @@ func (gdClass ItemList) SetTextOverrunBehavior(overrun_behavior TextServerOverru
 func (gdClass ItemList) GetTextOverrunBehavior() TextServerOverrunBehavior { return gdnative.Return[TextServerOverrunBehavior](gdnative.Object(gdClass), methodItemList[68]) }
 
 type JNISingleton gdnative.Object
+func (JNISingleton) class() string { return `JNISingleton` }
 
 var methodJNISingleton [0]gdnative.Method
 
 type JSON gdnative.Object
+func (JSON) class() string { return `JSON` }
 
 var methodJSON [5]gdnative.Method
 func (gdClass JSON) Stringify(data any, indent string, sort_keys bool, full_precision bool) string { return gdnative.Return[string](gdnative.Object(gdClass), methodJSON[0], data, indent, sort_keys, full_precision) }
@@ -8443,6 +8763,7 @@ func (gdClass JSON) GetErrorLine() int64 { return gdnative.Return[int64](gdnativ
 func (gdClass JSON) GetErrorMessage() string { return gdnative.Return[string](gdnative.Object(gdClass), methodJSON[4]) }
 
 type JSONRPC gdnative.Object
+func (JSONRPC) class() string { return `JSONRPC` }
 
 var methodJSONRPC [7]gdnative.Method
 
@@ -8464,15 +8785,18 @@ func (gdClass JSONRPC) MakeNotification(method string, params any) Dictionary { 
 func (gdClass JSONRPC) MakeResponseError(code int64, message string, id any) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodJSONRPC[6], code, message, id) }
 
 type JavaClass gdnative.Object
+func (JavaClass) class() string { return `JavaClass` }
 
 var methodJavaClass [0]gdnative.Method
 
 type JavaClassWrapper gdnative.Object
+func (JavaClassWrapper) class() string { return `JavaClassWrapper` }
 
 var methodJavaClassWrapper [1]gdnative.Method
 func (gdClass JavaClassWrapper) Wrap(name string) JavaClass { return gdnative.Return[JavaClass](gdnative.Object(gdClass), methodJavaClassWrapper[0], name) }
 
 type JavaScript gdnative.Object
+func (JavaScript) class() string { return `JavaScript` }
 
 var methodJavaScript [7]gdnative.Method
 func (gdClass JavaScript) Eval(code string, use_global_execution_context bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodJavaScript[0], code, use_global_execution_context) }
@@ -8484,10 +8808,12 @@ func (gdClass JavaScript) PwaNeedsUpdate() bool { return gdnative.Return[bool](g
 func (gdClass JavaScript) PwaUpdate() error { return gdnative.Return[error](gdnative.Object(gdClass), methodJavaScript[6]) }
 
 type JavaScriptObject gdnative.Object
+func (JavaScriptObject) class() string { return `JavaScriptObject` }
 
 var methodJavaScriptObject [0]gdnative.Method
 
 type Joint2D gdnative.Object
+func (Joint2D) class() string { return `Joint2D` }
 
 var methodJoint2D [8]gdnative.Method
 func (gdClass Joint2D) SetNodeA(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint2D[0], node) }
@@ -8500,6 +8826,7 @@ func (gdClass Joint2D) SetExcludeNodesFromCollision(enable bool)  { gdnative.Cal
 func (gdClass Joint2D) GetExcludeNodesFromCollision() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodJoint2D[7]) }
 
 type Joint3D gdnative.Object
+func (Joint3D) class() string { return `Joint3D` }
 
 var methodJoint3D [8]gdnative.Method
 func (gdClass Joint3D) SetNodeA(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint3D[0], node) }
@@ -8512,6 +8839,7 @@ func (gdClass Joint3D) SetExcludeNodesFromCollision(enable bool)  { gdnative.Cal
 func (gdClass Joint3D) GetExcludeNodesFromCollision() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodJoint3D[7]) }
 
 type KinematicCollision2D gdnative.Object
+func (KinematicCollision2D) class() string { return `KinematicCollision2D` }
 
 var methodKinematicCollision2D [13]gdnative.Method
 func (gdClass KinematicCollision2D) GetPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodKinematicCollision2D[0]) }
@@ -8529,6 +8857,7 @@ func (gdClass KinematicCollision2D) GetColliderShapeIndex() int64 { return gdnat
 func (gdClass KinematicCollision2D) GetColliderVelocity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodKinematicCollision2D[12]) }
 
 type KinematicCollision3D gdnative.Object
+func (KinematicCollision3D) class() string { return `KinematicCollision3D` }
 
 var methodKinematicCollision3D [14]gdnative.Method
 func (gdClass KinematicCollision3D) GetTravel() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodKinematicCollision3D[0]) }
@@ -8547,6 +8876,7 @@ func (gdClass KinematicCollision3D) GetColliderShapeIndex(collision_index int64)
 func (gdClass KinematicCollision3D) GetColliderVelocity(collision_index int64) Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodKinematicCollision3D[13], collision_index) }
 
 type Label gdnative.Object
+func (Label) class() string { return `Label` }
 
 var methodLabel [38]gdnative.Method
 func (gdClass Label) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLabel[0], alignment) }
@@ -8589,6 +8919,7 @@ func (gdClass Label) SetStructuredTextBidiOverrideOptions(args Array)  { gdnativ
 func (gdClass Label) GetStructuredTextBidiOverrideOptions() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodLabel[37]) }
 
 type Label3D gdnative.Object
+func (Label3D) class() string { return `Label3D` }
 
 var methodLabel3D [51]gdnative.Method
 
@@ -8662,6 +8993,7 @@ func (gdClass Label3D) GetTextureFilter() BaseMaterial3DTextureFilter { return g
 func (gdClass Label3D) GenerateTriangleMesh() TriangleMesh { return gdnative.Return[TriangleMesh](gdnative.Object(gdClass), methodLabel3D[50]) }
 
 type LabelSettings gdnative.Object
+func (LabelSettings) class() string { return `LabelSettings` }
 
 var methodLabelSettings [18]gdnative.Method
 func (gdClass LabelSettings) SetLineSpacing(spacing float64)  { gdnative.Call(gdnative.Object(gdClass), methodLabelSettings[0], spacing) }
@@ -8684,6 +9016,7 @@ func (gdClass LabelSettings) SetShadowOffset(offset Vector2)  { gdnative.Call(gd
 func (gdClass LabelSettings) GetShadowOffset() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodLabelSettings[17]) }
 
 type Light2D gdnative.Object
+func (Light2D) class() string { return `Light2D` }
 
 var methodLight2D [32]gdnative.Method
 
@@ -8736,6 +9069,7 @@ func (gdClass Light2D) SetHeight(height float64)  { gdnative.Call(gdnative.Objec
 func (gdClass Light2D) GetHeight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodLight2D[31]) }
 
 type Light3D gdnative.Object
+func (Light3D) class() string { return `Light3D` }
 
 var methodLight3D [26]gdnative.Method
 
@@ -8800,6 +9134,7 @@ func (gdClass Light3D) SetProjector(projector Texture2D)  { gdnative.Call(gdnati
 func (gdClass Light3D) GetProjector() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodLight3D[25]) }
 
 type LightOccluder2D gdnative.Object
+func (LightOccluder2D) class() string { return `LightOccluder2D` }
 
 var methodLightOccluder2D [6]gdnative.Method
 func (gdClass LightOccluder2D) SetOccluderPolygon(polygon OccluderPolygon2D)  { gdnative.Call(gdnative.Object(gdClass), methodLightOccluder2D[0], polygon) }
@@ -8810,6 +9145,7 @@ func (gdClass LightOccluder2D) SetAsSdfCollision(enable bool)  { gdnative.Call(g
 func (gdClass LightOccluder2D) IsSetAsSdfCollision() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLightOccluder2D[5]) }
 
 type LightmapGI gdnative.Object
+func (LightmapGI) class() string { return `LightmapGI` }
 
 var methodLightmapGI [26]gdnative.Method
 
@@ -8880,6 +9216,7 @@ func (gdClass LightmapGI) SetDirectional(directional bool)  { gdnative.Call(gdna
 func (gdClass LightmapGI) IsDirectional() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLightmapGI[25]) }
 
 type LightmapGIData gdnative.Object
+func (LightmapGIData) class() string { return `LightmapGIData` }
 
 var methodLightmapGIData [8]gdnative.Method
 func (gdClass LightmapGIData) SetLightTexture(light_texture TextureLayered)  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGIData[0], light_texture) }
@@ -8892,18 +9229,22 @@ func (gdClass LightmapGIData) GetUserPath(user_idx int64) NodePath { return gdna
 func (gdClass LightmapGIData) ClearUsers()  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGIData[7]) }
 
 type LightmapProbe gdnative.Object
+func (LightmapProbe) class() string { return `LightmapProbe` }
 
 var methodLightmapProbe [0]gdnative.Method
 
 type Lightmapper gdnative.Object
+func (Lightmapper) class() string { return `Lightmapper` }
 
 var methodLightmapper [0]gdnative.Method
 
 type LightmapperRD gdnative.Object
+func (LightmapperRD) class() string { return `LightmapperRD` }
 
 var methodLightmapperRD [0]gdnative.Method
 
 type Line2D gdnative.Object
+func (Line2D) class() string { return `Line2D` }
 
 var methodLine2D [32]gdnative.Method
 
@@ -8964,6 +9305,7 @@ func (gdClass Line2D) SetAntialiased(antialiased bool)  { gdnative.Call(gdnative
 func (gdClass Line2D) GetAntialiased() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLine2D[31]) }
 
 type LineEdit gdnative.Object
+func (LineEdit) class() string { return `LineEdit` }
 
 var methodLineEdit [70]gdnative.Method
 
@@ -9085,6 +9427,7 @@ func (gdClass LineEdit) SetFlat(enabled bool)  { gdnative.Call(gdnative.Object(g
 func (gdClass LineEdit) IsFlat() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLineEdit[69]) }
 
 type LinkButton gdnative.Object
+func (LinkButton) class() string { return `LinkButton` }
 
 var methodLinkButton [12]gdnative.Method
 
@@ -9109,6 +9452,7 @@ func (gdClass LinkButton) SetStructuredTextBidiOverrideOptions(args Array)  { gd
 func (gdClass LinkButton) GetStructuredTextBidiOverrideOptions() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodLinkButton[11]) }
 
 type MainLoop gdnative.Object
+func (MainLoop) class() string { return `MainLoop` }
 
 var methodMainLoop [4]gdnative.Method
 func (gdClass MainLoop) InitializeImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodMainLoop[0]) }
@@ -9117,10 +9461,12 @@ func (gdClass MainLoop) ProcessImplementation(delta float64) bool { return gdnat
 func (gdClass MainLoop) FinalizeImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodMainLoop[3]) }
 
 type MarginContainer gdnative.Object
+func (MarginContainer) class() string { return `MarginContainer` }
 
 var methodMarginContainer [0]gdnative.Method
 
 type Marshalls gdnative.Object
+func (Marshalls) class() string { return `Marshalls` }
 
 var methodMarshalls [6]gdnative.Method
 func (gdClass Marshalls) VariantToBase64(variant any, full_objects bool) string { return gdnative.Return[string](gdnative.Object(gdClass), methodMarshalls[0], variant, full_objects) }
@@ -9131,6 +9477,7 @@ func (gdClass Marshalls) Utf8ToBase64(utf8_str string) string { return gdnative.
 func (gdClass Marshalls) Base64ToUtf8(base64_str string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodMarshalls[5], base64_str) }
 
 type Material gdnative.Object
+func (Material) class() string { return `Material` }
 
 var methodMaterial [9]gdnative.Method
 func (gdClass Material) GetShaderRidImplementation() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodMaterial[0]) }
@@ -9144,6 +9491,7 @@ func (gdClass Material) GetRenderPriority() int64 { return gdnative.Return[int64
 func (gdClass Material) InspectNativeShaderCode()  { gdnative.Call(gdnative.Object(gdClass), methodMaterial[8]) }
 
 type MenuButton gdnative.Object
+func (MenuButton) class() string { return `MenuButton` }
 
 var methodMenuButton [6]gdnative.Method
 func (gdClass MenuButton) GetPopup() PopupMenu { return gdnative.Return[PopupMenu](gdnative.Object(gdClass), methodMenuButton[0]) }
@@ -9154,6 +9502,7 @@ func (gdClass MenuButton) SetItemCount(count int64)  { gdnative.Call(gdnative.Ob
 func (gdClass MenuButton) GetItemCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMenuButton[5]) }
 
 type Mesh gdnative.Object
+func (Mesh) class() string { return `Mesh` }
 
 var methodMesh [27]gdnative.Method
 
@@ -9265,6 +9614,7 @@ func (gdClass Mesh) GetFaces() []Vector3 { return gdnative.Return[[]Vector3](gdn
 func (gdClass Mesh) GenerateTriangleMesh() TriangleMesh { return gdnative.Return[TriangleMesh](gdnative.Object(gdClass), methodMesh[26]) }
 
 type MeshDataTool gdnative.Object
+func (MeshDataTool) class() string { return `MeshDataTool` }
 
 var methodMeshDataTool [38]gdnative.Method
 func (gdClass MeshDataTool) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodMeshDataTool[0]) }
@@ -9307,6 +9657,7 @@ func (gdClass MeshDataTool) SetMaterial(material Material)  { gdnative.Call(gdna
 func (gdClass MeshDataTool) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodMeshDataTool[37]) }
 
 type MeshInstance2D gdnative.Object
+func (MeshInstance2D) class() string { return `MeshInstance2D` }
 
 var methodMeshInstance2D [6]gdnative.Method
 func (gdClass MeshInstance2D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance2D[0], mesh) }
@@ -9317,6 +9668,7 @@ func (gdClass MeshInstance2D) SetNormalMap(normal_map Texture2D)  { gdnative.Cal
 func (gdClass MeshInstance2D) GetNormalMap() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodMeshInstance2D[5]) }
 
 type MeshInstance3D gdnative.Object
+func (MeshInstance3D) class() string { return `MeshInstance3D` }
 
 var methodMeshInstance3D [18]gdnative.Method
 func (gdClass MeshInstance3D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance3D[0], mesh) }
@@ -9339,6 +9691,7 @@ func (gdClass MeshInstance3D) SetBlendShapeValue(blend_shape_idx int64, value fl
 func (gdClass MeshInstance3D) CreateDebugTangents()  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance3D[17]) }
 
 type MeshLibrary gdnative.Object
+func (MeshLibrary) class() string { return `MeshLibrary` }
 
 var methodMeshLibrary [20]gdnative.Method
 func (gdClass MeshLibrary) CreateItem(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodMeshLibrary[0], id) }
@@ -9363,6 +9716,7 @@ func (gdClass MeshLibrary) GetItemList() []int32 { return gdnative.Return[[]int3
 func (gdClass MeshLibrary) GetLastUnusedItemId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMeshLibrary[19]) }
 
 type MeshTexture gdnative.Object
+func (MeshTexture) class() string { return `MeshTexture` }
 
 var methodMeshTexture [6]gdnative.Method
 func (gdClass MeshTexture) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshTexture[0], mesh) }
@@ -9373,6 +9727,7 @@ func (gdClass MeshTexture) SetBaseTexture(texture Texture2D)  { gdnative.Call(gd
 func (gdClass MeshTexture) GetBaseTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodMeshTexture[5]) }
 
 type MethodTweener gdnative.Object
+func (MethodTweener) class() string { return `MethodTweener` }
 
 var methodMethodTweener [3]gdnative.Method
 func (gdClass MethodTweener) SetDelay(delay float64) MethodTweener { return gdnative.Return[MethodTweener](gdnative.Object(gdClass), methodMethodTweener[0], delay) }
@@ -9380,6 +9735,7 @@ func (gdClass MethodTweener) SetTrans(trans TweenTransitionType) MethodTweener {
 func (gdClass MethodTweener) SetEase(ease TweenEaseType) MethodTweener { return gdnative.Return[MethodTweener](gdnative.Object(gdClass), methodMethodTweener[2], ease) }
 
 type MissingNode gdnative.Object
+func (MissingNode) class() string { return `MissingNode` }
 
 var methodMissingNode [4]gdnative.Method
 func (gdClass MissingNode) SetOriginalClass(name string)  { gdnative.Call(gdnative.Object(gdClass), methodMissingNode[0], name) }
@@ -9388,6 +9744,7 @@ func (gdClass MissingNode) SetRecordingProperties(enable bool)  { gdnative.Call(
 func (gdClass MissingNode) IsRecordingProperties() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMissingNode[3]) }
 
 type MissingResource gdnative.Object
+func (MissingResource) class() string { return `MissingResource` }
 
 var methodMissingResource [4]gdnative.Method
 func (gdClass MissingResource) SetOriginalClass(name string)  { gdnative.Call(gdnative.Object(gdClass), methodMissingResource[0], name) }
@@ -9396,6 +9753,7 @@ func (gdClass MissingResource) SetRecordingProperties(enable bool)  { gdnative.C
 func (gdClass MissingResource) IsRecordingProperties() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMissingResource[3]) }
 
 type MobileVRInterface gdnative.Object
+func (MobileVRInterface) class() string { return `MobileVRInterface` }
 
 var methodMobileVRInterface [14]gdnative.Method
 func (gdClass MobileVRInterface) SetEyeHeight(eye_height float64)  { gdnative.Call(gdnative.Object(gdClass), methodMobileVRInterface[0], eye_height) }
@@ -9414,6 +9772,7 @@ func (gdClass MobileVRInterface) SetK2(k float64)  { gdnative.Call(gdnative.Obje
 func (gdClass MobileVRInterface) GetK2() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodMobileVRInterface[13]) }
 
 type MovieWriter gdnative.Object
+func (MovieWriter) class() string { return `MovieWriter` }
 
 var methodMovieWriter [7]gdnative.Method
 func (gdClass MovieWriter) GetAudioMixRateImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMovieWriter[0]) }
@@ -9425,14 +9784,17 @@ func (gdClass MovieWriter) WriteEndImplementation()  { gdnative.Call(gdnative.Ob
 func (gdClass MovieWriter) AddWriter(writer MovieWriter)  { gdnative.Call(gdnative.Object(gdClass), methodMovieWriter[6], writer) }
 
 type MovieWriterMJPEG gdnative.Object
+func (MovieWriterMJPEG) class() string { return `MovieWriterMJPEG` }
 
 var methodMovieWriterMJPEG [0]gdnative.Method
 
 type MovieWriterPNGWAV gdnative.Object
+func (MovieWriterPNGWAV) class() string { return `MovieWriterPNGWAV` }
 
 var methodMovieWriterPNGWAV [0]gdnative.Method
 
 type MultiMesh gdnative.Object
+func (MultiMesh) class() string { return `MultiMesh` }
 
 var methodMultiMesh [23]gdnative.Method
 
@@ -9467,6 +9829,7 @@ func (gdClass MultiMesh) GetBuffer() []float32 { return gdnative.Return[[]float3
 func (gdClass MultiMesh) SetBuffer(buffer []float32)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMesh[22], buffer) }
 
 type MultiMeshInstance2D gdnative.Object
+func (MultiMeshInstance2D) class() string { return `MultiMeshInstance2D` }
 
 var methodMultiMeshInstance2D [6]gdnative.Method
 func (gdClass MultiMeshInstance2D) SetMultimesh(multimesh MultiMesh)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMeshInstance2D[0], multimesh) }
@@ -9477,12 +9840,14 @@ func (gdClass MultiMeshInstance2D) SetNormalMap(normal_map Texture2D)  { gdnativ
 func (gdClass MultiMeshInstance2D) GetNormalMap() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodMultiMeshInstance2D[5]) }
 
 type MultiMeshInstance3D gdnative.Object
+func (MultiMeshInstance3D) class() string { return `MultiMeshInstance3D` }
 
 var methodMultiMeshInstance3D [2]gdnative.Method
 func (gdClass MultiMeshInstance3D) SetMultimesh(multimesh MultiMesh)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMeshInstance3D[0], multimesh) }
 func (gdClass MultiMeshInstance3D) GetMultimesh() MultiMesh { return gdnative.Return[MultiMesh](gdnative.Object(gdClass), methodMultiMeshInstance3D[1]) }
 
 type MultiplayerAPI gdnative.Object
+func (MultiplayerAPI) class() string { return `MultiplayerAPI` }
 
 var methodMultiplayerAPI [14]gdnative.Method
 
@@ -9509,6 +9874,7 @@ func (gdClass MultiplayerAPI) GetDefaultInterface() string { return gdnative.Ret
 func (gdClass MultiplayerAPI) CreateDefaultInterface() MultiplayerAPI { return gdnative.Return[MultiplayerAPI](gdnative.Object(gdClass), methodMultiplayerAPI[13]) }
 
 type MultiplayerAPIExtension gdnative.Object
+func (MultiplayerAPIExtension) class() string { return `MultiplayerAPIExtension` }
 
 var methodMultiplayerAPIExtension [9]gdnative.Method
 func (gdClass MultiplayerAPIExtension) PollImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerAPIExtension[0]) }
@@ -9522,6 +9888,7 @@ func (gdClass MultiplayerAPIExtension) ObjectConfigurationAddImplementation(obje
 func (gdClass MultiplayerAPIExtension) ObjectConfigurationRemoveImplementation(object Object, configuration any) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerAPIExtension[8], object, configuration) }
 
 type MultiplayerPeer gdnative.Object
+func (MultiplayerPeer) class() string { return `MultiplayerPeer` }
 
 var methodMultiplayerPeer [12]gdnative.Method
 
@@ -9554,6 +9921,7 @@ func (gdClass MultiplayerPeer) SetRefuseNewConnections(enable bool)  { gdnative.
 func (gdClass MultiplayerPeer) IsRefusingNewConnections() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMultiplayerPeer[11]) }
 
 type MultiplayerPeerExtension gdnative.Object
+func (MultiplayerPeerExtension) class() string { return `MultiplayerPeerExtension` }
 
 var methodMultiplayerPeerExtension [18]gdnative.Method
 func (gdClass MultiplayerPeerExtension) GetPacketImplementation(r_buffer *[]byte, r_buffer_size *int32) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerPeerExtension[0], r_buffer, r_buffer_size) }
@@ -9576,6 +9944,7 @@ func (gdClass MultiplayerPeerExtension) IsRefusingNewConnectionsImplementation()
 func (gdClass MultiplayerPeerExtension) GetConnectionStatusImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerPeerExtension[17]) }
 
 type MultiplayerSpawner gdnative.Object
+func (MultiplayerSpawner) class() string { return `MultiplayerSpawner` }
 
 var methodMultiplayerSpawner [10]gdnative.Method
 func (gdClass MultiplayerSpawner) SpawnCustomImplementation(data any) Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodMultiplayerSpawner[0], data) }
@@ -9590,6 +9959,7 @@ func (gdClass MultiplayerSpawner) GetSpawnLimit() int64 { return gdnative.Return
 func (gdClass MultiplayerSpawner) SetSpawnLimit(limit int64)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerSpawner[9], limit) }
 
 type MultiplayerSynchronizer gdnative.Object
+func (MultiplayerSynchronizer) class() string { return `MultiplayerSynchronizer` }
 
 var methodMultiplayerSynchronizer [15]gdnative.Method
 
@@ -9617,6 +9987,7 @@ func (gdClass MultiplayerSynchronizer) SetVisibilityFor(peer int64, visible bool
 func (gdClass MultiplayerSynchronizer) GetVisibilityFor(peer int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMultiplayerSynchronizer[14], peer) }
 
 type Mutex gdnative.Object
+func (Mutex) class() string { return `Mutex` }
 
 var methodMutex [3]gdnative.Method
 func (gdClass Mutex) Lock()  { gdnative.Call(gdnative.Object(gdClass), methodMutex[0]) }
@@ -9624,6 +9995,7 @@ func (gdClass Mutex) TryLock() error { return gdnative.Return[error](gdnative.Ob
 func (gdClass Mutex) Unlock()  { gdnative.Call(gdnative.Object(gdClass), methodMutex[2]) }
 
 type NativeExtension gdnative.Object
+func (NativeExtension) class() string { return `NativeExtension` }
 
 var methodNativeExtension [5]gdnative.Method
 
@@ -9642,6 +10014,7 @@ func (gdClass NativeExtension) GetMinimumLibraryInitializationLevel() NativeExte
 func (gdClass NativeExtension) InitializeLibrary(level NativeExtensionInitializationLevel)  { gdnative.Call(gdnative.Object(gdClass), methodNativeExtension[4], level) }
 
 type NativeExtensionManager gdnative.Object
+func (NativeExtensionManager) class() string { return `NativeExtensionManager` }
 
 var methodNativeExtensionManager [6]gdnative.Method
 
@@ -9662,6 +10035,7 @@ func (gdClass NativeExtensionManager) GetLoadedExtensions() []string { return gd
 func (gdClass NativeExtensionManager) GetExtension(path string) NativeExtension { return gdnative.Return[NativeExtension](gdnative.Object(gdClass), methodNativeExtensionManager[5], path) }
 
 type NavigationAgent2D gdnative.Object
+func (NavigationAgent2D) class() string { return `NavigationAgent2D` }
 
 var methodNavigationAgent2D [36]gdnative.Method
 func (gdClass NavigationAgent2D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationAgent2D[0]) }
@@ -9702,6 +10076,7 @@ func (gdClass NavigationAgent2D) IsNavigationFinished() bool { return gdnative.R
 func (gdClass NavigationAgent2D) GetFinalLocation() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodNavigationAgent2D[35]) }
 
 type NavigationAgent3D gdnative.Object
+func (NavigationAgent3D) class() string { return `NavigationAgent3D` }
 
 var methodNavigationAgent3D [40]gdnative.Method
 func (gdClass NavigationAgent3D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationAgent3D[0]) }
@@ -9746,6 +10121,7 @@ func (gdClass NavigationAgent3D) IsNavigationFinished() bool { return gdnative.R
 func (gdClass NavigationAgent3D) GetFinalLocation() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodNavigationAgent3D[39]) }
 
 type NavigationMesh gdnative.Object
+func (NavigationMesh) class() string { return `NavigationMesh` }
 
 var methodNavigationMesh [55]gdnative.Method
 
@@ -9832,12 +10208,14 @@ func (gdClass NavigationMesh) ClearPolygons()  { gdnative.Call(gdnative.Object(g
 func (gdClass NavigationMesh) CreateFromMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMesh[54], mesh) }
 
 type NavigationMeshGenerator gdnative.Object
+func (NavigationMeshGenerator) class() string { return `NavigationMeshGenerator` }
 
 var methodNavigationMeshGenerator [2]gdnative.Method
 func (gdClass NavigationMeshGenerator) Bake(nav_mesh NavigationMesh, root_node Node)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMeshGenerator[0], nav_mesh, root_node) }
 func (gdClass NavigationMeshGenerator) Clear(nav_mesh NavigationMesh)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMeshGenerator[1], nav_mesh) }
 
 type NavigationObstacle2D gdnative.Object
+func (NavigationObstacle2D) class() string { return `NavigationObstacle2D` }
 
 var methodNavigationObstacle2D [5]gdnative.Method
 func (gdClass NavigationObstacle2D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationObstacle2D[0]) }
@@ -9847,6 +10225,7 @@ func (gdClass NavigationObstacle2D) SetRadius(radius float64)  { gdnative.Call(g
 func (gdClass NavigationObstacle2D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNavigationObstacle2D[4]) }
 
 type NavigationObstacle3D gdnative.Object
+func (NavigationObstacle3D) class() string { return `NavigationObstacle3D` }
 
 var methodNavigationObstacle3D [5]gdnative.Method
 func (gdClass NavigationObstacle3D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationObstacle3D[0]) }
@@ -9856,6 +10235,7 @@ func (gdClass NavigationObstacle3D) SetRadius(radius float64)  { gdnative.Call(g
 func (gdClass NavigationObstacle3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNavigationObstacle3D[4]) }
 
 type NavigationPolygon gdnative.Object
+func (NavigationPolygon) class() string { return `NavigationPolygon` }
 
 var methodNavigationPolygon [15]gdnative.Method
 func (gdClass NavigationPolygon) SetVertices(vertices []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationPolygon[0], vertices) }
@@ -9875,6 +10255,7 @@ func (gdClass NavigationPolygon) ClearOutlines()  { gdnative.Call(gdnative.Objec
 func (gdClass NavigationPolygon) MakePolygonsFromOutlines()  { gdnative.Call(gdnative.Object(gdClass), methodNavigationPolygon[14]) }
 
 type NavigationRegion2D gdnative.Object
+func (NavigationRegion2D) class() string { return `NavigationRegion2D` }
 
 var methodNavigationRegion2D [13]gdnative.Method
 func (gdClass NavigationRegion2D) SetNavigationPolygon(navpoly NavigationPolygon)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion2D[0], navpoly) }
@@ -9892,6 +10273,7 @@ func (gdClass NavigationRegion2D) SetTravelCost(travel_cost float64)  { gdnative
 func (gdClass NavigationRegion2D) GetTravelCost() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNavigationRegion2D[12]) }
 
 type NavigationRegion3D gdnative.Object
+func (NavigationRegion3D) class() string { return `NavigationRegion3D` }
 
 var methodNavigationRegion3D [14]gdnative.Method
 func (gdClass NavigationRegion3D) SetNavigationMesh(navmesh NavigationMesh)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion3D[0], navmesh) }
@@ -9910,6 +10292,7 @@ func (gdClass NavigationRegion3D) GetTravelCost() float64 { return gdnative.Retu
 func (gdClass NavigationRegion3D) BakeNavigationMesh(on_thread bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion3D[13], on_thread) }
 
 type NavigationServer2D gdnative.Object
+func (NavigationServer2D) class() string { return `NavigationServer2D` }
 
 var methodNavigationServer2D [43]gdnative.Method
 func (gdClass NavigationServer2D) GetMaps() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodNavigationServer2D[0]) }
@@ -9957,6 +10340,7 @@ func (gdClass NavigationServer2D) AgentSetCallback(agent RID, receiver Object, m
 func (gdClass NavigationServer2D) FreeRid(rid RID)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationServer2D[42], rid) }
 
 type NavigationServer3D gdnative.Object
+func (NavigationServer3D) class() string { return `NavigationServer3D` }
 
 var methodNavigationServer3D [50]gdnative.Method
 func (gdClass NavigationServer3D) GetMaps() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodNavigationServer3D[0]) }
@@ -10011,6 +10395,7 @@ func (gdClass NavigationServer3D) SetActive(active bool)  { gdnative.Call(gdnati
 func (gdClass NavigationServer3D) Process(delta_time float64)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationServer3D[49], delta_time) }
 
 type NinePatchRect gdnative.Object
+func (NinePatchRect) class() string { return `NinePatchRect` }
 
 var methodNinePatchRect [12]gdnative.Method
 
@@ -10035,6 +10420,7 @@ func (gdClass NinePatchRect) SetVAxisStretchMode(mode NinePatchRectAxisStretchMo
 func (gdClass NinePatchRect) GetVAxisStretchMode() NinePatchRectAxisStretchMode { return gdnative.Return[NinePatchRectAxisStretchMode](gdnative.Object(gdClass), methodNinePatchRect[11]) }
 
 type Node gdnative.Object
+func (Node) class() string { return `Node` }
 
 var methodNode [97]gdnative.Method
 
@@ -10163,6 +10549,7 @@ func (gdClass Node) RpcId(peer_id int64, method string) error { return gdnative.
 func (gdClass Node) UpdateConfigurationWarnings()  { gdnative.Call(gdnative.Object(gdClass), methodNode[96]) }
 
 type Node2D gdnative.Object
+func (Node2D) class() string { return `Node2D` }
 
 var methodNode2D [35]gdnative.Method
 func (gdClass Node2D) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodNode2D[0], position) }
@@ -10202,6 +10589,7 @@ func (gdClass Node2D) IsYSortEnabled() bool { return gdnative.Return[bool](gdnat
 func (gdClass Node2D) GetRelativeTransformToParent(parent Node) Transform2D { return gdnative.Return[Transform2D](gdnative.Object(gdClass), methodNode2D[34], parent) }
 
 type Node3D gdnative.Object
+func (Node3D) class() string { return `Node3D` }
 
 var methodNode3D [66]gdnative.Method
 
@@ -10291,10 +10679,12 @@ func (gdClass Node3D) PropertyCanRevert(name string) bool { return gdnative.Retu
 func (gdClass Node3D) PropertyGetRevert(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodNode3D[65], name) }
 
 type Node3DGizmo gdnative.Object
+func (Node3DGizmo) class() string { return `Node3DGizmo` }
 
 var methodNode3DGizmo [0]gdnative.Method
 
 type Noise gdnative.Object
+func (Noise) class() string { return `Noise` }
 
 var methodNoise [7]gdnative.Method
 func (gdClass Noise) GetNoise1d(x float64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNoise[0], x) }
@@ -10306,6 +10696,7 @@ func (gdClass Noise) GetImage(width int64, height int64, invert bool, in_3d_spac
 func (gdClass Noise) GetSeamlessImage(width int64, height int64, invert bool, in_3d_space bool, skirt float64) Image { return gdnative.Return[Image](gdnative.Object(gdClass), methodNoise[6], width, height, invert, in_3d_space, skirt) }
 
 type NoiseTexture gdnative.Object
+func (NoiseTexture) class() string { return `NoiseTexture` }
 
 var methodNoiseTexture [20]gdnative.Method
 func (gdClass NoiseTexture) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodNoiseTexture[0], width) }
@@ -10330,10 +10721,12 @@ func (gdClass NoiseTexture) SetNoise(noise Noise)  { gdnative.Call(gdnative.Obje
 func (gdClass NoiseTexture) GetNoise() Noise { return gdnative.Return[Noise](gdnative.Object(gdClass), methodNoiseTexture[19]) }
 
 type ORMMaterial3D gdnative.Object
+func (ORMMaterial3D) class() string { return `ORMMaterial3D` }
 
 var methodORMMaterial3D [0]gdnative.Method
 
 type OS gdnative.Object
+func (OS) class() string { return `OS` }
 
 var methodOS [65]gdnative.Method
 
@@ -10452,6 +10845,7 @@ func (gdClass OS) RequestPermissions() bool { return gdnative.Return[bool](gdnat
 func (gdClass OS) GetGrantedPermissions() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodOS[64]) }
 
 type Object gdnative.Object
+func (Object) class() string { return `Object` }
 
 var methodObject [41]gdnative.Method
 
@@ -10506,12 +10900,14 @@ func (gdClass Object) TrN(message string, plural_message string, n int64, contex
 func (gdClass Object) IsQueuedForDeletion() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodObject[40]) }
 
 type Occluder3D gdnative.Object
+func (Occluder3D) class() string { return `Occluder3D` }
 
 var methodOccluder3D [2]gdnative.Method
 func (gdClass Occluder3D) GetVertices() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodOccluder3D[0]) }
 func (gdClass Occluder3D) GetIndices() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodOccluder3D[1]) }
 
 type OccluderInstance3D gdnative.Object
+func (OccluderInstance3D) class() string { return `OccluderInstance3D` }
 
 var methodOccluderInstance3D [8]gdnative.Method
 func (gdClass OccluderInstance3D) SetBakeMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodOccluderInstance3D[0], mask) }
@@ -10524,6 +10920,7 @@ func (gdClass OccluderInstance3D) SetOccluder(occluder Occluder3D)  { gdnative.C
 func (gdClass OccluderInstance3D) GetOccluder() Occluder3D { return gdnative.Return[Occluder3D](gdnative.Object(gdClass), methodOccluderInstance3D[7]) }
 
 type OccluderPolygon2D gdnative.Object
+func (OccluderPolygon2D) class() string { return `OccluderPolygon2D` }
 
 var methodOccluderPolygon2D [6]gdnative.Method
 
@@ -10542,6 +10939,7 @@ func (gdClass OccluderPolygon2D) SetPolygon(polygon []Vector2)  { gdnative.Call(
 func (gdClass OccluderPolygon2D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodOccluderPolygon2D[5]) }
 
 type OggPacketSequence gdnative.Object
+func (OggPacketSequence) class() string { return `OggPacketSequence` }
 
 var methodOggPacketSequence [7]gdnative.Method
 func (gdClass OggPacketSequence) SetPacketData(packet_data Array)  { gdnative.Call(gdnative.Object(gdClass), methodOggPacketSequence[0], packet_data) }
@@ -10553,10 +10951,12 @@ func (gdClass OggPacketSequence) GetSamplingRate() float64 { return gdnative.Ret
 func (gdClass OggPacketSequence) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodOggPacketSequence[6]) }
 
 type OggPacketSequencePlayback gdnative.Object
+func (OggPacketSequencePlayback) class() string { return `OggPacketSequencePlayback` }
 
 var methodOggPacketSequencePlayback [0]gdnative.Method
 
 type OmniLight3D gdnative.Object
+func (OmniLight3D) class() string { return `OmniLight3D` }
 
 var methodOmniLight3D [2]gdnative.Method
 
@@ -10570,6 +10970,7 @@ func (gdClass OmniLight3D) SetShadowMode(mode OmniLight3DShadowMode)  { gdnative
 func (gdClass OmniLight3D) GetShadowMode() OmniLight3DShadowMode { return gdnative.Return[OmniLight3DShadowMode](gdnative.Object(gdClass), methodOmniLight3D[1]) }
 
 type OpenXRAction gdnative.Object
+func (OpenXRAction) class() string { return `OpenXRAction` }
 
 var methodOpenXRAction [6]gdnative.Method
 
@@ -10589,6 +10990,7 @@ func (gdClass OpenXRAction) SetToplevelPaths(toplevel_paths []string)  { gdnativ
 func (gdClass OpenXRAction) GetToplevelPaths() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodOpenXRAction[5]) }
 
 type OpenXRActionMap gdnative.Object
+func (OpenXRActionMap) class() string { return `OpenXRActionMap` }
 
 var methodOpenXRActionMap [15]gdnative.Method
 func (gdClass OpenXRActionMap) SetActionSets(action_sets Array)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionMap[0], action_sets) }
@@ -10608,6 +11010,7 @@ func (gdClass OpenXRActionMap) RemoveInteractionProfile(interaction_profile Open
 func (gdClass OpenXRActionMap) CreateDefaultActionSets()  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionMap[14]) }
 
 type OpenXRActionSet gdnative.Object
+func (OpenXRActionSet) class() string { return `OpenXRActionSet` }
 
 var methodOpenXRActionSet [9]gdnative.Method
 func (gdClass OpenXRActionSet) SetLocalizedName(localized_name string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionSet[0], localized_name) }
@@ -10621,6 +11024,7 @@ func (gdClass OpenXRActionSet) AddAction(action OpenXRAction)  { gdnative.Call(g
 func (gdClass OpenXRActionSet) RemoveAction(action OpenXRAction)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionSet[8], action) }
 
 type OpenXRIPBinding gdnative.Object
+func (OpenXRIPBinding) class() string { return `OpenXRIPBinding` }
 
 var methodOpenXRIPBinding [8]gdnative.Method
 func (gdClass OpenXRIPBinding) SetAction(action OpenXRAction)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRIPBinding[0], action) }
@@ -10633,6 +11037,7 @@ func (gdClass OpenXRIPBinding) AddPath(path string)  { gdnative.Call(gdnative.Ob
 func (gdClass OpenXRIPBinding) RemovePath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRIPBinding[7], path) }
 
 type OpenXRInteractionProfile gdnative.Object
+func (OpenXRInteractionProfile) class() string { return `OpenXRInteractionProfile` }
 
 var methodOpenXRInteractionProfile [6]gdnative.Method
 func (gdClass OpenXRInteractionProfile) SetInteractionProfilePath(interaction_profile_path string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRInteractionProfile[0], interaction_profile_path) }
@@ -10643,15 +11048,18 @@ func (gdClass OpenXRInteractionProfile) SetBindings(bindings Array)  { gdnative.
 func (gdClass OpenXRInteractionProfile) GetBindings() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodOpenXRInteractionProfile[5]) }
 
 type OpenXRInterface gdnative.Object
+func (OpenXRInterface) class() string { return `OpenXRInterface` }
 
 var methodOpenXRInterface [0]gdnative.Method
 
 type OptimizedTranslation gdnative.Object
+func (OptimizedTranslation) class() string { return `OptimizedTranslation` }
 
 var methodOptimizedTranslation [1]gdnative.Method
 func (gdClass OptimizedTranslation) Generate(from Translation)  { gdnative.Call(gdnative.Object(gdClass), methodOptimizedTranslation[0], from) }
 
 type OptionButton gdnative.Object
+func (OptionButton) class() string { return `OptionButton` }
 
 var methodOptionButton [30]gdnative.Method
 func (gdClass OptionButton) AddItem(label string, id int64)  { gdnative.Call(gdnative.Object(gdClass), methodOptionButton[0], label, id) }
@@ -10686,6 +11094,7 @@ func (gdClass OptionButton) SetFitToLongestItem(fit bool)  { gdnative.Call(gdnat
 func (gdClass OptionButton) IsFitToLongestItem() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodOptionButton[29]) }
 
 type PCKPacker gdnative.Object
+func (PCKPacker) class() string { return `PCKPacker` }
 
 var methodPCKPacker [3]gdnative.Method
 func (gdClass PCKPacker) PckStart(pck_name string, alignment int64, key string, encrypt_directory bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPCKPacker[0], pck_name, alignment, key, encrypt_directory) }
@@ -10693,17 +11102,20 @@ func (gdClass PCKPacker) AddFile(pck_path string, source_path string, encrypt bo
 func (gdClass PCKPacker) Flush(verbose bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPCKPacker[2], verbose) }
 
 type PackedDataContainer gdnative.Object
+func (PackedDataContainer) class() string { return `PackedDataContainer` }
 
 var methodPackedDataContainer [2]gdnative.Method
 func (gdClass PackedDataContainer) Pack(value any) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPackedDataContainer[0], value) }
 func (gdClass PackedDataContainer) Size() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPackedDataContainer[1]) }
 
 type PackedDataContainerRef gdnative.Object
+func (PackedDataContainerRef) class() string { return `PackedDataContainerRef` }
 
 var methodPackedDataContainerRef [1]gdnative.Method
 func (gdClass PackedDataContainerRef) Size() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPackedDataContainerRef[0]) }
 
 type PackedScene gdnative.Object
+func (PackedScene) class() string { return `PackedScene` }
 
 var methodPackedScene [4]gdnative.Method
 
@@ -10721,6 +11133,7 @@ func (gdClass PackedScene) CanInstantiate() bool { return gdnative.Return[bool](
 func (gdClass PackedScene) GetState() SceneState { return gdnative.Return[SceneState](gdnative.Object(gdClass), methodPackedScene[3]) }
 
 type PacketPeer gdnative.Object
+func (PacketPeer) class() string { return `PacketPeer` }
 
 var methodPacketPeer [8]gdnative.Method
 func (gdClass PacketPeer) GetVar(allow_objects bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodPacketPeer[0], allow_objects) }
@@ -10733,6 +11146,7 @@ func (gdClass PacketPeer) GetEncodeBufferMaxSize() int64 { return gdnative.Retur
 func (gdClass PacketPeer) SetEncodeBufferMaxSize(max_size int64)  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeer[7], max_size) }
 
 type PacketPeerDTLS gdnative.Object
+func (PacketPeerDTLS) class() string { return `PacketPeerDTLS` }
 
 var methodPacketPeerDTLS [4]gdnative.Method
 
@@ -10751,6 +11165,7 @@ func (gdClass PacketPeerDTLS) GetStatus() PacketPeerDTLSStatus { return gdnative
 func (gdClass PacketPeerDTLS) DisconnectFromPeer()  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerDTLS[3]) }
 
 type PacketPeerExtension gdnative.Object
+func (PacketPeerExtension) class() string { return `PacketPeerExtension` }
 
 var methodPacketPeerExtension [4]gdnative.Method
 func (gdClass PacketPeerExtension) GetPacketImplementation(r_buffer *[]byte, r_buffer_size *int32) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPacketPeerExtension[0], r_buffer, r_buffer_size) }
@@ -10759,6 +11174,7 @@ func (gdClass PacketPeerExtension) GetAvailablePacketCountImplementation() int64
 func (gdClass PacketPeerExtension) GetMaxPacketSizeImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPacketPeerExtension[3]) }
 
 type PacketPeerStream gdnative.Object
+func (PacketPeerStream) class() string { return `PacketPeerStream` }
 
 var methodPacketPeerStream [6]gdnative.Method
 func (gdClass PacketPeerStream) SetStreamPeer(peer StreamPeer)  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerStream[0], peer) }
@@ -10769,6 +11185,7 @@ func (gdClass PacketPeerStream) GetInputBufferMaxSize() int64 { return gdnative.
 func (gdClass PacketPeerStream) GetOutputBufferMaxSize() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPacketPeerStream[5]) }
 
 type PacketPeerUDP gdnative.Object
+func (PacketPeerUDP) class() string { return `PacketPeerUDP` }
 
 var methodPacketPeerUDP [13]gdnative.Method
 func (gdClass PacketPeerUDP) Bind(port int64, bind_address string, recv_buf_size int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeerUDP[0], port, bind_address, recv_buf_size) }
@@ -10786,14 +11203,17 @@ func (gdClass PacketPeerUDP) JoinMulticastGroup(multicast_address string, interf
 func (gdClass PacketPeerUDP) LeaveMulticastGroup(multicast_address string, interface_name string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeerUDP[12], multicast_address, interface_name) }
 
 type Panel gdnative.Object
+func (Panel) class() string { return `Panel` }
 
 var methodPanel [0]gdnative.Method
 
 type PanelContainer gdnative.Object
+func (PanelContainer) class() string { return `PanelContainer` }
 
 var methodPanelContainer [0]gdnative.Method
 
 type PanoramaSkyMaterial gdnative.Object
+func (PanoramaSkyMaterial) class() string { return `PanoramaSkyMaterial` }
 
 var methodPanoramaSkyMaterial [4]gdnative.Method
 func (gdClass PanoramaSkyMaterial) SetPanorama(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodPanoramaSkyMaterial[0], texture) }
@@ -10802,6 +11222,7 @@ func (gdClass PanoramaSkyMaterial) SetFilteringEnabled(enabled bool)  { gdnative
 func (gdClass PanoramaSkyMaterial) IsFilteringEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPanoramaSkyMaterial[3]) }
 
 type ParallaxBackground gdnative.Object
+func (ParallaxBackground) class() string { return `ParallaxBackground` }
 
 var methodParallaxBackground [12]gdnative.Method
 func (gdClass ParallaxBackground) SetScrollOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxBackground[0], offset) }
@@ -10818,6 +11239,7 @@ func (gdClass ParallaxBackground) SetIgnoreCameraZoom(ignore bool)  { gdnative.C
 func (gdClass ParallaxBackground) IsIgnoreCameraZoom() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodParallaxBackground[11]) }
 
 type ParallaxLayer gdnative.Object
+func (ParallaxLayer) class() string { return `ParallaxLayer` }
 
 var methodParallaxLayer [6]gdnative.Method
 func (gdClass ParallaxLayer) SetMotionScale(scale Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxLayer[0], scale) }
@@ -10828,6 +11250,7 @@ func (gdClass ParallaxLayer) SetMirroring(mirror Vector2)  { gdnative.Call(gdnat
 func (gdClass ParallaxLayer) GetMirroring() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodParallaxLayer[5]) }
 
 type ParticlesMaterial gdnative.Object
+func (ParticlesMaterial) class() string { return `ParticlesMaterial` }
 
 var methodParticlesMaterial [74]gdnative.Method
 
@@ -10959,18 +11382,21 @@ func (gdClass ParticlesMaterial) SetCollisionBounce(bounce float64)  { gdnative.
 func (gdClass ParticlesMaterial) GetCollisionBounce() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodParticlesMaterial[73]) }
 
 type Path2D gdnative.Object
+func (Path2D) class() string { return `Path2D` }
 
 var methodPath2D [2]gdnative.Method
 func (gdClass Path2D) SetCurve(curve Curve2D)  { gdnative.Call(gdnative.Object(gdClass), methodPath2D[0], curve) }
 func (gdClass Path2D) GetCurve() Curve2D { return gdnative.Return[Curve2D](gdnative.Object(gdClass), methodPath2D[1]) }
 
 type Path3D gdnative.Object
+func (Path3D) class() string { return `Path3D` }
 
 var methodPath3D [2]gdnative.Method
 func (gdClass Path3D) SetCurve(curve Curve3D)  { gdnative.Call(gdnative.Object(gdClass), methodPath3D[0], curve) }
 func (gdClass Path3D) GetCurve() Curve3D { return gdnative.Return[Curve3D](gdnative.Object(gdClass), methodPath3D[1]) }
 
 type PathFollow2D gdnative.Object
+func (PathFollow2D) class() string { return `PathFollow2D` }
 
 var methodPathFollow2D [16]gdnative.Method
 func (gdClass PathFollow2D) SetOffset(offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodPathFollow2D[0], offset) }
@@ -10991,6 +11417,7 @@ func (gdClass PathFollow2D) SetLookahead(lookahead float64)  { gdnative.Call(gdn
 func (gdClass PathFollow2D) GetLookahead() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPathFollow2D[15]) }
 
 type PathFollow3D gdnative.Object
+func (PathFollow3D) class() string { return `PathFollow3D` }
 
 var methodPathFollow3D [14]gdnative.Method
 
@@ -11019,6 +11446,7 @@ func (gdClass PathFollow3D) SetLoop(loop bool)  { gdnative.Call(gdnative.Object(
 func (gdClass PathFollow3D) HasLoop() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPathFollow3D[13]) }
 
 type Performance gdnative.Object
+func (Performance) class() string { return `Performance` }
 
 var methodPerformance [7]gdnative.Method
 
@@ -11059,6 +11487,7 @@ func (gdClass Performance) GetMonitorModificationTime() int64 { return gdnative.
 func (gdClass Performance) GetCustomMonitorNames() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPerformance[6]) }
 
 type PhysicalBone2D gdnative.Object
+func (PhysicalBone2D) class() string { return `PhysicalBone2D` }
 
 var methodPhysicalBone2D [12]gdnative.Method
 func (gdClass PhysicalBone2D) GetJoint() Joint2D { return gdnative.Return[Joint2D](gdnative.Object(gdClass), methodPhysicalBone2D[0]) }
@@ -11075,6 +11504,7 @@ func (gdClass PhysicalBone2D) SetFollowBoneWhenSimulating(follow_bone bool)  { g
 func (gdClass PhysicalBone2D) GetFollowBoneWhenSimulating() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicalBone2D[11]) }
 
 type PhysicalBone3D gdnative.Object
+func (PhysicalBone3D) class() string { return `PhysicalBone3D` }
 
 var methodPhysicalBone3D [38]gdnative.Method
 
@@ -11135,6 +11565,7 @@ func (gdClass PhysicalBone3D) SetCanSleep(able_to_sleep bool)  { gdnative.Call(g
 func (gdClass PhysicalBone3D) IsAbleToSleep() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicalBone3D[37]) }
 
 type PhysicalSkyMaterial gdnative.Object
+func (PhysicalSkyMaterial) class() string { return `PhysicalSkyMaterial` }
 
 var methodPhysicalSkyMaterial [22]gdnative.Method
 func (gdClass PhysicalSkyMaterial) SetRayleighCoefficient(rayleigh float64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalSkyMaterial[0], rayleigh) }
@@ -11161,6 +11592,7 @@ func (gdClass PhysicalSkyMaterial) SetNightSky(night_sky Texture2D)  { gdnative.
 func (gdClass PhysicalSkyMaterial) GetNightSky() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodPhysicalSkyMaterial[21]) }
 
 type PhysicsBody2D gdnative.Object
+func (PhysicsBody2D) class() string { return `PhysicsBody2D` }
 
 var methodPhysicsBody2D [5]gdnative.Method
 func (gdClass PhysicsBody2D) MoveAndCollide(distance Vector2, test_only bool, safe_margin float64) KinematicCollision2D { return gdnative.Return[KinematicCollision2D](gdnative.Object(gdClass), methodPhysicsBody2D[0], distance, test_only, safe_margin) }
@@ -11170,6 +11602,7 @@ func (gdClass PhysicsBody2D) AddCollisionExceptionWith(body Node)  { gdnative.Ca
 func (gdClass PhysicsBody2D) RemoveCollisionExceptionWith(body Node)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsBody2D[4], body) }
 
 type PhysicsBody3D gdnative.Object
+func (PhysicsBody3D) class() string { return `PhysicsBody3D` }
 
 var methodPhysicsBody3D [7]gdnative.Method
 func (gdClass PhysicsBody3D) MoveAndCollide(distance Vector3, test_only bool, safe_margin float64, max_collisions int64) KinematicCollision3D { return gdnative.Return[KinematicCollision3D](gdnative.Object(gdClass), methodPhysicsBody3D[0], distance, test_only, safe_margin, max_collisions) }
@@ -11181,6 +11614,7 @@ func (gdClass PhysicsBody3D) AddCollisionExceptionWith(body Node)  { gdnative.Ca
 func (gdClass PhysicsBody3D) RemoveCollisionExceptionWith(body Node)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsBody3D[6], body) }
 
 type PhysicsDirectBodyState2D gdnative.Object
+func (PhysicsDirectBodyState2D) class() string { return `PhysicsDirectBodyState2D` }
 
 var methodPhysicsDirectBodyState2D [42]gdnative.Method
 func (gdClass PhysicsDirectBodyState2D) GetTotalGravity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsDirectBodyState2D[0]) }
@@ -11227,6 +11661,7 @@ func (gdClass PhysicsDirectBodyState2D) IntegrateForces()  { gdnative.Call(gdnat
 func (gdClass PhysicsDirectBodyState2D) GetSpaceState() PhysicsDirectSpaceState2D { return gdnative.Return[PhysicsDirectSpaceState2D](gdnative.Object(gdClass), methodPhysicsDirectBodyState2D[41]) }
 
 type PhysicsDirectBodyState3D gdnative.Object
+func (PhysicsDirectBodyState3D) class() string { return `PhysicsDirectBodyState3D` }
 
 var methodPhysicsDirectBodyState3D [44]gdnative.Method
 func (gdClass PhysicsDirectBodyState3D) GetTotalGravity() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsDirectBodyState3D[0]) }
@@ -11275,6 +11710,7 @@ func (gdClass PhysicsDirectBodyState3D) IntegrateForces()  { gdnative.Call(gdnat
 func (gdClass PhysicsDirectBodyState3D) GetSpaceState() PhysicsDirectSpaceState3D { return gdnative.Return[PhysicsDirectSpaceState3D](gdnative.Object(gdClass), methodPhysicsDirectBodyState3D[43]) }
 
 type PhysicsDirectBodyState3DExtension gdnative.Object
+func (PhysicsDirectBodyState3DExtension) class() string { return `PhysicsDirectBodyState3DExtension` }
 
 var methodPhysicsDirectBodyState3DExtension [44]gdnative.Method
 func (gdClass PhysicsDirectBodyState3DExtension) GetTotalGravityImplementation() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsDirectBodyState3DExtension[0]) }
@@ -11323,6 +11759,7 @@ func (gdClass PhysicsDirectBodyState3DExtension) IntegrateForcesImplementation()
 func (gdClass PhysicsDirectBodyState3DExtension) GetSpaceStateImplementation() PhysicsDirectSpaceState3D { return gdnative.Return[PhysicsDirectSpaceState3D](gdnative.Object(gdClass), methodPhysicsDirectBodyState3DExtension[43]) }
 
 type PhysicsDirectSpaceState2D gdnative.Object
+func (PhysicsDirectSpaceState2D) class() string { return `PhysicsDirectSpaceState2D` }
 
 var methodPhysicsDirectSpaceState2D [6]gdnative.Method
 func (gdClass PhysicsDirectSpaceState2D) IntersectPoint(parameters PhysicsPointQueryParameters2D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState2D[0], parameters, max_results) }
@@ -11333,6 +11770,7 @@ func (gdClass PhysicsDirectSpaceState2D) CollideShape(parameters PhysicsShapeQue
 func (gdClass PhysicsDirectSpaceState2D) GetRestInfo(parameters PhysicsShapeQueryParameters2D) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodPhysicsDirectSpaceState2D[5], parameters) }
 
 type PhysicsDirectSpaceState3D gdnative.Object
+func (PhysicsDirectSpaceState3D) class() string { return `PhysicsDirectSpaceState3D` }
 
 var methodPhysicsDirectSpaceState3D [6]gdnative.Method
 func (gdClass PhysicsDirectSpaceState3D) IntersectPoint(parameters PhysicsPointQueryParameters3D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3D[0], parameters, max_results) }
@@ -11343,6 +11781,7 @@ func (gdClass PhysicsDirectSpaceState3D) CollideShape(parameters PhysicsShapeQue
 func (gdClass PhysicsDirectSpaceState3D) GetRestInfo(parameters PhysicsShapeQueryParameters3D) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3D[5], parameters) }
 
 type PhysicsDirectSpaceState3DExtension gdnative.Object
+func (PhysicsDirectSpaceState3DExtension) class() string { return `PhysicsDirectSpaceState3DExtension` }
 
 var methodPhysicsDirectSpaceState3DExtension [7]gdnative.Method
 func (gdClass PhysicsDirectSpaceState3DExtension) IntersectRayImplementation(from Vector3, to Vector3, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, result *PhysicsServer3DExtensionRayResult) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3DExtension[0], from, to, collision_mask, collide_with_bodies, collide_with_areas, hit_from_inside, hit_back_faces, result) }
@@ -11354,6 +11793,7 @@ func (gdClass PhysicsDirectSpaceState3DExtension) RestInfoImplementation(shape_r
 func (gdClass PhysicsDirectSpaceState3DExtension) GetClosestPointToObjectVolumeImplementation(object RID, point Vector3) Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3DExtension[6], object, point) }
 
 type PhysicsMaterial gdnative.Object
+func (PhysicsMaterial) class() string { return `PhysicsMaterial` }
 
 var methodPhysicsMaterial [8]gdnative.Method
 func (gdClass PhysicsMaterial) SetFriction(friction float64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsMaterial[0], friction) }
@@ -11366,6 +11806,7 @@ func (gdClass PhysicsMaterial) SetAbsorbent(absorbent bool)  { gdnative.Call(gdn
 func (gdClass PhysicsMaterial) IsAbsorbent() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsMaterial[7]) }
 
 type PhysicsPointQueryParameters2D gdnative.Object
+func (PhysicsPointQueryParameters2D) class() string { return `PhysicsPointQueryParameters2D` }
 
 var methodPhysicsPointQueryParameters2D [12]gdnative.Method
 func (gdClass PhysicsPointQueryParameters2D) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters2D[0], position) }
@@ -11382,6 +11823,7 @@ func (gdClass PhysicsPointQueryParameters2D) SetCollideWithAreas(enable bool)  {
 func (gdClass PhysicsPointQueryParameters2D) IsCollideWithAreasEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsPointQueryParameters2D[11]) }
 
 type PhysicsPointQueryParameters3D gdnative.Object
+func (PhysicsPointQueryParameters3D) class() string { return `PhysicsPointQueryParameters3D` }
 
 var methodPhysicsPointQueryParameters3D [10]gdnative.Method
 func (gdClass PhysicsPointQueryParameters3D) SetPosition(position Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters3D[0], position) }
@@ -11396,6 +11838,7 @@ func (gdClass PhysicsPointQueryParameters3D) SetCollideWithAreas(enable bool)  {
 func (gdClass PhysicsPointQueryParameters3D) IsCollideWithAreasEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsPointQueryParameters3D[9]) }
 
 type PhysicsRayQueryParameters2D gdnative.Object
+func (PhysicsRayQueryParameters2D) class() string { return `PhysicsRayQueryParameters2D` }
 
 var methodPhysicsRayQueryParameters2D [15]gdnative.Method
 func (gdClass PhysicsRayQueryParameters2D) Create(from Vector2, to Vector2, collision_mask int64, exclude Array) PhysicsRayQueryParameters2D { return gdnative.Return[PhysicsRayQueryParameters2D](gdnative.Object(gdClass), methodPhysicsRayQueryParameters2D[0], from, to, collision_mask, exclude) }
@@ -11415,6 +11858,7 @@ func (gdClass PhysicsRayQueryParameters2D) SetHitFromInside(enable bool)  { gdna
 func (gdClass PhysicsRayQueryParameters2D) IsHitFromInsideEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsRayQueryParameters2D[14]) }
 
 type PhysicsRayQueryParameters3D gdnative.Object
+func (PhysicsRayQueryParameters3D) class() string { return `PhysicsRayQueryParameters3D` }
 
 var methodPhysicsRayQueryParameters3D [17]gdnative.Method
 func (gdClass PhysicsRayQueryParameters3D) Create(from Vector3, to Vector3, collision_mask int64, exclude Array) PhysicsRayQueryParameters3D { return gdnative.Return[PhysicsRayQueryParameters3D](gdnative.Object(gdClass), methodPhysicsRayQueryParameters3D[0], from, to, collision_mask, exclude) }
@@ -11436,6 +11880,7 @@ func (gdClass PhysicsRayQueryParameters3D) SetHitBackFaces(enable bool)  { gdnat
 func (gdClass PhysicsRayQueryParameters3D) IsHitBackFacesEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsRayQueryParameters3D[16]) }
 
 type PhysicsServer2D gdnative.Object
+func (PhysicsServer2D) class() string { return `PhysicsServer2D` }
 
 var methodPhysicsServer2D [108]gdnative.Method
 
@@ -11692,6 +12137,7 @@ func (gdClass PhysicsServer2D) SetActive(active bool)  { gdnative.Call(gdnative.
 func (gdClass PhysicsServer2D) GetProcessInfo(process_info PhysicsServer2DProcessInfo) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPhysicsServer2D[107], process_info) }
 
 type PhysicsServer3D gdnative.Object
+func (PhysicsServer3D) class() string { return `PhysicsServer3D` }
 
 var methodPhysicsServer3D [128]gdnative.Method
 
@@ -12058,6 +12504,7 @@ func (gdClass PhysicsServer3D) SetActive(active bool)  { gdnative.Call(gdnative.
 func (gdClass PhysicsServer3D) GetProcessInfo(process_info PhysicsServer3DProcessInfo) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPhysicsServer3D[127], process_info) }
 
 type PhysicsServer3DExtension gdnative.Object
+func (PhysicsServer3DExtension) class() string { return `PhysicsServer3DExtension` }
 
 var methodPhysicsServer3DExtension [128]gdnative.Method
 func (gdClass PhysicsServer3DExtension) WorldBoundaryShapeCreateImplementation() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer3DExtension[0]) }
@@ -12190,6 +12637,7 @@ func (gdClass PhysicsServer3DExtension) SetActiveImplementation(active bool)  { 
 func (gdClass PhysicsServer3DExtension) GetProcessInfoImplementation(process_info PhysicsServer3DProcessInfo) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPhysicsServer3DExtension[127], process_info) }
 
 type PhysicsServer3DRenderingServerHandler gdnative.Object
+func (PhysicsServer3DRenderingServerHandler) class() string { return `PhysicsServer3DRenderingServerHandler` }
 
 var methodPhysicsServer3DRenderingServerHandler [3]gdnative.Method
 func (gdClass PhysicsServer3DRenderingServerHandler) SetVertexImplementation(vertex_id int64, vertices []byte)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsServer3DRenderingServerHandler[0], vertex_id, vertices) }
@@ -12197,6 +12645,7 @@ func (gdClass PhysicsServer3DRenderingServerHandler) SetNormalImplementation(ver
 func (gdClass PhysicsServer3DRenderingServerHandler) SetAabbImplementation(aabb AABB)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsServer3DRenderingServerHandler[2], aabb) }
 
 type PhysicsShapeQueryParameters2D gdnative.Object
+func (PhysicsShapeQueryParameters2D) class() string { return `PhysicsShapeQueryParameters2D` }
 
 var methodPhysicsShapeQueryParameters2D [18]gdnative.Method
 func (gdClass PhysicsShapeQueryParameters2D) SetShape(shape Resource)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters2D[0], shape) }
@@ -12219,6 +12668,7 @@ func (gdClass PhysicsShapeQueryParameters2D) SetCollideWithAreas(enable bool)  {
 func (gdClass PhysicsShapeQueryParameters2D) IsCollideWithAreasEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsShapeQueryParameters2D[17]) }
 
 type PhysicsShapeQueryParameters3D gdnative.Object
+func (PhysicsShapeQueryParameters3D) class() string { return `PhysicsShapeQueryParameters3D` }
 
 var methodPhysicsShapeQueryParameters3D [18]gdnative.Method
 func (gdClass PhysicsShapeQueryParameters3D) SetShape(shape Resource)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters3D[0], shape) }
@@ -12241,6 +12691,7 @@ func (gdClass PhysicsShapeQueryParameters3D) SetCollideWithAreas(enable bool)  {
 func (gdClass PhysicsShapeQueryParameters3D) IsCollideWithAreasEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsShapeQueryParameters3D[17]) }
 
 type PhysicsTestMotionParameters2D gdnative.Object
+func (PhysicsTestMotionParameters2D) class() string { return `PhysicsTestMotionParameters2D` }
 
 var methodPhysicsTestMotionParameters2D [14]gdnative.Method
 func (gdClass PhysicsTestMotionParameters2D) GetFrom() Transform2D { return gdnative.Return[Transform2D](gdnative.Object(gdClass), methodPhysicsTestMotionParameters2D[0]) }
@@ -12259,6 +12710,7 @@ func (gdClass PhysicsTestMotionParameters2D) IsRecoveryAsCollisionEnabled() bool
 func (gdClass PhysicsTestMotionParameters2D) SetRecoveryAsCollisionEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsTestMotionParameters2D[13], enabled) }
 
 type PhysicsTestMotionParameters3D gdnative.Object
+func (PhysicsTestMotionParameters3D) class() string { return `PhysicsTestMotionParameters3D` }
 
 var methodPhysicsTestMotionParameters3D [16]gdnative.Method
 func (gdClass PhysicsTestMotionParameters3D) GetFrom() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodPhysicsTestMotionParameters3D[0]) }
@@ -12279,6 +12731,7 @@ func (gdClass PhysicsTestMotionParameters3D) IsRecoveryAsCollisionEnabled() bool
 func (gdClass PhysicsTestMotionParameters3D) SetRecoveryAsCollisionEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsTestMotionParameters3D[15], enabled) }
 
 type PhysicsTestMotionResult2D gdnative.Object
+func (PhysicsTestMotionResult2D) class() string { return `PhysicsTestMotionResult2D` }
 
 var methodPhysicsTestMotionResult2D [13]gdnative.Method
 func (gdClass PhysicsTestMotionResult2D) GetTravel() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsTestMotionResult2D[0]) }
@@ -12296,6 +12749,7 @@ func (gdClass PhysicsTestMotionResult2D) GetCollisionSafeFraction() float64 { re
 func (gdClass PhysicsTestMotionResult2D) GetCollisionUnsafeFraction() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsTestMotionResult2D[12]) }
 
 type PhysicsTestMotionResult3D gdnative.Object
+func (PhysicsTestMotionResult3D) class() string { return `PhysicsTestMotionResult3D` }
 
 var methodPhysicsTestMotionResult3D [14]gdnative.Method
 func (gdClass PhysicsTestMotionResult3D) GetTravel() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsTestMotionResult3D[0]) }
@@ -12314,12 +12768,14 @@ func (gdClass PhysicsTestMotionResult3D) GetCollisionLocalShape(collision_index 
 func (gdClass PhysicsTestMotionResult3D) GetCollisionDepth(collision_index int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsTestMotionResult3D[13], collision_index) }
 
 type PinJoint2D gdnative.Object
+func (PinJoint2D) class() string { return `PinJoint2D` }
 
 var methodPinJoint2D [2]gdnative.Method
 func (gdClass PinJoint2D) SetSoftness(softness float64)  { gdnative.Call(gdnative.Object(gdClass), methodPinJoint2D[0], softness) }
 func (gdClass PinJoint2D) GetSoftness() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPinJoint2D[1]) }
 
 type PinJoint3D gdnative.Object
+func (PinJoint3D) class() string { return `PinJoint3D` }
 
 var methodPinJoint3D [2]gdnative.Method
 
@@ -12334,38 +12790,46 @@ func (gdClass PinJoint3D) SetParam(param PinJoint3DParam, value float64)  { gdna
 func (gdClass PinJoint3D) GetParam(param PinJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPinJoint3D[1], param) }
 
 type PlaceholderCubemap gdnative.Object
+func (PlaceholderCubemap) class() string { return `PlaceholderCubemap` }
 
 var methodPlaceholderCubemap [0]gdnative.Method
 
 type PlaceholderCubemapArray gdnative.Object
+func (PlaceholderCubemapArray) class() string { return `PlaceholderCubemapArray` }
 
 var methodPlaceholderCubemapArray [0]gdnative.Method
 
 type PlaceholderMaterial gdnative.Object
+func (PlaceholderMaterial) class() string { return `PlaceholderMaterial` }
 
 var methodPlaceholderMaterial [0]gdnative.Method
 
 type PlaceholderMesh gdnative.Object
+func (PlaceholderMesh) class() string { return `PlaceholderMesh` }
 
 var methodPlaceholderMesh [1]gdnative.Method
 func (gdClass PlaceholderMesh) SetAabb(aabb AABB)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderMesh[0], aabb) }
 
 type PlaceholderTexture2D gdnative.Object
+func (PlaceholderTexture2D) class() string { return `PlaceholderTexture2D` }
 
 var methodPlaceholderTexture2D [1]gdnative.Method
 func (gdClass PlaceholderTexture2D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTexture2D[0], size) }
 
 type PlaceholderTexture2DArray gdnative.Object
+func (PlaceholderTexture2DArray) class() string { return `PlaceholderTexture2DArray` }
 
 var methodPlaceholderTexture2DArray [0]gdnative.Method
 
 type PlaceholderTexture3D gdnative.Object
+func (PlaceholderTexture3D) class() string { return `PlaceholderTexture3D` }
 
 var methodPlaceholderTexture3D [2]gdnative.Method
 func (gdClass PlaceholderTexture3D) SetSize(size Vector3i)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTexture3D[0], size) }
 func (gdClass PlaceholderTexture3D) GetSize() Vector3i { return gdnative.Return[Vector3i](gdnative.Object(gdClass), methodPlaceholderTexture3D[1]) }
 
 type PlaceholderTextureLayered gdnative.Object
+func (PlaceholderTextureLayered) class() string { return `PlaceholderTextureLayered` }
 
 var methodPlaceholderTextureLayered [3]gdnative.Method
 func (gdClass PlaceholderTextureLayered) SetSize(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTextureLayered[0], size) }
@@ -12373,6 +12837,7 @@ func (gdClass PlaceholderTextureLayered) GetSize() Vector2i { return gdnative.Re
 func (gdClass PlaceholderTextureLayered) SetLayers(layers int64)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTextureLayered[2], layers) }
 
 type PlaneMesh gdnative.Object
+func (PlaneMesh) class() string { return `PlaneMesh` }
 
 var methodPlaneMesh [8]gdnative.Method
 func (gdClass PlaneMesh) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPlaneMesh[0], size) }
@@ -12385,6 +12850,7 @@ func (gdClass PlaneMesh) SetCenterOffset(offset Vector3)  { gdnative.Call(gdnati
 func (gdClass PlaneMesh) GetCenterOffset() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPlaneMesh[7]) }
 
 type PointLight2D gdnative.Object
+func (PointLight2D) class() string { return `PointLight2D` }
 
 var methodPointLight2D [6]gdnative.Method
 func (gdClass PointLight2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodPointLight2D[0], texture) }
@@ -12395,10 +12861,12 @@ func (gdClass PointLight2D) SetTextureScale(texture_scale float64)  { gdnative.C
 func (gdClass PointLight2D) GetTextureScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPointLight2D[5]) }
 
 type PointMesh gdnative.Object
+func (PointMesh) class() string { return `PointMesh` }
 
 var methodPointMesh [0]gdnative.Method
 
 type Polygon2D gdnative.Object
+func (Polygon2D) class() string { return `Polygon2D` }
 
 var methodPolygon2D [38]gdnative.Method
 func (gdClass Polygon2D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPolygon2D[0], polygon) }
@@ -12441,12 +12909,14 @@ func (gdClass Polygon2D) SetInternalVertexCount(internal_vertex_count int64)  { 
 func (gdClass Polygon2D) GetInternalVertexCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPolygon2D[37]) }
 
 type PolygonOccluder3D gdnative.Object
+func (PolygonOccluder3D) class() string { return `PolygonOccluder3D` }
 
 var methodPolygonOccluder3D [2]gdnative.Method
 func (gdClass PolygonOccluder3D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPolygonOccluder3D[0], polygon) }
 func (gdClass PolygonOccluder3D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodPolygonOccluder3D[1]) }
 
 type PolygonPathFinder gdnative.Object
+func (PolygonPathFinder) class() string { return `PolygonPathFinder` }
 
 var methodPolygonPathFinder [8]gdnative.Method
 func (gdClass PolygonPathFinder) Setup(points []Vector2, connections []int32)  { gdnative.Call(gdnative.Object(gdClass), methodPolygonPathFinder[0], points, connections) }
@@ -12459,10 +12929,12 @@ func (gdClass PolygonPathFinder) GetPointPenalty(idx int64) float64 { return gdn
 func (gdClass PolygonPathFinder) GetBounds() Rect2 { return gdnative.Return[Rect2](gdnative.Object(gdClass), methodPolygonPathFinder[7]) }
 
 type Popup gdnative.Object
+func (Popup) class() string { return `Popup` }
 
 var methodPopup [0]gdnative.Method
 
 type PopupMenu gdnative.Object
+func (PopupMenu) class() string { return `PopupMenu` }
 
 var methodPopupMenu [70]gdnative.Method
 func (gdClass PopupMenu) AddItem(label string, id int64, accel Key)  { gdnative.Call(gdnative.Object(gdClass), methodPopupMenu[0], label, id, accel) }
@@ -12537,10 +13009,12 @@ func (gdClass PopupMenu) SetAllowSearch(allow bool)  { gdnative.Call(gdnative.Ob
 func (gdClass PopupMenu) GetAllowSearch() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPopupMenu[69]) }
 
 type PopupPanel gdnative.Object
+func (PopupPanel) class() string { return `PopupPanel` }
 
 var methodPopupPanel [0]gdnative.Method
 
 type PortableCompressedTexture2D gdnative.Object
+func (PortableCompressedTexture2D) class() string { return `PortableCompressedTexture2D` }
 
 var methodPortableCompressedTexture2D [9]gdnative.Method
 
@@ -12565,16 +13039,19 @@ func (gdClass PortableCompressedTexture2D) SetKeepAllCompressedBuffers(keep bool
 func (gdClass PortableCompressedTexture2D) IsKeepingAllCompressedBuffers() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPortableCompressedTexture2D[8]) }
 
 type Position2D gdnative.Object
+func (Position2D) class() string { return `Position2D` }
 
 var methodPosition2D [2]gdnative.Method
 func (gdClass Position2D) SetGizmoExtents(extents float64)  { gdnative.Call(gdnative.Object(gdClass), methodPosition2D[0], extents) }
 func (gdClass Position2D) GetGizmoExtents() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPosition2D[1]) }
 
 type Position3D gdnative.Object
+func (Position3D) class() string { return `Position3D` }
 
 var methodPosition3D [0]gdnative.Method
 
 type PrimitiveMesh gdnative.Object
+func (PrimitiveMesh) class() string { return `PrimitiveMesh` }
 
 var methodPrimitiveMesh [8]gdnative.Method
 func (gdClass PrimitiveMesh) CreateMeshArrayImplementation() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPrimitiveMesh[0]) }
@@ -12587,6 +13064,7 @@ func (gdClass PrimitiveMesh) SetFlipFaces(flip_faces bool)  { gdnative.Call(gdna
 func (gdClass PrimitiveMesh) GetFlipFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPrimitiveMesh[7]) }
 
 type PrismMesh gdnative.Object
+func (PrismMesh) class() string { return `PrismMesh` }
 
 var methodPrismMesh [10]gdnative.Method
 func (gdClass PrismMesh) SetLeftToRight(left_to_right float64)  { gdnative.Call(gdnative.Object(gdClass), methodPrismMesh[0], left_to_right) }
@@ -12601,6 +13079,7 @@ func (gdClass PrismMesh) SetSubdivideDepth(segments int64)  { gdnative.Call(gdna
 func (gdClass PrismMesh) GetSubdivideDepth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPrismMesh[9]) }
 
 type ProceduralSkyMaterial gdnative.Object
+func (ProceduralSkyMaterial) class() string { return `ProceduralSkyMaterial` }
 
 var methodProceduralSkyMaterial [26]gdnative.Method
 func (gdClass ProceduralSkyMaterial) SetSkyTopColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodProceduralSkyMaterial[0], color) }
@@ -12631,6 +13110,7 @@ func (gdClass ProceduralSkyMaterial) SetUseDebanding(use_debanding bool)  { gdna
 func (gdClass ProceduralSkyMaterial) GetUseDebanding() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodProceduralSkyMaterial[25]) }
 
 type ProgressBar gdnative.Object
+func (ProgressBar) class() string { return `ProgressBar` }
 
 var methodProgressBar [4]gdnative.Method
 
@@ -12648,6 +13128,7 @@ func (gdClass ProgressBar) SetPercentVisible(visible bool)  { gdnative.Call(gdna
 func (gdClass ProgressBar) IsPercentVisible() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodProgressBar[3]) }
 
 type ProjectSettings gdnative.Object
+func (ProjectSettings) class() string { return `ProjectSettings` }
 
 var methodProjectSettings [15]gdnative.Method
 func (gdClass ProjectSettings) HasSetting(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodProjectSettings[0], name) }
@@ -12667,6 +13148,7 @@ func (gdClass ProjectSettings) PropertyGetRevert(name string) any { return gdnat
 func (gdClass ProjectSettings) SaveCustom(file string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodProjectSettings[14], file) }
 
 type PropertyTweener gdnative.Object
+func (PropertyTweener) class() string { return `PropertyTweener` }
 
 var methodPropertyTweener [6]gdnative.Method
 func (gdClass PropertyTweener) From(value any) PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodPropertyTweener[0], value) }
@@ -12677,12 +13159,14 @@ func (gdClass PropertyTweener) SetEase(ease TweenEaseType) PropertyTweener { ret
 func (gdClass PropertyTweener) SetDelay(delay float64) PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodPropertyTweener[5], delay) }
 
 type ProxyTexture gdnative.Object
+func (ProxyTexture) class() string { return `ProxyTexture` }
 
 var methodProxyTexture [2]gdnative.Method
 func (gdClass ProxyTexture) SetBase(base Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodProxyTexture[0], base) }
 func (gdClass ProxyTexture) GetBase() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodProxyTexture[1]) }
 
 type QuadMesh gdnative.Object
+func (QuadMesh) class() string { return `QuadMesh` }
 
 var methodQuadMesh [4]gdnative.Method
 func (gdClass QuadMesh) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodQuadMesh[0], size) }
@@ -12691,12 +13175,14 @@ func (gdClass QuadMesh) SetCenterOffset(center_offset Vector3)  { gdnative.Call(
 func (gdClass QuadMesh) GetCenterOffset() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodQuadMesh[3]) }
 
 type QuadOccluder3D gdnative.Object
+func (QuadOccluder3D) class() string { return `QuadOccluder3D` }
 
 var methodQuadOccluder3D [2]gdnative.Method
 func (gdClass QuadOccluder3D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodQuadOccluder3D[0], size) }
 func (gdClass QuadOccluder3D) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodQuadOccluder3D[1]) }
 
 type RDAttachmentFormat gdnative.Object
+func (RDAttachmentFormat) class() string { return `RDAttachmentFormat` }
 
 var methodRDAttachmentFormat [6]gdnative.Method
 func (gdClass RDAttachmentFormat) SetFormat(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDAttachmentFormat[0], p_member) }
@@ -12707,6 +13193,7 @@ func (gdClass RDAttachmentFormat) SetUsageFlags(p_member int64)  { gdnative.Call
 func (gdClass RDAttachmentFormat) GetUsageFlags() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDAttachmentFormat[5]) }
 
 type RDFramebufferPass gdnative.Object
+func (RDFramebufferPass) class() string { return `RDFramebufferPass` }
 
 var methodRDFramebufferPass [10]gdnative.Method
 func (gdClass RDFramebufferPass) SetColorAttachments(p_member []int32)  { gdnative.Call(gdnative.Object(gdClass), methodRDFramebufferPass[0], p_member) }
@@ -12721,6 +13208,7 @@ func (gdClass RDFramebufferPass) SetDepthAttachment(p_member int64)  { gdnative.
 func (gdClass RDFramebufferPass) GetDepthAttachment() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDFramebufferPass[9]) }
 
 type RDPipelineColorBlendState gdnative.Object
+func (RDPipelineColorBlendState) class() string { return `RDPipelineColorBlendState` }
 
 var methodRDPipelineColorBlendState [8]gdnative.Method
 func (gdClass RDPipelineColorBlendState) SetEnableLogicOp(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendState[0], p_member) }
@@ -12733,6 +13221,7 @@ func (gdClass RDPipelineColorBlendState) SetAttachments(attachments Array)  { gd
 func (gdClass RDPipelineColorBlendState) GetAttachments() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRDPipelineColorBlendState[7]) }
 
 type RDPipelineColorBlendStateAttachment gdnative.Object
+func (RDPipelineColorBlendStateAttachment) class() string { return `RDPipelineColorBlendStateAttachment` }
 
 var methodRDPipelineColorBlendStateAttachment [23]gdnative.Method
 func (gdClass RDPipelineColorBlendStateAttachment) SetAsMix()  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendStateAttachment[0]) }
@@ -12760,6 +13249,7 @@ func (gdClass RDPipelineColorBlendStateAttachment) SetWriteA(p_member bool)  { g
 func (gdClass RDPipelineColorBlendStateAttachment) GetWriteA() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDPipelineColorBlendStateAttachment[22]) }
 
 type RDPipelineDepthStencilState gdnative.Object
+func (RDPipelineDepthStencilState) class() string { return `RDPipelineDepthStencilState` }
 
 var methodRDPipelineDepthStencilState [42]gdnative.Method
 func (gdClass RDPipelineDepthStencilState) SetEnableDepthTest(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineDepthStencilState[0], p_member) }
@@ -12806,6 +13296,7 @@ func (gdClass RDPipelineDepthStencilState) SetBackOpReference(p_member int64)  {
 func (gdClass RDPipelineDepthStencilState) GetBackOpReference() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDPipelineDepthStencilState[41]) }
 
 type RDPipelineMultisampleState gdnative.Object
+func (RDPipelineMultisampleState) class() string { return `RDPipelineMultisampleState` }
 
 var methodRDPipelineMultisampleState [12]gdnative.Method
 func (gdClass RDPipelineMultisampleState) SetSampleCount(p_member RenderingDeviceTextureSamples)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineMultisampleState[0], p_member) }
@@ -12822,6 +13313,7 @@ func (gdClass RDPipelineMultisampleState) SetSampleMasks(masks Array)  { gdnativ
 func (gdClass RDPipelineMultisampleState) GetSampleMasks() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRDPipelineMultisampleState[11]) }
 
 type RDPipelineRasterizationState gdnative.Object
+func (RDPipelineRasterizationState) class() string { return `RDPipelineRasterizationState` }
 
 var methodRDPipelineRasterizationState [22]gdnative.Method
 func (gdClass RDPipelineRasterizationState) SetEnableDepthClamp(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineRasterizationState[0], p_member) }
@@ -12848,6 +13340,7 @@ func (gdClass RDPipelineRasterizationState) SetPatchControlPoints(p_member int64
 func (gdClass RDPipelineRasterizationState) GetPatchControlPoints() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDPipelineRasterizationState[21]) }
 
 type RDPipelineSpecializationConstant gdnative.Object
+func (RDPipelineSpecializationConstant) class() string { return `RDPipelineSpecializationConstant` }
 
 var methodRDPipelineSpecializationConstant [4]gdnative.Method
 func (gdClass RDPipelineSpecializationConstant) SetValue(value any)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineSpecializationConstant[0], value) }
@@ -12856,6 +13349,7 @@ func (gdClass RDPipelineSpecializationConstant) SetConstantId(constant_id int64)
 func (gdClass RDPipelineSpecializationConstant) GetConstantId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDPipelineSpecializationConstant[3]) }
 
 type RDSamplerState gdnative.Object
+func (RDSamplerState) class() string { return `RDSamplerState` }
 
 var methodRDSamplerState [30]gdnative.Method
 func (gdClass RDSamplerState) SetMagFilter(p_member RenderingDeviceSamplerFilter)  { gdnative.Call(gdnative.Object(gdClass), methodRDSamplerState[0], p_member) }
@@ -12890,6 +13384,7 @@ func (gdClass RDSamplerState) SetUnnormalizedUvw(p_member bool)  { gdnative.Call
 func (gdClass RDSamplerState) GetUnnormalizedUvw() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDSamplerState[29]) }
 
 type RDShaderFile gdnative.Object
+func (RDShaderFile) class() string { return `RDShaderFile` }
 
 var methodRDShaderFile [5]gdnative.Method
 func (gdClass RDShaderFile) SetBytecode(bytecode RDShaderSPIRV, version string)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderFile[0], bytecode, version) }
@@ -12899,6 +13394,7 @@ func (gdClass RDShaderFile) SetBaseError(error string)  { gdnative.Call(gdnative
 func (gdClass RDShaderFile) GetBaseError() string { return gdnative.Return[string](gdnative.Object(gdClass), methodRDShaderFile[4]) }
 
 type RDShaderSPIRV gdnative.Object
+func (RDShaderSPIRV) class() string { return `RDShaderSPIRV` }
 
 var methodRDShaderSPIRV [4]gdnative.Method
 func (gdClass RDShaderSPIRV) SetStageBytecode(stage RenderingDeviceShaderStage, bytecode []byte)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSPIRV[0], stage, bytecode) }
@@ -12907,6 +13403,7 @@ func (gdClass RDShaderSPIRV) SetStageCompileError(stage RenderingDeviceShaderSta
 func (gdClass RDShaderSPIRV) GetStageCompileError(stage RenderingDeviceShaderStage) string { return gdnative.Return[string](gdnative.Object(gdClass), methodRDShaderSPIRV[3], stage) }
 
 type RDShaderSource gdnative.Object
+func (RDShaderSource) class() string { return `RDShaderSource` }
 
 var methodRDShaderSource [4]gdnative.Method
 func (gdClass RDShaderSource) SetStageSource(stage RenderingDeviceShaderStage, source string)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSource[0], stage, source) }
@@ -12915,6 +13412,7 @@ func (gdClass RDShaderSource) SetLanguage(language RenderingDeviceShaderLanguage
 func (gdClass RDShaderSource) GetLanguage() RenderingDeviceShaderLanguage { return gdnative.Return[RenderingDeviceShaderLanguage](gdnative.Object(gdClass), methodRDShaderSource[3]) }
 
 type RDTextureFormat gdnative.Object
+func (RDTextureFormat) class() string { return `RDTextureFormat` }
 
 var methodRDTextureFormat [20]gdnative.Method
 func (gdClass RDTextureFormat) SetFormat(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureFormat[0], p_member) }
@@ -12939,6 +13437,7 @@ func (gdClass RDTextureFormat) AddShareableFormat(format RenderingDeviceDataForm
 func (gdClass RDTextureFormat) RemoveShareableFormat(format RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureFormat[19], format) }
 
 type RDTextureView gdnative.Object
+func (RDTextureView) class() string { return `RDTextureView` }
 
 var methodRDTextureView [10]gdnative.Method
 func (gdClass RDTextureView) SetFormatOverride(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureView[0], p_member) }
@@ -12953,6 +13452,7 @@ func (gdClass RDTextureView) SetSwizzleA(p_member RenderingDeviceTextureSwizzle)
 func (gdClass RDTextureView) GetSwizzleA() RenderingDeviceTextureSwizzle { return gdnative.Return[RenderingDeviceTextureSwizzle](gdnative.Object(gdClass), methodRDTextureView[9]) }
 
 type RDUniform gdnative.Object
+func (RDUniform) class() string { return `RDUniform` }
 
 var methodRDUniform [7]gdnative.Method
 func (gdClass RDUniform) SetUniformType(p_member RenderingDeviceUniformType)  { gdnative.Call(gdnative.Object(gdClass), methodRDUniform[0], p_member) }
@@ -12964,6 +13464,7 @@ func (gdClass RDUniform) ClearIds()  { gdnative.Call(gdnative.Object(gdClass), m
 func (gdClass RDUniform) GetIds() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRDUniform[6]) }
 
 type RDVertexAttribute gdnative.Object
+func (RDVertexAttribute) class() string { return `RDVertexAttribute` }
 
 var methodRDVertexAttribute [10]gdnative.Method
 func (gdClass RDVertexAttribute) SetLocation(p_member int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDVertexAttribute[0], p_member) }
@@ -12978,6 +13479,7 @@ func (gdClass RDVertexAttribute) SetFrequency(p_member RenderingDeviceVertexFreq
 func (gdClass RDVertexAttribute) GetFrequency() RenderingDeviceVertexFrequency { return gdnative.Return[RenderingDeviceVertexFrequency](gdnative.Object(gdClass), methodRDVertexAttribute[9]) }
 
 type RandomNumberGenerator gdnative.Object
+func (RandomNumberGenerator) class() string { return `RandomNumberGenerator` }
 
 var methodRandomNumberGenerator [10]gdnative.Method
 func (gdClass RandomNumberGenerator) SetSeed(seed int64)  { gdnative.Call(gdnative.Object(gdClass), methodRandomNumberGenerator[0], seed) }
@@ -12992,6 +13494,7 @@ func (gdClass RandomNumberGenerator) RandiRange(from int64, to int64) int64 { re
 func (gdClass RandomNumberGenerator) Randomize()  { gdnative.Call(gdnative.Object(gdClass), methodRandomNumberGenerator[9]) }
 
 type Range gdnative.Object
+func (Range) class() string { return `Range` }
 
 var methodRange [23]gdnative.Method
 func (gdClass Range) ValueChangedImplementation(new_value float64)  { gdnative.Call(gdnative.Object(gdClass), methodRange[0], new_value) }
@@ -13019,6 +13522,7 @@ func (gdClass Range) Share(with Node)  { gdnative.Call(gdnative.Object(gdClass),
 func (gdClass Range) Unshare()  { gdnative.Call(gdnative.Object(gdClass), methodRange[22]) }
 
 type RayCast2D gdnative.Object
+func (RayCast2D) class() string { return `RayCast2D` }
 
 var methodRayCast2D [27]gdnative.Method
 func (gdClass RayCast2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast2D[0], enabled) }
@@ -13050,6 +13554,7 @@ func (gdClass RayCast2D) SetHitFromInside(enable bool)  { gdnative.Call(gdnative
 func (gdClass RayCast2D) IsHitFromInsideEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRayCast2D[26]) }
 
 type RayCast3D gdnative.Object
+func (RayCast3D) class() string { return `RayCast3D` }
 
 var methodRayCast3D [31]gdnative.Method
 func (gdClass RayCast3D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast3D[0], enabled) }
@@ -13085,12 +13590,14 @@ func (gdClass RayCast3D) SetDebugShapeThickness(debug_shape_thickness int64)  { 
 func (gdClass RayCast3D) GetDebugShapeThickness() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRayCast3D[30]) }
 
 type RectangleShape2D gdnative.Object
+func (RectangleShape2D) class() string { return `RectangleShape2D` }
 
 var methodRectangleShape2D [2]gdnative.Method
 func (gdClass RectangleShape2D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodRectangleShape2D[0], size) }
 func (gdClass RectangleShape2D) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodRectangleShape2D[1]) }
 
 type RefCounted gdnative.Object
+func (RefCounted) class() string { return `RefCounted` }
 
 var methodRefCounted [3]gdnative.Method
 func (gdClass RefCounted) InitRef() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRefCounted[0]) }
@@ -13098,6 +13605,7 @@ func (gdClass RefCounted) Reference() bool { return gdnative.Return[bool](gdnati
 func (gdClass RefCounted) Unreference() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRefCounted[2]) }
 
 type ReferenceRect gdnative.Object
+func (ReferenceRect) class() string { return `ReferenceRect` }
 
 var methodReferenceRect [6]gdnative.Method
 func (gdClass ReferenceRect) GetBorderColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodReferenceRect[0]) }
@@ -13108,6 +13616,7 @@ func (gdClass ReferenceRect) GetEditorOnly() bool { return gdnative.Return[bool]
 func (gdClass ReferenceRect) SetEditorOnly(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodReferenceRect[5], enabled) }
 
 type ReflectionProbe gdnative.Object
+func (ReflectionProbe) class() string { return `ReflectionProbe` }
 
 var methodReflectionProbe [26]gdnative.Method
 
@@ -13153,6 +13662,7 @@ func (gdClass ReflectionProbe) SetUpdateMode(mode ReflectionProbeUpdateMode)  { 
 func (gdClass ReflectionProbe) GetUpdateMode() ReflectionProbeUpdateMode { return gdnative.Return[ReflectionProbeUpdateMode](gdnative.Object(gdClass), methodReflectionProbe[25]) }
 
 type RegEx gdnative.Object
+func (RegEx) class() string { return `RegEx` }
 
 var methodRegEx [10]gdnative.Method
 func (gdClass RegEx) CreateFromString(pattern string) RegEx { return gdnative.Return[RegEx](gdnative.Object(gdClass), methodRegEx[0], pattern) }
@@ -13167,6 +13677,7 @@ func (gdClass RegEx) GetGroupCount() int64 { return gdnative.Return[int64](gdnat
 func (gdClass RegEx) GetNames() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRegEx[9]) }
 
 type RegExMatch gdnative.Object
+func (RegExMatch) class() string { return `RegExMatch` }
 
 var methodRegExMatch [7]gdnative.Method
 func (gdClass RegExMatch) GetSubject() string { return gdnative.Return[string](gdnative.Object(gdClass), methodRegExMatch[0]) }
@@ -13178,6 +13689,7 @@ func (gdClass RegExMatch) GetStart(name any) int64 { return gdnative.Return[int6
 func (gdClass RegExMatch) GetEnd(name any) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRegExMatch[6], name) }
 
 type RemoteTransform2D gdnative.Object
+func (RemoteTransform2D) class() string { return `RemoteTransform2D` }
 
 var methodRemoteTransform2D [11]gdnative.Method
 func (gdClass RemoteTransform2D) SetRemoteNode(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform2D[0], path) }
@@ -13193,6 +13705,7 @@ func (gdClass RemoteTransform2D) SetUpdateScale(update_remote_scale bool)  { gdn
 func (gdClass RemoteTransform2D) GetUpdateScale() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRemoteTransform2D[10]) }
 
 type RemoteTransform3D gdnative.Object
+func (RemoteTransform3D) class() string { return `RemoteTransform3D` }
 
 var methodRemoteTransform3D [11]gdnative.Method
 func (gdClass RemoteTransform3D) SetRemoteNode(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform3D[0], path) }
@@ -13208,6 +13721,7 @@ func (gdClass RemoteTransform3D) SetUpdateScale(update_remote_scale bool)  { gdn
 func (gdClass RemoteTransform3D) GetUpdateScale() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRemoteTransform3D[10]) }
 
 type RenderingDevice gdnative.Object
+func (RenderingDevice) class() string { return `RenderingDevice` }
 
 var methodRenderingDevice [89]gdnative.Method
 
@@ -13912,6 +14426,7 @@ func (gdClass RenderingDevice) GetMemoryUsage(atype RenderingDeviceMemoryType) i
 func (gdClass RenderingDevice) GetDriverResource(resource RenderingDeviceDriverResource, rid RID, index int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRenderingDevice[88], resource, rid, index) }
 
 type RenderingServer gdnative.Object
+func (RenderingServer) class() string { return `RenderingServer` }
 
 var methodRenderingServer [448]gdnative.Method
 
@@ -15144,6 +15659,7 @@ func (gdClass RenderingServer) GetRenderingDevice() RenderingDevice { return gdn
 func (gdClass RenderingServer) CreateLocalRenderingDevice() RenderingDevice { return gdnative.Return[RenderingDevice](gdnative.Object(gdClass), methodRenderingServer[447]) }
 
 type Resource gdnative.Object
+func (Resource) class() string { return `Resource` }
 
 var methodResource [12]gdnative.Method
 func (gdClass Resource) SetPath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodResource[0], path) }
@@ -15160,6 +15676,7 @@ func (gdClass Resource) EmitChanged()  { gdnative.Call(gdnative.Object(gdClass),
 func (gdClass Resource) Duplicate(subresources bool) Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodResource[11], subresources) }
 
 type ResourceFormatLoader gdnative.Object
+func (ResourceFormatLoader) class() string { return `ResourceFormatLoader` }
 
 var methodResourceFormatLoader [9]gdnative.Method
 
@@ -15181,6 +15698,7 @@ func (gdClass ResourceFormatLoader) GetClassesUsedImplementation(path string) []
 func (gdClass ResourceFormatLoader) LoadImplementation(path string, original_path string, use_sub_threads bool, cache_mode int64) any { return gdnative.Return[any](gdnative.Object(gdClass), methodResourceFormatLoader[8], path, original_path, use_sub_threads, cache_mode) }
 
 type ResourceFormatSaver gdnative.Object
+func (ResourceFormatSaver) class() string { return `ResourceFormatSaver` }
 
 var methodResourceFormatSaver [3]gdnative.Method
 func (gdClass ResourceFormatSaver) SaveImplementation(path Resource, resource string, flags int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodResourceFormatSaver[0], path, resource, flags) }
@@ -15188,6 +15706,7 @@ func (gdClass ResourceFormatSaver) RecognizeImplementation(resource Resource) bo
 func (gdClass ResourceFormatSaver) GetRecognizedExtensionsImplementation(resource Resource) []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodResourceFormatSaver[2], resource) }
 
 type ResourceImporter gdnative.Object
+func (ResourceImporter) class() string { return `ResourceImporter` }
 
 var methodResourceImporter [0]gdnative.Method
 
@@ -15199,6 +15718,7 @@ const (
 )
 
 type ResourceLoader gdnative.Object
+func (ResourceLoader) class() string { return `ResourceLoader` }
 
 var methodResourceLoader [12]gdnative.Method
 
@@ -15232,6 +15752,7 @@ func (gdClass ResourceLoader) Exists(path string, type_hint string) bool { retur
 func (gdClass ResourceLoader) GetResourceUid(path string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodResourceLoader[11], path) }
 
 type ResourcePreloader gdnative.Object
+func (ResourcePreloader) class() string { return `ResourcePreloader` }
 
 var methodResourcePreloader [6]gdnative.Method
 func (gdClass ResourcePreloader) AddResource(name string, resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodResourcePreloader[0], name, resource) }
@@ -15242,6 +15763,7 @@ func (gdClass ResourcePreloader) GetResource(name string) Resource { return gdna
 func (gdClass ResourcePreloader) GetResourceList() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodResourcePreloader[5]) }
 
 type ResourceSaver gdnative.Object
+func (ResourceSaver) class() string { return `ResourceSaver` }
 
 var methodResourceSaver [4]gdnative.Method
 
@@ -15263,6 +15785,7 @@ func (gdClass ResourceSaver) AddResourceFormatSaver(format_saver ResourceFormatS
 func (gdClass ResourceSaver) RemoveResourceFormatSaver(format_saver ResourceFormatSaver)  { gdnative.Call(gdnative.Object(gdClass), methodResourceSaver[3], format_saver) }
 
 type ResourceUID gdnative.Object
+func (ResourceUID) class() string { return `ResourceUID` }
 
 var methodResourceUID [8]gdnative.Method
 func (gdClass ResourceUID) IdToText(id int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodResourceUID[0], id) }
@@ -15275,6 +15798,7 @@ func (gdClass ResourceUID) GetIdPath(id int64) string { return gdnative.Return[s
 func (gdClass ResourceUID) RemoveId(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodResourceUID[7], id) }
 
 type RibbonTrailMesh gdnative.Object
+func (RibbonTrailMesh) class() string { return `RibbonTrailMesh` }
 
 var methodRibbonTrailMesh [12]gdnative.Method
 
@@ -15298,11 +15822,13 @@ func (gdClass RibbonTrailMesh) SetShape(shape RibbonTrailMeshShape)  { gdnative.
 func (gdClass RibbonTrailMesh) GetShape() RibbonTrailMeshShape { return gdnative.Return[RibbonTrailMeshShape](gdnative.Object(gdClass), methodRibbonTrailMesh[11]) }
 
 type RichTextEffect gdnative.Object
+func (RichTextEffect) class() string { return `RichTextEffect` }
 
 var methodRichTextEffect [1]gdnative.Method
 func (gdClass RichTextEffect) ProcessCustomFxImplementation(char_fx CharFXTransform) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRichTextEffect[0], char_fx) }
 
 type RichTextLabel gdnative.Object
+func (RichTextLabel) class() string { return `RichTextLabel` }
 
 var methodRichTextLabel [108]gdnative.Method
 
@@ -15456,6 +15982,7 @@ func (gdClass RichTextLabel) GetMenu() PopupMenu { return gdnative.Return[PopupM
 func (gdClass RichTextLabel) IsMenuVisible() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRichTextLabel[107]) }
 
 type RigidDynamicBody2D gdnative.Object
+func (RigidDynamicBody2D) class() string { return `RigidDynamicBody2D` }
 
 var methodRigidDynamicBody2D [58]gdnative.Method
 
@@ -15547,6 +16074,7 @@ func (gdClass RigidDynamicBody2D) GetFreezeMode() RigidDynamicBody2DFreezeMode {
 func (gdClass RigidDynamicBody2D) GetCollidingBodies() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRigidDynamicBody2D[57]) }
 
 type RigidDynamicBody3D gdnative.Object
+func (RigidDynamicBody3D) class() string { return `RigidDynamicBody3D` }
 
 var methodRigidDynamicBody3D [59]gdnative.Method
 
@@ -15631,6 +16159,7 @@ func (gdClass RigidDynamicBody3D) GetFreezeMode() RigidDynamicBody3DFreezeMode {
 func (gdClass RigidDynamicBody3D) GetCollidingBodies() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodRigidDynamicBody3D[58]) }
 
 type RootMotionView gdnative.Object
+func (RootMotionView) class() string { return `RootMotionView` }
 
 var methodRootMotionView [10]gdnative.Method
 func (gdClass RootMotionView) SetAnimationPath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRootMotionView[0], path) }
@@ -15645,6 +16174,7 @@ func (gdClass RootMotionView) SetZeroY(enable bool)  { gdnative.Call(gdnative.Ob
 func (gdClass RootMotionView) GetZeroY() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRootMotionView[9]) }
 
 type SceneMultiplayer gdnative.Object
+func (SceneMultiplayer) class() string { return `SceneMultiplayer` }
 
 var methodSceneMultiplayer [8]gdnative.Method
 func (gdClass SceneMultiplayer) SetRootPath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSceneMultiplayer[0], path) }
@@ -15657,6 +16187,7 @@ func (gdClass SceneMultiplayer) IsObjectDecodingAllowed() bool { return gdnative
 func (gdClass SceneMultiplayer) SendBytes(bytes []byte, id int64, mode MultiplayerPeerTransferMode, channel int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodSceneMultiplayer[7], bytes, id, mode, channel) }
 
 type SceneReplicationConfig gdnative.Object
+func (SceneReplicationConfig) class() string { return `SceneReplicationConfig` }
 
 var methodSceneReplicationConfig [9]gdnative.Method
 func (gdClass SceneReplicationConfig) GetProperties() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodSceneReplicationConfig[0]) }
@@ -15670,6 +16201,7 @@ func (gdClass SceneReplicationConfig) PropertyGetSync(path NodePath) bool { retu
 func (gdClass SceneReplicationConfig) PropertySetSync(path NodePath, enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSceneReplicationConfig[8], path, enabled) }
 
 type SceneState gdnative.Object
+func (SceneState) class() string { return `SceneState` }
 
 var methodSceneState [21]gdnative.Method
 
@@ -15704,6 +16236,7 @@ func (gdClass SceneState) GetConnectionBinds(idx int64) Array { return gdnative.
 func (gdClass SceneState) GetConnectionUnbinds(idx int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSceneState[20], idx) }
 
 type SceneTree gdnative.Object
+func (SceneTree) class() string { return `SceneTree` }
 
 var methodSceneTree [40]gdnative.Method
 
@@ -15757,12 +16290,14 @@ func (gdClass SceneTree) SetMultiplayerPollEnabled(enabled bool)  { gdnative.Cal
 func (gdClass SceneTree) IsMultiplayerPollEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSceneTree[39]) }
 
 type SceneTreeTimer gdnative.Object
+func (SceneTreeTimer) class() string { return `SceneTreeTimer` }
 
 var methodSceneTreeTimer [2]gdnative.Method
 func (gdClass SceneTreeTimer) SetTimeLeft(time float64)  { gdnative.Call(gdnative.Object(gdClass), methodSceneTreeTimer[0], time) }
 func (gdClass SceneTreeTimer) GetTimeLeft() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSceneTreeTimer[1]) }
 
 type Script gdnative.Object
+func (Script) class() string { return `Script` }
 
 var methodScript [15]gdnative.Method
 func (gdClass Script) CanInstantiate() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScript[0]) }
@@ -15782,11 +16317,13 @@ func (gdClass Script) GetPropertyDefaultValue(property string) any { return gdna
 func (gdClass Script) IsTool() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScript[14]) }
 
 type ScriptCreateDialog gdnative.Object
+func (ScriptCreateDialog) class() string { return `ScriptCreateDialog` }
 
 var methodScriptCreateDialog [1]gdnative.Method
 func (gdClass ScriptCreateDialog) Config(inherits string, path string, built_in_enabled bool, load_enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodScriptCreateDialog[0], inherits, path, built_in_enabled, load_enabled) }
 
 type ScriptEditor gdnative.Object
+func (ScriptEditor) class() string { return `ScriptEditor` }
 
 var methodScriptEditor [8]gdnative.Method
 func (gdClass ScriptEditor) GetCurrentEditor() ScriptEditorBase { return gdnative.Return[ScriptEditorBase](gdnative.Object(gdClass), methodScriptEditor[0]) }
@@ -15799,12 +16336,14 @@ func (gdClass ScriptEditor) GetOpenScripts() Array { return gdnative.Return[Arra
 func (gdClass ScriptEditor) OpenScriptCreateDialog(base_name string, base_path string)  { gdnative.Call(gdnative.Object(gdClass), methodScriptEditor[7], base_name, base_path) }
 
 type ScriptEditorBase gdnative.Object
+func (ScriptEditorBase) class() string { return `ScriptEditorBase` }
 
 var methodScriptEditorBase [2]gdnative.Method
 func (gdClass ScriptEditorBase) GetBaseEditor() Control { return gdnative.Return[Control](gdnative.Object(gdClass), methodScriptEditorBase[0]) }
 func (gdClass ScriptEditorBase) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter)  { gdnative.Call(gdnative.Object(gdClass), methodScriptEditorBase[1], highlighter) }
 
 type ScriptExtension gdnative.Object
+func (ScriptExtension) class() string { return `ScriptExtension` }
 
 var methodScriptExtension [30]gdnative.Method
 func (gdClass ScriptExtension) EditorCanReloadFromFileImplementation() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScriptExtension[0]) }
@@ -15839,10 +16378,12 @@ func (gdClass ScriptExtension) IsPlaceholderFallbackEnabledImplementation() bool
 func (gdClass ScriptExtension) GetRpcConfigImplementation() any { return gdnative.Return[any](gdnative.Object(gdClass), methodScriptExtension[29]) }
 
 type ScriptLanguage gdnative.Object
+func (ScriptLanguage) class() string { return `ScriptLanguage` }
 
 var methodScriptLanguage [0]gdnative.Method
 
 type ScriptLanguageExtension gdnative.Object
+func (ScriptLanguageExtension) class() string { return `ScriptLanguageExtension` }
 
 var methodScriptLanguageExtension [59]gdnative.Method
 
@@ -15946,12 +16487,14 @@ func (gdClass ScriptLanguageExtension) HandlesGlobalClassTypeImplementation(atyp
 func (gdClass ScriptLanguageExtension) GetGlobalClassNameImplementation(path string) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodScriptLanguageExtension[58], path) }
 
 type ScrollBar gdnative.Object
+func (ScrollBar) class() string { return `ScrollBar` }
 
 var methodScrollBar [2]gdnative.Method
 func (gdClass ScrollBar) SetCustomStep(step float64)  { gdnative.Call(gdnative.Object(gdClass), methodScrollBar[0], step) }
 func (gdClass ScrollBar) GetCustomStep() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodScrollBar[1]) }
 
 type ScrollContainer gdnative.Object
+func (ScrollContainer) class() string { return `ScrollContainer` }
 
 var methodScrollContainer [15]gdnative.Method
 
@@ -15980,6 +16523,7 @@ func (gdClass ScrollContainer) GetVScrollBar() VScrollBar { return gdnative.Retu
 func (gdClass ScrollContainer) EnsureControlVisible(control Control)  { gdnative.Call(gdnative.Object(gdClass), methodScrollContainer[14], control) }
 
 type SegmentShape2D gdnative.Object
+func (SegmentShape2D) class() string { return `SegmentShape2D` }
 
 var methodSegmentShape2D [4]gdnative.Method
 func (gdClass SegmentShape2D) SetA(a Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodSegmentShape2D[0], a) }
@@ -15988,6 +16532,7 @@ func (gdClass SegmentShape2D) SetB(b Vector2)  { gdnative.Call(gdnative.Object(g
 func (gdClass SegmentShape2D) GetB() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodSegmentShape2D[3]) }
 
 type Semaphore gdnative.Object
+func (Semaphore) class() string { return `Semaphore` }
 
 var methodSemaphore [3]gdnative.Method
 func (gdClass Semaphore) Wait()  { gdnative.Call(gdnative.Object(gdClass), methodSemaphore[0]) }
@@ -15995,6 +16540,7 @@ func (gdClass Semaphore) TryWait() error { return gdnative.Return[error](gdnativ
 func (gdClass Semaphore) Post()  { gdnative.Call(gdnative.Object(gdClass), methodSemaphore[2]) }
 
 type SeparationRayShape2D gdnative.Object
+func (SeparationRayShape2D) class() string { return `SeparationRayShape2D` }
 
 var methodSeparationRayShape2D [4]gdnative.Method
 func (gdClass SeparationRayShape2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape2D[0], length) }
@@ -16003,6 +16549,7 @@ func (gdClass SeparationRayShape2D) SetSlideOnSlope(active bool)  { gdnative.Cal
 func (gdClass SeparationRayShape2D) GetSlideOnSlope() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSeparationRayShape2D[3]) }
 
 type SeparationRayShape3D gdnative.Object
+func (SeparationRayShape3D) class() string { return `SeparationRayShape3D` }
 
 var methodSeparationRayShape3D [4]gdnative.Method
 func (gdClass SeparationRayShape3D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape3D[0], length) }
@@ -16011,10 +16558,12 @@ func (gdClass SeparationRayShape3D) SetSlideOnSlope(active bool)  { gdnative.Cal
 func (gdClass SeparationRayShape3D) GetSlideOnSlope() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSeparationRayShape3D[3]) }
 
 type Separator gdnative.Object
+func (Separator) class() string { return `Separator` }
 
 var methodSeparator [0]gdnative.Method
 
 type Shader gdnative.Object
+func (Shader) class() string { return `Shader` }
 
 var methodShader [6]gdnative.Method
 
@@ -16035,16 +16584,19 @@ func (gdClass Shader) GetDefaultTextureParam(param string, index int64) Texture2
 func (gdClass Shader) HasUniform(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShader[5], name) }
 
 type ShaderGlobalsOverride gdnative.Object
+func (ShaderGlobalsOverride) class() string { return `ShaderGlobalsOverride` }
 
 var methodShaderGlobalsOverride [0]gdnative.Method
 
 type ShaderInclude gdnative.Object
+func (ShaderInclude) class() string { return `ShaderInclude` }
 
 var methodShaderInclude [2]gdnative.Method
 func (gdClass ShaderInclude) SetCode(code string)  { gdnative.Call(gdnative.Object(gdClass), methodShaderInclude[0], code) }
 func (gdClass ShaderInclude) GetCode() string { return gdnative.Return[string](gdnative.Object(gdClass), methodShaderInclude[1]) }
 
 type ShaderMaterial gdnative.Object
+func (ShaderMaterial) class() string { return `ShaderMaterial` }
 
 var methodShaderMaterial [6]gdnative.Method
 func (gdClass ShaderMaterial) SetShader(shader Shader)  { gdnative.Call(gdnative.Object(gdClass), methodShaderMaterial[0], shader) }
@@ -16055,6 +16607,7 @@ func (gdClass ShaderMaterial) PropertyCanRevert(name string) bool { return gdnat
 func (gdClass ShaderMaterial) PropertyGetRevert(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodShaderMaterial[5], name) }
 
 type Shape2D gdnative.Object
+func (Shape2D) class() string { return `Shape2D` }
 
 var methodShape2D [7]gdnative.Method
 func (gdClass Shape2D) SetCustomSolverBias(bias float64)  { gdnative.Call(gdnative.Object(gdClass), methodShape2D[0], bias) }
@@ -16066,6 +16619,7 @@ func (gdClass Shape2D) CollideWithMotionAndGetContacts(local_xform Transform2D, 
 func (gdClass Shape2D) Draw(canvas_item RID, color Color)  { gdnative.Call(gdnative.Object(gdClass), methodShape2D[6], canvas_item, color) }
 
 type Shape3D gdnative.Object
+func (Shape3D) class() string { return `Shape3D` }
 
 var methodShape3D [5]gdnative.Method
 func (gdClass Shape3D) SetCustomSolverBias(bias float64)  { gdnative.Call(gdnative.Object(gdClass), methodShape3D[0], bias) }
@@ -16075,6 +16629,7 @@ func (gdClass Shape3D) GetMargin() float64 { return gdnative.Return[float64](gdn
 func (gdClass Shape3D) GetDebugMesh() ArrayMesh { return gdnative.Return[ArrayMesh](gdnative.Object(gdClass), methodShape3D[4]) }
 
 type ShapeCast2D gdnative.Object
+func (ShapeCast2D) class() string { return `ShapeCast2D` }
 
 var methodShapeCast2D [34]gdnative.Method
 func (gdClass ShapeCast2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast2D[0], enabled) }
@@ -16113,6 +16668,7 @@ func (gdClass ShapeCast2D) SetCollideWithBodies(enable bool)  { gdnative.Call(gd
 func (gdClass ShapeCast2D) IsCollideWithBodiesEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShapeCast2D[33]) }
 
 type ShapeCast3D gdnative.Object
+func (ShapeCast3D) class() string { return `ShapeCast3D` }
 
 var methodShapeCast3D [37]gdnative.Method
 func (gdClass ShapeCast3D) ResourceChanged(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast3D[0], resource) }
@@ -16154,6 +16710,7 @@ func (gdClass ShapeCast3D) SetDebugShapeCustomColor(debug_shape_custom_color Col
 func (gdClass ShapeCast3D) GetDebugShapeCustomColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodShapeCast3D[36]) }
 
 type Shortcut gdnative.Object
+func (Shortcut) class() string { return `Shortcut` }
 
 var methodShortcut [5]gdnative.Method
 func (gdClass Shortcut) SetEvents(events Array)  { gdnative.Call(gdnative.Object(gdClass), methodShortcut[0], events) }
@@ -16163,6 +16720,7 @@ func (gdClass Shortcut) MatchesEvent(event InputEvent) bool { return gdnative.Re
 func (gdClass Shortcut) GetAsText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodShortcut[4]) }
 
 type Skeleton2D gdnative.Object
+func (Skeleton2D) class() string { return `Skeleton2D` }
 
 var methodSkeleton2D [8]gdnative.Method
 func (gdClass Skeleton2D) GetBoneCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeleton2D[0]) }
@@ -16175,6 +16733,7 @@ func (gdClass Skeleton2D) SetBoneLocalPoseOverride(bone_idx int64, override_pose
 func (gdClass Skeleton2D) GetBoneLocalPoseOverride(bone_idx int64) Transform2D { return gdnative.Return[Transform2D](gdnative.Object(gdClass), methodSkeleton2D[7], bone_idx) }
 
 type Skeleton3D gdnative.Object
+func (Skeleton3D) class() string { return `Skeleton3D` }
 
 var methodSkeleton3D [57]gdnative.Method
 func (gdClass Skeleton3D) AddBone(name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeleton3D[0], name) }
@@ -16236,6 +16795,7 @@ func (gdClass Skeleton3D) GetModificationStack() SkeletonModificationStack3D { r
 func (gdClass Skeleton3D) ExecuteModifications(delta float64, execution_mode int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeleton3D[56], delta, execution_mode) }
 
 type SkeletonIK3D gdnative.Object
+func (SkeletonIK3D) class() string { return `SkeletonIK3D` }
 
 var methodSkeletonIK3D [24]gdnative.Method
 func (gdClass SkeletonIK3D) SetRootBone(root_bone string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonIK3D[0], root_bone) }
@@ -16264,6 +16824,7 @@ func (gdClass SkeletonIK3D) Start(one_time bool)  { gdnative.Call(gdnative.Objec
 func (gdClass SkeletonIK3D) Stop()  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonIK3D[23]) }
 
 type SkeletonModification2D gdnative.Object
+func (SkeletonModification2D) class() string { return `SkeletonModification2D` }
 
 var methodSkeletonModification2D [13]gdnative.Method
 func (gdClass SkeletonModification2D) ExecuteImplementation(delta float64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2D[0], delta) }
@@ -16281,6 +16842,7 @@ func (gdClass SkeletonModification2D) SetEditorDrawGizmo(draw_gizmo bool)  { gdn
 func (gdClass SkeletonModification2D) GetEditorDrawGizmo() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification2D[12]) }
 
 type SkeletonModification2DCCDIK gdnative.Object
+func (SkeletonModification2DCCDIK) class() string { return `SkeletonModification2DCCDIK` }
 
 var methodSkeletonModification2DCCDIK [20]gdnative.Method
 func (gdClass SkeletonModification2DCCDIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DCCDIK[0], target_nodepath) }
@@ -16305,6 +16867,7 @@ func (gdClass SkeletonModification2DCCDIK) SetCcdikJointConstraintAngleInvert(jo
 func (gdClass SkeletonModification2DCCDIK) GetCcdikJointConstraintAngleInvert(joint_idx int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification2DCCDIK[19], joint_idx) }
 
 type SkeletonModification2DFABRIK gdnative.Object
+func (SkeletonModification2DFABRIK) class() string { return `SkeletonModification2DFABRIK` }
 
 var methodSkeletonModification2DFABRIK [12]gdnative.Method
 func (gdClass SkeletonModification2DFABRIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DFABRIK[0], target_nodepath) }
@@ -16321,6 +16884,7 @@ func (gdClass SkeletonModification2DFABRIK) SetFabrikJointUseTargetRotation(join
 func (gdClass SkeletonModification2DFABRIK) GetFabrikJointUseTargetRotation(joint_idx int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification2DFABRIK[11], joint_idx) }
 
 type SkeletonModification2DJiggle gdnative.Object
+func (SkeletonModification2DJiggle) class() string { return `SkeletonModification2DJiggle` }
 
 var methodSkeletonModification2DJiggle [34]gdnative.Method
 func (gdClass SkeletonModification2DJiggle) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DJiggle[0], target_nodepath) }
@@ -16359,6 +16923,7 @@ func (gdClass SkeletonModification2DJiggle) SetJiggleJointGravity(joint_idx int6
 func (gdClass SkeletonModification2DJiggle) GetJiggleJointGravity(joint_idx int64) Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodSkeletonModification2DJiggle[33], joint_idx) }
 
 type SkeletonModification2DLookAt gdnative.Object
+func (SkeletonModification2DLookAt) class() string { return `SkeletonModification2DLookAt` }
 
 var methodSkeletonModification2DLookAt [16]gdnative.Method
 func (gdClass SkeletonModification2DLookAt) SetBone2dNode(bone2d_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DLookAt[0], bone2d_nodepath) }
@@ -16379,6 +16944,7 @@ func (gdClass SkeletonModification2DLookAt) SetConstraintAngleInvert(invert bool
 func (gdClass SkeletonModification2DLookAt) GetConstraintAngleInvert() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification2DLookAt[15]) }
 
 type SkeletonModification2DPhysicalBones gdnative.Object
+func (SkeletonModification2DPhysicalBones) class() string { return `SkeletonModification2DPhysicalBones` }
 
 var methodSkeletonModification2DPhysicalBones [7]gdnative.Method
 func (gdClass SkeletonModification2DPhysicalBones) SetPhysicalBoneChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DPhysicalBones[0], length) }
@@ -16390,12 +16956,14 @@ func (gdClass SkeletonModification2DPhysicalBones) StartSimulation(bones Array) 
 func (gdClass SkeletonModification2DPhysicalBones) StopSimulation(bones Array)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DPhysicalBones[6], bones) }
 
 type SkeletonModification2DStackHolder gdnative.Object
+func (SkeletonModification2DStackHolder) class() string { return `SkeletonModification2DStackHolder` }
 
 var methodSkeletonModification2DStackHolder [2]gdnative.Method
 func (gdClass SkeletonModification2DStackHolder) SetHeldModificationStack(held_modification_stack SkeletonModificationStack2D)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DStackHolder[0], held_modification_stack) }
 func (gdClass SkeletonModification2DStackHolder) GetHeldModificationStack() SkeletonModificationStack2D { return gdnative.Return[SkeletonModificationStack2D](gdnative.Object(gdClass), methodSkeletonModification2DStackHolder[1]) }
 
 type SkeletonModification2DTwoBoneIK gdnative.Object
+func (SkeletonModification2DTwoBoneIK) class() string { return `SkeletonModification2DTwoBoneIK` }
 
 var methodSkeletonModification2DTwoBoneIK [16]gdnative.Method
 func (gdClass SkeletonModification2DTwoBoneIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DTwoBoneIK[0], target_nodepath) }
@@ -16416,6 +16984,7 @@ func (gdClass SkeletonModification2DTwoBoneIK) SetJointTwoBoneIdx(bone_idx int64
 func (gdClass SkeletonModification2DTwoBoneIK) GetJointTwoBoneIdx() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeletonModification2DTwoBoneIK[15]) }
 
 type SkeletonModification3D gdnative.Object
+func (SkeletonModification3D) class() string { return `SkeletonModification3D` }
 
 var methodSkeletonModification3D [10]gdnative.Method
 func (gdClass SkeletonModification3D) ExecuteImplementation(delta float64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3D[0], delta) }
@@ -16430,6 +16999,7 @@ func (gdClass SkeletonModification3D) GetExecutionMode() int64 { return gdnative
 func (gdClass SkeletonModification3D) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSkeletonModification3D[9], angle, min, max, invert) }
 
 type SkeletonModification3DCCDIK gdnative.Object
+func (SkeletonModification3DCCDIK) class() string { return `SkeletonModification3DCCDIK` }
 
 var methodSkeletonModification3DCCDIK [22]gdnative.Method
 func (gdClass SkeletonModification3DCCDIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DCCDIK[0], target_nodepath) }
@@ -16456,6 +17026,7 @@ func (gdClass SkeletonModification3DCCDIK) SetCcdikDataChainLength(length int64)
 func (gdClass SkeletonModification3DCCDIK) GetCcdikDataChainLength() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeletonModification3DCCDIK[21]) }
 
 type SkeletonModification3DFABRIK gdnative.Object
+func (SkeletonModification3DFABRIK) class() string { return `SkeletonModification3DFABRIK` }
 
 var methodSkeletonModification3DFABRIK [25]gdnative.Method
 func (gdClass SkeletonModification3DFABRIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DFABRIK[0], target_nodepath) }
@@ -16485,6 +17056,7 @@ func (gdClass SkeletonModification3DFABRIK) GetFabrikJointUseTargetBasis(joint_i
 func (gdClass SkeletonModification3DFABRIK) SetFabrikJointUseTargetBasis(joint_idx int64, use_target_basis bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DFABRIK[24], joint_idx, use_target_basis) }
 
 type SkeletonModification3DJiggle gdnative.Object
+func (SkeletonModification3DJiggle) class() string { return `SkeletonModification3DJiggle` }
 
 var methodSkeletonModification3DJiggle [36]gdnative.Method
 func (gdClass SkeletonModification3DJiggle) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DJiggle[0], target_nodepath) }
@@ -16525,6 +17097,7 @@ func (gdClass SkeletonModification3DJiggle) SetJiggleJointRoll(joint_idx int64, 
 func (gdClass SkeletonModification3DJiggle) GetJiggleJointRoll(joint_idx int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSkeletonModification3DJiggle[35], joint_idx) }
 
 type SkeletonModification3DLookAt gdnative.Object
+func (SkeletonModification3DLookAt) class() string { return `SkeletonModification3DLookAt` }
 
 var methodSkeletonModification3DLookAt [12]gdnative.Method
 func (gdClass SkeletonModification3DLookAt) SetBoneName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DLookAt[0], name) }
@@ -16541,12 +17114,14 @@ func (gdClass SkeletonModification3DLookAt) SetLockRotationPlane(plane int64)  {
 func (gdClass SkeletonModification3DLookAt) GetLockRotationPlane() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeletonModification3DLookAt[11]) }
 
 type SkeletonModification3DStackHolder gdnative.Object
+func (SkeletonModification3DStackHolder) class() string { return `SkeletonModification3DStackHolder` }
 
 var methodSkeletonModification3DStackHolder [2]gdnative.Method
 func (gdClass SkeletonModification3DStackHolder) SetHeldModificationStack(held_modification_stack SkeletonModificationStack3D)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DStackHolder[0], held_modification_stack) }
 func (gdClass SkeletonModification3DStackHolder) GetHeldModificationStack() SkeletonModificationStack3D { return gdnative.Return[SkeletonModificationStack3D](gdnative.Object(gdClass), methodSkeletonModification3DStackHolder[1]) }
 
 type SkeletonModification3DTwoBoneIK gdnative.Object
+func (SkeletonModification3DTwoBoneIK) class() string { return `SkeletonModification3DTwoBoneIK` }
 
 var methodSkeletonModification3DTwoBoneIK [28]gdnative.Method
 func (gdClass SkeletonModification3DTwoBoneIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DTwoBoneIK[0], target_nodepath) }
@@ -16579,6 +17154,7 @@ func (gdClass SkeletonModification3DTwoBoneIK) SetJointTwoRoll(roll float64)  { 
 func (gdClass SkeletonModification3DTwoBoneIK) GetJointTwoRoll() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSkeletonModification3DTwoBoneIK[27]) }
 
 type SkeletonModificationStack2D gdnative.Object
+func (SkeletonModificationStack2D) class() string { return `SkeletonModificationStack2D` }
 
 var methodSkeletonModificationStack2D [15]gdnative.Method
 func (gdClass SkeletonModificationStack2D) Setup()  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack2D[0]) }
@@ -16598,6 +17174,7 @@ func (gdClass SkeletonModificationStack2D) GetStrength() float64 { return gdnati
 func (gdClass SkeletonModificationStack2D) GetSkeleton() Skeleton2D { return gdnative.Return[Skeleton2D](gdnative.Object(gdClass), methodSkeletonModificationStack2D[14]) }
 
 type SkeletonModificationStack3D gdnative.Object
+func (SkeletonModificationStack3D) class() string { return `SkeletonModificationStack3D` }
 
 var methodSkeletonModificationStack3D [15]gdnative.Method
 func (gdClass SkeletonModificationStack3D) Setup()  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack3D[0]) }
@@ -16617,6 +17194,7 @@ func (gdClass SkeletonModificationStack3D) GetStrength() float64 { return gdnati
 func (gdClass SkeletonModificationStack3D) GetSkeleton() Skeleton3D { return gdnative.Return[Skeleton3D](gdnative.Object(gdClass), methodSkeletonModificationStack3D[14]) }
 
 type SkeletonProfile gdnative.Object
+func (SkeletonProfile) class() string { return `SkeletonProfile` }
 
 var methodSkeletonProfile [27]gdnative.Method
 
@@ -16656,10 +17234,12 @@ func (gdClass SkeletonProfile) GetGroup(bone_idx int64) string { return gdnative
 func (gdClass SkeletonProfile) SetGroup(bone_idx int64, group string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonProfile[26], bone_idx, group) }
 
 type SkeletonProfileHumanoid gdnative.Object
+func (SkeletonProfileHumanoid) class() string { return `SkeletonProfileHumanoid` }
 
 var methodSkeletonProfileHumanoid [0]gdnative.Method
 
 type Skin gdnative.Object
+func (Skin) class() string { return `Skin` }
 
 var methodSkin [11]gdnative.Method
 func (gdClass Skin) SetBindCount(bind_count int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkin[0], bind_count) }
@@ -16675,12 +17255,14 @@ func (gdClass Skin) GetBindBone(bind_index int64) int64 { return gdnative.Return
 func (gdClass Skin) ClearBinds()  { gdnative.Call(gdnative.Object(gdClass), methodSkin[10]) }
 
 type SkinReference gdnative.Object
+func (SkinReference) class() string { return `SkinReference` }
 
 var methodSkinReference [2]gdnative.Method
 func (gdClass SkinReference) GetSkeleton() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodSkinReference[0]) }
 func (gdClass SkinReference) GetSkin() Skin { return gdnative.Return[Skin](gdnative.Object(gdClass), methodSkinReference[1]) }
 
 type Sky gdnative.Object
+func (Sky) class() string { return `Sky` }
 
 var methodSky [6]gdnative.Method
 
@@ -16713,6 +17295,7 @@ func (gdClass Sky) SetMaterial(material Material)  { gdnative.Call(gdnative.Obje
 func (gdClass Sky) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodSky[5]) }
 
 type Slider gdnative.Object
+func (Slider) class() string { return `Slider` }
 
 var methodSlider [8]gdnative.Method
 func (gdClass Slider) SetTicks(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodSlider[0], count) }
@@ -16725,6 +17308,7 @@ func (gdClass Slider) SetScrollable(scrollable bool)  { gdnative.Call(gdnative.O
 func (gdClass Slider) IsScrollable() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSlider[7]) }
 
 type SliderJoint3D gdnative.Object
+func (SliderJoint3D) class() string { return `SliderJoint3D` }
 
 var methodSliderJoint3D [2]gdnative.Method
 
@@ -16759,6 +17343,7 @@ func (gdClass SliderJoint3D) SetParam(param SliderJoint3DParam, value float64)  
 func (gdClass SliderJoint3D) GetParam(param SliderJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSliderJoint3D[1], param) }
 
 type SoftDynamicBody3D gdnative.Object
+func (SoftDynamicBody3D) class() string { return `SoftDynamicBody3D` }
 
 var methodSoftDynamicBody3D [33]gdnative.Method
 
@@ -16803,6 +17388,7 @@ func (gdClass SoftDynamicBody3D) SetRayPickable(ray_pickable bool)  { gdnative.C
 func (gdClass SoftDynamicBody3D) IsRayPickable() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSoftDynamicBody3D[32]) }
 
 type SphereMesh gdnative.Object
+func (SphereMesh) class() string { return `SphereMesh` }
 
 var methodSphereMesh [10]gdnative.Method
 func (gdClass SphereMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereMesh[0], radius) }
@@ -16817,18 +17403,21 @@ func (gdClass SphereMesh) SetIsHemisphere(is_hemisphere bool)  { gdnative.Call(g
 func (gdClass SphereMesh) GetIsHemisphere() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSphereMesh[9]) }
 
 type SphereOccluder3D gdnative.Object
+func (SphereOccluder3D) class() string { return `SphereOccluder3D` }
 
 var methodSphereOccluder3D [2]gdnative.Method
 func (gdClass SphereOccluder3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereOccluder3D[0], radius) }
 func (gdClass SphereOccluder3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSphereOccluder3D[1]) }
 
 type SphereShape3D gdnative.Object
+func (SphereShape3D) class() string { return `SphereShape3D` }
 
 var methodSphereShape3D [2]gdnative.Method
 func (gdClass SphereShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereShape3D[0], radius) }
 func (gdClass SphereShape3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSphereShape3D[1]) }
 
 type SpinBox gdnative.Object
+func (SpinBox) class() string { return `SpinBox` }
 
 var methodSpinBox [14]gdnative.Method
 func (gdClass SpinBox) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodSpinBox[0], alignment) }
@@ -16847,6 +17436,7 @@ func (gdClass SpinBox) Apply()  { gdnative.Call(gdnative.Object(gdClass), method
 func (gdClass SpinBox) GetLineEdit() LineEdit { return gdnative.Return[LineEdit](gdnative.Object(gdClass), methodSpinBox[13]) }
 
 type SplitContainer gdnative.Object
+func (SplitContainer) class() string { return `SplitContainer` }
 
 var methodSplitContainer [7]gdnative.Method
 
@@ -16866,10 +17456,12 @@ func (gdClass SplitContainer) SetDraggerVisibility(mode SplitContainerDraggerVis
 func (gdClass SplitContainer) GetDraggerVisibility() SplitContainerDraggerVisibility { return gdnative.Return[SplitContainerDraggerVisibility](gdnative.Object(gdClass), methodSplitContainer[6]) }
 
 type SpotLight3D gdnative.Object
+func (SpotLight3D) class() string { return `SpotLight3D` }
 
 var methodSpotLight3D [0]gdnative.Method
 
 type SpringArm3D gdnative.Object
+func (SpringArm3D) class() string { return `SpringArm3D` }
 
 var methodSpringArm3D [12]gdnative.Method
 func (gdClass SpringArm3D) GetHitLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSpringArm3D[0]) }
@@ -16886,6 +17478,7 @@ func (gdClass SpringArm3D) SetMargin(margin float64)  { gdnative.Call(gdnative.O
 func (gdClass SpringArm3D) GetMargin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSpringArm3D[11]) }
 
 type Sprite2D gdnative.Object
+func (Sprite2D) class() string { return `Sprite2D` }
 
 var methodSprite2D [26]gdnative.Method
 func (gdClass Sprite2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodSprite2D[0], texture) }
@@ -16916,6 +17509,7 @@ func (gdClass Sprite2D) GetHframes() int64 { return gdnative.Return[int64](gdnat
 func (gdClass Sprite2D) GetRect() Rect2 { return gdnative.Return[Rect2](gdnative.Object(gdClass), methodSprite2D[25]) }
 
 type Sprite3D gdnative.Object
+func (Sprite3D) class() string { return `Sprite3D` }
 
 var methodSprite3D [14]gdnative.Method
 func (gdClass Sprite3D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodSprite3D[0], texture) }
@@ -16934,6 +17528,7 @@ func (gdClass Sprite3D) SetHframes(hframes int64)  { gdnative.Call(gdnative.Obje
 func (gdClass Sprite3D) GetHframes() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSprite3D[13]) }
 
 type SpriteBase3D gdnative.Object
+func (SpriteBase3D) class() string { return `SpriteBase3D` }
 
 var methodSpriteBase3D [26]gdnative.Method
 
@@ -16983,6 +17578,7 @@ func (gdClass SpriteBase3D) GetItemRect() Rect2 { return gdnative.Return[Rect2](
 func (gdClass SpriteBase3D) GenerateTriangleMesh() TriangleMesh { return gdnative.Return[TriangleMesh](gdnative.Object(gdClass), methodSpriteBase3D[25]) }
 
 type SpriteFrames gdnative.Object
+func (SpriteFrames) class() string { return `SpriteFrames` }
 
 var methodSpriteFrames [16]gdnative.Method
 func (gdClass SpriteFrames) AddAnimation(anim string)  { gdnative.Call(gdnative.Object(gdClass), methodSpriteFrames[0], anim) }
@@ -17003,10 +17599,12 @@ func (gdClass SpriteFrames) Clear(anim string)  { gdnative.Call(gdnative.Object(
 func (gdClass SpriteFrames) ClearAll()  { gdnative.Call(gdnative.Object(gdClass), methodSpriteFrames[15]) }
 
 type StandardMaterial3D gdnative.Object
+func (StandardMaterial3D) class() string { return `StandardMaterial3D` }
 
 var methodStandardMaterial3D [0]gdnative.Method
 
 type StaticBody2D gdnative.Object
+func (StaticBody2D) class() string { return `StaticBody2D` }
 
 var methodStaticBody2D [6]gdnative.Method
 func (gdClass StaticBody2D) SetConstantLinearVelocity(vel Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody2D[0], vel) }
@@ -17017,6 +17615,7 @@ func (gdClass StaticBody2D) SetPhysicsMaterialOverride(physics_material_override
 func (gdClass StaticBody2D) GetPhysicsMaterialOverride() PhysicsMaterial { return gdnative.Return[PhysicsMaterial](gdnative.Object(gdClass), methodStaticBody2D[5]) }
 
 type StaticBody3D gdnative.Object
+func (StaticBody3D) class() string { return `StaticBody3D` }
 
 var methodStaticBody3D [6]gdnative.Method
 func (gdClass StaticBody3D) SetConstantLinearVelocity(vel Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody3D[0], vel) }
@@ -17027,6 +17626,7 @@ func (gdClass StaticBody3D) SetPhysicsMaterialOverride(physics_material_override
 func (gdClass StaticBody3D) GetPhysicsMaterialOverride() PhysicsMaterial { return gdnative.Return[PhysicsMaterial](gdnative.Object(gdClass), methodStaticBody3D[5]) }
 
 type StreamPeer gdnative.Object
+func (StreamPeer) class() string { return `StreamPeer` }
 
 var methodStreamPeer [33]gdnative.Method
 func (gdClass StreamPeer) PutData(data []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeer[0], data) }
@@ -17064,6 +17664,7 @@ func (gdClass StreamPeer) GetUtf8String(bytes int64) string { return gdnative.Re
 func (gdClass StreamPeer) GetVar(allow_objects bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodStreamPeer[32], allow_objects) }
 
 type StreamPeerBuffer gdnative.Object
+func (StreamPeerBuffer) class() string { return `StreamPeerBuffer` }
 
 var methodStreamPeerBuffer [8]gdnative.Method
 func (gdClass StreamPeerBuffer) Seek(position int64)  { gdnative.Call(gdnative.Object(gdClass), methodStreamPeerBuffer[0], position) }
@@ -17076,6 +17677,7 @@ func (gdClass StreamPeerBuffer) Clear()  { gdnative.Call(gdnative.Object(gdClass
 func (gdClass StreamPeerBuffer) Duplicate() StreamPeerBuffer { return gdnative.Return[StreamPeerBuffer](gdnative.Object(gdClass), methodStreamPeerBuffer[7]) }
 
 type StreamPeerExtension gdnative.Object
+func (StreamPeerExtension) class() string { return `StreamPeerExtension` }
 
 var methodStreamPeerExtension [5]gdnative.Method
 func (gdClass StreamPeerExtension) GetDataImplementation(r_buffer []byte, r_bytes int64, r_received *int32) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodStreamPeerExtension[0], r_buffer, r_bytes, r_received) }
@@ -17085,6 +17687,7 @@ func (gdClass StreamPeerExtension) PutPartialDataImplementation(p_data []byte, p
 func (gdClass StreamPeerExtension) GetAvailableBytesImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodStreamPeerExtension[4]) }
 
 type StreamPeerSSL gdnative.Object
+func (StreamPeerSSL) class() string { return `StreamPeerSSL` }
 
 var methodStreamPeerSSL [8]gdnative.Method
 
@@ -17107,6 +17710,7 @@ func (gdClass StreamPeerSSL) SetBlockingHandshakeEnabled(enabled bool)  { gdnati
 func (gdClass StreamPeerSSL) IsBlockingHandshakeEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodStreamPeerSSL[7]) }
 
 type StreamPeerTCP gdnative.Object
+func (StreamPeerTCP) class() string { return `StreamPeerTCP` }
 
 var methodStreamPeerTCP [9]gdnative.Method
 
@@ -17129,6 +17733,7 @@ func (gdClass StreamPeerTCP) DisconnectFromHost()  { gdnative.Call(gdnative.Obje
 func (gdClass StreamPeerTCP) SetNoDelay(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodStreamPeerTCP[8], enabled) }
 
 type StyleBox gdnative.Object
+func (StyleBox) class() string { return `StyleBox` }
 
 var methodStyleBox [14]gdnative.Method
 func (gdClass StyleBox) GetStyleMarginImplementation(side Side) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodStyleBox[0], side) }
@@ -17147,10 +17752,12 @@ func (gdClass StyleBox) GetCurrentItemDrawn() CanvasItem { return gdnative.Retur
 func (gdClass StyleBox) Draw(canvas_item RID, rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBox[13], canvas_item, rect) }
 
 type StyleBoxEmpty gdnative.Object
+func (StyleBoxEmpty) class() string { return `StyleBoxEmpty` }
 
 var methodStyleBoxEmpty [0]gdnative.Method
 
 type StyleBoxFlat gdnative.Object
+func (StyleBoxFlat) class() string { return `StyleBoxFlat` }
 
 var methodStyleBoxFlat [34]gdnative.Method
 func (gdClass StyleBoxFlat) SetBgColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxFlat[0], color) }
@@ -17189,6 +17796,7 @@ func (gdClass StyleBoxFlat) SetCornerDetail(detail int64)  { gdnative.Call(gdnat
 func (gdClass StyleBoxFlat) GetCornerDetail() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodStyleBoxFlat[33]) }
 
 type StyleBoxLine gdnative.Object
+func (StyleBoxLine) class() string { return `StyleBoxLine` }
 
 var methodStyleBoxLine [10]gdnative.Method
 func (gdClass StyleBoxLine) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxLine[0], color) }
@@ -17203,6 +17811,7 @@ func (gdClass StyleBoxLine) SetVertical(vertical bool)  { gdnative.Call(gdnative
 func (gdClass StyleBoxLine) IsVertical() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodStyleBoxLine[9]) }
 
 type StyleBoxTexture gdnative.Object
+func (StyleBoxTexture) class() string { return `StyleBoxTexture` }
 
 var methodStyleBoxTexture [18]gdnative.Method
 
@@ -17233,6 +17842,7 @@ func (gdClass StyleBoxTexture) SetVAxisStretchMode(mode StyleBoxTextureAxisStret
 func (gdClass StyleBoxTexture) GetVAxisStretchMode() StyleBoxTextureAxisStretchMode { return gdnative.Return[StyleBoxTextureAxisStretchMode](gdnative.Object(gdClass), methodStyleBoxTexture[17]) }
 
 type SubViewport gdnative.Object
+func (SubViewport) class() string { return `SubViewport` }
 
 var methodSubViewport [10]gdnative.Method
 
@@ -17265,6 +17875,7 @@ func (gdClass SubViewport) SetClearMode(mode SubViewportClearMode)  { gdnative.C
 func (gdClass SubViewport) GetClearMode() SubViewportClearMode { return gdnative.Return[SubViewportClearMode](gdnative.Object(gdClass), methodSubViewport[9]) }
 
 type SubViewportContainer gdnative.Object
+func (SubViewportContainer) class() string { return `SubViewportContainer` }
 
 var methodSubViewportContainer [4]gdnative.Method
 func (gdClass SubViewportContainer) SetStretch(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodSubViewportContainer[0], enable) }
@@ -17273,6 +17884,7 @@ func (gdClass SubViewportContainer) SetStretchShrink(amount int64)  { gdnative.C
 func (gdClass SubViewportContainer) GetStretchShrink() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSubViewportContainer[3]) }
 
 type SurfaceTool gdnative.Object
+func (SurfaceTool) class() string { return `SurfaceTool` }
 
 var methodSurfaceTool [32]gdnative.Method
 
@@ -17330,6 +17942,7 @@ func (gdClass SurfaceTool) Commit(existing ArrayMesh, flags int64) ArrayMesh { r
 func (gdClass SurfaceTool) CommitToArrays() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodSurfaceTool[31]) }
 
 type SyntaxHighlighter gdnative.Object
+func (SyntaxHighlighter) class() string { return `SyntaxHighlighter` }
 
 var methodSyntaxHighlighter [7]gdnative.Method
 func (gdClass SyntaxHighlighter) GetLineSyntaxHighlightingImplementation(line int64) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodSyntaxHighlighter[0], line) }
@@ -17341,6 +17954,7 @@ func (gdClass SyntaxHighlighter) ClearHighlightingCache()  { gdnative.Call(gdnat
 func (gdClass SyntaxHighlighter) GetTextEdit() TextEdit { return gdnative.Return[TextEdit](gdnative.Object(gdClass), methodSyntaxHighlighter[6]) }
 
 type SystemFont gdnative.Object
+func (SystemFont) class() string { return `SystemFont` }
 
 var methodSystemFont [15]gdnative.Method
 func (gdClass SystemFont) SetAntialiased(antialiased bool)  { gdnative.Call(gdnative.Object(gdClass), methodSystemFont[0], antialiased) }
@@ -17360,6 +17974,7 @@ func (gdClass SystemFont) SetFontNames(names []string)  { gdnative.Call(gdnative
 func (gdClass SystemFont) SetFontStyle(style TextServerFontStyle)  { gdnative.Call(gdnative.Object(gdClass), methodSystemFont[14], style) }
 
 type TCPServer gdnative.Object
+func (TCPServer) class() string { return `TCPServer` }
 
 var methodTCPServer [6]gdnative.Method
 func (gdClass TCPServer) Listen(port int64, bind_address string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodTCPServer[0], port, bind_address) }
@@ -17370,6 +17985,7 @@ func (gdClass TCPServer) TakeConnection() StreamPeerTCP { return gdnative.Return
 func (gdClass TCPServer) Stop()  { gdnative.Call(gdnative.Object(gdClass), methodTCPServer[5]) }
 
 type TabBar gdnative.Object
+func (TabBar) class() string { return `TabBar` }
 
 var methodTabBar [45]gdnative.Method
 
@@ -17437,6 +18053,7 @@ func (gdClass TabBar) SetSelectWithRmb(enabled bool)  { gdnative.Call(gdnative.O
 func (gdClass TabBar) GetSelectWithRmb() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTabBar[44]) }
 
 type TabContainer gdnative.Object
+func (TabContainer) class() string { return `TabContainer` }
 
 var methodTabContainer [34]gdnative.Method
 func (gdClass TabContainer) GetTabCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTabContainer[0]) }
@@ -17475,6 +18092,7 @@ func (gdClass TabContainer) SetUseHiddenTabsForMinSize(enabled bool)  { gdnative
 func (gdClass TabContainer) GetUseHiddenTabsForMinSize() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTabContainer[33]) }
 
 type TextEdit gdnative.Object
+func (TextEdit) class() string { return `TextEdit` }
 
 var methodTextEdit [195]gdnative.Method
 
@@ -17748,6 +18366,7 @@ func (gdClass TextEdit) IsMenuVisible() bool { return gdnative.Return[bool](gdna
 func (gdClass TextEdit) MenuOption(option int64)  { gdnative.Call(gdnative.Object(gdClass), methodTextEdit[194], option) }
 
 type TextLine gdnative.Object
+func (TextLine) class() string { return `TextLine` }
 
 var methodTextLine [34]gdnative.Method
 func (gdClass TextLine) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTextLine[0]) }
@@ -17786,6 +18405,7 @@ func (gdClass TextLine) DrawOutline(canvas RID, pos Vector2, outline_size int64,
 func (gdClass TextLine) HitTest(coords float64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTextLine[33], coords) }
 
 type TextMesh gdnative.Object
+func (TextMesh) class() string { return `TextMesh` }
 
 var methodTextMesh [26]gdnative.Method
 func (gdClass TextMesh) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodTextMesh[0], alignment) }
@@ -17816,6 +18436,7 @@ func (gdClass TextMesh) SetUppercase(enable bool)  { gdnative.Call(gdnative.Obje
 func (gdClass TextMesh) IsUppercase() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTextMesh[25]) }
 
 type TextParagraph gdnative.Object
+func (TextParagraph) class() string { return `TextParagraph` }
 
 var methodTextParagraph [54]gdnative.Method
 func (gdClass TextParagraph) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTextParagraph[0]) }
@@ -17874,6 +18495,7 @@ func (gdClass TextParagraph) DrawDropcapOutline(canvas RID, pos Vector2, outline
 func (gdClass TextParagraph) HitTest(coords Vector2) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTextParagraph[53], coords) }
 
 type TextServer gdnative.Object
+func (TextServer) class() string { return `TextServer` }
 
 var methodTextServer [184]gdnative.Method
 
@@ -18232,14 +18854,17 @@ func (gdClass TextServer) StringToLower(s string, language string) string { retu
 func (gdClass TextServer) ParseStructuredText(parser_type TextServerStructuredTextParser, args Array, text string) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodTextServer[183], parser_type, args, text) }
 
 type TextServerAdvanced gdnative.Object
+func (TextServerAdvanced) class() string { return `TextServerAdvanced` }
 
 var methodTextServerAdvanced [0]gdnative.Method
 
 type TextServerDummy gdnative.Object
+func (TextServerDummy) class() string { return `TextServerDummy` }
 
 var methodTextServerDummy [0]gdnative.Method
 
 type TextServerExtension gdnative.Object
+func (TextServerExtension) class() string { return `TextServerExtension` }
 
 var methodTextServerExtension [187]gdnative.Method
 func (gdClass TextServerExtension) HasFeatureImplementation(feature TextServerFeature) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTextServerExtension[0], feature) }
@@ -18431,6 +19056,7 @@ func (gdClass TextServerExtension) StringToLowerImplementation(s string, languag
 func (gdClass TextServerExtension) ParseStructuredTextImplementation(parser_type TextServerStructuredTextParser, args Array, text string) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodTextServerExtension[186], parser_type, args, text) }
 
 type TextServerManager gdnative.Object
+func (TextServerManager) class() string { return `TextServerManager` }
 
 var methodTextServerManager [8]gdnative.Method
 func (gdClass TextServerManager) AddInterface(intf TextServer)  { gdnative.Call(gdnative.Object(gdClass), methodTextServerManager[0], intf) }
@@ -18443,10 +19069,12 @@ func (gdClass TextServerManager) SetPrimaryInterface(index TextServer)  { gdnati
 func (gdClass TextServerManager) GetPrimaryInterface() TextServer { return gdnative.Return[TextServer](gdnative.Object(gdClass), methodTextServerManager[7]) }
 
 type Texture gdnative.Object
+func (Texture) class() string { return `Texture` }
 
 var methodTexture [0]gdnative.Method
 
 type Texture2D gdnative.Object
+func (Texture2D) class() string { return `Texture2D` }
 
 var methodTexture2D [15]gdnative.Method
 func (gdClass Texture2D) GetWidthImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTexture2D[0]) }
@@ -18466,10 +19094,12 @@ func (gdClass Texture2D) DrawRectRegion(canvas_item RID, rect Rect2, src_rect Re
 func (gdClass Texture2D) GetImage() Image { return gdnative.Return[Image](gdnative.Object(gdClass), methodTexture2D[14]) }
 
 type Texture2DArray gdnative.Object
+func (Texture2DArray) class() string { return `Texture2DArray` }
 
 var methodTexture2DArray [0]gdnative.Method
 
 type Texture3D gdnative.Object
+func (Texture3D) class() string { return `Texture3D` }
 
 var methodTexture3D [12]gdnative.Method
 func (gdClass Texture3D) GetFormatImplementation() ImageFormat { return gdnative.Return[ImageFormat](gdnative.Object(gdClass), methodTexture3D[0]) }
@@ -18486,6 +19116,7 @@ func (gdClass Texture3D) HasMipmaps() bool { return gdnative.Return[bool](gdnati
 func (gdClass Texture3D) GetData() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodTexture3D[11]) }
 
 type TextureButton gdnative.Object
+func (TextureButton) class() string { return `TextureButton` }
 
 var methodTextureButton [20]gdnative.Method
 
@@ -18522,6 +19153,7 @@ func (gdClass TextureButton) GetIgnoreTextureSize() bool { return gdnative.Retur
 func (gdClass TextureButton) GetStretchMode() TextureButtonStretchMode { return gdnative.Return[TextureButtonStretchMode](gdnative.Object(gdClass), methodTextureButton[19]) }
 
 type TextureLayered gdnative.Object
+func (TextureLayered) class() string { return `TextureLayered` }
 
 var methodTextureLayered [14]gdnative.Method
 
@@ -18548,6 +19180,7 @@ func (gdClass TextureLayered) HasMipmaps() bool { return gdnative.Return[bool](g
 func (gdClass TextureLayered) GetLayerData(layer int64) Image { return gdnative.Return[Image](gdnative.Object(gdClass), methodTextureLayered[13], layer) }
 
 type TextureProgressBar gdnative.Object
+func (TextureProgressBar) class() string { return `TextureProgressBar` }
 
 var methodTextureProgressBar [26]gdnative.Method
 
@@ -18592,6 +19225,7 @@ func (gdClass TextureProgressBar) SetNinePatchStretch(stretch bool)  { gdnative.
 func (gdClass TextureProgressBar) GetNinePatchStretch() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTextureProgressBar[25]) }
 
 type TextureRect gdnative.Object
+func (TextureRect) class() string { return `TextureRect` }
 
 var methodTextureRect [10]gdnative.Method
 
@@ -18618,6 +19252,7 @@ func (gdClass TextureRect) SetStretchMode(stretch_mode TextureRectStretchMode)  
 func (gdClass TextureRect) GetStretchMode() TextureRectStretchMode { return gdnative.Return[TextureRectStretchMode](gdnative.Object(gdClass), methodTextureRect[9]) }
 
 type Theme gdnative.Object
+func (Theme) class() string { return `Theme` }
 
 var methodTheme [68]gdnative.Method
 
@@ -18702,6 +19337,7 @@ func (gdClass Theme) MergeWith(other Theme)  { gdnative.Call(gdnative.Object(gdC
 func (gdClass Theme) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTheme[67]) }
 
 type Thread gdnative.Object
+func (Thread) class() string { return `Thread` }
 
 var methodThread [5]gdnative.Method
 
@@ -18719,6 +19355,7 @@ func (gdClass Thread) IsAlive() bool { return gdnative.Return[bool](gdnative.Obj
 func (gdClass Thread) WaitToFinish() any { return gdnative.Return[any](gdnative.Object(gdClass), methodThread[4]) }
 
 type TileData gdnative.Object
+func (TileData) class() string { return `TileData` }
 
 var methodTileData [46]gdnative.Method
 func (gdClass TileData) SetFlipH(flip_h bool)  { gdnative.Call(gdnative.Object(gdClass), methodTileData[0], flip_h) }
@@ -18769,6 +19406,7 @@ func (gdClass TileData) SetCustomDataByLayerId(layer_id int64, value any)  { gdn
 func (gdClass TileData) GetCustomDataByLayerId(layer_id int64) any { return gdnative.Return[any](gdnative.Object(gdClass), methodTileData[45], layer_id) }
 
 type TileMap gdnative.Object
+func (TileMap) class() string { return `TileMap` }
 
 var methodTileMap [49]gdnative.Method
 
@@ -18830,6 +19468,7 @@ func (gdClass TileMap) WorldToMap(world_position Vector2) Vector2i { return gdna
 func (gdClass TileMap) GetNeighborCell(coords Vector2i, neighbor TileSetCellNeighbor) Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodTileMap[48], coords, neighbor) }
 
 type TileMapPattern gdnative.Object
+func (TileMapPattern) class() string { return `TileMapPattern` }
 
 var methodTileMapPattern [10]gdnative.Method
 func (gdClass TileMapPattern) SetCell(coords Vector2i, source_id int64, atlas_coords Vector2i, alternative_tile int64)  { gdnative.Call(gdnative.Object(gdClass), methodTileMapPattern[0], coords, source_id, atlas_coords, alternative_tile) }
@@ -18844,6 +19483,7 @@ func (gdClass TileMapPattern) SetSize(size Vector2i)  { gdnative.Call(gdnative.O
 func (gdClass TileMapPattern) IsEmpty() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileMapPattern[9]) }
 
 type TileSet gdnative.Object
+func (TileSet) class() string { return `TileSet` }
 
 var methodTileSet [84]gdnative.Method
 
@@ -18988,6 +19628,7 @@ func (gdClass TileSet) RemovePattern(index int64)  { gdnative.Call(gdnative.Obje
 func (gdClass TileSet) GetPatternsCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSet[83]) }
 
 type TileSetAtlasSource gdnative.Object
+func (TileSetAtlasSource) class() string { return `TileSetAtlasSource` }
 
 var methodTileSetAtlasSource [37]gdnative.Method
 func (gdClass TileSetAtlasSource) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTileSetAtlasSource[0], texture) }
@@ -19029,6 +19670,7 @@ func (gdClass TileSetAtlasSource) GetRuntimeTexture() Texture2D { return gdnativ
 func (gdClass TileSetAtlasSource) GetRuntimeTileTextureRegion(atlas_coords Vector2i, frame int64) Rect2i { return gdnative.Return[Rect2i](gdnative.Object(gdClass), methodTileSetAtlasSource[36], atlas_coords, frame) }
 
 type TileSetScenesCollectionSource gdnative.Object
+func (TileSetScenesCollectionSource) class() string { return `TileSetScenesCollectionSource` }
 
 var methodTileSetScenesCollectionSource [11]gdnative.Method
 func (gdClass TileSetScenesCollectionSource) GetSceneTilesCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetScenesCollectionSource[0]) }
@@ -19044,6 +19686,7 @@ func (gdClass TileSetScenesCollectionSource) RemoveSceneTile(id int64)  { gdnati
 func (gdClass TileSetScenesCollectionSource) GetNextSceneTileId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetScenesCollectionSource[10]) }
 
 type TileSetSource gdnative.Object
+func (TileSetSource) class() string { return `TileSetSource` }
 
 var methodTileSetSource [6]gdnative.Method
 func (gdClass TileSetSource) GetTilesCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetSource[0]) }
@@ -19054,6 +19697,7 @@ func (gdClass TileSetSource) GetAlternativeTileId(atlas_coords Vector2i, index i
 func (gdClass TileSetSource) HasAlternativeTile(atlas_coords Vector2i, alternative_tile int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileSetSource[5], atlas_coords, alternative_tile) }
 
 type Time gdnative.Object
+func (Time) class() string { return `Time` }
 
 var methodTime [21]gdnative.Method
 
@@ -19108,6 +19752,7 @@ func (gdClass Time) GetTicksMsec() int64 { return gdnative.Return[int64](gdnativ
 func (gdClass Time) GetTicksUsec() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTime[20]) }
 
 type Timer gdnative.Object
+func (Timer) class() string { return `Timer` }
 
 var methodTimer [14]gdnative.Method
 
@@ -19133,6 +19778,7 @@ func (gdClass Timer) SetTimerProcessCallback(callback TimerTimerProcessCallback)
 func (gdClass Timer) GetTimerProcessCallback() TimerTimerProcessCallback { return gdnative.Return[TimerTimerProcessCallback](gdnative.Object(gdClass), methodTimer[13]) }
 
 type TorusMesh gdnative.Object
+func (TorusMesh) class() string { return `TorusMesh` }
 
 var methodTorusMesh [8]gdnative.Method
 func (gdClass TorusMesh) SetInnerRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodTorusMesh[0], radius) }
@@ -19145,6 +19791,7 @@ func (gdClass TorusMesh) SetRingSegments(rings int64)  { gdnative.Call(gdnative.
 func (gdClass TorusMesh) GetRingSegments() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTorusMesh[7]) }
 
 type TouchScreenButton gdnative.Object
+func (TouchScreenButton) class() string { return `TouchScreenButton` }
 
 var methodTouchScreenButton [19]gdnative.Method
 
@@ -19175,6 +19822,7 @@ func (gdClass TouchScreenButton) IsPassbyPressEnabled() bool { return gdnative.R
 func (gdClass TouchScreenButton) IsPressed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTouchScreenButton[18]) }
 
 type Translation gdnative.Object
+func (Translation) class() string { return `Translation` }
 
 var methodTranslation [11]gdnative.Method
 func (gdClass Translation) GetPluralMessageImplementation(src_message string, src_plural_message string, n int64, context string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodTranslation[0], src_message, src_plural_message, n, context) }
@@ -19190,6 +19838,7 @@ func (gdClass Translation) GetMessageList() []string { return gdnative.Return[[]
 func (gdClass Translation) GetMessageCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTranslation[10]) }
 
 type TranslationServer gdnative.Object
+func (TranslationServer) class() string { return `TranslationServer` }
 
 var methodTranslationServer [23]gdnative.Method
 func (gdClass TranslationServer) SetLocale(locale string)  { gdnative.Call(gdnative.Object(gdClass), methodTranslationServer[0], locale) }
@@ -19217,6 +19866,7 @@ func (gdClass TranslationServer) ReloadPseudolocalization()  { gdnative.Call(gdn
 func (gdClass TranslationServer) Pseudolocalize(message string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodTranslationServer[22], message) }
 
 type Tree gdnative.Object
+func (Tree) class() string { return `Tree` }
 
 var methodTree [53]gdnative.Method
 
@@ -19290,6 +19940,7 @@ func (gdClass Tree) SetAllowReselect(allow bool)  { gdnative.Call(gdnative.Objec
 func (gdClass Tree) GetAllowReselect() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTree[52]) }
 
 type TreeItem gdnative.Object
+func (TreeItem) class() string { return `TreeItem` }
 
 var methodTreeItem [94]gdnative.Method
 
@@ -19398,10 +20049,12 @@ func (gdClass TreeItem) RemoveChild(child TreeItem)  { gdnative.Call(gdnative.Ob
 func (gdClass TreeItem) CallRecursive(method string)  { gdnative.Call(gdnative.Object(gdClass), methodTreeItem[93], method) }
 
 type TriangleMesh gdnative.Object
+func (TriangleMesh) class() string { return `TriangleMesh` }
 
 var methodTriangleMesh [0]gdnative.Method
 
 type TubeTrailMesh gdnative.Object
+func (TubeTrailMesh) class() string { return `TubeTrailMesh` }
 
 var methodTubeTrailMesh [12]gdnative.Method
 func (gdClass TubeTrailMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodTubeTrailMesh[0], radius) }
@@ -19418,6 +20071,7 @@ func (gdClass TubeTrailMesh) SetCurve(curve Curve)  { gdnative.Call(gdnative.Obj
 func (gdClass TubeTrailMesh) GetCurve() Curve { return gdnative.Return[Curve](gdnative.Object(gdClass), methodTubeTrailMesh[11]) }
 
 type Tween gdnative.Object
+func (Tween) class() string { return `Tween` }
 
 var methodTween [23]gdnative.Method
 
@@ -19485,10 +20139,12 @@ func (gdClass Tween) Chain() Tween { return gdnative.Return[Tween](gdnative.Obje
 func (gdClass Tween) InterpolateValue(initial_value any, delta_value any, elapsed_time float64, duration float64, trans_type TweenTransitionType, ease_type TweenEaseType) any { return gdnative.Return[any](gdnative.Object(gdClass), methodTween[22], initial_value, delta_value, elapsed_time, duration, trans_type, ease_type) }
 
 type Tweener gdnative.Object
+func (Tweener) class() string { return `Tweener` }
 
 var methodTweener [0]gdnative.Method
 
 type UDPServer gdnative.Object
+func (UDPServer) class() string { return `UDPServer` }
 
 var methodUDPServer [9]gdnative.Method
 func (gdClass UDPServer) Listen(port int64, bind_address string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodUDPServer[0], port, bind_address) }
@@ -19502,6 +20158,7 @@ func (gdClass UDPServer) SetMaxPendingConnections(max_pending_connections int64)
 func (gdClass UDPServer) GetMaxPendingConnections() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodUDPServer[8]) }
 
 type UPNP gdnative.Object
+func (UPNP) class() string { return `UPNP` }
 
 var methodUPNP [17]gdnative.Method
 
@@ -19557,6 +20214,7 @@ func (gdClass UPNP) SetDiscoverIpv6(ipv6 bool)  { gdnative.Call(gdnative.Object(
 func (gdClass UPNP) IsDiscoverIpv6() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodUPNP[16]) }
 
 type UPNPDevice gdnative.Object
+func (UPNPDevice) class() string { return `UPNPDevice` }
 
 var methodUPNPDevice [16]gdnative.Method
 
@@ -19592,6 +20250,7 @@ func (gdClass UPNPDevice) SetIgdStatus(status UPNPDeviceIGDStatus)  { gdnative.C
 func (gdClass UPNPDevice) GetIgdStatus() UPNPDeviceIGDStatus { return gdnative.Return[UPNPDeviceIGDStatus](gdnative.Object(gdClass), methodUPNPDevice[15]) }
 
 type UndoRedo gdnative.Object
+func (UndoRedo) class() string { return `UndoRedo` }
 
 var methodUndoRedo [21]gdnative.Method
 
@@ -19625,30 +20284,37 @@ func (gdClass UndoRedo) Redo() bool { return gdnative.Return[bool](gdnative.Obje
 func (gdClass UndoRedo) Undo() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodUndoRedo[20]) }
 
 type VBoxContainer gdnative.Object
+func (VBoxContainer) class() string { return `VBoxContainer` }
 
 var methodVBoxContainer [0]gdnative.Method
 
 type VFlowContainer gdnative.Object
+func (VFlowContainer) class() string { return `VFlowContainer` }
 
 var methodVFlowContainer [0]gdnative.Method
 
 type VScrollBar gdnative.Object
+func (VScrollBar) class() string { return `VScrollBar` }
 
 var methodVScrollBar [0]gdnative.Method
 
 type VSeparator gdnative.Object
+func (VSeparator) class() string { return `VSeparator` }
 
 var methodVSeparator [0]gdnative.Method
 
 type VSlider gdnative.Object
+func (VSlider) class() string { return `VSlider` }
 
 var methodVSlider [0]gdnative.Method
 
 type VSplitContainer gdnative.Object
+func (VSplitContainer) class() string { return `VSplitContainer` }
 
 var methodVSplitContainer [0]gdnative.Method
 
 type VehicleBody3D gdnative.Object
+func (VehicleBody3D) class() string { return `VehicleBody3D` }
 
 var methodVehicleBody3D [6]gdnative.Method
 func (gdClass VehicleBody3D) SetEngineForce(engine_force float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleBody3D[0], engine_force) }
@@ -19659,6 +20325,7 @@ func (gdClass VehicleBody3D) SetSteering(steering float64)  { gdnative.Call(gdna
 func (gdClass VehicleBody3D) GetSteering() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVehicleBody3D[5]) }
 
 type VehicleWheel3D gdnative.Object
+func (VehicleWheel3D) class() string { return `VehicleWheel3D` }
 
 var methodVehicleWheel3D [32]gdnative.Method
 func (gdClass VehicleWheel3D) SetRadius(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleWheel3D[0], length) }
@@ -19695,6 +20362,7 @@ func (gdClass VehicleWheel3D) SetSteering(steering float64)  { gdnative.Call(gdn
 func (gdClass VehicleWheel3D) GetSteering() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVehicleWheel3D[31]) }
 
 type VelocityTracker3D gdnative.Object
+func (VelocityTracker3D) class() string { return `VelocityTracker3D` }
 
 var methodVelocityTracker3D [5]gdnative.Method
 func (gdClass VelocityTracker3D) SetTrackPhysicsStep(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodVelocityTracker3D[0], enable) }
@@ -19704,10 +20372,12 @@ func (gdClass VelocityTracker3D) GetTrackedLinearVelocity() Vector3 { return gdn
 func (gdClass VelocityTracker3D) Reset(position Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodVelocityTracker3D[4], position) }
 
 type VideoStream gdnative.Object
+func (VideoStream) class() string { return `VideoStream` }
 
 var methodVideoStream [0]gdnative.Method
 
 type VideoStreamPlayer gdnative.Object
+func (VideoStreamPlayer) class() string { return `VideoStreamPlayer` }
 
 var methodVideoStreamPlayer [25]gdnative.Method
 func (gdClass VideoStreamPlayer) SetStream(stream VideoStream)  { gdnative.Call(gdnative.Object(gdClass), methodVideoStreamPlayer[0], stream) }
@@ -19737,12 +20407,14 @@ func (gdClass VideoStreamPlayer) GetBus() string { return gdnative.Return[string
 func (gdClass VideoStreamPlayer) GetVideoTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodVideoStreamPlayer[24]) }
 
 type VideoStreamTheora gdnative.Object
+func (VideoStreamTheora) class() string { return `VideoStreamTheora` }
 
 var methodVideoStreamTheora [2]gdnative.Method
 func (gdClass VideoStreamTheora) SetFile(file string)  { gdnative.Call(gdnative.Object(gdClass), methodVideoStreamTheora[0], file) }
 func (gdClass VideoStreamTheora) GetFile() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVideoStreamTheora[1]) }
 
 type Viewport gdnative.Object
+func (Viewport) class() string { return `Viewport` }
 
 var methodViewport [95]gdnative.Method
 
@@ -19976,12 +20648,14 @@ func (gdClass Viewport) SetVrsTexture(texture Texture2D)  { gdnative.Call(gdnati
 func (gdClass Viewport) GetVrsTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodViewport[94]) }
 
 type ViewportTexture gdnative.Object
+func (ViewportTexture) class() string { return `ViewportTexture` }
 
 var methodViewportTexture [2]gdnative.Method
 func (gdClass ViewportTexture) SetViewportPathInScene(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodViewportTexture[0], path) }
 func (gdClass ViewportTexture) GetViewportPathInScene() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodViewportTexture[1]) }
 
 type VisibleOnScreenEnabler2D gdnative.Object
+func (VisibleOnScreenEnabler2D) class() string { return `VisibleOnScreenEnabler2D` }
 
 var methodVisibleOnScreenEnabler2D [4]gdnative.Method
 
@@ -19998,6 +20672,7 @@ func (gdClass VisibleOnScreenEnabler2D) SetEnableNodePath(path NodePath)  { gdna
 func (gdClass VisibleOnScreenEnabler2D) GetEnableNodePath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodVisibleOnScreenEnabler2D[3]) }
 
 type VisibleOnScreenEnabler3D gdnative.Object
+func (VisibleOnScreenEnabler3D) class() string { return `VisibleOnScreenEnabler3D` }
 
 var methodVisibleOnScreenEnabler3D [4]gdnative.Method
 
@@ -20014,6 +20689,7 @@ func (gdClass VisibleOnScreenEnabler3D) SetEnableNodePath(path NodePath)  { gdna
 func (gdClass VisibleOnScreenEnabler3D) GetEnableNodePath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodVisibleOnScreenEnabler3D[3]) }
 
 type VisibleOnScreenNotifier2D gdnative.Object
+func (VisibleOnScreenNotifier2D) class() string { return `VisibleOnScreenNotifier2D` }
 
 var methodVisibleOnScreenNotifier2D [3]gdnative.Method
 func (gdClass VisibleOnScreenNotifier2D) SetRect(rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenNotifier2D[0], rect) }
@@ -20021,12 +20697,14 @@ func (gdClass VisibleOnScreenNotifier2D) GetRect() Rect2 { return gdnative.Retur
 func (gdClass VisibleOnScreenNotifier2D) IsOnScreen() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisibleOnScreenNotifier2D[2]) }
 
 type VisibleOnScreenNotifier3D gdnative.Object
+func (VisibleOnScreenNotifier3D) class() string { return `VisibleOnScreenNotifier3D` }
 
 var methodVisibleOnScreenNotifier3D [2]gdnative.Method
 func (gdClass VisibleOnScreenNotifier3D) SetAabb(rect AABB)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenNotifier3D[0], rect) }
 func (gdClass VisibleOnScreenNotifier3D) IsOnScreen() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisibleOnScreenNotifier3D[1]) }
 
 type VisualInstance3D gdnative.Object
+func (VisualInstance3D) class() string { return `VisualInstance3D` }
 
 var methodVisualInstance3D [10]gdnative.Method
 func (gdClass VisualInstance3D) GetAabbImplementation() AABB { return gdnative.Return[AABB](gdnative.Object(gdClass), methodVisualInstance3D[0]) }
@@ -20041,6 +20719,7 @@ func (gdClass VisualInstance3D) GetTransformedAabb() AABB { return gdnative.Retu
 func (gdClass VisualInstance3D) GetAabb() AABB { return gdnative.Return[AABB](gdnative.Object(gdClass), methodVisualInstance3D[9]) }
 
 type VisualScript gdnative.Object
+func (VisualScript) class() string { return `VisualScript` }
 
 var methodVisualScript [42]gdnative.Method
 func (gdClass VisualScript) AddFunction(name string, func_node_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScript[0], name, func_node_id) }
@@ -20087,6 +20766,7 @@ func (gdClass VisualScript) RenameCustomSignal(name string, new_name string)  { 
 func (gdClass VisualScript) SetInstanceBaseType(atype string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScript[41], atype) }
 
 type VisualScriptBasicTypeConstant gdnative.Object
+func (VisualScriptBasicTypeConstant) class() string { return `VisualScriptBasicTypeConstant` }
 
 var methodVisualScriptBasicTypeConstant [4]gdnative.Method
 func (gdClass VisualScriptBasicTypeConstant) SetBasicType(name VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptBasicTypeConstant[0], name) }
@@ -20095,6 +20775,7 @@ func (gdClass VisualScriptBasicTypeConstant) SetBasicTypeConstant(name string)  
 func (gdClass VisualScriptBasicTypeConstant) GetBasicTypeConstant() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptBasicTypeConstant[3]) }
 
 type VisualScriptBuiltinFunc gdnative.Object
+func (VisualScriptBuiltinFunc) class() string { return `VisualScriptBuiltinFunc` }
 
 var methodVisualScriptBuiltinFunc [2]gdnative.Method
 
@@ -20175,6 +20856,7 @@ func (gdClass VisualScriptBuiltinFunc) SetFunc(which VisualScriptBuiltinFuncBuil
 func (gdClass VisualScriptBuiltinFunc) GetFunc() VisualScriptBuiltinFuncBuiltinFunc { return gdnative.Return[VisualScriptBuiltinFuncBuiltinFunc](gdnative.Object(gdClass), methodVisualScriptBuiltinFunc[1]) }
 
 type VisualScriptClassConstant gdnative.Object
+func (VisualScriptClassConstant) class() string { return `VisualScriptClassConstant` }
 
 var methodVisualScriptClassConstant [4]gdnative.Method
 func (gdClass VisualScriptClassConstant) SetClassConstant(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptClassConstant[0], name) }
@@ -20183,6 +20865,7 @@ func (gdClass VisualScriptClassConstant) SetBaseType(name string)  { gdnative.Ca
 func (gdClass VisualScriptClassConstant) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptClassConstant[3]) }
 
 type VisualScriptComment gdnative.Object
+func (VisualScriptComment) class() string { return `VisualScriptComment` }
 
 var methodVisualScriptComment [6]gdnative.Method
 func (gdClass VisualScriptComment) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptComment[0], title) }
@@ -20193,14 +20876,17 @@ func (gdClass VisualScriptComment) SetSize(size Vector2)  { gdnative.Call(gdnati
 func (gdClass VisualScriptComment) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualScriptComment[5]) }
 
 type VisualScriptComposeArray gdnative.Object
+func (VisualScriptComposeArray) class() string { return `VisualScriptComposeArray` }
 
 var methodVisualScriptComposeArray [0]gdnative.Method
 
 type VisualScriptCondition gdnative.Object
+func (VisualScriptCondition) class() string { return `VisualScriptCondition` }
 
 var methodVisualScriptCondition [0]gdnative.Method
 
 type VisualScriptConstant gdnative.Object
+func (VisualScriptConstant) class() string { return `VisualScriptConstant` }
 
 var methodVisualScriptConstant [4]gdnative.Method
 func (gdClass VisualScriptConstant) SetConstantType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstant[0], atype) }
@@ -20209,6 +20895,7 @@ func (gdClass VisualScriptConstant) SetConstantValue(value any)  { gdnative.Call
 func (gdClass VisualScriptConstant) GetConstantValue() any { return gdnative.Return[any](gdnative.Object(gdClass), methodVisualScriptConstant[3]) }
 
 type VisualScriptConstructor gdnative.Object
+func (VisualScriptConstructor) class() string { return `VisualScriptConstructor` }
 
 var methodVisualScriptConstructor [4]gdnative.Method
 func (gdClass VisualScriptConstructor) SetConstructorType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstructor[0], atype) }
@@ -20217,6 +20904,7 @@ func (gdClass VisualScriptConstructor) SetConstructor(constructor Dictionary)  {
 func (gdClass VisualScriptConstructor) GetConstructor() Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodVisualScriptConstructor[3]) }
 
 type VisualScriptCustomNode gdnative.Object
+func (VisualScriptCustomNode) class() string { return `VisualScriptCustomNode` }
 
 var methodVisualScriptCustomNode [18]gdnative.Method
 
@@ -20247,38 +20935,45 @@ func (gdClass VisualScriptCustomNode) GetWorkingMemorySizeImplementation() int64
 func (gdClass VisualScriptCustomNode) StepImplementation(inputs Array, outputs Array, start_mode int64, working_mem Array) any { return gdnative.Return[any](gdnative.Object(gdClass), methodVisualScriptCustomNode[17], inputs, outputs, start_mode, working_mem) }
 
 type VisualScriptCustomNodes gdnative.Object
+func (VisualScriptCustomNodes) class() string { return `VisualScriptCustomNodes` }
 
 var methodVisualScriptCustomNodes [2]gdnative.Method
 func (gdClass VisualScriptCustomNodes) AddCustomNode(name string, category string, script Script)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptCustomNodes[0], name, category, script) }
 func (gdClass VisualScriptCustomNodes) RemoveCustomNode(name string, category string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptCustomNodes[1], name, category) }
 
 type VisualScriptDeconstruct gdnative.Object
+func (VisualScriptDeconstruct) class() string { return `VisualScriptDeconstruct` }
 
 var methodVisualScriptDeconstruct [2]gdnative.Method
 func (gdClass VisualScriptDeconstruct) SetDeconstructType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptDeconstruct[0], atype) }
 func (gdClass VisualScriptDeconstruct) GetDeconstructType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptDeconstruct[1]) }
 
 type VisualScriptEmitSignal gdnative.Object
+func (VisualScriptEmitSignal) class() string { return `VisualScriptEmitSignal` }
 
 var methodVisualScriptEmitSignal [2]gdnative.Method
 func (gdClass VisualScriptEmitSignal) SetSignal(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptEmitSignal[0], name) }
 func (gdClass VisualScriptEmitSignal) GetSignal() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptEmitSignal[1]) }
 
 type VisualScriptEngineSingleton gdnative.Object
+func (VisualScriptEngineSingleton) class() string { return `VisualScriptEngineSingleton` }
 
 var methodVisualScriptEngineSingleton [2]gdnative.Method
 func (gdClass VisualScriptEngineSingleton) SetSingleton(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptEngineSingleton[0], name) }
 func (gdClass VisualScriptEngineSingleton) GetSingleton() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptEngineSingleton[1]) }
 
 type VisualScriptExpression gdnative.Object
+func (VisualScriptExpression) class() string { return `VisualScriptExpression` }
 
 var methodVisualScriptExpression [0]gdnative.Method
 
 type VisualScriptFunction gdnative.Object
+func (VisualScriptFunction) class() string { return `VisualScriptFunction` }
 
 var methodVisualScriptFunction [0]gdnative.Method
 
 type VisualScriptFunctionCall gdnative.Object
+func (VisualScriptFunctionCall) class() string { return `VisualScriptFunctionCall` }
 
 var methodVisualScriptFunctionCall [20]gdnative.Method
 
@@ -20323,6 +21018,7 @@ func (gdClass VisualScriptFunctionCall) SetValidate(enable bool)  { gdnative.Cal
 func (gdClass VisualScriptFunctionCall) GetValidate() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualScriptFunctionCall[19]) }
 
 type VisualScriptFunctionState gdnative.Object
+func (VisualScriptFunctionState) class() string { return `VisualScriptFunctionState` }
 
 var methodVisualScriptFunctionState [3]gdnative.Method
 func (gdClass VisualScriptFunctionState) ConnectToSignal(obj Object, signals string, args Array)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptFunctionState[0], obj, signals, args) }
@@ -20330,20 +21026,24 @@ func (gdClass VisualScriptFunctionState) Resume(args Array) any { return gdnativ
 func (gdClass VisualScriptFunctionState) IsValid() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualScriptFunctionState[2]) }
 
 type VisualScriptGlobalConstant gdnative.Object
+func (VisualScriptGlobalConstant) class() string { return `VisualScriptGlobalConstant` }
 
 var methodVisualScriptGlobalConstant [2]gdnative.Method
 func (gdClass VisualScriptGlobalConstant) SetGlobalConstant(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptGlobalConstant[0], index) }
 func (gdClass VisualScriptGlobalConstant) GetGlobalConstant() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualScriptGlobalConstant[1]) }
 
 type VisualScriptIndexGet gdnative.Object
+func (VisualScriptIndexGet) class() string { return `VisualScriptIndexGet` }
 
 var methodVisualScriptIndexGet [0]gdnative.Method
 
 type VisualScriptIndexSet gdnative.Object
+func (VisualScriptIndexSet) class() string { return `VisualScriptIndexSet` }
 
 var methodVisualScriptIndexSet [0]gdnative.Method
 
 type VisualScriptInputAction gdnative.Object
+func (VisualScriptInputAction) class() string { return `VisualScriptInputAction` }
 
 var methodVisualScriptInputAction [4]gdnative.Method
 
@@ -20361,10 +21061,12 @@ func (gdClass VisualScriptInputAction) SetActionMode(mode VisualScriptInputActio
 func (gdClass VisualScriptInputAction) GetActionMode() VisualScriptInputActionMode { return gdnative.Return[VisualScriptInputActionMode](gdnative.Object(gdClass), methodVisualScriptInputAction[3]) }
 
 type VisualScriptIterator gdnative.Object
+func (VisualScriptIterator) class() string { return `VisualScriptIterator` }
 
 var methodVisualScriptIterator [0]gdnative.Method
 
 type VisualScriptLists gdnative.Object
+func (VisualScriptLists) class() string { return `VisualScriptLists` }
 
 var methodVisualScriptLists [8]gdnative.Method
 func (gdClass VisualScriptLists) AddInputDataPort(atype VariantType, name string, index int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLists[0], atype, name, index) }
@@ -20377,6 +21079,7 @@ func (gdClass VisualScriptLists) SetOutputDataPortType(index int64, atype Varian
 func (gdClass VisualScriptLists) RemoveOutputDataPort(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLists[7], index) }
 
 type VisualScriptLocalVar gdnative.Object
+func (VisualScriptLocalVar) class() string { return `VisualScriptLocalVar` }
 
 var methodVisualScriptLocalVar [4]gdnative.Method
 func (gdClass VisualScriptLocalVar) SetVarName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVar[0], name) }
@@ -20385,6 +21088,7 @@ func (gdClass VisualScriptLocalVar) SetVarType(atype VariantType)  { gdnative.Ca
 func (gdClass VisualScriptLocalVar) GetVarType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptLocalVar[3]) }
 
 type VisualScriptLocalVarSet gdnative.Object
+func (VisualScriptLocalVarSet) class() string { return `VisualScriptLocalVarSet` }
 
 var methodVisualScriptLocalVarSet [4]gdnative.Method
 func (gdClass VisualScriptLocalVarSet) SetVarName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVarSet[0], name) }
@@ -20393,6 +21097,7 @@ func (gdClass VisualScriptLocalVarSet) SetVarType(atype VariantType)  { gdnative
 func (gdClass VisualScriptLocalVarSet) GetVarType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptLocalVarSet[3]) }
 
 type VisualScriptMathConstant gdnative.Object
+func (VisualScriptMathConstant) class() string { return `VisualScriptMathConstant` }
 
 var methodVisualScriptMathConstant [2]gdnative.Method
 
@@ -20413,6 +21118,7 @@ func (gdClass VisualScriptMathConstant) SetMathConstant(which VisualScriptMathCo
 func (gdClass VisualScriptMathConstant) GetMathConstant() VisualScriptMathConstantMathConstant { return gdnative.Return[VisualScriptMathConstantMathConstant](gdnative.Object(gdClass), methodVisualScriptMathConstant[1]) }
 
 type VisualScriptNode gdnative.Object
+func (VisualScriptNode) class() string { return `VisualScriptNode` }
 
 var methodVisualScriptNode [4]gdnative.Method
 func (gdClass VisualScriptNode) GetVisualScript() VisualScript { return gdnative.Return[VisualScript](gdnative.Object(gdClass), methodVisualScriptNode[0]) }
@@ -20421,6 +21127,7 @@ func (gdClass VisualScriptNode) GetDefaultInputValue(port_idx int64) any { retur
 func (gdClass VisualScriptNode) PortsChangedNotify()  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptNode[3]) }
 
 type VisualScriptOperator gdnative.Object
+func (VisualScriptOperator) class() string { return `VisualScriptOperator` }
 
 var methodVisualScriptOperator [4]gdnative.Method
 func (gdClass VisualScriptOperator) SetOperator(op VariantOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptOperator[0], op) }
@@ -20429,12 +21136,14 @@ func (gdClass VisualScriptOperator) SetTyped(atype VariantType)  { gdnative.Call
 func (gdClass VisualScriptOperator) GetTyped() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptOperator[3]) }
 
 type VisualScriptPreload gdnative.Object
+func (VisualScriptPreload) class() string { return `VisualScriptPreload` }
 
 var methodVisualScriptPreload [2]gdnative.Method
 func (gdClass VisualScriptPreload) SetPreload(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPreload[0], resource) }
 func (gdClass VisualScriptPreload) GetPreload() Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodVisualScriptPreload[1]) }
 
 type VisualScriptPropertyGet gdnative.Object
+func (VisualScriptPropertyGet) class() string { return `VisualScriptPropertyGet` }
 
 var methodVisualScriptPropertyGet [14]gdnative.Method
 
@@ -20462,6 +21171,7 @@ func (gdClass VisualScriptPropertyGet) SetIndex(index string)  { gdnative.Call(g
 func (gdClass VisualScriptPropertyGet) GetIndex() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptPropertyGet[13]) }
 
 type VisualScriptPropertySet gdnative.Object
+func (VisualScriptPropertySet) class() string { return `VisualScriptPropertySet` }
 
 var methodVisualScriptPropertySet [16]gdnative.Method
 
@@ -20507,12 +21217,14 @@ func (gdClass VisualScriptPropertySet) SetAssignOp(assign_op VisualScriptPropert
 func (gdClass VisualScriptPropertySet) GetAssignOp() VisualScriptPropertySetAssignOp { return gdnative.Return[VisualScriptPropertySetAssignOp](gdnative.Object(gdClass), methodVisualScriptPropertySet[15]) }
 
 type VisualScriptResourcePath gdnative.Object
+func (VisualScriptResourcePath) class() string { return `VisualScriptResourcePath` }
 
 var methodVisualScriptResourcePath [2]gdnative.Method
 func (gdClass VisualScriptResourcePath) SetResourcePath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptResourcePath[0], path) }
 func (gdClass VisualScriptResourcePath) GetResourcePath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptResourcePath[1]) }
 
 type VisualScriptReturn gdnative.Object
+func (VisualScriptReturn) class() string { return `VisualScriptReturn` }
 
 var methodVisualScriptReturn [4]gdnative.Method
 func (gdClass VisualScriptReturn) SetReturnType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptReturn[0], atype) }
@@ -20521,40 +21233,48 @@ func (gdClass VisualScriptReturn) SetEnableReturnValue(enable bool)  { gdnative.
 func (gdClass VisualScriptReturn) IsReturnValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualScriptReturn[3]) }
 
 type VisualScriptSceneNode gdnative.Object
+func (VisualScriptSceneNode) class() string { return `VisualScriptSceneNode` }
 
 var methodVisualScriptSceneNode [2]gdnative.Method
 func (gdClass VisualScriptSceneNode) SetNodePath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSceneNode[0], path) }
 func (gdClass VisualScriptSceneNode) GetNodePath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodVisualScriptSceneNode[1]) }
 
 type VisualScriptSceneTree gdnative.Object
+func (VisualScriptSceneTree) class() string { return `VisualScriptSceneTree` }
 
 var methodVisualScriptSceneTree [0]gdnative.Method
 
 type VisualScriptSelect gdnative.Object
+func (VisualScriptSelect) class() string { return `VisualScriptSelect` }
 
 var methodVisualScriptSelect [2]gdnative.Method
 func (gdClass VisualScriptSelect) SetTyped(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSelect[0], atype) }
 func (gdClass VisualScriptSelect) GetTyped() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptSelect[1]) }
 
 type VisualScriptSelf gdnative.Object
+func (VisualScriptSelf) class() string { return `VisualScriptSelf` }
 
 var methodVisualScriptSelf [0]gdnative.Method
 
 type VisualScriptSequence gdnative.Object
+func (VisualScriptSequence) class() string { return `VisualScriptSequence` }
 
 var methodVisualScriptSequence [2]gdnative.Method
 func (gdClass VisualScriptSequence) SetSteps(steps int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSequence[0], steps) }
 func (gdClass VisualScriptSequence) GetSteps() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualScriptSequence[1]) }
 
 type VisualScriptSubCall gdnative.Object
+func (VisualScriptSubCall) class() string { return `VisualScriptSubCall` }
 
 var methodVisualScriptSubCall [0]gdnative.Method
 
 type VisualScriptSwitch gdnative.Object
+func (VisualScriptSwitch) class() string { return `VisualScriptSwitch` }
 
 var methodVisualScriptSwitch [0]gdnative.Method
 
 type VisualScriptTypeCast gdnative.Object
+func (VisualScriptTypeCast) class() string { return `VisualScriptTypeCast` }
 
 var methodVisualScriptTypeCast [4]gdnative.Method
 func (gdClass VisualScriptTypeCast) SetBaseType(atype string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptTypeCast[0], atype) }
@@ -20563,22 +21283,26 @@ func (gdClass VisualScriptTypeCast) SetBaseScript(path string)  { gdnative.Call(
 func (gdClass VisualScriptTypeCast) GetBaseScript() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptTypeCast[3]) }
 
 type VisualScriptVariableGet gdnative.Object
+func (VisualScriptVariableGet) class() string { return `VisualScriptVariableGet` }
 
 var methodVisualScriptVariableGet [2]gdnative.Method
 func (gdClass VisualScriptVariableGet) SetVariable(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptVariableGet[0], name) }
 func (gdClass VisualScriptVariableGet) GetVariable() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptVariableGet[1]) }
 
 type VisualScriptVariableSet gdnative.Object
+func (VisualScriptVariableSet) class() string { return `VisualScriptVariableSet` }
 
 var methodVisualScriptVariableSet [2]gdnative.Method
 func (gdClass VisualScriptVariableSet) SetVariable(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptVariableSet[0], name) }
 func (gdClass VisualScriptVariableSet) GetVariable() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptVariableSet[1]) }
 
 type VisualScriptWhile gdnative.Object
+func (VisualScriptWhile) class() string { return `VisualScriptWhile` }
 
 var methodVisualScriptWhile [0]gdnative.Method
 
 type VisualScriptYield gdnative.Object
+func (VisualScriptYield) class() string { return `VisualScriptYield` }
 
 var methodVisualScriptYield [4]gdnative.Method
 
@@ -20595,6 +21319,7 @@ func (gdClass VisualScriptYield) SetWaitTime(sec float64)  { gdnative.Call(gdnat
 func (gdClass VisualScriptYield) GetWaitTime() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVisualScriptYield[3]) }
 
 type VisualScriptYieldSignal gdnative.Object
+func (VisualScriptYieldSignal) class() string { return `VisualScriptYieldSignal` }
 
 var methodVisualScriptYieldSignal [8]gdnative.Method
 
@@ -20615,6 +21340,7 @@ func (gdClass VisualScriptYieldSignal) SetBasePath(base_path NodePath)  { gdnati
 func (gdClass VisualScriptYieldSignal) GetBasePath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodVisualScriptYieldSignal[7]) }
 
 type VisualShader gdnative.Object
+func (VisualShader) class() string { return `VisualShader` }
 
 var methodVisualShader [20]gdnative.Method
 
@@ -20675,6 +21401,7 @@ func (gdClass VisualShader) RemoveVarying(name string)  { gdnative.Call(gdnative
 func (gdClass VisualShader) HasVarying(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShader[19], name) }
 
 type VisualShaderNode gdnative.Object
+func (VisualShaderNode) class() string { return `VisualShaderNode` }
 
 var methodVisualShaderNode [8]gdnative.Method
 
@@ -20701,6 +21428,7 @@ func (gdClass VisualShaderNode) SetDefaultInputValues(values Array)  { gdnative.
 func (gdClass VisualShaderNode) GetDefaultInputValues() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodVisualShaderNode[7]) }
 
 type VisualShaderNodeBillboard gdnative.Object
+func (VisualShaderNodeBillboard) class() string { return `VisualShaderNodeBillboard` }
 
 var methodVisualShaderNodeBillboard [4]gdnative.Method
 
@@ -20719,12 +21447,14 @@ func (gdClass VisualShaderNodeBillboard) SetKeepScaleEnabled(enabled bool)  { gd
 func (gdClass VisualShaderNodeBillboard) IsKeepScaleEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeBillboard[3]) }
 
 type VisualShaderNodeBooleanConstant gdnative.Object
+func (VisualShaderNodeBooleanConstant) class() string { return `VisualShaderNodeBooleanConstant` }
 
 var methodVisualShaderNodeBooleanConstant [2]gdnative.Method
 func (gdClass VisualShaderNodeBooleanConstant) SetConstant(constant bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBooleanConstant[0], constant) }
 func (gdClass VisualShaderNodeBooleanConstant) GetConstant() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeBooleanConstant[1]) }
 
 type VisualShaderNodeBooleanUniform gdnative.Object
+func (VisualShaderNodeBooleanUniform) class() string { return `VisualShaderNodeBooleanUniform` }
 
 var methodVisualShaderNodeBooleanUniform [4]gdnative.Method
 func (gdClass VisualShaderNodeBooleanUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBooleanUniform[0], enabled) }
@@ -20733,6 +21463,7 @@ func (gdClass VisualShaderNodeBooleanUniform) SetDefaultValue(value bool)  { gdn
 func (gdClass VisualShaderNodeBooleanUniform) GetDefaultValue() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeBooleanUniform[3]) }
 
 type VisualShaderNodeClamp gdnative.Object
+func (VisualShaderNodeClamp) class() string { return `VisualShaderNodeClamp` }
 
 var methodVisualShaderNodeClamp [2]gdnative.Method
 
@@ -20750,12 +21481,14 @@ func (gdClass VisualShaderNodeClamp) SetOpType(op_type VisualShaderNodeClampOpTy
 func (gdClass VisualShaderNodeClamp) GetOpType() VisualShaderNodeClampOpType { return gdnative.Return[VisualShaderNodeClampOpType](gdnative.Object(gdClass), methodVisualShaderNodeClamp[1]) }
 
 type VisualShaderNodeColorConstant gdnative.Object
+func (VisualShaderNodeColorConstant) class() string { return `VisualShaderNodeColorConstant` }
 
 var methodVisualShaderNodeColorConstant [2]gdnative.Method
 func (gdClass VisualShaderNodeColorConstant) SetConstant(constant Color)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorConstant[0], constant) }
 func (gdClass VisualShaderNodeColorConstant) GetConstant() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodVisualShaderNodeColorConstant[1]) }
 
 type VisualShaderNodeColorFunc gdnative.Object
+func (VisualShaderNodeColorFunc) class() string { return `VisualShaderNodeColorFunc` }
 
 var methodVisualShaderNodeColorFunc [2]gdnative.Method
 
@@ -20772,6 +21505,7 @@ func (gdClass VisualShaderNodeColorFunc) SetFunction(fn VisualShaderNodeColorFun
 func (gdClass VisualShaderNodeColorFunc) GetFunction() VisualShaderNodeColorFuncFunction { return gdnative.Return[VisualShaderNodeColorFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeColorFunc[1]) }
 
 type VisualShaderNodeColorOp gdnative.Object
+func (VisualShaderNodeColorOp) class() string { return `VisualShaderNodeColorOp` }
 
 var methodVisualShaderNodeColorOp [2]gdnative.Method
 
@@ -20793,6 +21527,7 @@ func (gdClass VisualShaderNodeColorOp) SetOperator(op VisualShaderNodeColorOpOpe
 func (gdClass VisualShaderNodeColorOp) GetOperator() VisualShaderNodeColorOpOperator { return gdnative.Return[VisualShaderNodeColorOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeColorOp[1]) }
 
 type VisualShaderNodeColorUniform gdnative.Object
+func (VisualShaderNodeColorUniform) class() string { return `VisualShaderNodeColorUniform` }
 
 var methodVisualShaderNodeColorUniform [4]gdnative.Method
 func (gdClass VisualShaderNodeColorUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorUniform[0], enabled) }
@@ -20801,6 +21536,7 @@ func (gdClass VisualShaderNodeColorUniform) SetDefaultValue(value Color)  { gdna
 func (gdClass VisualShaderNodeColorUniform) GetDefaultValue() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodVisualShaderNodeColorUniform[3]) }
 
 type VisualShaderNodeComment gdnative.Object
+func (VisualShaderNodeComment) class() string { return `VisualShaderNodeComment` }
 
 var methodVisualShaderNodeComment [4]gdnative.Method
 func (gdClass VisualShaderNodeComment) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeComment[0], title) }
@@ -20809,6 +21545,7 @@ func (gdClass VisualShaderNodeComment) SetDescription(description string)  { gdn
 func (gdClass VisualShaderNodeComment) GetDescription() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeComment[3]) }
 
 type VisualShaderNodeCompare gdnative.Object
+func (VisualShaderNodeCompare) class() string { return `VisualShaderNodeCompare` }
 
 var methodVisualShaderNodeCompare [6]gdnative.Method
 
@@ -20852,10 +21589,12 @@ func (gdClass VisualShaderNodeCompare) SetCondition(condition VisualShaderNodeCo
 func (gdClass VisualShaderNodeCompare) GetCondition() VisualShaderNodeCompareCondition { return gdnative.Return[VisualShaderNodeCompareCondition](gdnative.Object(gdClass), methodVisualShaderNodeCompare[5]) }
 
 type VisualShaderNodeConstant gdnative.Object
+func (VisualShaderNodeConstant) class() string { return `VisualShaderNodeConstant` }
 
 var methodVisualShaderNodeConstant [0]gdnative.Method
 
 type VisualShaderNodeCubemap gdnative.Object
+func (VisualShaderNodeCubemap) class() string { return `VisualShaderNodeCubemap` }
 
 var methodVisualShaderNodeCubemap [6]gdnative.Method
 
@@ -20883,22 +21622,26 @@ func (gdClass VisualShaderNodeCubemap) SetTextureType(value VisualShaderNodeCube
 func (gdClass VisualShaderNodeCubemap) GetTextureType() VisualShaderNodeCubemapTextureType { return gdnative.Return[VisualShaderNodeCubemapTextureType](gdnative.Object(gdClass), methodVisualShaderNodeCubemap[5]) }
 
 type VisualShaderNodeCubemapUniform gdnative.Object
+func (VisualShaderNodeCubemapUniform) class() string { return `VisualShaderNodeCubemapUniform` }
 
 var methodVisualShaderNodeCubemapUniform [0]gdnative.Method
 
 type VisualShaderNodeCurveTexture gdnative.Object
+func (VisualShaderNodeCurveTexture) class() string { return `VisualShaderNodeCurveTexture` }
 
 var methodVisualShaderNodeCurveTexture [2]gdnative.Method
 func (gdClass VisualShaderNodeCurveTexture) SetTexture(texture CurveTexture)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCurveTexture[0], texture) }
 func (gdClass VisualShaderNodeCurveTexture) GetTexture() CurveTexture { return gdnative.Return[CurveTexture](gdnative.Object(gdClass), methodVisualShaderNodeCurveTexture[1]) }
 
 type VisualShaderNodeCurveXYZTexture gdnative.Object
+func (VisualShaderNodeCurveXYZTexture) class() string { return `VisualShaderNodeCurveXYZTexture` }
 
 var methodVisualShaderNodeCurveXYZTexture [2]gdnative.Method
 func (gdClass VisualShaderNodeCurveXYZTexture) SetTexture(texture CurveXYZTexture)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCurveXYZTexture[0], texture) }
 func (gdClass VisualShaderNodeCurveXYZTexture) GetTexture() CurveXYZTexture { return gdnative.Return[CurveXYZTexture](gdnative.Object(gdClass), methodVisualShaderNodeCurveXYZTexture[1]) }
 
 type VisualShaderNodeCustom gdnative.Object
+func (VisualShaderNodeCustom) class() string { return `VisualShaderNodeCustom` }
 
 var methodVisualShaderNodeCustom [15]gdnative.Method
 func (gdClass VisualShaderNodeCustom) GetNameImplementation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeCustom[0]) }
@@ -20918,6 +21661,7 @@ func (gdClass VisualShaderNodeCustom) IsHighendImplementation() bool { return gd
 func (gdClass VisualShaderNodeCustom) IsAvailableImplementation(mode ShaderMode, atype VisualShaderType) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeCustom[14], mode, atype) }
 
 type VisualShaderNodeDerivativeFunc gdnative.Object
+func (VisualShaderNodeDerivativeFunc) class() string { return `VisualShaderNodeDerivativeFunc` }
 
 var methodVisualShaderNodeDerivativeFunc [4]gdnative.Method
 
@@ -20945,30 +21689,36 @@ func (gdClass VisualShaderNodeDerivativeFunc) SetFunction(fn VisualShaderNodeDer
 func (gdClass VisualShaderNodeDerivativeFunc) GetFunction() VisualShaderNodeDerivativeFuncFunction { return gdnative.Return[VisualShaderNodeDerivativeFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeDerivativeFunc[3]) }
 
 type VisualShaderNodeDeterminant gdnative.Object
+func (VisualShaderNodeDeterminant) class() string { return `VisualShaderNodeDeterminant` }
 
 var methodVisualShaderNodeDeterminant [0]gdnative.Method
 
 type VisualShaderNodeDotProduct gdnative.Object
+func (VisualShaderNodeDotProduct) class() string { return `VisualShaderNodeDotProduct` }
 
 var methodVisualShaderNodeDotProduct [0]gdnative.Method
 
 type VisualShaderNodeExpression gdnative.Object
+func (VisualShaderNodeExpression) class() string { return `VisualShaderNodeExpression` }
 
 var methodVisualShaderNodeExpression [2]gdnative.Method
 func (gdClass VisualShaderNodeExpression) SetExpression(expression string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeExpression[0], expression) }
 func (gdClass VisualShaderNodeExpression) GetExpression() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeExpression[1]) }
 
 type VisualShaderNodeFaceForward gdnative.Object
+func (VisualShaderNodeFaceForward) class() string { return `VisualShaderNodeFaceForward` }
 
 var methodVisualShaderNodeFaceForward [0]gdnative.Method
 
 type VisualShaderNodeFloatConstant gdnative.Object
+func (VisualShaderNodeFloatConstant) class() string { return `VisualShaderNodeFloatConstant` }
 
 var methodVisualShaderNodeFloatConstant [2]gdnative.Method
 func (gdClass VisualShaderNodeFloatConstant) SetConstant(constant float64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatConstant[0], constant) }
 func (gdClass VisualShaderNodeFloatConstant) GetConstant() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVisualShaderNodeFloatConstant[1]) }
 
 type VisualShaderNodeFloatFunc gdnative.Object
+func (VisualShaderNodeFloatFunc) class() string { return `VisualShaderNodeFloatFunc` }
 
 var methodVisualShaderNodeFloatFunc [2]gdnative.Method
 
@@ -21013,6 +21763,7 @@ func (gdClass VisualShaderNodeFloatFunc) SetFunction(fn VisualShaderNodeFloatFun
 func (gdClass VisualShaderNodeFloatFunc) GetFunction() VisualShaderNodeFloatFuncFunction { return gdnative.Return[VisualShaderNodeFloatFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeFloatFunc[1]) }
 
 type VisualShaderNodeFloatOp gdnative.Object
+func (VisualShaderNodeFloatOp) class() string { return `VisualShaderNodeFloatOp` }
 
 var methodVisualShaderNodeFloatOp [2]gdnative.Method
 
@@ -21035,6 +21786,7 @@ func (gdClass VisualShaderNodeFloatOp) SetOperator(op VisualShaderNodeFloatOpOpe
 func (gdClass VisualShaderNodeFloatOp) GetOperator() VisualShaderNodeFloatOpOperator { return gdnative.Return[VisualShaderNodeFloatOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeFloatOp[1]) }
 
 type VisualShaderNodeFloatUniform gdnative.Object
+func (VisualShaderNodeFloatUniform) class() string { return `VisualShaderNodeFloatUniform` }
 
 var methodVisualShaderNodeFloatUniform [12]gdnative.Method
 
@@ -21060,14 +21812,17 @@ func (gdClass VisualShaderNodeFloatUniform) SetDefaultValue(value float64)  { gd
 func (gdClass VisualShaderNodeFloatUniform) GetDefaultValue() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVisualShaderNodeFloatUniform[11]) }
 
 type VisualShaderNodeFresnel gdnative.Object
+func (VisualShaderNodeFresnel) class() string { return `VisualShaderNodeFresnel` }
 
 var methodVisualShaderNodeFresnel [0]gdnative.Method
 
 type VisualShaderNodeGlobalExpression gdnative.Object
+func (VisualShaderNodeGlobalExpression) class() string { return `VisualShaderNodeGlobalExpression` }
 
 var methodVisualShaderNodeGlobalExpression [0]gdnative.Method
 
 type VisualShaderNodeGroupBase gdnative.Object
+func (VisualShaderNodeGroupBase) class() string { return `VisualShaderNodeGroupBase` }
 
 var methodVisualShaderNodeGroupBase [21]gdnative.Method
 func (gdClass VisualShaderNodeGroupBase) SetInputs(inputs string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeGroupBase[0], inputs) }
@@ -21093,10 +21848,12 @@ func (gdClass VisualShaderNodeGroupBase) GetFreeInputPortId() int64 { return gdn
 func (gdClass VisualShaderNodeGroupBase) GetFreeOutputPortId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNodeGroupBase[20]) }
 
 type VisualShaderNodeIf gdnative.Object
+func (VisualShaderNodeIf) class() string { return `VisualShaderNodeIf` }
 
 var methodVisualShaderNodeIf [0]gdnative.Method
 
 type VisualShaderNodeInput gdnative.Object
+func (VisualShaderNodeInput) class() string { return `VisualShaderNodeInput` }
 
 var methodVisualShaderNodeInput [3]gdnative.Method
 func (gdClass VisualShaderNodeInput) SetInputName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeInput[0], name) }
@@ -21104,12 +21861,14 @@ func (gdClass VisualShaderNodeInput) GetInputName() string { return gdnative.Ret
 func (gdClass VisualShaderNodeInput) GetInputRealName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeInput[2]) }
 
 type VisualShaderNodeIntConstant gdnative.Object
+func (VisualShaderNodeIntConstant) class() string { return `VisualShaderNodeIntConstant` }
 
 var methodVisualShaderNodeIntConstant [2]gdnative.Method
 func (gdClass VisualShaderNodeIntConstant) SetConstant(constant int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntConstant[0], constant) }
 func (gdClass VisualShaderNodeIntConstant) GetConstant() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNodeIntConstant[1]) }
 
 type VisualShaderNodeIntFunc gdnative.Object
+func (VisualShaderNodeIntFunc) class() string { return `VisualShaderNodeIntFunc` }
 
 var methodVisualShaderNodeIntFunc [2]gdnative.Method
 
@@ -21126,6 +21885,7 @@ func (gdClass VisualShaderNodeIntFunc) SetFunction(fn VisualShaderNodeIntFuncFun
 func (gdClass VisualShaderNodeIntFunc) GetFunction() VisualShaderNodeIntFuncFunction { return gdnative.Return[VisualShaderNodeIntFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeIntFunc[1]) }
 
 type VisualShaderNodeIntOp gdnative.Object
+func (VisualShaderNodeIntOp) class() string { return `VisualShaderNodeIntOp` }
 
 var methodVisualShaderNodeIntOp [2]gdnative.Method
 
@@ -21150,6 +21910,7 @@ func (gdClass VisualShaderNodeIntOp) SetOperator(op VisualShaderNodeIntOpOperato
 func (gdClass VisualShaderNodeIntOp) GetOperator() VisualShaderNodeIntOpOperator { return gdnative.Return[VisualShaderNodeIntOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeIntOp[1]) }
 
 type VisualShaderNodeIntUniform gdnative.Object
+func (VisualShaderNodeIntUniform) class() string { return `VisualShaderNodeIntUniform` }
 
 var methodVisualShaderNodeIntUniform [12]gdnative.Method
 
@@ -21175,6 +21936,7 @@ func (gdClass VisualShaderNodeIntUniform) SetDefaultValue(value int64)  { gdnati
 func (gdClass VisualShaderNodeIntUniform) GetDefaultValue() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNodeIntUniform[11]) }
 
 type VisualShaderNodeIs gdnative.Object
+func (VisualShaderNodeIs) class() string { return `VisualShaderNodeIs` }
 
 var methodVisualShaderNodeIs [2]gdnative.Method
 
@@ -21189,6 +21951,7 @@ func (gdClass VisualShaderNodeIs) SetFunction(fn VisualShaderNodeIsFunction)  { 
 func (gdClass VisualShaderNodeIs) GetFunction() VisualShaderNodeIsFunction { return gdnative.Return[VisualShaderNodeIsFunction](gdnative.Object(gdClass), methodVisualShaderNodeIs[1]) }
 
 type VisualShaderNodeMix gdnative.Object
+func (VisualShaderNodeMix) class() string { return `VisualShaderNodeMix` }
 
 var methodVisualShaderNodeMix [2]gdnative.Method
 
@@ -21208,6 +21971,7 @@ func (gdClass VisualShaderNodeMix) SetOpType(op_type VisualShaderNodeMixOpType) 
 func (gdClass VisualShaderNodeMix) GetOpType() VisualShaderNodeMixOpType { return gdnative.Return[VisualShaderNodeMixOpType](gdnative.Object(gdClass), methodVisualShaderNodeMix[1]) }
 
 type VisualShaderNodeMultiplyAdd gdnative.Object
+func (VisualShaderNodeMultiplyAdd) class() string { return `VisualShaderNodeMultiplyAdd` }
 
 var methodVisualShaderNodeMultiplyAdd [2]gdnative.Method
 
@@ -21224,14 +21988,17 @@ func (gdClass VisualShaderNodeMultiplyAdd) SetOpType(atype VisualShaderNodeMulti
 func (gdClass VisualShaderNodeMultiplyAdd) GetOpType() VisualShaderNodeMultiplyAddOpType { return gdnative.Return[VisualShaderNodeMultiplyAddOpType](gdnative.Object(gdClass), methodVisualShaderNodeMultiplyAdd[1]) }
 
 type VisualShaderNodeOuterProduct gdnative.Object
+func (VisualShaderNodeOuterProduct) class() string { return `VisualShaderNodeOuterProduct` }
 
 var methodVisualShaderNodeOuterProduct [0]gdnative.Method
 
 type VisualShaderNodeOutput gdnative.Object
+func (VisualShaderNodeOutput) class() string { return `VisualShaderNodeOutput` }
 
 var methodVisualShaderNodeOutput [0]gdnative.Method
 
 type VisualShaderNodeParticleAccelerator gdnative.Object
+func (VisualShaderNodeParticleAccelerator) class() string { return `VisualShaderNodeParticleAccelerator` }
 
 var methodVisualShaderNodeParticleAccelerator [2]gdnative.Method
 
@@ -21247,14 +22014,17 @@ func (gdClass VisualShaderNodeParticleAccelerator) SetMode(mode VisualShaderNode
 func (gdClass VisualShaderNodeParticleAccelerator) GetMode() VisualShaderNodeParticleAcceleratorMode { return gdnative.Return[VisualShaderNodeParticleAcceleratorMode](gdnative.Object(gdClass), methodVisualShaderNodeParticleAccelerator[1]) }
 
 type VisualShaderNodeParticleBoxEmitter gdnative.Object
+func (VisualShaderNodeParticleBoxEmitter) class() string { return `VisualShaderNodeParticleBoxEmitter` }
 
 var methodVisualShaderNodeParticleBoxEmitter [0]gdnative.Method
 
 type VisualShaderNodeParticleConeVelocity gdnative.Object
+func (VisualShaderNodeParticleConeVelocity) class() string { return `VisualShaderNodeParticleConeVelocity` }
 
 var methodVisualShaderNodeParticleConeVelocity [0]gdnative.Method
 
 type VisualShaderNodeParticleEmit gdnative.Object
+func (VisualShaderNodeParticleEmit) class() string { return `VisualShaderNodeParticleEmit` }
 
 var methodVisualShaderNodeParticleEmit [2]gdnative.Method
 
@@ -21271,12 +22041,14 @@ func (gdClass VisualShaderNodeParticleEmit) SetFlags(flags VisualShaderNodeParti
 func (gdClass VisualShaderNodeParticleEmit) GetFlags() VisualShaderNodeParticleEmitEmitFlags { return gdnative.Return[VisualShaderNodeParticleEmitEmitFlags](gdnative.Object(gdClass), methodVisualShaderNodeParticleEmit[1]) }
 
 type VisualShaderNodeParticleEmitter gdnative.Object
+func (VisualShaderNodeParticleEmitter) class() string { return `VisualShaderNodeParticleEmitter` }
 
 var methodVisualShaderNodeParticleEmitter [2]gdnative.Method
 func (gdClass VisualShaderNodeParticleEmitter) SetMode2d(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleEmitter[0], enabled) }
 func (gdClass VisualShaderNodeParticleEmitter) IsMode2d() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeParticleEmitter[1]) }
 
 type VisualShaderNodeParticleMeshEmitter gdnative.Object
+func (VisualShaderNodeParticleMeshEmitter) class() string { return `VisualShaderNodeParticleMeshEmitter` }
 
 var methodVisualShaderNodeParticleMeshEmitter [6]gdnative.Method
 func (gdClass VisualShaderNodeParticleMeshEmitter) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleMeshEmitter[0], mesh) }
@@ -21287,16 +22059,19 @@ func (gdClass VisualShaderNodeParticleMeshEmitter) SetSurfaceIndex(surface_index
 func (gdClass VisualShaderNodeParticleMeshEmitter) GetSurfaceIndex() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNodeParticleMeshEmitter[5]) }
 
 type VisualShaderNodeParticleMultiplyByAxisAngle gdnative.Object
+func (VisualShaderNodeParticleMultiplyByAxisAngle) class() string { return `VisualShaderNodeParticleMultiplyByAxisAngle` }
 
 var methodVisualShaderNodeParticleMultiplyByAxisAngle [2]gdnative.Method
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) SetDegreesMode(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleMultiplyByAxisAngle[0], enabled) }
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) IsDegreesMode() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeParticleMultiplyByAxisAngle[1]) }
 
 type VisualShaderNodeParticleOutput gdnative.Object
+func (VisualShaderNodeParticleOutput) class() string { return `VisualShaderNodeParticleOutput` }
 
 var methodVisualShaderNodeParticleOutput [0]gdnative.Method
 
 type VisualShaderNodeParticleRandomness gdnative.Object
+func (VisualShaderNodeParticleRandomness) class() string { return `VisualShaderNodeParticleRandomness` }
 
 var methodVisualShaderNodeParticleRandomness [2]gdnative.Method
 
@@ -21312,28 +22087,34 @@ func (gdClass VisualShaderNodeParticleRandomness) SetOpType(atype VisualShaderNo
 func (gdClass VisualShaderNodeParticleRandomness) GetOpType() VisualShaderNodeParticleRandomnessOpType { return gdnative.Return[VisualShaderNodeParticleRandomnessOpType](gdnative.Object(gdClass), methodVisualShaderNodeParticleRandomness[1]) }
 
 type VisualShaderNodeParticleRingEmitter gdnative.Object
+func (VisualShaderNodeParticleRingEmitter) class() string { return `VisualShaderNodeParticleRingEmitter` }
 
 var methodVisualShaderNodeParticleRingEmitter [0]gdnative.Method
 
 type VisualShaderNodeParticleSphereEmitter gdnative.Object
+func (VisualShaderNodeParticleSphereEmitter) class() string { return `VisualShaderNodeParticleSphereEmitter` }
 
 var methodVisualShaderNodeParticleSphereEmitter [0]gdnative.Method
 
 type VisualShaderNodeResizableBase gdnative.Object
+func (VisualShaderNodeResizableBase) class() string { return `VisualShaderNodeResizableBase` }
 
 var methodVisualShaderNodeResizableBase [2]gdnative.Method
 func (gdClass VisualShaderNodeResizableBase) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeResizableBase[0], size) }
 func (gdClass VisualShaderNodeResizableBase) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualShaderNodeResizableBase[1]) }
 
 type VisualShaderNodeSDFRaymarch gdnative.Object
+func (VisualShaderNodeSDFRaymarch) class() string { return `VisualShaderNodeSDFRaymarch` }
 
 var methodVisualShaderNodeSDFRaymarch [0]gdnative.Method
 
 type VisualShaderNodeSDFToScreenUV gdnative.Object
+func (VisualShaderNodeSDFToScreenUV) class() string { return `VisualShaderNodeSDFToScreenUV` }
 
 var methodVisualShaderNodeSDFToScreenUV [0]gdnative.Method
 
 type VisualShaderNodeSample3D gdnative.Object
+func (VisualShaderNodeSample3D) class() string { return `VisualShaderNodeSample3D` }
 
 var methodVisualShaderNodeSample3D [2]gdnative.Method
 
@@ -21348,10 +22129,12 @@ func (gdClass VisualShaderNodeSample3D) SetSource(value VisualShaderNodeSample3D
 func (gdClass VisualShaderNodeSample3D) GetSource() VisualShaderNodeSample3DSource { return gdnative.Return[VisualShaderNodeSample3DSource](gdnative.Object(gdClass), methodVisualShaderNodeSample3D[1]) }
 
 type VisualShaderNodeScreenUVToSDF gdnative.Object
+func (VisualShaderNodeScreenUVToSDF) class() string { return `VisualShaderNodeScreenUVToSDF` }
 
 var methodVisualShaderNodeScreenUVToSDF [0]gdnative.Method
 
 type VisualShaderNodeSmoothStep gdnative.Object
+func (VisualShaderNodeSmoothStep) class() string { return `VisualShaderNodeSmoothStep` }
 
 var methodVisualShaderNodeSmoothStep [2]gdnative.Method
 
@@ -21371,6 +22154,7 @@ func (gdClass VisualShaderNodeSmoothStep) SetOpType(op_type VisualShaderNodeSmoo
 func (gdClass VisualShaderNodeSmoothStep) GetOpType() VisualShaderNodeSmoothStepOpType { return gdnative.Return[VisualShaderNodeSmoothStepOpType](gdnative.Object(gdClass), methodVisualShaderNodeSmoothStep[1]) }
 
 type VisualShaderNodeStep gdnative.Object
+func (VisualShaderNodeStep) class() string { return `VisualShaderNodeStep` }
 
 var methodVisualShaderNodeStep [2]gdnative.Method
 
@@ -21390,6 +22174,7 @@ func (gdClass VisualShaderNodeStep) SetOpType(op_type VisualShaderNodeStepOpType
 func (gdClass VisualShaderNodeStep) GetOpType() VisualShaderNodeStepOpType { return gdnative.Return[VisualShaderNodeStepOpType](gdnative.Object(gdClass), methodVisualShaderNodeStep[1]) }
 
 type VisualShaderNodeSwitch gdnative.Object
+func (VisualShaderNodeSwitch) class() string { return `VisualShaderNodeSwitch` }
 
 var methodVisualShaderNodeSwitch [2]gdnative.Method
 
@@ -21409,6 +22194,7 @@ func (gdClass VisualShaderNodeSwitch) SetOpType(atype VisualShaderNodeSwitchOpTy
 func (gdClass VisualShaderNodeSwitch) GetOpType() VisualShaderNodeSwitchOpType { return gdnative.Return[VisualShaderNodeSwitchOpType](gdnative.Object(gdClass), methodVisualShaderNodeSwitch[1]) }
 
 type VisualShaderNodeTexture gdnative.Object
+func (VisualShaderNodeTexture) class() string { return `VisualShaderNodeTexture` }
 
 var methodVisualShaderNodeTexture [6]gdnative.Method
 
@@ -21440,34 +22226,41 @@ func (gdClass VisualShaderNodeTexture) SetTextureType(value VisualShaderNodeText
 func (gdClass VisualShaderNodeTexture) GetTextureType() VisualShaderNodeTextureTextureType { return gdnative.Return[VisualShaderNodeTextureTextureType](gdnative.Object(gdClass), methodVisualShaderNodeTexture[5]) }
 
 type VisualShaderNodeTexture2DArray gdnative.Object
+func (VisualShaderNodeTexture2DArray) class() string { return `VisualShaderNodeTexture2DArray` }
 
 var methodVisualShaderNodeTexture2DArray [2]gdnative.Method
 func (gdClass VisualShaderNodeTexture2DArray) SetTextureArray(value Texture2DArray)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture2DArray[0], value) }
 func (gdClass VisualShaderNodeTexture2DArray) GetTextureArray() Texture2DArray { return gdnative.Return[Texture2DArray](gdnative.Object(gdClass), methodVisualShaderNodeTexture2DArray[1]) }
 
 type VisualShaderNodeTexture2DArrayUniform gdnative.Object
+func (VisualShaderNodeTexture2DArrayUniform) class() string { return `VisualShaderNodeTexture2DArrayUniform` }
 
 var methodVisualShaderNodeTexture2DArrayUniform [0]gdnative.Method
 
 type VisualShaderNodeTexture3D gdnative.Object
+func (VisualShaderNodeTexture3D) class() string { return `VisualShaderNodeTexture3D` }
 
 var methodVisualShaderNodeTexture3D [2]gdnative.Method
 func (gdClass VisualShaderNodeTexture3D) SetTexture(value Texture3D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture3D[0], value) }
 func (gdClass VisualShaderNodeTexture3D) GetTexture() Texture3D { return gdnative.Return[Texture3D](gdnative.Object(gdClass), methodVisualShaderNodeTexture3D[1]) }
 
 type VisualShaderNodeTexture3DUniform gdnative.Object
+func (VisualShaderNodeTexture3DUniform) class() string { return `VisualShaderNodeTexture3DUniform` }
 
 var methodVisualShaderNodeTexture3DUniform [0]gdnative.Method
 
 type VisualShaderNodeTextureSDF gdnative.Object
+func (VisualShaderNodeTextureSDF) class() string { return `VisualShaderNodeTextureSDF` }
 
 var methodVisualShaderNodeTextureSDF [0]gdnative.Method
 
 type VisualShaderNodeTextureSDFNormal gdnative.Object
+func (VisualShaderNodeTextureSDFNormal) class() string { return `VisualShaderNodeTextureSDFNormal` }
 
 var methodVisualShaderNodeTextureSDFNormal [0]gdnative.Method
 
 type VisualShaderNodeTextureUniform gdnative.Object
+func (VisualShaderNodeTextureUniform) class() string { return `VisualShaderNodeTextureUniform` }
 
 var methodVisualShaderNodeTextureUniform [8]gdnative.Method
 
@@ -21521,24 +22314,29 @@ func (gdClass VisualShaderNodeTextureUniform) SetTextureRepeat(atype VisualShade
 func (gdClass VisualShaderNodeTextureUniform) GetTextureRepeat() VisualShaderNodeTextureUniformTextureRepeat { return gdnative.Return[VisualShaderNodeTextureUniformTextureRepeat](gdnative.Object(gdClass), methodVisualShaderNodeTextureUniform[7]) }
 
 type VisualShaderNodeTextureUniformTriplanar gdnative.Object
+func (VisualShaderNodeTextureUniformTriplanar) class() string { return `VisualShaderNodeTextureUniformTriplanar` }
 
 var methodVisualShaderNodeTextureUniformTriplanar [0]gdnative.Method
 
 type VisualShaderNodeTransformCompose gdnative.Object
+func (VisualShaderNodeTransformCompose) class() string { return `VisualShaderNodeTransformCompose` }
 
 var methodVisualShaderNodeTransformCompose [0]gdnative.Method
 
 type VisualShaderNodeTransformConstant gdnative.Object
+func (VisualShaderNodeTransformConstant) class() string { return `VisualShaderNodeTransformConstant` }
 
 var methodVisualShaderNodeTransformConstant [2]gdnative.Method
 func (gdClass VisualShaderNodeTransformConstant) SetConstant(constant Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformConstant[0], constant) }
 func (gdClass VisualShaderNodeTransformConstant) GetConstant() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodVisualShaderNodeTransformConstant[1]) }
 
 type VisualShaderNodeTransformDecompose gdnative.Object
+func (VisualShaderNodeTransformDecompose) class() string { return `VisualShaderNodeTransformDecompose` }
 
 var methodVisualShaderNodeTransformDecompose [0]gdnative.Method
 
 type VisualShaderNodeTransformFunc gdnative.Object
+func (VisualShaderNodeTransformFunc) class() string { return `VisualShaderNodeTransformFunc` }
 
 var methodVisualShaderNodeTransformFunc [2]gdnative.Method
 
@@ -21553,6 +22351,7 @@ func (gdClass VisualShaderNodeTransformFunc) SetFunction(fn VisualShaderNodeTran
 func (gdClass VisualShaderNodeTransformFunc) GetFunction() VisualShaderNodeTransformFuncFunction { return gdnative.Return[VisualShaderNodeTransformFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeTransformFunc[1]) }
 
 type VisualShaderNodeTransformOp gdnative.Object
+func (VisualShaderNodeTransformOp) class() string { return `VisualShaderNodeTransformOp` }
 
 var methodVisualShaderNodeTransformOp [2]gdnative.Method
 
@@ -21574,6 +22373,7 @@ func (gdClass VisualShaderNodeTransformOp) SetOperator(op VisualShaderNodeTransf
 func (gdClass VisualShaderNodeTransformOp) GetOperator() VisualShaderNodeTransformOpOperator { return gdnative.Return[VisualShaderNodeTransformOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeTransformOp[1]) }
 
 type VisualShaderNodeTransformUniform gdnative.Object
+func (VisualShaderNodeTransformUniform) class() string { return `VisualShaderNodeTransformUniform` }
 
 var methodVisualShaderNodeTransformUniform [4]gdnative.Method
 func (gdClass VisualShaderNodeTransformUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformUniform[0], enabled) }
@@ -21582,6 +22382,7 @@ func (gdClass VisualShaderNodeTransformUniform) SetDefaultValue(value Transform3
 func (gdClass VisualShaderNodeTransformUniform) GetDefaultValue() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodVisualShaderNodeTransformUniform[3]) }
 
 type VisualShaderNodeTransformVecMult gdnative.Object
+func (VisualShaderNodeTransformVecMult) class() string { return `VisualShaderNodeTransformVecMult` }
 
 var methodVisualShaderNodeTransformVecMult [2]gdnative.Method
 
@@ -21598,6 +22399,7 @@ func (gdClass VisualShaderNodeTransformVecMult) SetOperator(op VisualShaderNodeT
 func (gdClass VisualShaderNodeTransformVecMult) GetOperator() VisualShaderNodeTransformVecMultOperator { return gdnative.Return[VisualShaderNodeTransformVecMultOperator](gdnative.Object(gdClass), methodVisualShaderNodeTransformVecMult[1]) }
 
 type VisualShaderNodeUVFunc gdnative.Object
+func (VisualShaderNodeUVFunc) class() string { return `VisualShaderNodeUVFunc` }
 
 var methodVisualShaderNodeUVFunc [2]gdnative.Method
 
@@ -21612,6 +22414,7 @@ func (gdClass VisualShaderNodeUVFunc) SetFunction(fn VisualShaderNodeUVFuncFunct
 func (gdClass VisualShaderNodeUVFunc) GetFunction() VisualShaderNodeUVFuncFunction { return gdnative.Return[VisualShaderNodeUVFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeUVFunc[1]) }
 
 type VisualShaderNodeUniform gdnative.Object
+func (VisualShaderNodeUniform) class() string { return `VisualShaderNodeUniform` }
 
 var methodVisualShaderNodeUniform [4]gdnative.Method
 
@@ -21629,12 +22432,14 @@ func (gdClass VisualShaderNodeUniform) SetQualifier(qualifier VisualShaderNodeUn
 func (gdClass VisualShaderNodeUniform) GetQualifier() VisualShaderNodeUniformQualifier { return gdnative.Return[VisualShaderNodeUniformQualifier](gdnative.Object(gdClass), methodVisualShaderNodeUniform[3]) }
 
 type VisualShaderNodeUniformRef gdnative.Object
+func (VisualShaderNodeUniformRef) class() string { return `VisualShaderNodeUniformRef` }
 
 var methodVisualShaderNodeUniformRef [2]gdnative.Method
 func (gdClass VisualShaderNodeUniformRef) SetUniformName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeUniformRef[0], name) }
 func (gdClass VisualShaderNodeUniformRef) GetUniformName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeUniformRef[1]) }
 
 type VisualShaderNodeVarying gdnative.Object
+func (VisualShaderNodeVarying) class() string { return `VisualShaderNodeVarying` }
 
 var methodVisualShaderNodeVarying [4]gdnative.Method
 func (gdClass VisualShaderNodeVarying) SetVaryingName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVarying[0], name) }
@@ -21643,20 +22448,24 @@ func (gdClass VisualShaderNodeVarying) SetVaryingType(atype VisualShaderVaryingT
 func (gdClass VisualShaderNodeVarying) GetVaryingType() VisualShaderVaryingType { return gdnative.Return[VisualShaderVaryingType](gdnative.Object(gdClass), methodVisualShaderNodeVarying[3]) }
 
 type VisualShaderNodeVaryingGetter gdnative.Object
+func (VisualShaderNodeVaryingGetter) class() string { return `VisualShaderNodeVaryingGetter` }
 
 var methodVisualShaderNodeVaryingGetter [0]gdnative.Method
 
 type VisualShaderNodeVaryingSetter gdnative.Object
+func (VisualShaderNodeVaryingSetter) class() string { return `VisualShaderNodeVaryingSetter` }
 
 var methodVisualShaderNodeVaryingSetter [0]gdnative.Method
 
 type VisualShaderNodeVec2Constant gdnative.Object
+func (VisualShaderNodeVec2Constant) class() string { return `VisualShaderNodeVec2Constant` }
 
 var methodVisualShaderNodeVec2Constant [2]gdnative.Method
 func (gdClass VisualShaderNodeVec2Constant) SetConstant(constant Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec2Constant[0], constant) }
 func (gdClass VisualShaderNodeVec2Constant) GetConstant() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualShaderNodeVec2Constant[1]) }
 
 type VisualShaderNodeVec2Uniform gdnative.Object
+func (VisualShaderNodeVec2Uniform) class() string { return `VisualShaderNodeVec2Uniform` }
 
 var methodVisualShaderNodeVec2Uniform [4]gdnative.Method
 func (gdClass VisualShaderNodeVec2Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec2Uniform[0], enabled) }
@@ -21665,12 +22474,14 @@ func (gdClass VisualShaderNodeVec2Uniform) SetDefaultValue(value Vector2)  { gdn
 func (gdClass VisualShaderNodeVec2Uniform) GetDefaultValue() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualShaderNodeVec2Uniform[3]) }
 
 type VisualShaderNodeVec3Constant gdnative.Object
+func (VisualShaderNodeVec3Constant) class() string { return `VisualShaderNodeVec3Constant` }
 
 var methodVisualShaderNodeVec3Constant [2]gdnative.Method
 func (gdClass VisualShaderNodeVec3Constant) SetConstant(constant Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec3Constant[0], constant) }
 func (gdClass VisualShaderNodeVec3Constant) GetConstant() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodVisualShaderNodeVec3Constant[1]) }
 
 type VisualShaderNodeVec3Uniform gdnative.Object
+func (VisualShaderNodeVec3Uniform) class() string { return `VisualShaderNodeVec3Uniform` }
 
 var methodVisualShaderNodeVec3Uniform [4]gdnative.Method
 func (gdClass VisualShaderNodeVec3Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec3Uniform[0], enabled) }
@@ -21679,12 +22490,14 @@ func (gdClass VisualShaderNodeVec3Uniform) SetDefaultValue(value Vector3)  { gdn
 func (gdClass VisualShaderNodeVec3Uniform) GetDefaultValue() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodVisualShaderNodeVec3Uniform[3]) }
 
 type VisualShaderNodeVec4Constant gdnative.Object
+func (VisualShaderNodeVec4Constant) class() string { return `VisualShaderNodeVec4Constant` }
 
 var methodVisualShaderNodeVec4Constant [2]gdnative.Method
 func (gdClass VisualShaderNodeVec4Constant) SetConstant(constant Quaternion)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec4Constant[0], constant) }
 func (gdClass VisualShaderNodeVec4Constant) GetConstant() Quaternion { return gdnative.Return[Quaternion](gdnative.Object(gdClass), methodVisualShaderNodeVec4Constant[1]) }
 
 type VisualShaderNodeVec4Uniform gdnative.Object
+func (VisualShaderNodeVec4Uniform) class() string { return `VisualShaderNodeVec4Uniform` }
 
 var methodVisualShaderNodeVec4Uniform [4]gdnative.Method
 func (gdClass VisualShaderNodeVec4Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec4Uniform[0], enabled) }
@@ -21693,6 +22506,7 @@ func (gdClass VisualShaderNodeVec4Uniform) SetDefaultValue(value Quaternion)  { 
 func (gdClass VisualShaderNodeVec4Uniform) GetDefaultValue() Quaternion { return gdnative.Return[Quaternion](gdnative.Object(gdClass), methodVisualShaderNodeVec4Uniform[3]) }
 
 type VisualShaderNodeVectorBase gdnative.Object
+func (VisualShaderNodeVectorBase) class() string { return `VisualShaderNodeVectorBase` }
 
 var methodVisualShaderNodeVectorBase [2]gdnative.Method
 
@@ -21708,18 +22522,22 @@ func (gdClass VisualShaderNodeVectorBase) SetOpType(atype VisualShaderNodeVector
 func (gdClass VisualShaderNodeVectorBase) GetOpType() VisualShaderNodeVectorBaseOpType { return gdnative.Return[VisualShaderNodeVectorBaseOpType](gdnative.Object(gdClass), methodVisualShaderNodeVectorBase[1]) }
 
 type VisualShaderNodeVectorCompose gdnative.Object
+func (VisualShaderNodeVectorCompose) class() string { return `VisualShaderNodeVectorCompose` }
 
 var methodVisualShaderNodeVectorCompose [0]gdnative.Method
 
 type VisualShaderNodeVectorDecompose gdnative.Object
+func (VisualShaderNodeVectorDecompose) class() string { return `VisualShaderNodeVectorDecompose` }
 
 var methodVisualShaderNodeVectorDecompose [0]gdnative.Method
 
 type VisualShaderNodeVectorDistance gdnative.Object
+func (VisualShaderNodeVectorDistance) class() string { return `VisualShaderNodeVectorDistance` }
 
 var methodVisualShaderNodeVectorDistance [0]gdnative.Method
 
 type VisualShaderNodeVectorFunc gdnative.Object
+func (VisualShaderNodeVectorFunc) class() string { return `VisualShaderNodeVectorFunc` }
 
 var methodVisualShaderNodeVectorFunc [2]gdnative.Method
 
@@ -21765,10 +22583,12 @@ func (gdClass VisualShaderNodeVectorFunc) SetFunction(fn VisualShaderNodeVectorF
 func (gdClass VisualShaderNodeVectorFunc) GetFunction() VisualShaderNodeVectorFuncFunction { return gdnative.Return[VisualShaderNodeVectorFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeVectorFunc[1]) }
 
 type VisualShaderNodeVectorLen gdnative.Object
+func (VisualShaderNodeVectorLen) class() string { return `VisualShaderNodeVectorLen` }
 
 var methodVisualShaderNodeVectorLen [0]gdnative.Method
 
 type VisualShaderNodeVectorOp gdnative.Object
+func (VisualShaderNodeVectorOp) class() string { return `VisualShaderNodeVectorOp` }
 
 var methodVisualShaderNodeVectorOp [2]gdnative.Method
 
@@ -21793,10 +22613,12 @@ func (gdClass VisualShaderNodeVectorOp) SetOperator(op VisualShaderNodeVectorOpO
 func (gdClass VisualShaderNodeVectorOp) GetOperator() VisualShaderNodeVectorOpOperator { return gdnative.Return[VisualShaderNodeVectorOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeVectorOp[1]) }
 
 type VisualShaderNodeVectorRefract gdnative.Object
+func (VisualShaderNodeVectorRefract) class() string { return `VisualShaderNodeVectorRefract` }
 
 var methodVisualShaderNodeVectorRefract [0]gdnative.Method
 
 type VoxelGI gdnative.Object
+func (VoxelGI) class() string { return `VoxelGI` }
 
 var methodVoxelGI [8]gdnative.Method
 
@@ -21819,6 +22641,7 @@ func (gdClass VoxelGI) Bake(from_node Node, create_visual_debug bool)  { gdnativ
 func (gdClass VoxelGI) DebugBake()  { gdnative.Call(gdnative.Object(gdClass), methodVoxelGI[7]) }
 
 type VoxelGIData gdnative.Object
+func (VoxelGIData) class() string { return `VoxelGIData` }
 
 var methodVoxelGIData [21]gdnative.Method
 func (gdClass VoxelGIData) Allocate(to_cell_xform Transform3D, aabb AABB, octree_size Vector3, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32)  { gdnative.Call(gdnative.Object(gdClass), methodVoxelGIData[0], to_cell_xform, aabb, octree_size, octree_cells, data_cells, distance_field, level_counts) }
@@ -21844,11 +22667,13 @@ func (gdClass VoxelGIData) SetUseTwoBounces(enable bool)  { gdnative.Call(gdnati
 func (gdClass VoxelGIData) IsUsingTwoBounces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVoxelGIData[20]) }
 
 type WeakRef gdnative.Object
+func (WeakRef) class() string { return `WeakRef` }
 
 var methodWeakRef [1]gdnative.Method
 func (gdClass WeakRef) GetRef() any { return gdnative.Return[any](gdnative.Object(gdClass), methodWeakRef[0]) }
 
 type WebRTCDataChannel gdnative.Object
+func (WebRTCDataChannel) class() string { return `WebRTCDataChannel` }
 
 var methodWebRTCDataChannel [14]gdnative.Method
 
@@ -21883,6 +22708,7 @@ func (gdClass WebRTCDataChannel) IsNegotiated() bool { return gdnative.Return[bo
 func (gdClass WebRTCDataChannel) GetBufferedAmount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWebRTCDataChannel[13]) }
 
 type WebRTCDataChannelExtension gdnative.Object
+func (WebRTCDataChannelExtension) class() string { return `WebRTCDataChannelExtension` }
 
 var methodWebRTCDataChannelExtension [18]gdnative.Method
 func (gdClass WebRTCDataChannelExtension) GetPacketImplementation(r_buffer *[]byte, r_buffer_size *int32) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWebRTCDataChannelExtension[0], r_buffer, r_buffer_size) }
@@ -21905,6 +22731,7 @@ func (gdClass WebRTCDataChannelExtension) IsNegotiatedImplementation() bool { re
 func (gdClass WebRTCDataChannelExtension) GetBufferedAmountImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWebRTCDataChannelExtension[17]) }
 
 type WebRTCMultiplayerPeer gdnative.Object
+func (WebRTCMultiplayerPeer) class() string { return `WebRTCMultiplayerPeer` }
 
 var methodWebRTCMultiplayerPeer [7]gdnative.Method
 func (gdClass WebRTCMultiplayerPeer) Initialize(peer_id int64, server_compatibility bool, channels_config Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebRTCMultiplayerPeer[0], peer_id, server_compatibility, channels_config) }
@@ -21916,6 +22743,7 @@ func (gdClass WebRTCMultiplayerPeer) GetPeers() Dictionary { return gdnative.Ret
 func (gdClass WebRTCMultiplayerPeer) Close()  { gdnative.Call(gdnative.Object(gdClass), methodWebRTCMultiplayerPeer[6]) }
 
 type WebRTCPeerConnection gdnative.Object
+func (WebRTCPeerConnection) class() string { return `WebRTCPeerConnection` }
 
 var methodWebRTCPeerConnection [10]gdnative.Method
 
@@ -21941,6 +22769,7 @@ func (gdClass WebRTCPeerConnection) Close()  { gdnative.Call(gdnative.Object(gdC
 func (gdClass WebRTCPeerConnection) GetConnectionState() WebRTCPeerConnectionConnectionState { return gdnative.Return[WebRTCPeerConnectionConnectionState](gdnative.Object(gdClass), methodWebRTCPeerConnection[9]) }
 
 type WebRTCPeerConnectionExtension gdnative.Object
+func (WebRTCPeerConnectionExtension) class() string { return `WebRTCPeerConnectionExtension` }
 
 var methodWebRTCPeerConnectionExtension [9]gdnative.Method
 func (gdClass WebRTCPeerConnectionExtension) GetConnectionStateImplementation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWebRTCPeerConnectionExtension[0]) }
@@ -21954,6 +22783,7 @@ func (gdClass WebRTCPeerConnectionExtension) PollImplementation() int64 { return
 func (gdClass WebRTCPeerConnectionExtension) CloseImplementation()  { gdnative.Call(gdnative.Object(gdClass), methodWebRTCPeerConnectionExtension[8]) }
 
 type WebSocketClient gdnative.Object
+func (WebSocketClient) class() string { return `WebSocketClient` }
 
 var methodWebSocketClient [8]gdnative.Method
 func (gdClass WebSocketClient) ConnectToUrl(url string, protocols []string, gd_mp_api bool, custom_headers []string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebSocketClient[0], url, protocols, gd_mp_api, custom_headers) }
@@ -21966,12 +22796,14 @@ func (gdClass WebSocketClient) GetTrustedSslCertificate() X509Certificate { retu
 func (gdClass WebSocketClient) SetTrustedSslCertificate(cert X509Certificate)  { gdnative.Call(gdnative.Object(gdClass), methodWebSocketClient[7], cert) }
 
 type WebSocketMultiplayerPeer gdnative.Object
+func (WebSocketMultiplayerPeer) class() string { return `WebSocketMultiplayerPeer` }
 
 var methodWebSocketMultiplayerPeer [2]gdnative.Method
 func (gdClass WebSocketMultiplayerPeer) SetBuffers(input_buffer_size_kb int64, input_max_packets int64, output_buffer_size_kb int64, output_max_packets int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebSocketMultiplayerPeer[0], input_buffer_size_kb, input_max_packets, output_buffer_size_kb, output_max_packets) }
 func (gdClass WebSocketMultiplayerPeer) GetPeer(peer_id int64) WebSocketPeer { return gdnative.Return[WebSocketPeer](gdnative.Object(gdClass), methodWebSocketMultiplayerPeer[1], peer_id) }
 
 type WebSocketPeer gdnative.Object
+func (WebSocketPeer) class() string { return `WebSocketPeer` }
 
 var methodWebSocketPeer [9]gdnative.Method
 
@@ -21992,6 +22824,7 @@ func (gdClass WebSocketPeer) SetNoDelay(enabled bool)  { gdnative.Call(gdnative.
 func (gdClass WebSocketPeer) GetCurrentOutboundBufferedAmount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWebSocketPeer[8]) }
 
 type WebSocketServer gdnative.Object
+func (WebSocketServer) class() string { return `WebSocketServer` }
 
 var methodWebSocketServer [18]gdnative.Method
 func (gdClass WebSocketServer) IsListening() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodWebSocketServer[0]) }
@@ -22014,6 +22847,7 @@ func (gdClass WebSocketServer) GetHandshakeTimeout() float64 { return gdnative.R
 func (gdClass WebSocketServer) SetHandshakeTimeout(timeout float64)  { gdnative.Call(gdnative.Object(gdClass), methodWebSocketServer[17], timeout) }
 
 type WebXRInterface gdnative.Object
+func (WebXRInterface) class() string { return `WebXRInterface` }
 
 var methodWebXRInterface [13]gdnative.Method
 func (gdClass WebXRInterface) IsSessionSupported(session_mode string)  { gdnative.Call(gdnative.Object(gdClass), methodWebXRInterface[0], session_mode) }
@@ -22031,6 +22865,7 @@ func (gdClass WebXRInterface) GetVisibilityState() string { return gdnative.Retu
 func (gdClass WebXRInterface) GetBoundsGeometry() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodWebXRInterface[12]) }
 
 type Window gdnative.Object
+func (Window) class() string { return `Window` }
 
 var methodWindow [78]gdnative.Method
 
@@ -22162,6 +22997,7 @@ func (gdClass Window) PopupCentered(minsize Vector2i)  { gdnative.Call(gdnative.
 func (gdClass Window) PopupCenteredClamped(minsize Vector2i, fallback_ratio float64)  { gdnative.Call(gdnative.Object(gdClass), methodWindow[77], minsize, fallback_ratio) }
 
 type WorkerThreadPool gdnative.Object
+func (WorkerThreadPool) class() string { return `WorkerThreadPool` }
 
 var methodWorkerThreadPool [7]gdnative.Method
 func (gdClass WorkerThreadPool) AddTask(action Callable, high_priority bool, description string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWorkerThreadPool[0], action, high_priority, description) }
@@ -22173,6 +23009,7 @@ func (gdClass WorkerThreadPool) GetGroupProcessedElementCount(group_id int64) in
 func (gdClass WorkerThreadPool) WaitForGroupTaskCompletion(group_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodWorkerThreadPool[6], group_id) }
 
 type World2D gdnative.Object
+func (World2D) class() string { return `World2D` }
 
 var methodWorld2D [4]gdnative.Method
 func (gdClass World2D) GetCanvas() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld2D[0]) }
@@ -22181,6 +23018,7 @@ func (gdClass World2D) GetNavigationMap() RID { return gdnative.Return[RID](gdna
 func (gdClass World2D) GetDirectSpaceState() PhysicsDirectSpaceState2D { return gdnative.Return[PhysicsDirectSpaceState2D](gdnative.Object(gdClass), methodWorld2D[3]) }
 
 type World3D gdnative.Object
+func (World3D) class() string { return `World3D` }
 
 var methodWorld3D [10]gdnative.Method
 func (gdClass World3D) GetSpace() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld3D[0]) }
@@ -22195,6 +23033,7 @@ func (gdClass World3D) GetCameraEffects() CameraEffects { return gdnative.Return
 func (gdClass World3D) GetDirectSpaceState() PhysicsDirectSpaceState3D { return gdnative.Return[PhysicsDirectSpaceState3D](gdnative.Object(gdClass), methodWorld3D[9]) }
 
 type WorldBoundaryShape2D gdnative.Object
+func (WorldBoundaryShape2D) class() string { return `WorldBoundaryShape2D` }
 
 var methodWorldBoundaryShape2D [4]gdnative.Method
 func (gdClass WorldBoundaryShape2D) SetNormal(normal Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodWorldBoundaryShape2D[0], normal) }
@@ -22203,12 +23042,14 @@ func (gdClass WorldBoundaryShape2D) SetDistance(distance float64)  { gdnative.Ca
 func (gdClass WorldBoundaryShape2D) GetDistance() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodWorldBoundaryShape2D[3]) }
 
 type WorldBoundaryShape3D gdnative.Object
+func (WorldBoundaryShape3D) class() string { return `WorldBoundaryShape3D` }
 
 var methodWorldBoundaryShape3D [2]gdnative.Method
 func (gdClass WorldBoundaryShape3D) SetPlane(plane Plane)  { gdnative.Call(gdnative.Object(gdClass), methodWorldBoundaryShape3D[0], plane) }
 func (gdClass WorldBoundaryShape3D) GetPlane() Plane { return gdnative.Return[Plane](gdnative.Object(gdClass), methodWorldBoundaryShape3D[1]) }
 
 type WorldEnvironment gdnative.Object
+func (WorldEnvironment) class() string { return `WorldEnvironment` }
 
 var methodWorldEnvironment [4]gdnative.Method
 func (gdClass WorldEnvironment) SetEnvironment(env Environment)  { gdnative.Call(gdnative.Object(gdClass), methodWorldEnvironment[0], env) }
@@ -22217,12 +23058,14 @@ func (gdClass WorldEnvironment) SetCameraEffects(env CameraEffects)  { gdnative.
 func (gdClass WorldEnvironment) GetCameraEffects() CameraEffects { return gdnative.Return[CameraEffects](gdnative.Object(gdClass), methodWorldEnvironment[3]) }
 
 type X509Certificate gdnative.Object
+func (X509Certificate) class() string { return `X509Certificate` }
 
 var methodX509Certificate [2]gdnative.Method
 func (gdClass X509Certificate) Save(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodX509Certificate[0], path) }
 func (gdClass X509Certificate) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodX509Certificate[1], path) }
 
 type XMLParser gdnative.Object
+func (XMLParser) class() string { return `XMLParser` }
 
 var methodXMLParser [17]gdnative.Method
 
@@ -22256,16 +23099,19 @@ func (gdClass XMLParser) Open(file string) error { return gdnative.Return[error]
 func (gdClass XMLParser) OpenBuffer(buffer []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodXMLParser[16], buffer) }
 
 type XRAnchor3D gdnative.Object
+func (XRAnchor3D) class() string { return `XRAnchor3D` }
 
 var methodXRAnchor3D [2]gdnative.Method
 func (gdClass XRAnchor3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodXRAnchor3D[0]) }
 func (gdClass XRAnchor3D) GetPlane() Plane { return gdnative.Return[Plane](gdnative.Object(gdClass), methodXRAnchor3D[1]) }
 
 type XRCamera3D gdnative.Object
+func (XRCamera3D) class() string { return `XRCamera3D` }
 
 var methodXRCamera3D [0]gdnative.Method
 
 type XRController3D gdnative.Object
+func (XRController3D) class() string { return `XRController3D` }
 
 var methodXRController3D [4]gdnative.Method
 func (gdClass XRController3D) IsButtonPressed(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodXRController3D[0], name) }
@@ -22274,6 +23120,7 @@ func (gdClass XRController3D) GetAxis(name string) Vector2 { return gdnative.Ret
 func (gdClass XRController3D) GetTrackerHand() XRPositionalTrackerTrackerHand { return gdnative.Return[XRPositionalTrackerTrackerHand](gdnative.Object(gdClass), methodXRController3D[3]) }
 
 type XRInterface gdnative.Object
+func (XRInterface) class() string { return `XRInterface` }
 
 var methodXRInterface [18]gdnative.Method
 
@@ -22328,6 +23175,7 @@ func (gdClass XRInterface) SetAnchorDetectionIsEnabled(enable bool)  { gdnative.
 func (gdClass XRInterface) GetCameraFeedId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodXRInterface[17]) }
 
 type XRInterfaceExtension gdnative.Object
+func (XRInterfaceExtension) class() string { return `XRInterfaceExtension` }
 
 var methodXRInterfaceExtension [30]gdnative.Method
 func (gdClass XRInterfaceExtension) GetNameImplementation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodXRInterfaceExtension[0]) }
@@ -22362,6 +23210,7 @@ func (gdClass XRInterfaceExtension) AddBlit(render_target RID, src_rect Rect2, d
 func (gdClass XRInterfaceExtension) GetRenderTargetTexture(render_target RID) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodXRInterfaceExtension[29], render_target) }
 
 type XRNode3D gdnative.Object
+func (XRNode3D) class() string { return `XRNode3D` }
 
 var methodXRNode3D [8]gdnative.Method
 func (gdClass XRNode3D) SetTracker(tracker_name string)  { gdnative.Call(gdnative.Object(gdClass), methodXRNode3D[0], tracker_name) }
@@ -22374,12 +23223,14 @@ func (gdClass XRNode3D) GetPose() XRPose { return gdnative.Return[XRPose](gdnati
 func (gdClass XRNode3D) TriggerHapticPulse(action_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)  { gdnative.Call(gdnative.Object(gdClass), methodXRNode3D[7], action_name, frequency, amplitude, duration_sec, delay_sec) }
 
 type XROrigin3D gdnative.Object
+func (XROrigin3D) class() string { return `XROrigin3D` }
 
 var methodXROrigin3D [2]gdnative.Method
 func (gdClass XROrigin3D) SetWorldScale(world_scale float64)  { gdnative.Call(gdnative.Object(gdClass), methodXROrigin3D[0], world_scale) }
 func (gdClass XROrigin3D) GetWorldScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodXROrigin3D[1]) }
 
 type XRPose gdnative.Object
+func (XRPose) class() string { return `XRPose` }
 
 var methodXRPose [13]gdnative.Method
 
@@ -22405,6 +23256,7 @@ func (gdClass XRPose) SetTrackingConfidence(tracking_confidence XRPoseTrackingCo
 func (gdClass XRPose) GetTrackingConfidence() XRPoseTrackingConfidence { return gdnative.Return[XRPoseTrackingConfidence](gdnative.Object(gdClass), methodXRPose[12]) }
 
 type XRPositionalTracker gdnative.Object
+func (XRPositionalTracker) class() string { return `XRPositionalTracker` }
 
 var methodXRPositionalTracker [16]gdnative.Method
 
@@ -22433,6 +23285,7 @@ func (gdClass XRPositionalTracker) GetInput(name string) any { return gdnative.R
 func (gdClass XRPositionalTracker) SetInput(name string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodXRPositionalTracker[15], name, value) }
 
 type XRServer gdnative.Object
+func (XRServer) class() string { return `XRServer` }
 
 var methodXRServer [17]gdnative.Method
 

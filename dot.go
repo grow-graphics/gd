@@ -1,5 +1,11 @@
 package gd
 
+import (
+	"reflect"
+
+	"github.com/readykit/gd/gdnative"
+)
+
 type Vector2 struct {
 	X, Y float32
 }
@@ -51,7 +57,6 @@ type Vector2i struct {
 }
 
 type Callable struct {
-
 }
 
 type Plane struct {
@@ -69,7 +74,75 @@ type Basis struct {
 type PhysicsServer3DExtensionRayResult struct{}
 type PhysicsServer3DExtensionShapeResult struct{}
 type PhysicsServer3DExtensionShapeRestInfo struct{}
-type PhysicsServer3DExtensionMotionResult struct {}
-type ScriptLanguageExtensionProfilingInfo struct {}
-type Glyph struct {}
-type CaretInfo struct {}
+type PhysicsServer3DExtensionMotionResult struct{}
+type ScriptLanguageExtensionProfilingInfo struct{}
+type Glyph struct{}
+type CaretInfo struct{}
+
+type Class interface {
+	class() string
+}
+
+type Extension[T Class] struct {
+	rtype reflect.Type
+	class string        // base class name, cached on register.
+	owner string        // owner class name, cached on register.
+	slice []Instance[T] // slice of instantiated instances.
+}
+
+type Instance[T Class] struct {
+	alive bool
+	value T
+}
+
+func (ext *Extension[T]) Create() gdnative.Object {
+	obj := gdnative.New(ext.owner)
+
+	var instance Instance[T]
+	instance.alive = true
+	// reuse existing memory if possible.
+
+	var id gdnative.InstanceID
+	for i, slot := range ext.slice {
+		if !slot.alive {
+			ext.slice[i] = instance
+			id = gdnative.InstanceID(i + 1)
+			break
+		}
+	}
+
+	if id == 0 {
+		ext.slice = append(ext.slice, instance)
+		id = gdnative.InstanceID(len(ext.slice))
+	}
+
+	reflect.ValueOf(&ext.slice[id-1].value).Elem().Field(0).SetUint(uint64(obj))
+
+	obj.SetInstance(ext.class, id)
+
+	return obj
+}
+
+func (ext *Extension[T]) Delete(id gdnative.InstanceID) {
+	ext.slice[id-1].alive = false
+}
+
+func (ext *Extension[T]) register() {
+	var native T
+
+	ext.rtype = reflect.TypeOf(native)
+	ext.class = ext.rtype.Name()
+	ext.owner = native.class()
+
+	gdnative.RegisterClass(ext.class, ext.owner, ext)
+}
+
+type extension interface {
+	register()
+}
+
+func Register(extensions ...extension) {
+	for _, extension := range extensions {
+		extension.register()
+	}
+}

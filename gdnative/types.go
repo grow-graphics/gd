@@ -10,12 +10,14 @@ package gdnative
 */
 import "C"
 import (
+	"runtime/cgo"
 	"unsafe"
 )
 
 type InitializationLevel C.GDNativeInitializationLevel
 
 var api *C.GDNativeInterface
+var db C.GDNativeExtensionClassLibraryPtr
 
 var (
 	newStringName C.GDNativePtrConstructor
@@ -103,9 +105,9 @@ type (
 	RID struct {
 		raw [8]byte
 	}
-	Object struct {
+	/*Object struct {
 		raw [8]byte
-	}
+	}*/
 	Callable struct {
 		raw [16]byte
 	}
@@ -188,9 +190,61 @@ func Return[Result any](object Object, method Method, args ...any) Result {
 func Call(object Object, method Method, args ...any) {
 }
 
+var loaded bool
+
+var onload []func()
+
 func load(intf, library, init unsafe.Pointer) {
 	api = (*C.GDNativeInterface)(intf)
 	ini := (*C.GDNativeInitialization)(init)
+	db = (C.GDNativeExtensionClassLibraryPtr)(library)
+	println(db)
 	C.setInitialise(ini)
 	C.setDeinitialize(ini)
+
+	loaded = true
+
+	for _, f := range onload {
+		f()
+	}
+}
+
+// New returns a new object of the given class name.
+func New(class string) Object {
+	return Object(C.classdb_construct_object(api, C.ConstChar(class+"\000")))
+}
+
+// InstanceID of an instantiated extension class/struct.
+type InstanceID uintptr
+
+func (obj Object) SetInstance(class string, id InstanceID) {
+	C.object_set_instance(api, C.uintptr_t(obj), C.ConstChar(class+"\000"), C.uintptr_t(id))
+}
+
+func (obj Object) Destroy() {
+	C.object_destroy(api, C.uintptr_t(obj))
+}
+
+type Object uintptr
+
+type Class interface {
+
+	// Create should call New to instantiate an object of the parent class
+	// call SetInstance on it with the ID of the instance that was created
+	// and return the object that was created this way.
+	Create() Object
+
+	// Delete should free up any resources that are being consumed by the
+	// instance with the given ID.
+	Delete(id InstanceID)
+}
+
+func RegisterClass(name, parent string, class Class) {
+	if !loaded {
+		onload = append(onload, func() {
+			RegisterClass(name, parent, class)
+		})
+		return
+	}
+	C.classdb_register_extension_class(api, db, C.ConstChar(name+"\000"), C.ConstChar(parent+"\000"), C.uintptr_t(cgo.NewHandle(class)))
 }

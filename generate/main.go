@@ -122,7 +122,7 @@ func genEnum(code io.Writer, prefix string, enum Enum) {
 		fmt.Fprintln(code)
 		fmt.Fprintf(code, "const (\n")
 		for _, value := range enum.Values {
-			n := prefix+convertName(value.Name)
+			n := prefix + convertName(value.Name)
 			if n == name {
 				n += "Default"
 			}
@@ -187,6 +187,7 @@ func generate() error {
 	for _, class := range spec.Classes {
 		fmt.Fprintln(code)
 		fmt.Fprintf(code, "type %v gdnative.Object\n", class.Name)
+		fmt.Fprintf(code, "func (%v) class() string { return `%v` }\n", class.Name, class.Name)
 		fmt.Fprintln(code)
 		fmt.Fprintf(code, "var method%v [%d]gdnative.Method\n", class.Name, len(class.Methods))
 
