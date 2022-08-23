@@ -191,19 +191,65 @@ func generate() error {
 	}
 
 	for _, class := range spec.Classes {
-		fmt.Fprintln(code)
-		fmt.Fprintf(code, "type %v gdnative.Object\n", class.Name)
-		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
-		fmt.Fprintln(code)
-		fmt.Fprintf(code, "var method%v [%d]gdnative.Method\n", class.Name, len(class.Methods))
-
 		for _, enum := range class.Enums {
 			genEnum(code, class.Name, enum)
 		}
 
-		for i, method := range class.Methods {
+		fmt.Fprintln(code)
+		fmt.Fprintf(code, "type %v gdnative.Object\n", class.Name)
+		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
+		fmt.Fprintln(code)
+		if class.Inherits != "" {
+			fmt.Fprintf(code, `func (gdClass %v) %[2]v() %[2]v { return %[2]v(gdClass) }`+"\n", class.Name, class.Inherits)
+			fmt.Fprintln(code)
+		}
+
+		var methodCount = 0
+		var virtualCount = 0
+		for _, method := range class.Methods {
+			if !method.IsVirtual {
+				methodCount++
+			} else {
+				virtualCount++
+			}
+		}
+
+		if methodCount > 0 {
+			fmt.Fprintf(code, "var method%v [%d]gdnative.Method\n", class.Name, methodCount)
+		}
+
+		if virtualCount > 0 {
+			fmt.Fprintf(code, "func (gdClass %v) virtual(val any, name string) any {", class.Name)
+			fmt.Fprintln(code, "\tswitch name {")
+			for _, method := range class.Methods {
+				if !method.IsVirtual {
+					continue
+				}
+
+				result := convertType(method.ReturnValue.Type)
+
+				fmt.Fprintln(code, "\tcase \""+method.Name+"\":")
+				fmt.Fprintf(code, "\t\ti, ok := val.(interface{ %v(", convertName(method.Name))
+				for i, arg := range method.Arguments {
+					fmt.Fprintf(code, "%v %v", fixReserved(arg.Name), convertType(arg.Type))
+					if i < len(method.Arguments)-1 {
+						fmt.Fprint(code, ", ")
+					}
+				}
+				fmt.Fprintf(code, ") %v })\n", result)
+				fmt.Fprintln(code, "\t\tif ok {")
+				fmt.Fprintf(code, "\t\t\treturn i.%v\n", convertName(method.Name))
+				fmt.Fprintln(code, "\t\t}")
+			}
+			fmt.Fprintln(code, "\t}")
+			fmt.Fprintln(code, "\treturn nil")
+			fmt.Fprintln(code, "}")
+		}
+
+		var i int
+		for _, method := range class.Methods {
 			if method.IsVirtual {
-				method.Name = method.Name + "_implementation"
+				continue
 			}
 
 			result := convertType(method.ReturnValue.Type)
@@ -226,6 +272,7 @@ func generate() error {
 				fmt.Fprintf(code, "%v", fixReserved(arg.Name))
 			}
 			fmt.Fprintf(code, ") }\n")
+			i++
 		}
 	}
 
@@ -233,7 +280,8 @@ func generate() error {
 	fmt.Fprintf(code, `func init() {`)
 	fmt.Fprintf(code, "\tgdnative.OnLoad(func() {")
 	for _, class := range spec.Classes {
-		for i, method := range class.Methods {
+		var i int
+		for _, method := range class.Methods {
 			if _, ok := exceptions[class.Name]; ok {
 				continue
 			}
@@ -242,6 +290,7 @@ func generate() error {
 				continue
 			}
 			fmt.Fprintf(code, "\t\t"+`method%v[%d] = gdnative.MethodOf("%v\000", "%v\000", %v)`+"\n", class.Name, i, class.Name, method.Name, method.Hash)
+			i++
 		}
 	}
 	fmt.Fprintf(code, "\t})\n}")

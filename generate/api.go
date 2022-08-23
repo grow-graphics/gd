@@ -7,6 +7,7 @@ type Enum struct {
 		Value int    `json:"value"`
 	} `json:"values"`
 }
+
 /*
 	Specification of the Godot Extension API.
 	Created with https://mholt.github.io/json-to-go/
@@ -37,8 +38,8 @@ type Specification struct {
 			} `json:"members"`
 		} `json:"classes"`
 	} `json:"builtin_class_member_offsets"`
-	GlobalConstants []interface{} `json:"global_constants"`
-	GlobalEnums     []Enum `json:"global_enums"`
+	GlobalConstants  []interface{} `json:"global_constants"`
+	GlobalEnums      []Enum        `json:"global_enums"`
 	UtilityFunctions []struct {
 		Name       string `json:"name"`
 		ReturnType string `json:"return_type,omitempty"`
@@ -97,7 +98,7 @@ type Specification struct {
 		Inherits       string `json:"inherits,omitempty"`
 		APIType        string `json:"api_type"`
 		Enums          []Enum `json:"enums,omitempty"`
-		Methods []struct {
+		Methods        []struct {
 			Name        string `json:"name"`
 			IsConst     bool   `json:"is_const"`
 			IsVararg    bool   `json:"is_vararg"`

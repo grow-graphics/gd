@@ -3,9 +3,6 @@
 extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
 extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
 
-extern uintptr_t goClassCreateInstance(uintptr_t userdata);
-extern void goClassFreeInstance(uintptr_t userdata, uintptr_t instance);
-
 void setInitialise(GDNativeInitialization *init) {
     init->initialize = goInitialise;
 }
@@ -89,6 +86,21 @@ void variant_to_type_constructor(
     api->get_variant_to_type_constructor(p_type)(p_native, p_variant);
 }
 
+//
+// Class Registration.
+//
+
+extern uintptr_t goClassCreateInstance(uintptr_t userdata);
+extern void goClassFreeInstance(uintptr_t userdata, uintptr_t instance);
+extern void goClassGetVirtual(void *p_userdata, const char *p_name);
+
+GDNativeExtensionClassCallVirtual get_virtual_func(
+    void *p_userdata, const char *p_name
+) {
+    goClassGetVirtual(p_userdata, p_name);
+    return 0;
+}
+
 GDNativeObjectPtr create_instance_func(void *p_userdata) {
     return (GDNativeObjectPtr)(goClassCreateInstance((uintptr_t)p_userdata));
 }
@@ -110,8 +122,38 @@ uintptr_t classdb_get_method_bind(
     return (uintptr_t)(api->classdb_get_method_bind(p_classname, p_methodname, p_hash));
 }
 
+
+void classdb_register_extension_class(
+    GDNativeInterface *api,
+    const GDNativeExtensionClassLibraryPtr p_library, 
+    const char *p_class_name, 
+    const char *p_parent_class_name, 
+    uintptr_t userdata // cgo handle
+) {
+
+    GDNativeExtensionClassCreationInfo functions = {
+        0, // GDNativeExtensionClassSet set_func;
+		0, // GDNativeExtensionClassGet get_func;
+		0, // GDNativeExtensionClassGetPropertyList get_property_list_func;
+		0, // GDNativeExtensionClassFreePropertyList free_property_list_func;
+		0, // GDNativeExtensionClassPropertyCanRevert property_can_revert_func;
+		0, // GDNativeExtensionClassPropertyGetRevert property_get_revert_func;
+		0, // GDNativeExtensionClassNotification notification_func;
+		0, // GDNativeExtensionClassToString to_string_func;
+		0, // GDNativeExtensionClassReference reference_func;
+		0, // GDNativeExtensionClassUnreference unreference_func;
+		create_instance_func, // GDNativeExtensionClassCreateInstance create_instance_func; /* this one is mandatory */
+		free_instance_func, // GDNativeExtensionClassFreeInstance free_instance_func; /* this one is mandatory */
+		get_virtual_func, // GDNativeExtensionClassGetVirtual get_virtual_func;
+		0, // GDNativeExtensionClassGetRID get_rid;
+		(void *)userdata, // void *class_userdata;
+    };
+
+    api->classdb_register_extension_class(p_library, p_class_name, p_parent_class_name, &functions);
+}
+
 //
-// Registration.
+// Method Registration.
 //
 
 extern void goMethodCall(uintptr_t userdata, uintptr_t instance, const GDNativeVariantPtr *p_args, const GDNativeInt p_argument_count, GDNativeVariantPtr r_return, GDNativeCallError *r_error);
@@ -175,33 +217,4 @@ void classdb_register_extension_class_method(
     p_method_info->get_argument_info_func = get_argument_info_func;
     p_method_info->get_argument_metadata_func = get_argument_metadata_func;
     api->classdb_register_extension_class_method(p_library, p_class_name, p_method_info);
-}
-
-void classdb_register_extension_class(
-    GDNativeInterface *api,
-    const GDNativeExtensionClassLibraryPtr p_library, 
-    const char *p_class_name, 
-    const char *p_parent_class_name, 
-    uintptr_t userdata // cgo handle
-) {
-
-    GDNativeExtensionClassCreationInfo functions = {
-        0, // GDNativeExtensionClassSet set_func;
-		0, // GDNativeExtensionClassGet get_func;
-		0, // GDNativeExtensionClassGetPropertyList get_property_list_func;
-		0, // GDNativeExtensionClassFreePropertyList free_property_list_func;
-		0, // GDNativeExtensionClassPropertyCanRevert property_can_revert_func;
-		0, // GDNativeExtensionClassPropertyGetRevert property_get_revert_func;
-		0, // GDNativeExtensionClassNotification notification_func;
-		0, // GDNativeExtensionClassToString to_string_func;
-		0, // GDNativeExtensionClassReference reference_func;
-		0, // GDNativeExtensionClassUnreference unreference_func;
-		create_instance_func, // GDNativeExtensionClassCreateInstance create_instance_func; /* this one is mandatory */
-		free_instance_func, // GDNativeExtensionClassFreeInstance free_instance_func; /* this one is mandatory */
-		0, // GDNativeExtensionClassGetVirtual get_virtual_func;
-		0, // GDNativeExtensionClassGetRID get_rid;
-		(void *)userdata, // void *class_userdata;
-    };
-
-    api->classdb_register_extension_class(p_library, p_class_name, p_parent_class_name, &functions);
 }

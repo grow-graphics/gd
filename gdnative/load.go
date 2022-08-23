@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime/cgo"
+	"strconv"
 	"unsafe"
 )
 
@@ -37,6 +38,11 @@ func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {
 //export goClassCreateInstance
 func goClassCreateInstance(userdata uintptr) uintptr {
 	return uintptr(cgo.Handle(userdata).Value().(Class).Create())
+}
+
+//export goClassGetVirtual
+func goClassGetVirtual(userdata, name *C.char) {
+	fmt.Println(C.GoString(name))
 }
 
 //export goClassFreeInstance
@@ -82,18 +88,27 @@ var (
 
 //export goMethodGetArgumentInfo
 func goMethodGetArgumentInfo(userdata uintptr, argument int32, info *C.GDNativePropertyInfo) {
-	// stub
+	info._type = C.uint32_t(goMethodGetArgumentType(userdata, argument))
+	info.name = cString("arg" + strconv.Itoa(int(argument))) // FIXME does godot take ownership of this?
 }
 
 //export goMethodGetArgumentMetadata
 func goMethodGetArgumentMetadata(userdata uintptr, argument int32) C.GDNativeExtensionClassMethodArgumentMetadata {
 	caller := cgo.Handle(userdata).Value().(methodCaller)
 
-	atype := caller.method.Type.In(int(argument) + 1) // skip receiver
+	var rtype reflect.Type
+	if argument == -1 {
+		if caller.method.Type.NumOut() == 0 {
+			return C.GDNATIVE_VARIANT_TYPE_NIL
+		}
+		rtype = caller.method.Type.Out(0) // return value
+	} else {
+		rtype = caller.method.Type.In(int(argument) + 1) // skip receiver
+	}
 
-	switch atype.Kind() {
+	switch rtype.Kind() {
 	case reflect.Int:
-		if atype.Size() == 4 {
+		if rtype.Size() == 4 {
 			return C.GDNATIVE_EXTENSION_METHOD_ARGUMENT_METADATA_INT_IS_INT32
 		}
 		return C.GDNATIVE_EXTENSION_METHOD_ARGUMENT_METADATA_INT_IS_INT64
@@ -106,7 +121,7 @@ func goMethodGetArgumentMetadata(userdata uintptr, argument int32) C.GDNativeExt
 	case reflect.Int64:
 		return C.GDNATIVE_EXTENSION_METHOD_ARGUMENT_METADATA_INT_IS_INT64
 	case reflect.Uint:
-		if atype.Size() == 4 {
+		if rtype.Size() == 4 {
 			return C.GDNATIVE_EXTENSION_METHOD_ARGUMENT_METADATA_INT_IS_UINT32
 		}
 		return C.GDNATIVE_EXTENSION_METHOD_ARGUMENT_METADATA_INT_IS_UINT64
