@@ -80,31 +80,55 @@ type Glyph struct{}
 type CaretInfo struct{}
 
 type Class interface {
+	~uintptr
+
 	class() string
 }
 
-type Extension[T Class] struct {
+type Extension[Type any, Extends Class] struct {
 	rtype reflect.Type
 	ptype reflect.Type // pointer type.
 	otype reflect.Type // owning class type.
 
-	class string        // base class name, cached on register.
-	owner string        // owner class name, cached on register.
-	slice []Instance[T] // slice of instantiated instances.
+	alloc func(Extends) Type
+
+	class string           // base class name, cached on register.
+	owner string           // owner class name, cached on register.
+	slice []Instance[Type] // slice of instantiated instances.
 }
 
-type Instance[T Class] struct {
+func Register[Type any, Extends Class](fn func(Extends) Type) Extension[Type, Extends] {
+	var zero Type
+	var parent Extends
+
+	var rtype = reflect.TypeOf(zero)
+
+	var extension = Extension[Type, Extends]{
+		alloc: fn,
+		rtype: rtype,
+		ptype: reflect.PtrTo(rtype),
+		class: rtype.Name(),
+		owner: parent.class(),
+	}
+
+	gdnative.OnLoad(extension.register)
+
+	return extension
+}
+
+type Instance[Type any] struct {
 	alive bool
-	value T
+	value Type
 }
 
-func (ext *Extension[T]) Create() gdnative.Object {
+func (ext *Extension[Type, Extends]) Create() gdnative.Object {
 	obj := gdnative.New(ext.owner)
 
-	var instance Instance[T]
+	var instance Instance[Type]
 	instance.alive = true
-	// reuse existing memory if possible.
+	instance.value = ext.alloc(Extends(obj))
 
+	// reuse existing slot if possible.
 	var id gdnative.InstanceID
 	for i, slot := range ext.slice {
 		if !slot.alive {
@@ -119,43 +143,27 @@ func (ext *Extension[T]) Create() gdnative.Object {
 		id = gdnative.InstanceID(len(ext.slice))
 	}
 
-	reflect.ValueOf(&ext.slice[id-1].value).Elem().Field(0).SetUint(uint64(obj))
-
 	obj.SetInstance(ext.class, id)
 
 	return obj
 }
 
-func (ext *Extension[T]) Delete(id gdnative.InstanceID) {
+func (ext *Extension[Type, Extends]) Delete(id gdnative.InstanceID) {
 	ext.slice[id-1].alive = false
 }
 
-func (ext *Extension[T]) Lookup(id gdnative.InstanceID) reflect.Value {
+func (ext *Extension[Type, Extends]) Lookup(id gdnative.InstanceID) reflect.Value {
 	return reflect.ValueOf(&ext.slice[id-1].value)
 }
 
-func (ext *Extension[T]) register() {
-	var native T
-
-	ext.rtype = reflect.TypeOf(native)
-	ext.ptype = reflect.TypeOf(&native)
-	ext.otype = ext.rtype.Field(0).Type
-	ext.class = ext.rtype.Name()
-	ext.owner = native.class()
-
+func (ext *Extension[Type, Extends]) register() {
 	gdnative.RegisterClass(ext.class, ext.owner, ext)
 	for i := 0; i < ext.ptype.NumMethod(); i++ {
-		method := ext.rtype.Method(i)
+		method := ext.ptype.Method(i)
 		gdnative.RegisterMethod(ext.class, method, ext.Lookup)
 	}
 }
 
 type extension interface {
 	register()
-}
-
-func Register(extensions ...extension) {
-	for _, extension := range extensions {
-		extension.register()
-	}
 }

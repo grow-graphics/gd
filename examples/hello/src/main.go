@@ -6,17 +6,18 @@ import (
 	"github.com/readykit/gd"
 )
 
+func main() {}
+
 type HelloWorld struct {
-	gd.Object
+	Object gd.Object
+}
+
+func NewHelloWorld(obj gd.Object) HelloWorld {
+	return HelloWorld{obj}
 }
 
 func (h HelloWorld) Print() {
 	fmt.Println("Hello World!")
 }
 
-var HelloWorlds gd.Extension[HelloWorld]
-
-func main() {}
-func init() {
-	gd.Register(&HelloWorlds)
-}
+var gdHelloWorld = gd.Register(NewHelloWorld)

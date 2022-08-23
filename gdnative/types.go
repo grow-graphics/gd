@@ -147,9 +147,7 @@ type (
 	PackedColorArray struct {
 		raw [16]byte
 	}
-	Variant struct {
-		raw [24]byte
-	}
+	Variant [24]byte
 )
 
 func NewString(s string) String {
@@ -237,22 +235,36 @@ type Class interface {
 
 func RegisterClass(name, parent string, class Class) {
 	if !loaded {
-		onload = append(onload, func() {
-			RegisterClass(name, parent, class)
-		})
-		return
+		panic("gdnative not loaded")
 	}
 	C.classdb_register_extension_class(api, db, C.ConstChar(name+"\000"), C.ConstChar(parent+"\000"), C.uintptr_t(cgo.NewHandle(class)))
 }
 
+type methodCaller struct {
+	method reflect.Method
+	lookup func(InstanceID) reflect.Value
+}
+
 func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID) reflect.Value) {
 	if !loaded {
-		onload = append(onload, func() {
-			RegisterMethod(class, method, lookup)
-		})
-		return
+		panic("gdnative not loaded")
 	}
-	//C.classdb_register_method(api, db, C.ConstChar(class+"\000"), C.ConstChar(method.Name+"\000"), C.uintptr_t(cgo.NewHandle(method)), C.uintptr_t(cgo.NewHandle(lookup)))
+
+	caller := cgo.NewHandle(methodCaller{method, lookup}) // TODO cleanup?
+
+	name := cString(method.Name)
+	defer C.mem_free(api, unsafe.Pointer(name))
+
+	fmt.Println(C.uint32_t(method.Type.NumIn()-1), method.Type.NumIn(), method.Type.NumOut())
+
+	var info = C.GDNativeExtensionClassMethodInfo{
+		name:                   name,
+		argument_count:         C.uint32_t(method.Type.NumIn() - 1), // exclude reciever.
+		has_return_value:       C.GDNativeBool(method.Type.NumOut()),
+		default_argument_count: 0, // Go doesn't have default arguments.
+	}
+
+	C.classdb_register_extension_class_method(api, db, C.ConstChar(class+"\000"), &info, C.uintptr_t(caller))
 }
 
 // MethodOf arguments must be null-terminated.
@@ -262,4 +274,20 @@ func MethodOf(class, method string, hash int64) Method {
 		fmt.Println("Method not found:", class, method)
 	}
 	return result
+}
+
+func cString(s string) *C.char {
+	if s[len(s)-1] == 0 {
+		return C.ConstChar(s)
+	}
+	length := C.size_t(len(s) + 1) // + null byte
+
+	mem := C.mem_alloc(api, length)
+
+	bytes := unsafe.Slice((*byte)(mem), length)
+
+	copy(bytes, s)
+	bytes[len(s)] = 0
+
+	return (*C.char)(mem)
 }

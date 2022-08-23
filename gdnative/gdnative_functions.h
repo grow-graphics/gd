@@ -92,6 +92,73 @@ uintptr_t classdb_get_method_bind(
     return (uintptr_t)(api->classdb_get_method_bind(p_classname, p_methodname, p_hash));
 }
 
+//
+// Registration.
+//
+
+extern void goMethodCall(uintptr_t userdata, uintptr_t instance, const GDNativeVariantPtr *p_args, const GDNativeInt p_argument_count, GDNativeVariantPtr r_return, GDNativeCallError *r_error);
+extern void goMethodCallDirect(uintptr_t userdata, uintptr_t instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret);
+extern GDNativeVariantType goMethodGetArgumentType(uintptr_t userdata, int32_t argument);
+extern GDNativeExtensionClassMethodArgumentMetadata goMethodGetArgumentMetadata(uintptr_t userdata, int32_t argument);
+extern void goMethodGetArgumentInfo(uintptr_t userdata, int32_t argument, GDNativePropertyInfo *r_info);
+
+void call_func(
+    void *method_userdata, 
+    GDExtensionClassInstancePtr p_instance, 
+    const GDNativeVariantPtr *p_args, 
+    const GDNativeInt p_argument_count, 
+    GDNativeVariantPtr r_return, 
+    GDNativeCallError *r_error
+) {
+    goMethodCall((uintptr_t)method_userdata, (uintptr_t)p_instance, p_args, p_argument_count, r_return, r_error);
+}
+
+void ptrcall_func(
+    void *method_userdata, 
+    GDExtensionClassInstancePtr p_instance, 
+    const GDNativeTypePtr *p_args, 
+    GDNativeTypePtr r_ret
+) {
+    goMethodCallDirect((uintptr_t)method_userdata, (uintptr_t)p_instance, p_args, r_ret);
+}
+
+GDNativeVariantType get_argument_type_func(
+    void *p_method_userdata, int32_t p_argument
+) {
+    return goMethodGetArgumentType((uintptr_t)p_method_userdata, p_argument);
+}
+
+void get_argument_info_func(
+    void *p_method_userdata, 
+    int32_t p_argument, 
+    GDNativePropertyInfo *r_info
+) {
+    *r_info = (GDNativePropertyInfo){0};
+    return goMethodGetArgumentInfo((uintptr_t)p_method_userdata, p_argument, r_info);
+}
+
+GDNativeExtensionClassMethodArgumentMetadata get_argument_metadata_func(
+    void *p_method_userdata, int32_t p_argument
+) {
+    return goMethodGetArgumentMetadata((uintptr_t)p_method_userdata, p_argument);
+}
+
+void classdb_register_extension_class_method(
+    GDNativeInterface *api,
+    const GDNativeExtensionClassLibraryPtr p_library, 
+    const char *p_class_name,
+    GDNativeExtensionClassMethodInfo *p_method_info,
+    uintptr_t userdata // cgo handle
+) {
+    p_method_info->method_userdata = (void*)userdata;
+    p_method_info->call_func = call_func;
+    p_method_info->ptrcall_func = ptrcall_func;
+    p_method_info->get_argument_type_func = get_argument_type_func;
+    p_method_info->get_argument_info_func = get_argument_info_func;
+    p_method_info->get_argument_metadata_func = get_argument_metadata_func;
+    api->classdb_register_extension_class_method(p_library, p_class_name, p_method_info);
+}
+
 void classdb_register_extension_class(
     GDNativeInterface *api,
     const GDNativeExtensionClassLibraryPtr p_library, 
