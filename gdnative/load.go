@@ -229,15 +229,39 @@ func goMethodCall(userdata, instance uintptr, args *C.GDNativeVariantPtr, count 
 	caller := cgo.Handle(userdata).Value().(methodCaller)
 
 	fmt.Println(caller.method.Name, " METHOD CALLED")
-	caller.method.Func.Call([]reflect.Value{caller.lookup(InstanceID(instance))})
+
+	caller.cached[0] = caller.lookup(InstanceID(instance))
+	if caller.method.Type.NumIn() > 1 {
+		slice := unsafe.Slice(args, count)
+		value := caller.cached[1:]
+		for i := range value {
+			value[i] = loadArgFromVariant(caller.method.Type.In(i+1), slice[i])
+		}
+	}
+
+	fmt.Println(caller.cached)
+
+	caller.method.Func.Call(caller.cached)
 }
 
 //export goMethodCallDirect
-func goMethodCallDirect(userdata, instance uintptr, args []unsafe.Pointer, result unsafe.Pointer) {
+func goMethodCallDirect(userdata, instance uintptr, ptrs *C.GDNativeTypePtr, result C.GDNativeTypePtr) {
 	caller := cgo.Handle(userdata).Value().(methodCaller)
 
-	fmt.Println(caller.method.Name, " METHOD CALLED")
-	caller.method.Func.Call([]reflect.Value{caller.lookup(InstanceID(instance))})
+	fmt.Println(caller.method.Name, " METHOD CALLED DIRECTLY")
+
+	caller.cached[0] = caller.lookup(InstanceID(instance))
+	if caller.method.Type.NumIn() > 1 {
+		slice := unsafe.Slice(ptrs, caller.method.Type.NumIn()-1)
+		value := caller.cached[1:]
+		for i := range value {
+			value[i] = loadArgFromNativeType(caller.method.Type.In(i+1), slice[i])
+		}
+	}
+
+	fmt.Println(caller.cached)
+
+	caller.method.Func.Call(caller.cached)
 }
 
 // Main should be called in your extension's main function.

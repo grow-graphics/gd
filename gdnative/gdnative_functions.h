@@ -42,6 +42,15 @@ void object_set_instance(
     api->object_set_instance((GDNativeObjectPtr)(p_o), p_classname, (GDExtensionClassInstancePtr)(p_instance));
 }
 
+GDNativeInt string_to_utf8_chars(
+    GDNativeInterface *api,
+    const GDNativeStringPtr p_self, 
+    char *r_text, 
+    GDNativeInt p_max_write_length
+) {
+    api->string_to_utf8_chars(p_self, r_text, p_max_write_length);
+}
+
 void string_new_with_utf8_chars_and_len(
     GDNativeInterface *api,
     GDNativeStringPtr r_dest,
@@ -69,6 +78,15 @@ GDNativePtrConstructor variant_get_ptr_constructor(
 
 void constructor(GDNativePtrConstructor ptr, GDNativeTypePtr base, GDNativeTypePtr *args) {
     ptr(base, args);
+}
+
+void variant_to_type_constructor(
+    GDNativeInterface *api,
+    GDNativeVariantType p_type,
+    GDNativeTypePtr p_native,
+    GDNativeVariantPtr p_variant
+) {
+    api->get_variant_to_type_constructor(p_type)(p_native, p_variant);
 }
 
 GDNativeObjectPtr create_instance_func(void *p_userdata) {

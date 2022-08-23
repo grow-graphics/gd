@@ -243,6 +243,7 @@ func RegisterClass(name, parent string, class Class) {
 type methodCaller struct {
 	method reflect.Method
 	lookup func(InstanceID) reflect.Value
+	cached []reflect.Value
 }
 
 func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID) reflect.Value) {
@@ -250,7 +251,7 @@ func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID)
 		panic("gdnative not loaded")
 	}
 
-	caller := cgo.NewHandle(methodCaller{method, lookup}) // TODO cleanup?
+	caller := cgo.NewHandle(methodCaller{method, lookup, make([]reflect.Value, method.Type.NumIn())}) // TODO cleanup?
 
 	name := cString(method.Name)
 	defer C.mem_free(api, unsafe.Pointer(name))
@@ -290,4 +291,27 @@ func cString(s string) *C.char {
 	bytes[len(s)] = 0
 
 	return (*C.char)(mem)
+}
+
+func loadArgFromNativeType(as reflect.Type, ptr C.GDNativeTypePtr) reflect.Value {
+	switch as.Kind() {
+	case reflect.String:
+		length := C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), nil, 0)
+		buffer := make([]byte, length)
+		C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), (*C.char)(unsafe.Pointer(&buffer[0])), length)
+		return reflect.ValueOf(string(buffer)) // FIXME avoid copy?
+	default:
+		panic("loadArgFromNativeType: unsupported type " + as.String())
+	}
+}
+
+func loadArgFromVariant(as reflect.Type, ptr C.GDNativeVariantPtr) reflect.Value {
+	switch as.Kind() {
+	case reflect.String:
+		var native String
+		C.variant_to_type_constructor(api, C.GDNATIVE_VARIANT_TYPE_STRING, C.GDNativeTypePtr(&native.raw), ptr)
+		return loadArgFromNativeType(as, C.GDNativeTypePtr(&native.raw))
+	default:
+		panic("loadArgFromVariant: unsupported type " + as.String())
+	}
 }

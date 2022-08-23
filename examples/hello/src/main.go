@@ -20,4 +20,8 @@ func (h HelloWorld) Print() {
 	fmt.Println("Hello World!")
 }
 
+func (h HelloWorld) Echo(s string) {
+	fmt.Println(s + " from Go!")
+}
+
 var gdHelloWorld = gd.Register(NewHelloWorld)

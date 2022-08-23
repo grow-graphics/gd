@@ -6,6 +6,7 @@ var hello: HelloWorld
 func _ready():
 	hello = HelloWorld.new()
 	hello.Print()
+	hello.Echo("gd works!")
 	hello.free()
 	pass # Replace with function body.
 
