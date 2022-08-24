@@ -3,15 +3,20 @@
 extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
 extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
 
-void setInitialise(GDNativeInitialization *init) {
+static void setInitialise(GDNativeInitialization *init) {
     init->initialize = goInitialise;
 }
-void setDeinitialize(GDNativeInitialization *init) {
+static void setDeinitialize(GDNativeInitialization *init) {
     init->deinitialize = goDeinitialize;
 }
 
+GDNativeObjectPtr global_get_singleton(GDNativeInterface *api, const char *name) {
+    return api->global_get_singleton(name);
+}
+
+
 // Since Go can't call C function pointers directly, we need to create wrapper functions for them.
-void variant_call(
+static void variant_call(
     GDNativeInterface *api,
     GDNativeVariantPtr p_self,
     const GDNativeStringNamePtr p_method,
@@ -23,14 +28,14 @@ void variant_call(
     api->variant_call(p_self, p_method, p_args, p_argument_count, r_return, r_error);
 }
 
-GDNativeObjectPtr classdb_construct_object(
+static GDNativeObjectPtr classdb_construct_object(
     GDNativeInterface *api,
     const char *p_classname
 ) {
     return api->classdb_construct_object(p_classname);
 }
 
-void object_set_instance(
+static void object_set_instance(
     GDNativeInterface *api,
     uintptr_t p_o, 
     const char *p_classname, 
@@ -39,33 +44,17 @@ void object_set_instance(
     api->object_set_instance((GDNativeObjectPtr)(p_o), p_classname, (GDExtensionClassInstancePtr)(p_instance));
 }
 
-GDNativeInt string_to_utf8_chars(
-    GDNativeInterface *api,
-    const GDNativeStringPtr p_self, 
-    char *r_text, 
-    GDNativeInt p_max_write_length
-) {
-    api->string_to_utf8_chars(p_self, r_text, p_max_write_length);
+
+
+static void *mem_alloc(GDNativeInterface *api, size_t p_bytes) {
+    return api->mem_alloc(p_bytes);
 }
 
-void string_new_with_utf8_chars_and_len(
-    GDNativeInterface *api,
-    GDNativeStringPtr r_dest,
-    const char *p_contents,
-    const GDNativeInt p_size
-) {
-    api->string_new_with_utf8_chars_and_len(r_dest, p_contents, p_size);
-}
-
-void *mem_alloc(GDNativeInterface *api, size_t p_bytes) {
-    api->mem_alloc(p_bytes);
-}
-
-void *mem_free(GDNativeInterface *api, void *ptr) {
+static void *mem_free(GDNativeInterface *api, void *ptr) {
     api->mem_free(ptr);
 }
 
-GDNativePtrConstructor variant_get_ptr_constructor(
+static GDNativePtrConstructor variant_get_ptr_constructor(
     GDNativeInterface *api,
     GDNativeVariantType p_type, 
     int32_t p_constructor
@@ -73,17 +62,20 @@ GDNativePtrConstructor variant_get_ptr_constructor(
     api->variant_get_ptr_constructor(p_type, p_constructor);
 }
 
-void constructor(GDNativePtrConstructor ptr, GDNativeTypePtr base, GDNativeTypePtr *args) {
+static void constructor(GDNativePtrConstructor ptr, GDNativeTypePtr base, GDNativeTypePtr *args) {
     ptr(base, args);
 }
 
-void variant_to_type_constructor(
+
+
+static void object_method_bind_ptrcall(
     GDNativeInterface *api,
-    GDNativeVariantType p_type,
-    GDNativeTypePtr p_native,
-    GDNativeVariantPtr p_variant
+    uintptr_t p_method_bind, 
+    uintptr_t p_instance,
+    const GDNativeTypePtr *p_args, 
+    GDNativeTypePtr r_ret
 ) {
-    api->get_variant_to_type_constructor(p_type)(p_native, p_variant);
+    api->object_method_bind_ptrcall((GDNativeMethodBindPtr)p_method_bind, (GDNativeObjectPtr)p_instance, p_args, r_ret);
 }
 
 //
@@ -93,19 +85,19 @@ void variant_to_type_constructor(
 extern uintptr_t goClassCreateInstance(uintptr_t userdata);
 extern void goClassFreeInstance(uintptr_t userdata, uintptr_t instance);
 
-GDNativeObjectPtr create_instance_func(void *p_userdata) {
+static GDNativeObjectPtr create_instance_func(void *p_userdata) {
     return (GDNativeObjectPtr)(goClassCreateInstance((uintptr_t)p_userdata));
 }
 
-void free_instance_func(void *p_userdata, GDExtensionClassInstancePtr p_instance) {
+static void free_instance_func(void *p_userdata, GDExtensionClassInstancePtr p_instance) {
     goClassFreeInstance((uintptr_t)p_userdata, (uintptr_t)p_instance);
 }
 
-void object_destroy(GDNativeInterface *api, uintptr_t p_o) {
+static void object_destroy(GDNativeInterface *api, uintptr_t p_o) {
     api->object_destroy((GDNativeObjectPtr)p_o);
 }
 
-uintptr_t classdb_get_method_bind(
+static uintptr_t classdb_get_method_bind(
     GDNativeInterface *api,
     const char *p_classname, 
     const char *p_methodname, 
@@ -115,7 +107,7 @@ uintptr_t classdb_get_method_bind(
 }
 
 
-void classdb_register_extension_class(
+static void classdb_register_extension_class(
     GDNativeInterface *api,
     const GDNativeExtensionClassLibraryPtr p_library, 
     const char *p_class_name, 
@@ -153,7 +145,7 @@ extern GDNativeVariantType goMethodGetArgumentType(uintptr_t userdata, int32_t a
 extern GDNativeExtensionClassMethodArgumentMetadata goMethodGetArgumentMetadata(uintptr_t userdata, int32_t argument);
 extern void goMethodGetArgumentInfo(uintptr_t userdata, int32_t argument, GDNativePropertyInfo *r_info);
 
-void call_func(
+static void call_func(
     void *method_userdata, 
     GDExtensionClassInstancePtr p_instance, 
     const GDNativeVariantPtr *p_args, 
@@ -164,7 +156,9 @@ void call_func(
     goMethodCall((uintptr_t)method_userdata, (uintptr_t)p_instance, p_args, p_argument_count, r_return, r_error);
 }
 
-void ptrcall_func(
+extern void goMethodCallDirect(uintptr_t userdata, uintptr_t instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret);
+
+static void ptrcall_func(
     void *method_userdata, 
     GDExtensionClassInstancePtr p_instance, 
     const GDNativeTypePtr *p_args, 
@@ -173,13 +167,13 @@ void ptrcall_func(
     goMethodCallDirect((uintptr_t)method_userdata, (uintptr_t)p_instance, p_args, r_ret);
 }
 
-GDNativeVariantType get_argument_type_func(
+static GDNativeVariantType get_argument_type_func(
     void *p_method_userdata, int32_t p_argument
 ) {
     return goMethodGetArgumentType((uintptr_t)p_method_userdata, p_argument);
 }
 
-void get_argument_info_func(
+static void get_argument_info_func(
     void *p_method_userdata, 
     int32_t p_argument, 
     GDNativePropertyInfo *r_info
@@ -188,13 +182,13 @@ void get_argument_info_func(
     return goMethodGetArgumentInfo((uintptr_t)p_method_userdata, p_argument, r_info);
 }
 
-GDNativeExtensionClassMethodArgumentMetadata get_argument_metadata_func(
+static GDNativeExtensionClassMethodArgumentMetadata get_argument_metadata_func(
     void *p_method_userdata, int32_t p_argument
 ) {
     return goMethodGetArgumentMetadata((uintptr_t)p_method_userdata, p_argument);
 }
 
-void classdb_register_extension_class_method(
+static void classdb_register_extension_class_method(
     GDNativeInterface *api,
     const GDNativeExtensionClassLibraryPtr p_library, 
     const char *p_class_name,

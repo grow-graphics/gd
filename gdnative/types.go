@@ -7,6 +7,17 @@ package gdnative
 	const char *ConstChar(_GoString_ s) {
 		return _GoStringPtr(s);
 	}
+
+
+	static void string_new_with_utf8_chars_and_len(
+		GDNativeInterface *api,
+		GDNativeStringPtr r_dest,
+		const char *p_contents,
+		const GDNativeInt p_size
+	) {
+		api->string_new_with_utf8_chars_and_len(r_dest, p_contents, p_size);
+	}
+
 */
 import "C"
 import (
@@ -179,13 +190,40 @@ func (ob Object) Call(method Method, args ...any) any {
 	return nil
 }
 
-func Return[Result any](object Object, method Method, args ...any) Result {
+/*func Return[Result any](object Object, method Method, args ...any) Result {
 	var result Result
+
+	ptr, ok := loadResultFor(&result)
+
+	var first *C.GDNativeTypePtr
+	var ptrs = make([]C.GDNativeTypePtr, len(args))
+	for i, arg := range args {
+		ptrs[i] = sendArg(arg)
+	}
+	if len(args) > 0 {
+		first = &ptrs[0]
+	}
+
+	C.object_method_bind_ptrcall(api, C.uintptr_t(method), C.uintptr_t(object), first, ptr)
+
+	if !ok {
+		reflect.ValueOf(result).Elem().Set(loadArgFromNativeType(reflect.TypeOf(result), ptr))
+	}
+
 	return result
 }
 
 func Call(object Object, method Method, args ...any) {
-}
+	var first *C.GDNativeTypePtr
+	var ptrs = make([]C.GDNativeTypePtr, len(args))
+	for i, arg := range args {
+		ptrs[i] = sendArg(arg)
+	}
+	if len(args) > 0 {
+		first = &ptrs[0]
+	}
+	C.object_method_bind_ptrcall(api, C.uintptr_t(method), C.uintptr_t(object), first, nil)
+}*/
 
 var loaded bool
 
@@ -204,7 +242,11 @@ func load(intf, library, init unsafe.Pointer) {
 
 // New returns a new object of the given class name.
 func New(class string) Object {
-	return Object(C.classdb_construct_object(api, cString(class)))
+	s, ok := cString(class)
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(s))
+	}
+	return Object(C.classdb_construct_object(api, s))
 }
 
 // InstancePointer points to both the extension class ID
@@ -273,7 +315,12 @@ func (obj Object) SetInstance(class ClassID, instance InstanceID) {
 	ptr.ClassID = class
 	ptr.InstanceID = instance
 
-	C.object_set_instance(api, C.uintptr_t(obj), cString(classes[class-1].Name()), C.uintptr_t(ptr.Data()))
+	s, ok := cString(classes[class-1].Name())
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(s))
+	}
+
+	C.object_set_instance(api, C.uintptr_t(obj), s, C.uintptr_t(ptr.Data()))
 }
 
 func (obj Object) Destroy() {
@@ -323,7 +370,16 @@ func RegisterClass(class Class) {
 
 	id := ClassID(len(classes))
 
-	C.classdb_register_extension_class(api, db, cString(class.Name()), cString(class.Godot()), C.uintptr_t(id))
+	a, ok := cString(class.Name())
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(a))
+	}
+	b, ok := cString(class.Godot())
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(b))
+	}
+
+	C.classdb_register_extension_class(api, db, a, b, C.uintptr_t(id))
 
 	for _, method := range methods {
 		registerMethod(class, id, method)
@@ -335,8 +391,10 @@ func registerMethod(class Class, id ClassID, method reflect.Method) {
 		panic("gdnative not loaded")
 	}
 
-	name := cString(method.Name)
-	defer C.mem_free(api, unsafe.Pointer(name))
+	name, ok := cString(method.Name)
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(name))
+	}
 
 	var ptr = MethodPointer{
 		ClassID:  id,
@@ -350,7 +408,12 @@ func registerMethod(class Class, id ClassID, method reflect.Method) {
 		default_argument_count: 0, // Go doesn't have default arguments.
 	}
 
-	C.classdb_register_extension_class_method(api, db, cString(class.Name()), &info, C.uintptr_t(ptr.Data()))
+	s, ok := cString(class.Name())
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(s))
+	}
+
+	C.classdb_register_extension_class_method(api, db, s, &info, C.uintptr_t(ptr.Data()))
 }
 
 // MethodOf arguments must be null-terminated.
@@ -362,10 +425,11 @@ func MethodOf(class, method string, hash int64) Method {
 	return result
 }
 
-func cString(s string) *C.char {
+func cString(s string) (*C.char, bool) {
 	if s[len(s)-1] == 0 {
-		return C.ConstChar(s)
+		return C.ConstChar(s), true
 	}
+
 	length := C.size_t(len(s) + 1) // + null byte
 
 	mem := C.mem_alloc(api, length)
@@ -375,28 +439,18 @@ func cString(s string) *C.char {
 	copy(bytes, s)
 	bytes[len(s)] = 0
 
-	return (*C.char)(mem)
+	return (*C.char)(mem), false
 }
 
-func loadArgFromNativeType(as reflect.Type, ptr C.GDNativeTypePtr) reflect.Value {
-	switch as.Kind() {
-	case reflect.String:
-		length := C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), nil, 0)
-		buffer := make([]byte, length)
-		C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), (*C.char)(unsafe.Pointer(&buffer[0])), length)
-		return reflect.ValueOf(string(buffer)) // FIXME avoid copy?
-	default:
-		panic("loadArgFromNativeType: unsupported type " + as.String())
+func GetSingleton(name string) Object {
+	if !loaded {
+		panic("gdnative not loaded")
 	}
-}
 
-func loadArgFromVariant(as reflect.Type, ptr C.GDNativeVariantPtr) reflect.Value {
-	switch as.Kind() {
-	case reflect.String:
-		var native String
-		C.variant_to_type_constructor(api, C.GDNATIVE_VARIANT_TYPE_STRING, C.GDNativeTypePtr(&native.raw), ptr)
-		return loadArgFromNativeType(as, C.GDNativeTypePtr(&native.raw))
-	default:
-		panic("loadArgFromVariant: unsupported type " + as.String())
+	s, ok := cString(name)
+	if !ok {
+		defer C.mem_free(api, unsafe.Pointer(s))
 	}
+
+	return Object(C.global_get_singleton(api, s))
 }

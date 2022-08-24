@@ -10,7 +10,7 @@ type Vector2 struct {
 	X, Y float32
 }
 
-type Array []any
+type Array uintptr
 
 type Vector3 struct {
 	X, Y, Z float32
@@ -56,8 +56,7 @@ type Vector2i struct {
 	X, Y int32
 }
 
-type Callable struct {
-}
+type Callable uintptr
 
 type Plane struct {
 	Normal, D float32
@@ -70,6 +69,8 @@ type Vector3i struct {
 type Basis struct {
 	X, Y, Z Vector3
 }
+
+type String uintptr
 
 type PhysicsServer3DExtensionRayResult struct{}
 type PhysicsServer3DExtensionShapeResult struct{}
@@ -96,8 +97,6 @@ type Extension[Type any, Extends Class] struct {
 	class string           // base class name, cached on register.
 	owner string           // owner class name, cached on register.
 	slice []Instance[Type] // slice of instantiated instances.
-
-	virtuals map[int16]func(any) any // virtual functions.
 }
 
 func Register[Type any, Extends Class](fn func(Extends) Type) Extension[Type, Extends] {
@@ -112,8 +111,6 @@ func Register[Type any, Extends Class](fn func(Extends) Type) Extension[Type, Ex
 		ptype: reflect.PtrTo(rtype),
 		class: rtype.Name() + "\000",
 		owner: parent.class(),
-
-		virtuals: make(map[int16]func(any) any),
 	}
 
 	gdnative.OnLoad(extension.register)
@@ -138,10 +135,6 @@ func (ext *Extension[Type, Extends]) GetVirtual(name string) (reflect.Method, bo
 	var zero Type
 	var core Extends
 	return core.virtual(reflect.TypeOf(zero), name)
-}
-
-func (ext *Extension[Type, Extends]) CallVirtual(index int) func(any) any {
-	return ext.virtuals[int16(index)]
 }
 
 func (ext *Extension[Type, Extends]) Create(class gdnative.ClassID) gdnative.Object {

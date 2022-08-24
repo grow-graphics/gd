@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/readykit/gd"
+	"github.com/readykit/gd/godot"
 )
 
 func main() {}
@@ -35,7 +36,17 @@ func NewExtendedNode(obj gd.Node2D) ExtendedNode {
 }
 
 func (e ExtendedNode) Ready() {
+	if godot.Engine.IsEditorHint() {
+
+		fmt.Println(godot.Engine.GetLicenseText())
+
+		return
+	}
+
 	fmt.Println("Scene is ready!")
+	fmt.Println("rotation=", e.Node2D.GetRotation())
+	e.Node2D.SetRotation(3.14)
+	fmt.Println("rotation=", e.Node2D.GetRotation())
 }
 
 var gdExtendedNode = gd.Register(NewExtendedNode)

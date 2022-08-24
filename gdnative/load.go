@@ -6,7 +6,6 @@ import "C"
 import (
 	"fmt"
 	"reflect"
-	"strconv"
 	"unsafe"
 )
 
@@ -18,7 +17,6 @@ func loadExtension(api, library, init unsafe.Pointer) uint8 {
 
 //export goInitialise
 func goInitialise(userdata unsafe.Pointer, level InitializationLevel) {
-	fmt.Println("initialising ", level)
 	if level == 3 {
 		for _, f := range onload {
 			f()
@@ -30,9 +28,7 @@ func goInitialise(userdata unsafe.Pointer, level InitializationLevel) {
 }
 
 //export goDeinitialize
-func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {
-	fmt.Println("deinitialize ", level)
-}
+func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {}
 
 //export goClassCreateInstance
 func goClassCreateInstance(classID uintptr) uintptr {
@@ -102,7 +98,11 @@ var (
 //export goMethodGetArgumentInfo
 func goMethodGetArgumentInfo(userdata uintptr, argument int32, info *C.GDNativePropertyInfo) {
 	info._type = C.uint32_t(goMethodGetArgumentType(userdata, argument))
-	info.name = cString("arg" + strconv.Itoa(int(argument))) // FIXME does godot take ownership of this?
+	if argument == -1 {
+		info.name, _ = cString("result\000") // FIXME does godot take ownership of this?
+	} else {
+		info.name, _ = cString("arg\000") // FIXME does godot take ownership of this?
+	}
 }
 
 //export goMethodGetArgumentMetadata
@@ -182,6 +182,8 @@ func goMethodGetArgumentType(userdata uintptr, argument int32) C.GDNativeVariant
 		return C.GDNATIVE_VARIANT_TYPE_INT
 	case reflect.Float32, reflect.Float64:
 		return C.GDNATIVE_VARIANT_TYPE_FLOAT
+	case reflect.Complex64:
+		return C.GDNATIVE_VARIANT_TYPE_VECTOR2
 	case reflect.String:
 		return C.GDNATIVE_VARIANT_TYPE_STRING
 	default:
@@ -283,7 +285,7 @@ func goMethodCall(userdata, instance uintptr, args *C.GDNativeVariantPtr, count 
 	method := class.GetMethod(meta.MethodID)
 	buffer := make([]reflect.Value, method.Type.NumIn())
 
-	fmt.Println(method.Name, " METHOD CALLED")
+	//fmt.Println(method.Name, " METHOD CALLED")
 
 	buffer[0] = class.Lookup(ptr.InstanceID)
 	if method.Type.NumIn() > 1 {
@@ -309,7 +311,7 @@ func goMethodCallDirect(userdata, instance uintptr, ptrs *C.GDNativeTypePtr, res
 	method := class.GetMethod(meta.MethodID)
 	buffer := make([]reflect.Value, method.Type.NumIn())
 
-	fmt.Println(method.Name, " METHOD CALLED DIRECTLY")
+	//fmt.Println(method.Name, " METHOD CALLED DIRECTLY")
 
 	buffer[0] = class.Lookup(ptr.InstanceID)
 	if method.Type.NumIn() > 1 {

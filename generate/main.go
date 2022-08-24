@@ -273,9 +273,9 @@ func generate() error {
 			}
 			fmt.Fprintf(code, ") %v { ", result)
 			if result != "" {
-				fmt.Fprintf(code, "return gdnative.Return[%v](gdnative.Object(gdClass), method%v[%d]", result, class.Name, i)
+				fmt.Fprintf(code, "return gdnative.Return%d[%v](gdnative.Object(gdClass), method%v[%d]", len(method.Arguments), result, class.Name, i)
 			} else {
-				fmt.Fprintf(code, "gdnative.Call(gdnative.Object(gdClass), method%v[%d]", class.Name, i)
+				fmt.Fprintf(code, "gdnative.Call%d(gdnative.Object(gdClass), method%v[%d]", len(method.Arguments), class.Name, i)
 			}
 			for _, arg := range method.Arguments {
 				fmt.Fprint(code, ", ")
