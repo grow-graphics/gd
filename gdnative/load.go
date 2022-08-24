@@ -6,7 +6,6 @@ import "C"
 import (
 	"fmt"
 	"reflect"
-	"runtime/cgo"
 	"strconv"
 	"unsafe"
 )
@@ -36,18 +35,32 @@ func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {
 }
 
 //export goClassCreateInstance
-func goClassCreateInstance(userdata uintptr) uintptr {
-	return uintptr(cgo.Handle(userdata).Value().(Class).Create())
+func goClassCreateInstance(classID uintptr) uintptr {
+	return uintptr(classes[classID-1].Create(ClassID(classID)))
 }
 
 //export goClassGetVirtual
-func goClassGetVirtual(userdata, name *C.char) {
-	fmt.Println(C.GoString(name))
+func goClassGetVirtual(classID uintptr, name *C.char) uint8 {
+	class := classes[classID-1]
+
+	method, ok := class.GetVirtual(C.GoString(name))
+	if !ok {
+		return 0
+	}
+
+	if method.Index > 255 {
+		panic("goClassGetVirtual failed: too many Go methods! (maximum of 255 are supported)")
+	}
+
+	return uint8(method.Index + 1)
 }
 
 //export goClassFreeInstance
 func goClassFreeInstance(userdata, instance uintptr) {
-	cgo.Handle(userdata).Value().(Class).Delete(InstanceID(instance))
+	var ptr InstancePointer
+	ptr.Load(instance)
+
+	classes[ptr.ClassID-1].Delete(ptr.InstanceID)
 }
 
 var (
@@ -94,16 +107,19 @@ func goMethodGetArgumentInfo(userdata uintptr, argument int32, info *C.GDNativeP
 
 //export goMethodGetArgumentMetadata
 func goMethodGetArgumentMetadata(userdata uintptr, argument int32) C.GDNativeExtensionClassMethodArgumentMetadata {
-	caller := cgo.Handle(userdata).Value().(methodCaller)
+	var ptr MethodPointer
+	ptr.Load(userdata)
+
+	method := classes[ptr.ClassID-1].GetMethod(ptr.MethodID)
 
 	var rtype reflect.Type
 	if argument == -1 {
-		if caller.method.Type.NumOut() == 0 {
+		if method.Type.NumOut() == 0 {
 			return C.GDNATIVE_VARIANT_TYPE_NIL
 		}
-		rtype = caller.method.Type.Out(0) // return value
+		rtype = method.Type.Out(0) // return value
 	} else {
-		rtype = caller.method.Type.In(int(argument) + 1) // skip receiver
+		rtype = method.Type.In(int(argument) + 1) // skip receiver
 	}
 
 	switch rtype.Kind() {
@@ -144,16 +160,19 @@ func goMethodGetArgumentMetadata(userdata uintptr, argument int32) C.GDNativeExt
 
 //export goMethodGetArgumentType
 func goMethodGetArgumentType(userdata uintptr, argument int32) C.GDNativeVariantType {
-	caller := cgo.Handle(userdata).Value().(methodCaller)
+	var ptr MethodPointer
+	ptr.Load(userdata)
+
+	method := classes[ptr.ClassID-1].GetMethod(ptr.MethodID)
 
 	var rtype reflect.Type
 	if argument == -1 {
-		if caller.method.Type.NumOut() == 0 {
+		if method.Type.NumOut() == 0 {
 			return C.GDNATIVE_VARIANT_TYPE_NIL
 		}
-		rtype = caller.method.Type.Out(0) // return value
+		rtype = method.Type.Out(0) // return value
 	} else {
-		rtype = caller.method.Type.In(int(argument) + 1) // skip receiver
+		rtype = method.Type.In(int(argument) + 1) // skip receiver
 	}
 
 	switch rtype.Kind() {
@@ -239,44 +258,69 @@ func goMethodGetArgumentType(userdata uintptr, argument int32) C.GDNativeVariant
 	}
 }
 
+const check = unsafe.Sizeof(C.uintptr_t(0))
+
+// instance needs to be a uint64?
+func goMethodCallVirtual(instance uintptr, ptrs *C.GDNativeTypePtr, result C.GDNativeTypePtr) {
+	//var ptr = (*InstancePointer)(unsafe.Pointer(&instance))
+
+	//class := classes[ptr.ClassID]
+	//class.GetVirtual()
+	//class.Lookup(ptr.InstanceID).Interface()
+
+	// looks like the virtuals will need to be hard coded in C.
+}
+
 //export goMethodCall
 func goMethodCall(userdata, instance uintptr, args *C.GDNativeVariantPtr, count C.GDNativeInt, result C.GDNativeVariantPtr, err *C.GDNativeCallError) {
-	caller := cgo.Handle(userdata).Value().(methodCaller)
+	var meta MethodPointer
+	meta.Load(userdata)
 
-	fmt.Println(caller.method.Name, " METHOD CALLED")
+	var ptr InstancePointer
+	ptr.Load(instance)
 
-	caller.cached[0] = caller.lookup(InstanceID(instance))
-	if caller.method.Type.NumIn() > 1 {
+	class := classes[ptr.ClassID-1]
+	method := class.GetMethod(meta.MethodID)
+	buffer := make([]reflect.Value, method.Type.NumIn())
+
+	fmt.Println(method.Name, " METHOD CALLED")
+
+	buffer[0] = class.Lookup(ptr.InstanceID)
+	if method.Type.NumIn() > 1 {
 		slice := unsafe.Slice(args, count)
-		value := caller.cached[1:]
+		value := buffer[1:]
 		for i := range value {
-			value[i] = loadArgFromVariant(caller.method.Type.In(i+1), slice[i])
+			value[i] = loadArgFromVariant(method.Type.In(i+1), slice[i])
 		}
 	}
 
-	fmt.Println(caller.cached)
-
-	caller.method.Func.Call(caller.cached)
+	method.Func.Call(buffer)
 }
 
 //export goMethodCallDirect
 func goMethodCallDirect(userdata, instance uintptr, ptrs *C.GDNativeTypePtr, result C.GDNativeTypePtr) {
-	caller := cgo.Handle(userdata).Value().(methodCaller)
+	var meta MethodPointer
+	meta.Load(userdata)
 
-	fmt.Println(caller.method.Name, " METHOD CALLED DIRECTLY")
+	var ptr InstancePointer
+	ptr.Load(instance)
 
-	caller.cached[0] = caller.lookup(InstanceID(instance))
-	if caller.method.Type.NumIn() > 1 {
-		slice := unsafe.Slice(ptrs, caller.method.Type.NumIn()-1)
-		value := caller.cached[1:]
+	class := classes[ptr.ClassID-1]
+	method := class.GetMethod(meta.MethodID)
+	buffer := make([]reflect.Value, method.Type.NumIn())
+
+	fmt.Println(method.Name, " METHOD CALLED DIRECTLY")
+
+	buffer[0] = class.Lookup(ptr.InstanceID)
+	if method.Type.NumIn() > 1 {
+		slice := unsafe.Slice(ptrs, method.Type.NumIn()-1)
+		value := buffer[1:]
 		for i := range value {
-			value[i] = loadArgFromNativeType(caller.method.Type.In(i+1), slice[i])
+			value[i] = loadArgFromNativeType(method.Type.In(i+1), slice[i])
 		}
 	}
 
-	fmt.Println(caller.cached)
-
-	caller.method.Func.Call(caller.cached)
+	method.Func.Call(buffer)
 }
 
 // Main should be called in your extension's main function.

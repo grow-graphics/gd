@@ -26,19 +26,6 @@ func (h HelloWorld) Echo(s string) {
 
 var gdHelloWorld = gd.Register(NewHelloWorld)
 
-type Node2d uintptr
-
-func (gdClass Node2d) virtual(val any, name string) any {
-	switch name {
-	case "_onready":
-		i, ok := val.(interface{ Ready() })
-		if ok {
-			return i.Ready
-		}
-	}
-	return gdClass.Parent().virtual(val, name)
-}
-
 type ExtendedNode struct {
 	Node2D gd.Node2D
 }

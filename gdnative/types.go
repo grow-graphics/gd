@@ -12,7 +12,6 @@ import "C"
 import (
 	"fmt"
 	"reflect"
-	"runtime/cgo"
 	"unsafe"
 )
 
@@ -205,14 +204,76 @@ func load(intf, library, init unsafe.Pointer) {
 
 // New returns a new object of the given class name.
 func New(class string) Object {
-	return Object(C.classdb_construct_object(api, C.ConstChar(class+"\000")))
+	return Object(C.classdb_construct_object(api, cString(class)))
+}
+
+// InstancePointer points to both the extension class ID
+// (the first value) and the instance ID (the second value).
+type InstancePointer struct {
+	ClassID    ClassID
+	InstanceID InstanceID
+}
+
+func (ip InstancePointer) Data() uintptr {
+	var array [2]uint32
+	array[0] = uint32(ip.ClassID)
+	array[1] = uint32(ip.InstanceID)
+	return *(*uintptr)(unsafe.Pointer(&array[0]))
+}
+
+func (ip *InstancePointer) Load(userdata uintptr) {
+	var array [2]uint32
+	*(*uintptr)(unsafe.Pointer(&array[0])) = userdata
+	ip.ClassID = ClassID(array[0])
+	ip.InstanceID = InstanceID(array[1])
+}
+
+type MethodID uint32
+
+type MethodPointer struct {
+	MethodID MethodID
+	ClassID  ClassID
+}
+
+func (mp MethodPointer) Data() uintptr {
+	var array [2]uint32
+	array[1] = uint32(mp.ClassID)
+	array[0] = uint32(mp.MethodID)
+	return *(*uintptr)(unsafe.Pointer(&array[0]))
+}
+
+func (mp *MethodPointer) Load(userdata uintptr) {
+	var array [2]uint32
+	*(*uintptr)(unsafe.Pointer(&array[0])) = userdata
+	mp.ClassID = ClassID(array[1])
+	mp.MethodID = MethodID(array[0])
+}
+
+// ClassID of the extension.
+type ClassID uint32
+
+// classes that have been registered.
+var classes []registeredClass
+
+type registeredClass struct {
+	Class
+
+	methods []reflect.Method
+}
+
+func (class registeredClass) GetMethod(i MethodID) reflect.Method {
+	return class.methods[i-1]
 }
 
 // InstanceID of an instantiated extension class/struct.
-type InstanceID uintptr
+type InstanceID uint32
 
-func (obj Object) SetInstance(class string, id InstanceID) {
-	C.object_set_instance(api, C.uintptr_t(obj), C.ConstChar(class+"\000"), C.uintptr_t(id))
+func (obj Object) SetInstance(class ClassID, instance InstanceID) {
+	var ptr InstancePointer
+	ptr.ClassID = class
+	ptr.InstanceID = instance
+
+	C.object_set_instance(api, C.uintptr_t(obj), cString(classes[class-1].Name()), C.uintptr_t(ptr.Data()))
 }
 
 func (obj Object) Destroy() {
@@ -222,41 +283,65 @@ func (obj Object) Destroy() {
 type Object uintptr
 
 type Class interface {
+	// Name should return the name of the class. As a null
+	// terminated string if possible.
+	Name() string
+
+	// Inherits returns the name of the base Godot class.
+	Godot() string
 
 	// Create should call New to instantiate an object of the parent class
 	// call SetInstance on it with the ID of the instance that was created
 	// and return the object that was created this way.
-	Create() Object
+	Create(id ClassID) Object
+
+	// Lookup shuold return a ptr reflect.Value of the corresponding value
+	// to the given instance ID.
+	Lookup(id InstanceID) reflect.Value
 
 	// Delete should free up any resources that are being consumed by the
 	// instance with the given ID.
 	Delete(id InstanceID)
+
+	// GetVirtual should return the corresponding method for the given
+	// godot virtual method name.
+	GetVirtual(name string) (reflect.Method, bool)
+
+	Methods() []reflect.Method
 }
 
-func RegisterClass(name, parent string, class Class) {
+func RegisterClass(class Class) {
 	if !loaded {
 		panic("gdnative not loaded")
 	}
-	C.classdb_register_extension_class(api, db, C.ConstChar(name+"\000"), C.ConstChar(parent+"\000"), C.uintptr_t(cgo.NewHandle(class)))
+	methods := class.Methods()
+
+	classes = append(classes, registeredClass{
+		Class:   class,
+		methods: methods,
+	})
+
+	id := ClassID(len(classes))
+
+	C.classdb_register_extension_class(api, db, cString(class.Name()), cString(class.Godot()), C.uintptr_t(id))
+
+	for _, method := range methods {
+		registerMethod(class, id, method)
+	}
 }
 
-type methodCaller struct {
-	method reflect.Method
-	lookup func(InstanceID) reflect.Value
-	cached []reflect.Value
-}
-
-func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID) reflect.Value) {
+func registerMethod(class Class, id ClassID, method reflect.Method) {
 	if !loaded {
 		panic("gdnative not loaded")
 	}
-
-	caller := cgo.NewHandle(methodCaller{method, lookup, make([]reflect.Value, method.Type.NumIn())}) // TODO cleanup?
 
 	name := cString(method.Name)
 	defer C.mem_free(api, unsafe.Pointer(name))
 
-	fmt.Println(C.uint32_t(method.Type.NumIn()-1), method.Type.NumIn(), method.Type.NumOut())
+	var ptr = MethodPointer{
+		ClassID:  id,
+		MethodID: MethodID(method.Index + 1), // zero is reserved as invalid
+	}
 
 	var info = C.GDNativeExtensionClassMethodInfo{
 		name:                   name,
@@ -265,7 +350,7 @@ func RegisterMethod(class string, method reflect.Method, lookup func(InstanceID)
 		default_argument_count: 0, // Go doesn't have default arguments.
 	}
 
-	C.classdb_register_extension_class_method(api, db, C.ConstChar(class+"\000"), &info, C.uintptr_t(caller))
+	C.classdb_register_extension_class_method(api, db, cString(class.Name()), &info, C.uintptr_t(ptr.Data()))
 }
 
 // MethodOf arguments must be null-terminated.

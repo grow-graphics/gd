@@ -83,6 +83,7 @@ type Class interface {
 	~uintptr
 
 	class() string
+	virtual(reflect.Type, string) (reflect.Method, bool)
 }
 
 type Extension[Type any, Extends Class] struct {
@@ -95,6 +96,8 @@ type Extension[Type any, Extends Class] struct {
 	class string           // base class name, cached on register.
 	owner string           // owner class name, cached on register.
 	slice []Instance[Type] // slice of instantiated instances.
+
+	virtuals map[int16]func(any) any // virtual functions.
 }
 
 func Register[Type any, Extends Class](fn func(Extends) Type) Extension[Type, Extends] {
@@ -107,8 +110,10 @@ func Register[Type any, Extends Class](fn func(Extends) Type) Extension[Type, Ex
 		alloc: fn,
 		rtype: rtype,
 		ptype: reflect.PtrTo(rtype),
-		class: rtype.Name(),
+		class: rtype.Name() + "\000",
 		owner: parent.class(),
+
+		virtuals: make(map[int16]func(any) any),
 	}
 
 	gdnative.OnLoad(extension.register)
@@ -121,7 +126,25 @@ type Instance[Type any] struct {
 	value Type
 }
 
-func (ext *Extension[Type, Extends]) Create() gdnative.Object {
+func (ext *Extension[Type, Extends]) Name() string {
+	return ext.class
+}
+
+func (ext *Extension[Type, Extends]) Godot() string {
+	return ext.owner
+}
+
+func (ext *Extension[Type, Extends]) GetVirtual(name string) (reflect.Method, bool) {
+	var zero Type
+	var core Extends
+	return core.virtual(reflect.TypeOf(zero), name)
+}
+
+func (ext *Extension[Type, Extends]) CallVirtual(index int) func(any) any {
+	return ext.virtuals[int16(index)]
+}
+
+func (ext *Extension[Type, Extends]) Create(class gdnative.ClassID) gdnative.Object {
 	obj := gdnative.New(ext.owner)
 
 	var instance Instance[Type]
@@ -143,7 +166,7 @@ func (ext *Extension[Type, Extends]) Create() gdnative.Object {
 		id = gdnative.InstanceID(len(ext.slice))
 	}
 
-	obj.SetInstance(ext.class, id)
+	obj.SetInstance(class, id)
 
 	return obj
 }
@@ -156,14 +179,14 @@ func (ext *Extension[Type, Extends]) Lookup(id gdnative.InstanceID) reflect.Valu
 	return reflect.ValueOf(&ext.slice[id-1].value)
 }
 
-func (ext *Extension[Type, Extends]) register() {
-	gdnative.RegisterClass(ext.class, ext.owner, ext)
+func (ext *Extension[Type, Extends]) Methods() []reflect.Method {
+	var methods []reflect.Method
 	for i := 0; i < ext.ptype.NumMethod(); i++ {
-		method := ext.ptype.Method(i)
-		gdnative.RegisterMethod(ext.class, method, ext.Lookup)
+		methods = append(methods, ext.ptype.Method(i))
 	}
+	return methods
 }
 
-type extension interface {
-	register()
+func (ext *Extension[Type, Extends]) register() {
+	gdnative.RegisterClass(ext)
 }

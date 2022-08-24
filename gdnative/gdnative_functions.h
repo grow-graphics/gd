@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <gdnative_virtuals.h>
 
 extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
 extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
@@ -92,14 +92,6 @@ void variant_to_type_constructor(
 
 extern uintptr_t goClassCreateInstance(uintptr_t userdata);
 extern void goClassFreeInstance(uintptr_t userdata, uintptr_t instance);
-extern void goClassGetVirtual(void *p_userdata, const char *p_name);
-
-GDNativeExtensionClassCallVirtual get_virtual_func(
-    void *p_userdata, const char *p_name
-) {
-    goClassGetVirtual(p_userdata, p_name);
-    return 0;
-}
 
 GDNativeObjectPtr create_instance_func(void *p_userdata) {
     return (GDNativeObjectPtr)(goClassCreateInstance((uintptr_t)p_userdata));
@@ -157,7 +149,6 @@ void classdb_register_extension_class(
 //
 
 extern void goMethodCall(uintptr_t userdata, uintptr_t instance, const GDNativeVariantPtr *p_args, const GDNativeInt p_argument_count, GDNativeVariantPtr r_return, GDNativeCallError *r_error);
-extern void goMethodCallDirect(uintptr_t userdata, uintptr_t instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret);
 extern GDNativeVariantType goMethodGetArgumentType(uintptr_t userdata, int32_t argument);
 extern GDNativeExtensionClassMethodArgumentMetadata goMethodGetArgumentMetadata(uintptr_t userdata, int32_t argument);
 extern void goMethodGetArgumentInfo(uintptr_t userdata, int32_t argument, GDNativePropertyInfo *r_info);

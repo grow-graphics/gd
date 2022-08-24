@@ -164,6 +164,8 @@ func generate() error {
 		return err
 	}
 
+	var virtuals []Method
+
 	code, err := os.Create("./api.go")
 	if err != nil {
 		return err
@@ -179,6 +181,7 @@ func generate() error {
 	fmt.Fprintln(code, `package gd`)
 	fmt.Fprintln(code)
 	fmt.Fprintln(code, `import "github.com/readykit/gd/gdnative"`)
+	fmt.Fprintln(code, `import "reflect"`)
 
 	for _, enum := range spec.GlobalEnums {
 		genEnum(code, "", enum)
@@ -218,8 +221,10 @@ func generate() error {
 			fmt.Fprintf(code, "var method%v [%d]gdnative.Method\n", class.Name, methodCount)
 		}
 
+		// check if a Go type implements that method and returns the method that implements the
+		// named virtual.
+		fmt.Fprintf(code, "func (gdClass %v) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {\n", class.Name)
 		if virtualCount > 0 {
-			fmt.Fprintf(code, "func (gdClass %v) virtual(val any, name string) any {", class.Name)
 			fmt.Fprintln(code, "\tswitch name {")
 			for _, method := range class.Methods {
 				if !method.IsVirtual {
@@ -227,24 +232,29 @@ func generate() error {
 				}
 
 				result := convertType(method.ReturnValue.Type)
+				virtuals = append(virtuals, method)
 
-				fmt.Fprintln(code, "\tcase \""+method.Name+"\":")
-				fmt.Fprintf(code, "\t\ti, ok := val.(interface{ %v(", convertName(method.Name))
+				fmt.Fprintf(code, "\tcase \""+method.Name+"\":\n")
+				fmt.Fprintf(code, "\t\tif rtype.Implements(reflect.TypeOf([0]interface{ %v(", convertName(method.Name))
 				for i, arg := range method.Arguments {
 					fmt.Fprintf(code, "%v %v", fixReserved(arg.Name), convertType(arg.Type))
 					if i < len(method.Arguments)-1 {
 						fmt.Fprint(code, ", ")
 					}
 				}
-				fmt.Fprintf(code, ") %v })\n", result)
-				fmt.Fprintln(code, "\t\tif ok {")
-				fmt.Fprintf(code, "\t\t\treturn i.%v\n", convertName(method.Name))
+				fmt.Fprintf(code, ") %v }{}).Elem()) {\n", result)
+				fmt.Fprintf(code, "\t\t\treturn rtype.MethodByName(`%s`)\n", convertName(method.Name))
 				fmt.Fprintln(code, "\t\t}")
+				fmt.Fprintln(code, "\t\treturn")
 			}
 			fmt.Fprintln(code, "\t}")
-			fmt.Fprintln(code, "\treturn nil")
-			fmt.Fprintln(code, "}")
 		}
+		if class.Inherits != "" {
+			fmt.Fprintf(code, "\treturn gdClass.%v().virtual(rtype, name)\n", class.Inherits)
+		} else {
+			fmt.Fprintln(code, "\treturn")
+		}
+		fmt.Fprintln(code, "}")
 
 		var i int
 		for _, method := range class.Methods {
@@ -293,11 +303,37 @@ func generate() error {
 			i++
 		}
 	}
-	fmt.Fprintf(code, "\t})\n}")
+	fmt.Fprintf(code, "\t})\n}\n\n")
 
-	fmt.Println(len(spec.Classes))
+	code.Close()
 
-	return nil
+	// Create Virtual C functions
+	// required because C doesn't support closures and the Godot GDNativeExtensionClassCallVirtual
+	// doesn't include a userdata field.
+
+	code, err = os.Create("./gdnative/gdnative_virtuals.h")
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintln(code, `extern uint8_t goClassGetVirtual(void *p_userdata, const char *p_name);`)
+	fmt.Fprintf(code, "extern void goMethodCallDirect(uintptr_t userdata, uintptr_t instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret);\n")
+
+	for i := 1; i < 256; i++ {
+		fmt.Fprintf(code, "void goClassCallVirtual%d(GDExtensionClassInstancePtr p_instance, const GDNativeTypePtr *p_args, GDNativeTypePtr r_ret) {", i)
+		fmt.Fprintf(code, "goMethodCallDirect((uintptr_t)%v, (uintptr_t)p_instance,  p_args, r_ret);", i)
+		fmt.Fprintf(code, "}\n")
+	}
+
+	fmt.Fprintf(code, "GDNativeExtensionClassCallVirtual get_virtual_func(void *p_userdata, const char *p_name) {\n")
+	fmt.Fprintf(code, "switch (goClassGetVirtual(p_userdata, p_name)) {\n")
+	for i := 1; i < 256; i++ {
+		fmt.Fprintf(code, "\tcase %v: return goClassCallVirtual%d;\n", i, i)
+	}
+	fmt.Fprintf(code, "\tdefault: return NULL;")
+	fmt.Fprintf(code, "}\n}")
+
+	return code.Close()
 }
 
 func main() {

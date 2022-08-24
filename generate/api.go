@@ -8,6 +8,23 @@ type Enum struct {
 	} `json:"values"`
 }
 
+type Method struct {
+	Name        string `json:"name"`
+	IsConst     bool   `json:"is_const"`
+	IsVararg    bool   `json:"is_vararg"`
+	IsStatic    bool   `json:"is_static"`
+	IsVirtual   bool   `json:"is_virtual"`
+	Hash        int64  `json:"hash"`
+	ReturnValue struct {
+		Type string `json:"type"`
+	} `json:"return_value,omitempty"`
+	Arguments []struct {
+		Name         string `json:"name"`
+		Type         string `json:"type"`
+		DefaultValue string `json:"default_value,omitempty"`
+	} `json:"arguments,omitempty"`
+}
+
 /*
 	Specification of the Godot Extension API.
 	Created with https://mholt.github.io/json-to-go/
@@ -92,29 +109,14 @@ type Specification struct {
 		Enums []Enum `json:"enums,omitempty"`
 	} `json:"builtin_classes"`
 	Classes []struct {
-		Name           string `json:"name"`
-		IsRefcounted   bool   `json:"is_refcounted"`
-		IsInstantiable bool   `json:"is_instantiable"`
-		Inherits       string `json:"inherits,omitempty"`
-		APIType        string `json:"api_type"`
-		Enums          []Enum `json:"enums,omitempty"`
-		Methods        []struct {
-			Name        string `json:"name"`
-			IsConst     bool   `json:"is_const"`
-			IsVararg    bool   `json:"is_vararg"`
-			IsStatic    bool   `json:"is_static"`
-			IsVirtual   bool   `json:"is_virtual"`
-			Hash        int64  `json:"hash"`
-			ReturnValue struct {
-				Type string `json:"type"`
-			} `json:"return_value,omitempty"`
-			Arguments []struct {
-				Name         string `json:"name"`
-				Type         string `json:"type"`
-				DefaultValue string `json:"default_value,omitempty"`
-			} `json:"arguments,omitempty"`
-		} `json:"methods,omitempty"`
-		Signals []struct {
+		Name           string   `json:"name"`
+		IsRefcounted   bool     `json:"is_refcounted"`
+		IsInstantiable bool     `json:"is_instantiable"`
+		Inherits       string   `json:"inherits,omitempty"`
+		APIType        string   `json:"api_type"`
+		Enums          []Enum   `json:"enums,omitempty"`
+		Methods        []Method `json:"methods,omitempty"`
+		Signals        []struct {
 			Name      string `json:"name"`
 			Arguments []struct {
 				Name string `json:"name"`

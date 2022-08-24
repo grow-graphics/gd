@@ -2,6 +2,7 @@
 package gd
 
 import "github.com/readykit/gd/gdnative"
+import "reflect"
 
 type Side int64
 
@@ -755,6 +756,9 @@ func (AESContext) class() string { return "AESContext\000" }
 func (gdClass AESContext) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodAESContext [4]gdnative.Method
+func (gdClass AESContext) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass AESContext) Start(mode AESContextMode, key []byte, iv []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodAESContext[0], mode, key, iv) }
 func (gdClass AESContext) Update(src []byte) []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodAESContext[1], src) }
 func (gdClass AESContext) GetIvState() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodAESContext[2]) }
@@ -766,19 +770,20 @@ func (AStar2D) class() string { return "AStar2D\000" }
 func (gdClass AStar2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodAStar2D [23]gdnative.Method
-func (gdClass AStar2D) virtual(val any, name string) any {	switch name {
+func (gdClass AStar2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_estimate_cost":
-		i, ok := val.(interface{ EstimateCost(from_id int64, to_id int64) float64 })
-		if ok {
-			return i.EstimateCost
+		if rtype.Implements(reflect.TypeOf([0]interface{ EstimateCost(from_id int64, to_id int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`EstimateCost`)
 		}
+		return
 	case "_compute_cost":
-		i, ok := val.(interface{ ComputeCost(from_id int64, to_id int64) float64 })
-		if ok {
-			return i.ComputeCost
+		if rtype.Implements(reflect.TypeOf([0]interface{ ComputeCost(from_id int64, to_id int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ComputeCost`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass AStar2D) GetAvailablePointId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAStar2D[0]) }
 func (gdClass AStar2D) AddPoint(id int64, position Vector2, weight_scale float64)  { gdnative.Call(gdnative.Object(gdClass), methodAStar2D[1], id, position, weight_scale) }
@@ -810,19 +815,20 @@ func (AStar3D) class() string { return "AStar3D\000" }
 func (gdClass AStar3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodAStar3D [23]gdnative.Method
-func (gdClass AStar3D) virtual(val any, name string) any {	switch name {
+func (gdClass AStar3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_estimate_cost":
-		i, ok := val.(interface{ EstimateCost(from_id int64, to_id int64) float64 })
-		if ok {
-			return i.EstimateCost
+		if rtype.Implements(reflect.TypeOf([0]interface{ EstimateCost(from_id int64, to_id int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`EstimateCost`)
 		}
+		return
 	case "_compute_cost":
-		i, ok := val.(interface{ ComputeCost(from_id int64, to_id int64) float64 })
-		if ok {
-			return i.ComputeCost
+		if rtype.Implements(reflect.TypeOf([0]interface{ ComputeCost(from_id int64, to_id int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ComputeCost`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass AStar3D) GetAvailablePointId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAStar3D[0]) }
 func (gdClass AStar3D) AddPoint(id int64, position Vector3, weight_scale float64)  { gdnative.Call(gdnative.Object(gdClass), methodAStar3D[1], id, position, weight_scale) }
@@ -854,6 +860,9 @@ func (AcceptDialog) class() string { return "AcceptDialog\000" }
 func (gdClass AcceptDialog) Window() Window { return Window(gdClass) }
 
 var methodAcceptDialog [16]gdnative.Method
+func (gdClass AcceptDialog) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Window().virtual(rtype, name)
+}
 func (gdClass AcceptDialog) GetOkButton() Button { return gdnative.Return[Button](gdnative.Object(gdClass), methodAcceptDialog[0]) }
 func (gdClass AcceptDialog) GetLabel() Label { return gdnative.Return[Label](gdnative.Object(gdClass), methodAcceptDialog[1]) }
 func (gdClass AcceptDialog) SetHideOnOk(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodAcceptDialog[2], enabled) }
@@ -877,6 +886,9 @@ func (AnimatableBody2D) class() string { return "AnimatableBody2D\000" }
 func (gdClass AnimatableBody2D) StaticBody2D() StaticBody2D { return StaticBody2D(gdClass) }
 
 var methodAnimatableBody2D [2]gdnative.Method
+func (gdClass AnimatableBody2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StaticBody2D().virtual(rtype, name)
+}
 func (gdClass AnimatableBody2D) SetSyncToPhysics(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatableBody2D[0], enable) }
 func (gdClass AnimatableBody2D) IsSyncToPhysicsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimatableBody2D[1]) }
 
@@ -886,6 +898,9 @@ func (AnimatableBody3D) class() string { return "AnimatableBody3D\000" }
 func (gdClass AnimatableBody3D) StaticBody3D() StaticBody3D { return StaticBody3D(gdClass) }
 
 var methodAnimatableBody3D [2]gdnative.Method
+func (gdClass AnimatableBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StaticBody3D().virtual(rtype, name)
+}
 func (gdClass AnimatableBody3D) SetSyncToPhysics(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatableBody3D[0], enable) }
 func (gdClass AnimatableBody3D) IsSyncToPhysicsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimatableBody3D[1]) }
 
@@ -895,6 +910,9 @@ func (AnimatedSprite2D) class() string { return "AnimatedSprite2D\000" }
 func (gdClass AnimatedSprite2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodAnimatedSprite2D [20]gdnative.Method
+func (gdClass AnimatedSprite2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass AnimatedSprite2D) SetSpriteFrames(sprite_frames SpriteFrames)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite2D[0], sprite_frames) }
 func (gdClass AnimatedSprite2D) GetSpriteFrames() SpriteFrames { return gdnative.Return[SpriteFrames](gdnative.Object(gdClass), methodAnimatedSprite2D[1]) }
 func (gdClass AnimatedSprite2D) SetAnimation(animation string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite2D[2], animation) }
@@ -922,6 +940,9 @@ func (AnimatedSprite3D) class() string { return "AnimatedSprite3D\000" }
 func (gdClass AnimatedSprite3D) SpriteBase3D() SpriteBase3D { return SpriteBase3D(gdClass) }
 
 var methodAnimatedSprite3D [9]gdnative.Method
+func (gdClass AnimatedSprite3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SpriteBase3D().virtual(rtype, name)
+}
 func (gdClass AnimatedSprite3D) SetSpriteFrames(sprite_frames SpriteFrames)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite3D[0], sprite_frames) }
 func (gdClass AnimatedSprite3D) GetSpriteFrames() SpriteFrames { return gdnative.Return[SpriteFrames](gdnative.Object(gdClass), methodAnimatedSprite3D[1]) }
 func (gdClass AnimatedSprite3D) SetAnimation(animation string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedSprite3D[2], animation) }
@@ -938,6 +959,9 @@ func (AnimatedTexture) class() string { return "AnimatedTexture\000" }
 func (gdClass AnimatedTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodAnimatedTexture [14]gdnative.Method
+func (gdClass AnimatedTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass AnimatedTexture) SetFrames(frames int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedTexture[0], frames) }
 func (gdClass AnimatedTexture) GetFrames() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimatedTexture[1]) }
 func (gdClass AnimatedTexture) SetCurrentFrame(frame int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimatedTexture[2], frame) }
@@ -1005,6 +1029,9 @@ func (Animation) class() string { return "Animation\000" }
 func (gdClass Animation) Resource() Resource { return Resource(gdClass) }
 
 var methodAnimation [71]gdnative.Method
+func (gdClass Animation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Animation) AddTrack(atype AnimationTrackType, at_position int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimation[0], atype, at_position) }
 func (gdClass Animation) RemoveTrack(track_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimation[1], track_idx) }
 func (gdClass Animation) GetTrackCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimation[2]) }
@@ -1083,6 +1110,9 @@ func (AnimationLibrary) class() string { return "AnimationLibrary\000" }
 func (gdClass AnimationLibrary) Resource() Resource { return Resource(gdClass) }
 
 var methodAnimationLibrary [6]gdnative.Method
+func (gdClass AnimationLibrary) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass AnimationLibrary) AddAnimation(name string, animation Animation) error { return gdnative.Return[error](gdnative.Object(gdClass), methodAnimationLibrary[0], name, animation) }
 func (gdClass AnimationLibrary) RemoveAnimation(name string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationLibrary[1], name) }
 func (gdClass AnimationLibrary) RenameAnimation(name string, newname string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationLibrary[2], name, newname) }
@@ -1105,44 +1135,45 @@ func (AnimationNode) class() string { return "AnimationNode\000" }
 func (gdClass AnimationNode) Resource() Resource { return Resource(gdClass) }
 
 var methodAnimationNode [13]gdnative.Method
-func (gdClass AnimationNode) virtual(val any, name string) any {	switch name {
+func (gdClass AnimationNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_child_nodes":
-		i, ok := val.(interface{ GetChildNodes() Dictionary })
-		if ok {
-			return i.GetChildNodes
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetChildNodes() Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetChildNodes`)
 		}
+		return
 	case "_get_parameter_list":
-		i, ok := val.(interface{ GetParameterList() Array })
-		if ok {
-			return i.GetParameterList
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetParameterList() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetParameterList`)
 		}
+		return
 	case "_get_child_by_name":
-		i, ok := val.(interface{ GetChildByName(name string) AnimationNode })
-		if ok {
-			return i.GetChildByName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetChildByName(name string) AnimationNode }{}).Elem()) {
+			return rtype.MethodByName(`GetChildByName`)
 		}
+		return
 	case "_get_parameter_default_value":
-		i, ok := val.(interface{ GetParameterDefaultValue(parameter string) any })
-		if ok {
-			return i.GetParameterDefaultValue
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetParameterDefaultValue(parameter string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetParameterDefaultValue`)
 		}
+		return
 	case "_process":
-		i, ok := val.(interface{ Process(time float64, seek bool, seek_root bool) float64 })
-		if ok {
-			return i.Process
+		if rtype.Implements(reflect.TypeOf([0]interface{ Process(time float64, seek bool, seek_root bool) float64 }{}).Elem()) {
+			return rtype.MethodByName(`Process`)
 		}
+		return
 	case "_get_caption":
-		i, ok := val.(interface{ GetCaption() string })
-		if ok {
-			return i.GetCaption
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCaption() string }{}).Elem()) {
+			return rtype.MethodByName(`GetCaption`)
 		}
+		return
 	case "_has_filter":
-		i, ok := val.(interface{ HasFilter() bool })
-		if ok {
-			return i.HasFilter
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasFilter() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasFilter`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass AnimationNode) GetInputCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimationNode[0]) }
 func (gdClass AnimationNode) GetInputName(input int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodAnimationNode[1], input) }
@@ -1163,12 +1194,18 @@ func (AnimationNodeAdd2) class() string { return "AnimationNodeAdd2\000" }
 
 func (gdClass AnimationNodeAdd2) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
+func (gdClass AnimationNodeAdd2) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 
 type AnimationNodeAdd3 gdnative.Object
 func (AnimationNodeAdd3) class() string { return "AnimationNodeAdd3\000" }
 
 func (gdClass AnimationNodeAdd3) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
+func (gdClass AnimationNodeAdd3) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 
 type AnimationNodeAnimationPlayMode int64
 
@@ -1183,6 +1220,9 @@ func (AnimationNodeAnimation) class() string { return "AnimationNodeAnimation\00
 func (gdClass AnimationNodeAnimation) AnimationRootNode() AnimationRootNode { return AnimationRootNode(gdClass) }
 
 var methodAnimationNodeAnimation [4]gdnative.Method
+func (gdClass AnimationNodeAnimation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationRootNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeAnimation) SetAnimation(name string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeAnimation[0], name) }
 func (gdClass AnimationNodeAnimation) GetAnimation() string { return gdnative.Return[string](gdnative.Object(gdClass), methodAnimationNodeAnimation[1]) }
 func (gdClass AnimationNodeAnimation) SetPlayMode(mode AnimationNodeAnimationPlayMode)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeAnimation[2], mode) }
@@ -1193,12 +1233,18 @@ func (AnimationNodeBlend2) class() string { return "AnimationNodeBlend2\000" }
 
 func (gdClass AnimationNodeBlend2) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
+func (gdClass AnimationNodeBlend2) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 
 type AnimationNodeBlend3 gdnative.Object
 func (AnimationNodeBlend3) class() string { return "AnimationNodeBlend3\000" }
 
 func (gdClass AnimationNodeBlend3) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
+func (gdClass AnimationNodeBlend3) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 
 type AnimationNodeBlendSpace1D gdnative.Object
 func (AnimationNodeBlendSpace1D) class() string { return "AnimationNodeBlendSpace1D\000" }
@@ -1206,6 +1252,9 @@ func (AnimationNodeBlendSpace1D) class() string { return "AnimationNodeBlendSpac
 func (gdClass AnimationNodeBlendSpace1D) AnimationRootNode() AnimationRootNode { return AnimationRootNode(gdClass) }
 
 var methodAnimationNodeBlendSpace1D [17]gdnative.Method
+func (gdClass AnimationNodeBlendSpace1D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationRootNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeBlendSpace1D) AddBlendPoint(node AnimationRootNode, pos float64, at_index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendSpace1D[0], node, pos, at_index) }
 func (gdClass AnimationNodeBlendSpace1D) SetBlendPointPosition(point int64, pos float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendSpace1D[1], point, pos) }
 func (gdClass AnimationNodeBlendSpace1D) GetBlendPointPosition(point int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAnimationNodeBlendSpace1D[2], point) }
@@ -1238,6 +1287,9 @@ func (AnimationNodeBlendSpace2D) class() string { return "AnimationNodeBlendSpac
 func (gdClass AnimationNodeBlendSpace2D) AnimationRootNode() AnimationRootNode { return AnimationRootNode(gdClass) }
 
 var methodAnimationNodeBlendSpace2D [27]gdnative.Method
+func (gdClass AnimationNodeBlendSpace2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationRootNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeBlendSpace2D) AddBlendPoint(node AnimationRootNode, pos Vector2, at_index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendSpace2D[0], node, pos, at_index) }
 func (gdClass AnimationNodeBlendSpace2D) SetBlendPointPosition(point int64, pos Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendSpace2D[1], point, pos) }
 func (gdClass AnimationNodeBlendSpace2D) GetBlendPointPosition(point int64) Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodAnimationNodeBlendSpace2D[2], point) }
@@ -1272,6 +1324,9 @@ func (AnimationNodeBlendTree) class() string { return "AnimationNodeBlendTree\00
 func (gdClass AnimationNodeBlendTree) AnimationRootNode() AnimationRootNode { return AnimationRootNode(gdClass) }
 
 var methodAnimationNodeBlendTree [11]gdnative.Method
+func (gdClass AnimationNodeBlendTree) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationRootNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeBlendTree) AddNode(name string, node AnimationNode, position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendTree[0], name, node, position) }
 func (gdClass AnimationNodeBlendTree) GetNode(name string) AnimationNode { return gdnative.Return[AnimationNode](gdnative.Object(gdClass), methodAnimationNodeBlendTree[1], name) }
 func (gdClass AnimationNodeBlendTree) RemoveNode(name string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeBlendTree[2], name) }
@@ -1297,6 +1352,9 @@ func (AnimationNodeOneShot) class() string { return "AnimationNodeOneShot\000" }
 func (gdClass AnimationNodeOneShot) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
 var methodAnimationNodeOneShot [12]gdnative.Method
+func (gdClass AnimationNodeOneShot) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 func (gdClass AnimationNodeOneShot) SetFadeinTime(time float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeOneShot[0], time) }
 func (gdClass AnimationNodeOneShot) GetFadeinTime() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAnimationNodeOneShot[1]) }
 func (gdClass AnimationNodeOneShot) SetFadeoutTime(time float64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeOneShot[2], time) }
@@ -1315,6 +1373,9 @@ func (AnimationNodeOutput) class() string { return "AnimationNodeOutput\000" }
 
 func (gdClass AnimationNodeOutput) AnimationNode() AnimationNode { return AnimationNode(gdClass) }
 
+func (gdClass AnimationNodeOutput) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNode().virtual(rtype, name)
+}
 
 type AnimationNodeStateMachine gdnative.Object
 func (AnimationNodeStateMachine) class() string { return "AnimationNodeStateMachine\000" }
@@ -1322,6 +1383,9 @@ func (AnimationNodeStateMachine) class() string { return "AnimationNodeStateMach
 func (gdClass AnimationNodeStateMachine) AnimationRootNode() AnimationRootNode { return AnimationRootNode(gdClass) }
 
 var methodAnimationNodeStateMachine [19]gdnative.Method
+func (gdClass AnimationNodeStateMachine) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationRootNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeStateMachine) AddNode(name string, node AnimationNode, position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachine[0], name, node, position) }
 func (gdClass AnimationNodeStateMachine) ReplaceNode(name string, node AnimationNode)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachine[1], name, node) }
 func (gdClass AnimationNodeStateMachine) GetNode(name string) AnimationNode { return gdnative.Return[AnimationNode](gdnative.Object(gdClass), methodAnimationNodeStateMachine[2], name) }
@@ -1348,6 +1412,9 @@ func (AnimationNodeStateMachinePlayback) class() string { return "AnimationNodeS
 func (gdClass AnimationNodeStateMachinePlayback) Resource() Resource { return Resource(gdClass) }
 
 var methodAnimationNodeStateMachinePlayback [8]gdnative.Method
+func (gdClass AnimationNodeStateMachinePlayback) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass AnimationNodeStateMachinePlayback) Travel(to_node string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachinePlayback[0], to_node) }
 func (gdClass AnimationNodeStateMachinePlayback) Start(node string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachinePlayback[1], node) }
 func (gdClass AnimationNodeStateMachinePlayback) Stop()  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachinePlayback[2]) }
@@ -1371,6 +1438,9 @@ func (AnimationNodeStateMachineTransition) class() string { return "AnimationNod
 func (gdClass AnimationNodeStateMachineTransition) Resource() Resource { return Resource(gdClass) }
 
 var methodAnimationNodeStateMachineTransition [16]gdnative.Method
+func (gdClass AnimationNodeStateMachineTransition) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass AnimationNodeStateMachineTransition) SetSwitchMode(mode AnimationNodeStateMachineTransitionSwitchMode)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachineTransition[0], mode) }
 func (gdClass AnimationNodeStateMachineTransition) GetSwitchMode() AnimationNodeStateMachineTransitionSwitchMode { return gdnative.Return[AnimationNodeStateMachineTransitionSwitchMode](gdnative.Object(gdClass), methodAnimationNodeStateMachineTransition[1]) }
 func (gdClass AnimationNodeStateMachineTransition) SetAutoAdvance(auto_advance bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeStateMachineTransition[2], auto_advance) }
@@ -1394,6 +1464,9 @@ func (AnimationNodeSync) class() string { return "AnimationNodeSync\000" }
 func (gdClass AnimationNodeSync) AnimationNode() AnimationNode { return AnimationNode(gdClass) }
 
 var methodAnimationNodeSync [2]gdnative.Method
+func (gdClass AnimationNodeSync) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNode().virtual(rtype, name)
+}
 func (gdClass AnimationNodeSync) SetUseSync(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeSync[0], enable) }
 func (gdClass AnimationNodeSync) IsUsingSync() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationNodeSync[1]) }
 
@@ -1402,12 +1475,18 @@ func (AnimationNodeTimeScale) class() string { return "AnimationNodeTimeScale\00
 
 func (gdClass AnimationNodeTimeScale) AnimationNode() AnimationNode { return AnimationNode(gdClass) }
 
+func (gdClass AnimationNodeTimeScale) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNode().virtual(rtype, name)
+}
 
 type AnimationNodeTimeSeek gdnative.Object
 func (AnimationNodeTimeSeek) class() string { return "AnimationNodeTimeSeek\000" }
 
 func (gdClass AnimationNodeTimeSeek) AnimationNode() AnimationNode { return AnimationNode(gdClass) }
 
+func (gdClass AnimationNodeTimeSeek) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNode().virtual(rtype, name)
+}
 
 type AnimationNodeTransition gdnative.Object
 func (AnimationNodeTransition) class() string { return "AnimationNodeTransition\000" }
@@ -1415,6 +1494,9 @@ func (AnimationNodeTransition) class() string { return "AnimationNodeTransition\
 func (gdClass AnimationNodeTransition) AnimationNodeSync() AnimationNodeSync { return AnimationNodeSync(gdClass) }
 
 var methodAnimationNodeTransition [10]gdnative.Method
+func (gdClass AnimationNodeTransition) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNodeSync().virtual(rtype, name)
+}
 func (gdClass AnimationNodeTransition) SetEnabledInputs(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeTransition[0], amount) }
 func (gdClass AnimationNodeTransition) GetEnabledInputs() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAnimationNodeTransition[1]) }
 func (gdClass AnimationNodeTransition) SetInputAsAutoAdvance(input int64, enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationNodeTransition[2], input, enable) }
@@ -1447,6 +1529,9 @@ func (AnimationPlayer) class() string { return "AnimationPlayer\000" }
 func (gdClass AnimationPlayer) Node() Node { return Node(gdClass) }
 
 var methodAnimationPlayer [50]gdnative.Method
+func (gdClass AnimationPlayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass AnimationPlayer) AddAnimationLibrary(name string, library AnimationLibrary) error { return gdnative.Return[error](gdnative.Object(gdClass), methodAnimationPlayer[0], name, library) }
 func (gdClass AnimationPlayer) RemoveAnimationLibrary(name string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationPlayer[1], name) }
 func (gdClass AnimationPlayer) RenameAnimationLibrary(name string, newname string)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationPlayer[2], name, newname) }
@@ -1503,12 +1588,18 @@ func (AnimationRootNode) class() string { return "AnimationRootNode\000" }
 
 func (gdClass AnimationRootNode) AnimationNode() AnimationNode { return AnimationNode(gdClass) }
 
+func (gdClass AnimationRootNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AnimationNode().virtual(rtype, name)
+}
 
 type AnimationTrackEditPlugin gdnative.Object
 func (AnimationTrackEditPlugin) class() string { return "AnimationTrackEditPlugin\000" }
 
 func (gdClass AnimationTrackEditPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass AnimationTrackEditPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type AnimationTreeAnimationProcessCallback int64
 
@@ -1524,6 +1615,9 @@ func (AnimationTree) class() string { return "AnimationTree\000" }
 func (gdClass AnimationTree) Node() Node { return Node(gdClass) }
 
 var methodAnimationTree [15]gdnative.Method
+func (gdClass AnimationTree) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass AnimationTree) SetActive(active bool)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationTree[0], active) }
 func (gdClass AnimationTree) IsActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAnimationTree[1]) }
 func (gdClass AnimationTree) SetTreeRoot(root AnimationNode)  { gdnative.Call(gdnative.Object(gdClass), methodAnimationTree[2], root) }
@@ -1556,6 +1650,9 @@ func (Area2D) class() string { return "Area2D\000" }
 func (gdClass Area2D) CollisionObject2D() CollisionObject2D { return CollisionObject2D(gdClass) }
 
 var methodArea2D [34]gdnative.Method
+func (gdClass Area2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CollisionObject2D().virtual(rtype, name)
+}
 func (gdClass Area2D) SetGravitySpaceOverrideMode(space_override_mode Area2DSpaceOverride)  { gdnative.Call(gdnative.Object(gdClass), methodArea2D[0], space_override_mode) }
 func (gdClass Area2D) GetGravitySpaceOverrideMode() Area2DSpaceOverride { return gdnative.Return[Area2DSpaceOverride](gdnative.Object(gdClass), methodArea2D[1]) }
 func (gdClass Area2D) SetGravityIsPoint(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodArea2D[2], enable) }
@@ -1607,6 +1704,9 @@ func (Area3D) class() string { return "Area3D\000" }
 func (gdClass Area3D) CollisionObject3D() CollisionObject3D { return CollisionObject3D(gdClass) }
 
 var methodArea3D [48]gdnative.Method
+func (gdClass Area3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CollisionObject3D().virtual(rtype, name)
+}
 func (gdClass Area3D) SetGravitySpaceOverrideMode(space_override_mode Area3DSpaceOverride)  { gdnative.Call(gdnative.Object(gdClass), methodArea3D[0], space_override_mode) }
 func (gdClass Area3D) GetGravitySpaceOverrideMode() Area3DSpaceOverride { return gdnative.Return[Area3DSpaceOverride](gdnative.Object(gdClass), methodArea3D[1]) }
 func (gdClass Area3D) SetGravityIsPoint(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodArea3D[2], enable) }
@@ -1662,6 +1762,9 @@ func (ArrayMesh) class() string { return "ArrayMesh\000" }
 func (gdClass ArrayMesh) Mesh() Mesh { return Mesh(gdClass) }
 
 var methodArrayMesh [25]gdnative.Method
+func (gdClass ArrayMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Mesh().virtual(rtype, name)
+}
 func (gdClass ArrayMesh) AddBlendShape(name string)  { gdnative.Call(gdnative.Object(gdClass), methodArrayMesh[0], name) }
 func (gdClass ArrayMesh) GetBlendShapeCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodArrayMesh[1]) }
 func (gdClass ArrayMesh) GetBlendShapeName(index int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodArrayMesh[2], index) }
@@ -1694,6 +1797,9 @@ func (ArrayOccluder3D) class() string { return "ArrayOccluder3D\000" }
 func (gdClass ArrayOccluder3D) Occluder3D() Occluder3D { return Occluder3D(gdClass) }
 
 var methodArrayOccluder3D [3]gdnative.Method
+func (gdClass ArrayOccluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Occluder3D().virtual(rtype, name)
+}
 func (gdClass ArrayOccluder3D) SetArrays(vertices []Vector3, indices []int32)  { gdnative.Call(gdnative.Object(gdClass), methodArrayOccluder3D[0], vertices, indices) }
 func (gdClass ArrayOccluder3D) SetVertices(vertices []Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodArrayOccluder3D[1], vertices) }
 func (gdClass ArrayOccluder3D) SetIndices(indices []int32)  { gdnative.Call(gdnative.Object(gdClass), methodArrayOccluder3D[2], indices) }
@@ -1721,6 +1827,9 @@ func (AspectRatioContainer) class() string { return "AspectRatioContainer\000" }
 func (gdClass AspectRatioContainer) Container() Container { return Container(gdClass) }
 
 var methodAspectRatioContainer [8]gdnative.Method
+func (gdClass AspectRatioContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass AspectRatioContainer) SetRatio(ratio float64)  { gdnative.Call(gdnative.Object(gdClass), methodAspectRatioContainer[0], ratio) }
 func (gdClass AspectRatioContainer) GetRatio() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAspectRatioContainer[1]) }
 func (gdClass AspectRatioContainer) SetStretchMode(stretch_mode AspectRatioContainerStretchMode)  { gdnative.Call(gdnative.Object(gdClass), methodAspectRatioContainer[2], stretch_mode) }
@@ -1736,6 +1845,9 @@ func (AtlasTexture) class() string { return "AtlasTexture\000" }
 func (gdClass AtlasTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodAtlasTexture [8]gdnative.Method
+func (gdClass AtlasTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass AtlasTexture) SetAtlas(atlas Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodAtlasTexture[0], atlas) }
 func (gdClass AtlasTexture) GetAtlas() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodAtlasTexture[1]) }
 func (gdClass AtlasTexture) SetRegion(region Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodAtlasTexture[2], region) }
@@ -1750,20 +1862,24 @@ func (AudioBusLayout) class() string { return "AudioBusLayout\000" }
 
 func (gdClass AudioBusLayout) Resource() Resource { return Resource(gdClass) }
 
+func (gdClass AudioBusLayout) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 
 type AudioEffect gdnative.Object
 func (AudioEffect) class() string { return "AudioEffect\000" }
 
 func (gdClass AudioEffect) Resource() Resource { return Resource(gdClass) }
 
-func (gdClass AudioEffect) virtual(val any, name string) any {	switch name {
+func (gdClass AudioEffect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_instantiate":
-		i, ok := val.(interface{ Instantiate() AudioEffectInstance })
-		if ok {
-			return i.Instantiate
+		if rtype.Implements(reflect.TypeOf([0]interface{ Instantiate() AudioEffectInstance }{}).Elem()) {
+			return rtype.MethodByName(`Instantiate`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 
 type AudioEffectAmplify gdnative.Object
@@ -1772,6 +1888,9 @@ func (AudioEffectAmplify) class() string { return "AudioEffectAmplify\000" }
 func (gdClass AudioEffectAmplify) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectAmplify [2]gdnative.Method
+func (gdClass AudioEffectAmplify) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectAmplify) SetVolumeDb(volume float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectAmplify[0], volume) }
 func (gdClass AudioEffectAmplify) GetVolumeDb() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectAmplify[1]) }
 
@@ -1780,12 +1899,18 @@ func (AudioEffectBandLimitFilter) class() string { return "AudioEffectBandLimitF
 
 func (gdClass AudioEffectBandLimitFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectBandLimitFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectBandPassFilter gdnative.Object
 func (AudioEffectBandPassFilter) class() string { return "AudioEffectBandPassFilter\000" }
 
 func (gdClass AudioEffectBandPassFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectBandPassFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectCapture gdnative.Object
 func (AudioEffectCapture) class() string { return "AudioEffectCapture\000" }
@@ -1793,6 +1918,9 @@ func (AudioEffectCapture) class() string { return "AudioEffectCapture\000" }
 func (gdClass AudioEffectCapture) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectCapture [9]gdnative.Method
+func (gdClass AudioEffectCapture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectCapture) CanGetBuffer(frames int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioEffectCapture[0], frames) }
 func (gdClass AudioEffectCapture) GetBuffer(frames int64) []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodAudioEffectCapture[1], frames) }
 func (gdClass AudioEffectCapture) ClearBuffer()  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectCapture[2]) }
@@ -1809,6 +1937,9 @@ func (AudioEffectChorus) class() string { return "AudioEffectChorus\000" }
 func (gdClass AudioEffectChorus) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectChorus [18]gdnative.Method
+func (gdClass AudioEffectChorus) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectChorus) SetVoiceCount(voices int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectChorus[0], voices) }
 func (gdClass AudioEffectChorus) GetVoiceCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioEffectChorus[1]) }
 func (gdClass AudioEffectChorus) SetVoiceDelayMs(voice_idx int64, delay_ms float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectChorus[2], voice_idx, delay_ms) }
@@ -1834,6 +1965,9 @@ func (AudioEffectCompressor) class() string { return "AudioEffectCompressor\000"
 func (gdClass AudioEffectCompressor) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectCompressor [14]gdnative.Method
+func (gdClass AudioEffectCompressor) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectCompressor) SetThreshold(threshold float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectCompressor[0], threshold) }
 func (gdClass AudioEffectCompressor) GetThreshold() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectCompressor[1]) }
 func (gdClass AudioEffectCompressor) SetRatio(ratio float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectCompressor[2], ratio) }
@@ -1855,6 +1989,9 @@ func (AudioEffectDelay) class() string { return "AudioEffectDelay\000" }
 func (gdClass AudioEffectDelay) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectDelay [26]gdnative.Method
+func (gdClass AudioEffectDelay) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectDelay) SetDry(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectDelay[0], amount) }
 func (gdClass AudioEffectDelay) GetDry() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectDelay[1]) }
 func (gdClass AudioEffectDelay) SetTap1Active(amount bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectDelay[2], amount) }
@@ -1898,6 +2035,9 @@ func (AudioEffectDistortion) class() string { return "AudioEffectDistortion\000"
 func (gdClass AudioEffectDistortion) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectDistortion [10]gdnative.Method
+func (gdClass AudioEffectDistortion) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectDistortion) SetMode(mode AudioEffectDistortionMode)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectDistortion[0], mode) }
 func (gdClass AudioEffectDistortion) GetMode() AudioEffectDistortionMode { return gdnative.Return[AudioEffectDistortionMode](gdnative.Object(gdClass), methodAudioEffectDistortion[1]) }
 func (gdClass AudioEffectDistortion) SetPreGain(pre_gain float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectDistortion[2], pre_gain) }
@@ -1915,6 +2055,9 @@ func (AudioEffectEQ) class() string { return "AudioEffectEQ\000" }
 func (gdClass AudioEffectEQ) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectEQ [3]gdnative.Method
+func (gdClass AudioEffectEQ) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectEQ) SetBandGainDb(band_idx int64, volume_db float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectEQ[0], band_idx, volume_db) }
 func (gdClass AudioEffectEQ) GetBandGainDb(band_idx int64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectEQ[1], band_idx) }
 func (gdClass AudioEffectEQ) GetBandCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioEffectEQ[2]) }
@@ -1924,18 +2067,27 @@ func (AudioEffectEQ10) class() string { return "AudioEffectEQ10\000" }
 
 func (gdClass AudioEffectEQ10) AudioEffectEQ() AudioEffectEQ { return AudioEffectEQ(gdClass) }
 
+func (gdClass AudioEffectEQ10) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectEQ().virtual(rtype, name)
+}
 
 type AudioEffectEQ21 gdnative.Object
 func (AudioEffectEQ21) class() string { return "AudioEffectEQ21\000" }
 
 func (gdClass AudioEffectEQ21) AudioEffectEQ() AudioEffectEQ { return AudioEffectEQ(gdClass) }
 
+func (gdClass AudioEffectEQ21) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectEQ().virtual(rtype, name)
+}
 
 type AudioEffectEQ6 gdnative.Object
 func (AudioEffectEQ6) class() string { return "AudioEffectEQ6\000" }
 
 func (gdClass AudioEffectEQ6) AudioEffectEQ() AudioEffectEQ { return AudioEffectEQ(gdClass) }
 
+func (gdClass AudioEffectEQ6) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectEQ().virtual(rtype, name)
+}
 
 type AudioEffectFilterFilterDB int64
 
@@ -1952,6 +2104,9 @@ func (AudioEffectFilter) class() string { return "AudioEffectFilter\000" }
 func (gdClass AudioEffectFilter) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectFilter [8]gdnative.Method
+func (gdClass AudioEffectFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectFilter) SetCutoff(freq float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectFilter[0], freq) }
 func (gdClass AudioEffectFilter) GetCutoff() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectFilter[1]) }
 func (gdClass AudioEffectFilter) SetResonance(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectFilter[2], amount) }
@@ -1966,31 +2121,38 @@ func (AudioEffectHighPassFilter) class() string { return "AudioEffectHighPassFil
 
 func (gdClass AudioEffectHighPassFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectHighPassFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectHighShelfFilter gdnative.Object
 func (AudioEffectHighShelfFilter) class() string { return "AudioEffectHighShelfFilter\000" }
 
 func (gdClass AudioEffectHighShelfFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectHighShelfFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectInstance gdnative.Object
 func (AudioEffectInstance) class() string { return "AudioEffectInstance\000" }
 
 func (gdClass AudioEffectInstance) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass AudioEffectInstance) virtual(val any, name string) any {	switch name {
+func (gdClass AudioEffectInstance) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_process":
-		i, ok := val.(interface{ Process(src_buffer []byte, dst_buffer *AudioFrame, frame_count int64)  })
-		if ok {
-			return i.Process
+		if rtype.Implements(reflect.TypeOf([0]interface{ Process(src_buffer []byte, dst_buffer *AudioFrame, frame_count int64)  }{}).Elem()) {
+			return rtype.MethodByName(`Process`)
 		}
+		return
 	case "_process_silence":
-		i, ok := val.(interface{ ProcessSilence() bool })
-		if ok {
-			return i.ProcessSilence
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProcessSilence() bool }{}).Elem()) {
+			return rtype.MethodByName(`ProcessSilence`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type AudioEffectLimiter gdnative.Object
@@ -1999,6 +2161,9 @@ func (AudioEffectLimiter) class() string { return "AudioEffectLimiter\000" }
 func (gdClass AudioEffectLimiter) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectLimiter [8]gdnative.Method
+func (gdClass AudioEffectLimiter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectLimiter) SetCeilingDb(ceiling float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectLimiter[0], ceiling) }
 func (gdClass AudioEffectLimiter) GetCeilingDb() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectLimiter[1]) }
 func (gdClass AudioEffectLimiter) SetThresholdDb(threshold float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectLimiter[2], threshold) }
@@ -2013,18 +2178,27 @@ func (AudioEffectLowPassFilter) class() string { return "AudioEffectLowPassFilte
 
 func (gdClass AudioEffectLowPassFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectLowPassFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectLowShelfFilter gdnative.Object
 func (AudioEffectLowShelfFilter) class() string { return "AudioEffectLowShelfFilter\000" }
 
 func (gdClass AudioEffectLowShelfFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectLowShelfFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectNotchFilter gdnative.Object
 func (AudioEffectNotchFilter) class() string { return "AudioEffectNotchFilter\000" }
 
 func (gdClass AudioEffectNotchFilter) AudioEffectFilter() AudioEffectFilter { return AudioEffectFilter(gdClass) }
 
+func (gdClass AudioEffectNotchFilter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectFilter().virtual(rtype, name)
+}
 
 type AudioEffectPanner gdnative.Object
 func (AudioEffectPanner) class() string { return "AudioEffectPanner\000" }
@@ -2032,6 +2206,9 @@ func (AudioEffectPanner) class() string { return "AudioEffectPanner\000" }
 func (gdClass AudioEffectPanner) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectPanner [2]gdnative.Method
+func (gdClass AudioEffectPanner) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectPanner) SetPan(cpanume float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPanner[0], cpanume) }
 func (gdClass AudioEffectPanner) GetPan() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectPanner[1]) }
 
@@ -2041,6 +2218,9 @@ func (AudioEffectPhaser) class() string { return "AudioEffectPhaser\000" }
 func (gdClass AudioEffectPhaser) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectPhaser [10]gdnative.Method
+func (gdClass AudioEffectPhaser) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectPhaser) SetRangeMinHz(hz float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPhaser[0], hz) }
 func (gdClass AudioEffectPhaser) GetRangeMinHz() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectPhaser[1]) }
 func (gdClass AudioEffectPhaser) SetRangeMaxHz(hz float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPhaser[2], hz) }
@@ -2069,6 +2249,9 @@ func (AudioEffectPitchShift) class() string { return "AudioEffectPitchShift\000"
 func (gdClass AudioEffectPitchShift) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectPitchShift [6]gdnative.Method
+func (gdClass AudioEffectPitchShift) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectPitchShift) SetPitchScale(rate float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPitchShift[0], rate) }
 func (gdClass AudioEffectPitchShift) GetPitchScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectPitchShift[1]) }
 func (gdClass AudioEffectPitchShift) SetOversampling(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectPitchShift[2], amount) }
@@ -2082,6 +2265,9 @@ func (AudioEffectRecord) class() string { return "AudioEffectRecord\000" }
 func (gdClass AudioEffectRecord) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectRecord [5]gdnative.Method
+func (gdClass AudioEffectRecord) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectRecord) SetRecordingActive(record bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectRecord[0], record) }
 func (gdClass AudioEffectRecord) IsRecordingActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioEffectRecord[1]) }
 func (gdClass AudioEffectRecord) SetFormat(format AudioStreamWAVFormat)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectRecord[2], format) }
@@ -2094,6 +2280,9 @@ func (AudioEffectReverb) class() string { return "AudioEffectReverb\000" }
 func (gdClass AudioEffectReverb) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectReverb [16]gdnative.Method
+func (gdClass AudioEffectReverb) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectReverb) SetPredelayMsec(msec float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectReverb[0], msec) }
 func (gdClass AudioEffectReverb) GetPredelayMsec() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectReverb[1]) }
 func (gdClass AudioEffectReverb) SetPredelayFeedback(feedback float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectReverb[2], feedback) }
@@ -2128,6 +2317,9 @@ func (AudioEffectSpectrumAnalyzer) class() string { return "AudioEffectSpectrumA
 func (gdClass AudioEffectSpectrumAnalyzer) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectSpectrumAnalyzer [6]gdnative.Method
+func (gdClass AudioEffectSpectrumAnalyzer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectSpectrumAnalyzer) SetBufferLength(seconds float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzer[0], seconds) }
 func (gdClass AudioEffectSpectrumAnalyzer) GetBufferLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzer[1]) }
 func (gdClass AudioEffectSpectrumAnalyzer) SetTapBackPos(seconds float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzer[2], seconds) }
@@ -2148,6 +2340,9 @@ func (AudioEffectSpectrumAnalyzerInstance) class() string { return "AudioEffectS
 func (gdClass AudioEffectSpectrumAnalyzerInstance) AudioEffectInstance() AudioEffectInstance { return AudioEffectInstance(gdClass) }
 
 var methodAudioEffectSpectrumAnalyzerInstance [1]gdnative.Method
+func (gdClass AudioEffectSpectrumAnalyzerInstance) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffectInstance().virtual(rtype, name)
+}
 func (gdClass AudioEffectSpectrumAnalyzerInstance) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode AudioEffectSpectrumAnalyzerInstanceMagnitudeMode) Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodAudioEffectSpectrumAnalyzerInstance[0], from_hz, to_hz, mode) }
 
 type AudioEffectStereoEnhance gdnative.Object
@@ -2156,6 +2351,9 @@ func (AudioEffectStereoEnhance) class() string { return "AudioEffectStereoEnhanc
 func (gdClass AudioEffectStereoEnhance) AudioEffect() AudioEffect { return AudioEffect(gdClass) }
 
 var methodAudioEffectStereoEnhance [6]gdnative.Method
+func (gdClass AudioEffectStereoEnhance) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioEffect().virtual(rtype, name)
+}
 func (gdClass AudioEffectStereoEnhance) SetPanPullout(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectStereoEnhance[0], amount) }
 func (gdClass AudioEffectStereoEnhance) GetPanPullout() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioEffectStereoEnhance[1]) }
 func (gdClass AudioEffectStereoEnhance) SetTimePullout(amount float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioEffectStereoEnhance[2], amount) }
@@ -2169,6 +2367,9 @@ func (AudioListener2D) class() string { return "AudioListener2D\000" }
 func (gdClass AudioListener2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodAudioListener2D [3]gdnative.Method
+func (gdClass AudioListener2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass AudioListener2D) MakeCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener2D[0]) }
 func (gdClass AudioListener2D) ClearCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener2D[1]) }
 func (gdClass AudioListener2D) IsCurrent() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioListener2D[2]) }
@@ -2179,6 +2380,9 @@ func (AudioListener3D) class() string { return "AudioListener3D\000" }
 func (gdClass AudioListener3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodAudioListener3D [4]gdnative.Method
+func (gdClass AudioListener3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass AudioListener3D) MakeCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener3D[0]) }
 func (gdClass AudioListener3D) ClearCurrent()  { gdnative.Call(gdnative.Object(gdClass), methodAudioListener3D[1]) }
 func (gdClass AudioListener3D) IsCurrent() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioListener3D[2]) }
@@ -2199,6 +2403,9 @@ func (AudioServer) class() string { return "AudioServer\000" }
 func (gdClass AudioServer) Object() Object { return Object(gdClass) }
 
 var methodAudioServer [47]gdnative.Method
+func (gdClass AudioServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass AudioServer) SetBusCount(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioServer[0], amount) }
 func (gdClass AudioServer) GetBusCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodAudioServer[1]) }
 func (gdClass AudioServer) RemoveBus(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioServer[2], index) }
@@ -2253,39 +2460,40 @@ func (AudioStream) class() string { return "AudioStream\000" }
 func (gdClass AudioStream) Resource() Resource { return Resource(gdClass) }
 
 var methodAudioStream [3]gdnative.Method
-func (gdClass AudioStream) virtual(val any, name string) any {	switch name {
+func (gdClass AudioStream) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_instantiate_playback":
-		i, ok := val.(interface{ InstantiatePlayback() AudioStreamPlayback })
-		if ok {
-			return i.InstantiatePlayback
+		if rtype.Implements(reflect.TypeOf([0]interface{ InstantiatePlayback() AudioStreamPlayback }{}).Elem()) {
+			return rtype.MethodByName(`InstantiatePlayback`)
 		}
+		return
 	case "_get_stream_name":
-		i, ok := val.(interface{ GetStreamName() string })
-		if ok {
-			return i.GetStreamName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetStreamName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetStreamName`)
 		}
+		return
 	case "_get_length":
-		i, ok := val.(interface{ GetLength() float64 })
-		if ok {
-			return i.GetLength
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLength() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetLength`)
 		}
+		return
 	case "_is_monophonic":
-		i, ok := val.(interface{ IsMonophonic() bool })
-		if ok {
-			return i.IsMonophonic
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsMonophonic() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsMonophonic`)
 		}
+		return
 	case "_get_bpm":
-		i, ok := val.(interface{ GetBpm() float64 })
-		if ok {
-			return i.GetBpm
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBpm() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetBpm`)
 		}
+		return
 	case "_get_beat_count":
-		i, ok := val.(interface{ GetBeatCount() int64 })
-		if ok {
-			return i.GetBeatCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBeatCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetBeatCount`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass AudioStream) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioStream[0]) }
 func (gdClass AudioStream) IsMonophonic() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioStream[1]) }
@@ -2297,6 +2505,9 @@ func (AudioStreamGenerator) class() string { return "AudioStreamGenerator\000" }
 func (gdClass AudioStreamGenerator) AudioStream() AudioStream { return AudioStream(gdClass) }
 
 var methodAudioStreamGenerator [4]gdnative.Method
+func (gdClass AudioStreamGenerator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 func (gdClass AudioStreamGenerator) SetMixRate(hz float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamGenerator[0], hz) }
 func (gdClass AudioStreamGenerator) GetMixRate() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodAudioStreamGenerator[1]) }
 func (gdClass AudioStreamGenerator) SetBufferLength(seconds float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamGenerator[2], seconds) }
@@ -2308,6 +2519,9 @@ func (AudioStreamGeneratorPlayback) class() string { return "AudioStreamGenerato
 func (gdClass AudioStreamGeneratorPlayback) AudioStreamPlaybackResampled() AudioStreamPlaybackResampled { return AudioStreamPlaybackResampled(gdClass) }
 
 var methodAudioStreamGeneratorPlayback [6]gdnative.Method
+func (gdClass AudioStreamGeneratorPlayback) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStreamPlaybackResampled().virtual(rtype, name)
+}
 func (gdClass AudioStreamGeneratorPlayback) PushFrame(frame Vector2) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioStreamGeneratorPlayback[0], frame) }
 func (gdClass AudioStreamGeneratorPlayback) CanPushBuffer(amount int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioStreamGeneratorPlayback[1], amount) }
 func (gdClass AudioStreamGeneratorPlayback) PushBuffer(frames []Vector2) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodAudioStreamGeneratorPlayback[2], frames) }
@@ -2321,6 +2535,9 @@ func (AudioStreamMP3) class() string { return "AudioStreamMP3\000" }
 func (gdClass AudioStreamMP3) AudioStream() AudioStream { return AudioStream(gdClass) }
 
 var methodAudioStreamMP3 [12]gdnative.Method
+func (gdClass AudioStreamMP3) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 func (gdClass AudioStreamMP3) SetData(data []byte)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamMP3[0], data) }
 func (gdClass AudioStreamMP3) GetData() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodAudioStreamMP3[1]) }
 func (gdClass AudioStreamMP3) SetLoop(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamMP3[2], enable) }
@@ -2339,6 +2556,9 @@ func (AudioStreamMicrophone) class() string { return "AudioStreamMicrophone\000"
 
 func (gdClass AudioStreamMicrophone) AudioStream() AudioStream { return AudioStream(gdClass) }
 
+func (gdClass AudioStreamMicrophone) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 
 type AudioStreamOggVorbis gdnative.Object
 func (AudioStreamOggVorbis) class() string { return "AudioStreamOggVorbis\000" }
@@ -2346,6 +2566,9 @@ func (AudioStreamOggVorbis) class() string { return "AudioStreamOggVorbis\000" }
 func (gdClass AudioStreamOggVorbis) AudioStream() AudioStream { return AudioStream(gdClass) }
 
 var methodAudioStreamOggVorbis [12]gdnative.Method
+func (gdClass AudioStreamOggVorbis) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 func (gdClass AudioStreamOggVorbis) SetPacketSequence(packet_sequence OggPacketSequence)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamOggVorbis[0], packet_sequence) }
 func (gdClass AudioStreamOggVorbis) GetPacketSequence() OggPacketSequence { return gdnative.Return[OggPacketSequence](gdnative.Object(gdClass), methodAudioStreamOggVorbis[1]) }
 func (gdClass AudioStreamOggVorbis) SetLoop(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamOggVorbis[2], enable) }
@@ -2364,49 +2587,50 @@ func (AudioStreamPlayback) class() string { return "AudioStreamPlayback\000" }
 
 func (gdClass AudioStreamPlayback) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass AudioStreamPlayback) virtual(val any, name string) any {	switch name {
+func (gdClass AudioStreamPlayback) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_start":
-		i, ok := val.(interface{ Start(from_pos float64)  })
-		if ok {
-			return i.Start
+		if rtype.Implements(reflect.TypeOf([0]interface{ Start(from_pos float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Start`)
 		}
+		return
 	case "_stop":
-		i, ok := val.(interface{ Stop()  })
-		if ok {
-			return i.Stop
+		if rtype.Implements(reflect.TypeOf([0]interface{ Stop()  }{}).Elem()) {
+			return rtype.MethodByName(`Stop`)
 		}
+		return
 	case "_is_playing":
-		i, ok := val.(interface{ IsPlaying() bool })
-		if ok {
-			return i.IsPlaying
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsPlaying() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsPlaying`)
 		}
+		return
 	case "_get_loop_count":
-		i, ok := val.(interface{ GetLoopCount() int64 })
-		if ok {
-			return i.GetLoopCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLoopCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetLoopCount`)
 		}
+		return
 	case "_get_playback_position":
-		i, ok := val.(interface{ GetPlaybackPosition() float64 })
-		if ok {
-			return i.GetPlaybackPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPlaybackPosition() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPlaybackPosition`)
 		}
+		return
 	case "_seek":
-		i, ok := val.(interface{ Seek(position float64)  })
-		if ok {
-			return i.Seek
+		if rtype.Implements(reflect.TypeOf([0]interface{ Seek(position float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Seek`)
 		}
+		return
 	case "_mix":
-		i, ok := val.(interface{ Mix(buffer *AudioFrame, rate_scale float64, frames int64) int64 })
-		if ok {
-			return i.Mix
+		if rtype.Implements(reflect.TypeOf([0]interface{ Mix(buffer *AudioFrame, rate_scale float64, frames int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Mix`)
 		}
+		return
 	case "_tag_used_streams":
-		i, ok := val.(interface{ TagUsedStreams()  })
-		if ok {
-			return i.TagUsedStreams
+		if rtype.Implements(reflect.TypeOf([0]interface{ TagUsedStreams()  }{}).Elem()) {
+			return rtype.MethodByName(`TagUsedStreams`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type AudioStreamPlaybackOggVorbis gdnative.Object
@@ -2414,6 +2638,9 @@ func (AudioStreamPlaybackOggVorbis) class() string { return "AudioStreamPlayback
 
 func (gdClass AudioStreamPlaybackOggVorbis) AudioStreamPlaybackResampled() AudioStreamPlaybackResampled { return AudioStreamPlaybackResampled(gdClass) }
 
+func (gdClass AudioStreamPlaybackOggVorbis) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStreamPlaybackResampled().virtual(rtype, name)
+}
 
 type AudioStreamPlaybackResampled gdnative.Object
 func (AudioStreamPlaybackResampled) class() string { return "AudioStreamPlaybackResampled\000" }
@@ -2421,19 +2648,20 @@ func (AudioStreamPlaybackResampled) class() string { return "AudioStreamPlayback
 func (gdClass AudioStreamPlaybackResampled) AudioStreamPlayback() AudioStreamPlayback { return AudioStreamPlayback(gdClass) }
 
 var methodAudioStreamPlaybackResampled [1]gdnative.Method
-func (gdClass AudioStreamPlaybackResampled) virtual(val any, name string) any {	switch name {
+func (gdClass AudioStreamPlaybackResampled) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_mix_resampled":
-		i, ok := val.(interface{ MixResampled(dst_buffer *AudioFrame, frame_count int64) int64 })
-		if ok {
-			return i.MixResampled
+		if rtype.Implements(reflect.TypeOf([0]interface{ MixResampled(dst_buffer *AudioFrame, frame_count int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`MixResampled`)
 		}
+		return
 	case "_get_stream_sampling_rate":
-		i, ok := val.(interface{ GetStreamSamplingRate() float64 })
-		if ok {
-			return i.GetStreamSamplingRate
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetStreamSamplingRate() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetStreamSamplingRate`)
 		}
+		return
 	}
-	return nil
+	return gdClass.AudioStreamPlayback().virtual(rtype, name)
 }
 func (gdClass AudioStreamPlaybackResampled) BeginResample()  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlaybackResampled[0]) }
 
@@ -2451,6 +2679,9 @@ func (AudioStreamPlayer) class() string { return "AudioStreamPlayer\000" }
 func (gdClass AudioStreamPlayer) Node() Node { return Node(gdClass) }
 
 var methodAudioStreamPlayer [22]gdnative.Method
+func (gdClass AudioStreamPlayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass AudioStreamPlayer) SetStream(stream AudioStream)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer[0], stream) }
 func (gdClass AudioStreamPlayer) GetStream() AudioStream { return gdnative.Return[AudioStream](gdnative.Object(gdClass), methodAudioStreamPlayer[1]) }
 func (gdClass AudioStreamPlayer) SetVolumeDb(volume_db float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer[2], volume_db) }
@@ -2480,6 +2711,9 @@ func (AudioStreamPlayer2D) class() string { return "AudioStreamPlayer2D\000" }
 func (gdClass AudioStreamPlayer2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodAudioStreamPlayer2D [28]gdnative.Method
+func (gdClass AudioStreamPlayer2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass AudioStreamPlayer2D) SetStream(stream AudioStream)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer2D[0], stream) }
 func (gdClass AudioStreamPlayer2D) GetStream() AudioStream { return gdnative.Return[AudioStream](gdnative.Object(gdClass), methodAudioStreamPlayer2D[1]) }
 func (gdClass AudioStreamPlayer2D) SetVolumeDb(volume_db float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer2D[2], volume_db) }
@@ -2532,6 +2766,9 @@ func (AudioStreamPlayer3D) class() string { return "AudioStreamPlayer3D\000" }
 func (gdClass AudioStreamPlayer3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodAudioStreamPlayer3D [44]gdnative.Method
+func (gdClass AudioStreamPlayer3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass AudioStreamPlayer3D) SetStream(stream AudioStream)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer3D[0], stream) }
 func (gdClass AudioStreamPlayer3D) GetStream() AudioStream { return gdnative.Return[AudioStream](gdnative.Object(gdClass), methodAudioStreamPlayer3D[1]) }
 func (gdClass AudioStreamPlayer3D) SetUnitDb(unit_db float64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamPlayer3D[2], unit_db) }
@@ -2591,6 +2828,9 @@ func (AudioStreamRandomizer) class() string { return "AudioStreamRandomizer\000"
 func (gdClass AudioStreamRandomizer) AudioStream() AudioStream { return AudioStream(gdClass) }
 
 var methodAudioStreamRandomizer [15]gdnative.Method
+func (gdClass AudioStreamRandomizer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 func (gdClass AudioStreamRandomizer) AddStream(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamRandomizer[0], index) }
 func (gdClass AudioStreamRandomizer) MoveStream(index_from int64, index_to int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamRandomizer[1], index_from, index_to) }
 func (gdClass AudioStreamRandomizer) RemoveStream(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamRandomizer[2], index) }
@@ -2630,6 +2870,9 @@ func (AudioStreamWAV) class() string { return "AudioStreamWAV\000" }
 func (gdClass AudioStreamWAV) AudioStream() AudioStream { return AudioStream(gdClass) }
 
 var methodAudioStreamWAV [15]gdnative.Method
+func (gdClass AudioStreamWAV) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AudioStream().virtual(rtype, name)
+}
 func (gdClass AudioStreamWAV) SetData(data []byte)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamWAV[0], data) }
 func (gdClass AudioStreamWAV) GetData() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodAudioStreamWAV[1]) }
 func (gdClass AudioStreamWAV) SetFormat(format AudioStreamWAVFormat)  { gdnative.Call(gdnative.Object(gdClass), methodAudioStreamWAV[2], format) }
@@ -2660,6 +2903,9 @@ func (BackBufferCopy) class() string { return "BackBufferCopy\000" }
 func (gdClass BackBufferCopy) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodBackBufferCopy [4]gdnative.Method
+func (gdClass BackBufferCopy) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass BackBufferCopy) SetRect(rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodBackBufferCopy[0], rect) }
 func (gdClass BackBufferCopy) GetRect() Rect2 { return gdnative.Return[Rect2](gdnative.Object(gdClass), methodBackBufferCopy[1]) }
 func (gdClass BackBufferCopy) SetCopyMode(copy_mode BackBufferCopyCopyMode)  { gdnative.Call(gdnative.Object(gdClass), methodBackBufferCopy[2], copy_mode) }
@@ -2688,19 +2934,20 @@ func (BaseButton) class() string { return "BaseButton\000" }
 func (gdClass BaseButton) Control() Control { return Control(gdClass) }
 
 var methodBaseButton [23]gdnative.Method
-func (gdClass BaseButton) virtual(val any, name string) any {	switch name {
+func (gdClass BaseButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_pressed":
-		i, ok := val.(interface{ Pressed()  })
-		if ok {
-			return i.Pressed
+		if rtype.Implements(reflect.TypeOf([0]interface{ Pressed()  }{}).Elem()) {
+			return rtype.MethodByName(`Pressed`)
 		}
+		return
 	case "_toggled":
-		i, ok := val.(interface{ Toggled(button_pressed bool)  })
-		if ok {
-			return i.Toggled
+		if rtype.Implements(reflect.TypeOf([0]interface{ Toggled(button_pressed bool)  }{}).Elem()) {
+			return rtype.MethodByName(`Toggled`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Control().virtual(rtype, name)
 }
 func (gdClass BaseButton) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodBaseButton[0], pressed) }
 func (gdClass BaseButton) IsPressed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodBaseButton[1]) }
@@ -2925,6 +3172,9 @@ func (BaseMaterial3D) class() string { return "BaseMaterial3D\000" }
 func (gdClass BaseMaterial3D) Material() Material { return Material(gdClass) }
 
 var methodBaseMaterial3D [134]gdnative.Method
+func (gdClass BaseMaterial3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass BaseMaterial3D) SetAlbedo(albedo Color)  { gdnative.Call(gdnative.Object(gdClass), methodBaseMaterial3D[0], albedo) }
 func (gdClass BaseMaterial3D) GetAlbedo() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodBaseMaterial3D[1]) }
 func (gdClass BaseMaterial3D) SetTransparency(transparency BaseMaterial3DTransparency)  { gdnative.Call(gdnative.Object(gdClass), methodBaseMaterial3D[2], transparency) }
@@ -3066,6 +3316,9 @@ func (BitMap) class() string { return "BitMap\000" }
 func (gdClass BitMap) Resource() Resource { return Resource(gdClass) }
 
 var methodBitMap [11]gdnative.Method
+func (gdClass BitMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass BitMap) Create(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodBitMap[0], size) }
 func (gdClass BitMap) CreateFromImageAlpha(image Image, threshold float64)  { gdnative.Call(gdnative.Object(gdClass), methodBitMap[1], image, threshold) }
 func (gdClass BitMap) SetBit(position Vector2, bit bool)  { gdnative.Call(gdnative.Object(gdClass), methodBitMap[2], position, bit) }
@@ -3084,6 +3337,9 @@ func (Bone2D) class() string { return "Bone2D\000" }
 func (gdClass Bone2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodBone2D [13]gdnative.Method
+func (gdClass Bone2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Bone2D) SetRest(rest Transform2D)  { gdnative.Call(gdnative.Object(gdClass), methodBone2D[0], rest) }
 func (gdClass Bone2D) GetRest() Transform2D { return gdnative.Return[Transform2D](gdnative.Object(gdClass), methodBone2D[1]) }
 func (gdClass Bone2D) ApplyRest()  { gdnative.Call(gdnative.Object(gdClass), methodBone2D[2]) }
@@ -3104,6 +3360,9 @@ func (BoneAttachment3D) class() string { return "BoneAttachment3D\000" }
 func (gdClass BoneAttachment3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodBoneAttachment3D [13]gdnative.Method
+func (gdClass BoneAttachment3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass BoneAttachment3D) SetBoneName(bone_name string)  { gdnative.Call(gdnative.Object(gdClass), methodBoneAttachment3D[0], bone_name) }
 func (gdClass BoneAttachment3D) GetBoneName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodBoneAttachment3D[1]) }
 func (gdClass BoneAttachment3D) SetBoneIdx(bone_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodBoneAttachment3D[2], bone_idx) }
@@ -3124,6 +3383,9 @@ func (BoneMap) class() string { return "BoneMap\000" }
 func (gdClass BoneMap) Resource() Resource { return Resource(gdClass) }
 
 var methodBoneMap [5]gdnative.Method
+func (gdClass BoneMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass BoneMap) GetProfile() SkeletonProfile { return gdnative.Return[SkeletonProfile](gdnative.Object(gdClass), methodBoneMap[0]) }
 func (gdClass BoneMap) SetProfile(profile SkeletonProfile)  { gdnative.Call(gdnative.Object(gdClass), methodBoneMap[1], profile) }
 func (gdClass BoneMap) GetSkeletonBoneName(profile_bone_name string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodBoneMap[2], profile_bone_name) }
@@ -3144,6 +3406,9 @@ func (BoxContainer) class() string { return "BoxContainer\000" }
 func (gdClass BoxContainer) Container() Container { return Container(gdClass) }
 
 var methodBoxContainer [3]gdnative.Method
+func (gdClass BoxContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass BoxContainer) AddSpacer(begin bool) Control { return gdnative.Return[Control](gdnative.Object(gdClass), methodBoxContainer[0], begin) }
 func (gdClass BoxContainer) GetAlignment() BoxContainerAlignmentMode { return gdnative.Return[BoxContainerAlignmentMode](gdnative.Object(gdClass), methodBoxContainer[1]) }
 func (gdClass BoxContainer) SetAlignment(alignment BoxContainerAlignmentMode)  { gdnative.Call(gdnative.Object(gdClass), methodBoxContainer[2], alignment) }
@@ -3154,6 +3419,9 @@ func (BoxMesh) class() string { return "BoxMesh\000" }
 func (gdClass BoxMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodBoxMesh [8]gdnative.Method
+func (gdClass BoxMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass BoxMesh) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxMesh[0], size) }
 func (gdClass BoxMesh) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodBoxMesh[1]) }
 func (gdClass BoxMesh) SetSubdivideWidth(subdivide int64)  { gdnative.Call(gdnative.Object(gdClass), methodBoxMesh[2], subdivide) }
@@ -3169,6 +3437,9 @@ func (BoxOccluder3D) class() string { return "BoxOccluder3D\000" }
 func (gdClass BoxOccluder3D) Occluder3D() Occluder3D { return Occluder3D(gdClass) }
 
 var methodBoxOccluder3D [2]gdnative.Method
+func (gdClass BoxOccluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Occluder3D().virtual(rtype, name)
+}
 func (gdClass BoxOccluder3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxOccluder3D[0], size) }
 func (gdClass BoxOccluder3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodBoxOccluder3D[1]) }
 
@@ -3178,6 +3449,9 @@ func (BoxShape3D) class() string { return "BoxShape3D\000" }
 func (gdClass BoxShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodBoxShape3D [2]gdnative.Method
+func (gdClass BoxShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass BoxShape3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodBoxShape3D[0], size) }
 func (gdClass BoxShape3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodBoxShape3D[1]) }
 
@@ -3187,6 +3461,9 @@ func (Button) class() string { return "Button\000" }
 func (gdClass Button) BaseButton() BaseButton { return BaseButton(gdClass) }
 
 var methodButton [20]gdnative.Method
+func (gdClass Button) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BaseButton().virtual(rtype, name)
+}
 func (gdClass Button) SetText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodButton[0], text) }
 func (gdClass Button) GetText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodButton[1]) }
 func (gdClass Button) SetTextOverrunBehavior(overrun_behavior TextServerOverrunBehavior)  { gdnative.Call(gdnative.Object(gdClass), methodButton[2], overrun_behavior) }
@@ -3214,6 +3491,9 @@ func (ButtonGroup) class() string { return "ButtonGroup\000" }
 func (gdClass ButtonGroup) Resource() Resource { return Resource(gdClass) }
 
 var methodButtonGroup [2]gdnative.Method
+func (gdClass ButtonGroup) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass ButtonGroup) GetPressedButton() BaseButton { return gdnative.Return[BaseButton](gdnative.Object(gdClass), methodButtonGroup[0]) }
 func (gdClass ButtonGroup) GetButtons() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodButtonGroup[1]) }
 
@@ -3269,6 +3549,9 @@ func (CPUParticles2D) class() string { return "CPUParticles2D\000" }
 func (gdClass CPUParticles2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCPUParticles2D [68]gdnative.Method
+func (gdClass CPUParticles2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass CPUParticles2D) SetEmitting(emitting bool)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles2D[0], emitting) }
 func (gdClass CPUParticles2D) SetAmount(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles2D[1], amount) }
 func (gdClass CPUParticles2D) SetLifetime(secs float64)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles2D[2], secs) }
@@ -3392,6 +3675,9 @@ func (CPUParticles3D) class() string { return "CPUParticles3D\000" }
 func (gdClass CPUParticles3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodCPUParticles3D [80]gdnative.Method
+func (gdClass CPUParticles3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass CPUParticles3D) SetEmitting(emitting bool)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles3D[0], emitting) }
 func (gdClass CPUParticles3D) SetAmount(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles3D[1], amount) }
 func (gdClass CPUParticles3D) SetLifetime(secs float64)  { gdnative.Call(gdnative.Object(gdClass), methodCPUParticles3D[2], secs) }
@@ -3479,6 +3765,9 @@ func (CSGBox3D) class() string { return "CSGBox3D\000" }
 func (gdClass CSGBox3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGBox3D [4]gdnative.Method
+func (gdClass CSGBox3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGBox3D) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodCSGBox3D[0], size) }
 func (gdClass CSGBox3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodCSGBox3D[1]) }
 func (gdClass CSGBox3D) SetMaterial(material Material)  { gdnative.Call(gdnative.Object(gdClass), methodCSGBox3D[2], material) }
@@ -3489,6 +3778,9 @@ func (CSGCombiner3D) class() string { return "CSGCombiner3D\000" }
 
 func (gdClass CSGCombiner3D) CSGShape3D() CSGShape3D { return CSGShape3D(gdClass) }
 
+func (gdClass CSGCombiner3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGShape3D().virtual(rtype, name)
+}
 
 type CSGCylinder3D gdnative.Object
 func (CSGCylinder3D) class() string { return "CSGCylinder3D\000" }
@@ -3496,6 +3788,9 @@ func (CSGCylinder3D) class() string { return "CSGCylinder3D\000" }
 func (gdClass CSGCylinder3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGCylinder3D [12]gdnative.Method
+func (gdClass CSGCylinder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGCylinder3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGCylinder3D[0], radius) }
 func (gdClass CSGCylinder3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCSGCylinder3D[1]) }
 func (gdClass CSGCylinder3D) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGCylinder3D[2], height) }
@@ -3515,6 +3810,9 @@ func (CSGMesh3D) class() string { return "CSGMesh3D\000" }
 func (gdClass CSGMesh3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGMesh3D [4]gdnative.Method
+func (gdClass CSGMesh3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGMesh3D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodCSGMesh3D[0], mesh) }
 func (gdClass CSGMesh3D) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodCSGMesh3D[1]) }
 func (gdClass CSGMesh3D) SetMaterial(material Material)  { gdnative.Call(gdnative.Object(gdClass), methodCSGMesh3D[2], material) }
@@ -3549,6 +3847,9 @@ func (CSGPolygon3D) class() string { return "CSGPolygon3D\000" }
 func (gdClass CSGPolygon3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGPolygon3D [32]gdnative.Method
+func (gdClass CSGPolygon3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGPolygon3D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodCSGPolygon3D[0], polygon) }
 func (gdClass CSGPolygon3D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodCSGPolygon3D[1]) }
 func (gdClass CSGPolygon3D) SetMode(mode CSGPolygon3DMode)  { gdnative.Call(gdnative.Object(gdClass), methodCSGPolygon3D[2], mode) }
@@ -3588,6 +3889,9 @@ func (CSGPrimitive3D) class() string { return "CSGPrimitive3D\000" }
 func (gdClass CSGPrimitive3D) CSGShape3D() CSGShape3D { return CSGShape3D(gdClass) }
 
 var methodCSGPrimitive3D [2]gdnative.Method
+func (gdClass CSGPrimitive3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGShape3D().virtual(rtype, name)
+}
 func (gdClass CSGPrimitive3D) SetFlipFaces(flip_faces bool)  { gdnative.Call(gdnative.Object(gdClass), methodCSGPrimitive3D[0], flip_faces) }
 func (gdClass CSGPrimitive3D) GetFlipFaces() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGPrimitive3D[1]) }
 
@@ -3605,6 +3909,9 @@ func (CSGShape3D) class() string { return "CSGShape3D\000" }
 func (gdClass CSGShape3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodCSGShape3D [18]gdnative.Method
+func (gdClass CSGShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass CSGShape3D) IsRootShape() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCSGShape3D[0]) }
 func (gdClass CSGShape3D) SetOperation(operation CSGShape3DOperation)  { gdnative.Call(gdnative.Object(gdClass), methodCSGShape3D[1], operation) }
 func (gdClass CSGShape3D) GetOperation() CSGShape3DOperation { return gdnative.Return[CSGShape3DOperation](gdnative.Object(gdClass), methodCSGShape3D[2]) }
@@ -3630,6 +3937,9 @@ func (CSGSphere3D) class() string { return "CSGSphere3D\000" }
 func (gdClass CSGSphere3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGSphere3D [10]gdnative.Method
+func (gdClass CSGSphere3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGSphere3D[0], radius) }
 func (gdClass CSGSphere3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCSGSphere3D[1]) }
 func (gdClass CSGSphere3D) SetRadialSegments(radial_segments int64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGSphere3D[2], radial_segments) }
@@ -3647,6 +3957,9 @@ func (CSGTorus3D) class() string { return "CSGTorus3D\000" }
 func (gdClass CSGTorus3D) CSGPrimitive3D() CSGPrimitive3D { return CSGPrimitive3D(gdClass) }
 
 var methodCSGTorus3D [12]gdnative.Method
+func (gdClass CSGTorus3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CSGPrimitive3D().virtual(rtype, name)
+}
 func (gdClass CSGTorus3D) SetInnerRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGTorus3D[0], radius) }
 func (gdClass CSGTorus3D) GetInnerRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCSGTorus3D[1]) }
 func (gdClass CSGTorus3D) SetOuterRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCSGTorus3D[2], radius) }
@@ -3666,6 +3979,9 @@ func (CallbackTweener) class() string { return "CallbackTweener\000" }
 func (gdClass CallbackTweener) Tweener() Tweener { return Tweener(gdClass) }
 
 var methodCallbackTweener [1]gdnative.Method
+func (gdClass CallbackTweener) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Tweener().virtual(rtype, name)
+}
 func (gdClass CallbackTweener) SetDelay(delay float64) CallbackTweener { return gdnative.Return[CallbackTweener](gdnative.Object(gdClass), methodCallbackTweener[0], delay) }
 
 type Camera2DAnchorMode int64
@@ -3688,6 +4004,9 @@ func (Camera2D) class() string { return "Camera2D\000" }
 func (gdClass Camera2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCamera2D [43]gdnative.Method
+func (gdClass Camera2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Camera2D) SetOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodCamera2D[0], offset) }
 func (gdClass Camera2D) GetOffset() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodCamera2D[1]) }
 func (gdClass Camera2D) SetAnchorMode(anchor_mode Camera2DAnchorMode)  { gdnative.Call(gdnative.Object(gdClass), methodCamera2D[2], anchor_mode) }
@@ -3761,6 +4080,9 @@ func (Camera3D) class() string { return "Camera3D\000" }
 func (gdClass Camera3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodCamera3D [46]gdnative.Method
+func (gdClass Camera3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass Camera3D) ProjectRayNormal(screen_point Vector2) Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodCamera3D[0], screen_point) }
 func (gdClass Camera3D) ProjectLocalRayNormal(screen_point Vector2) Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodCamera3D[1], screen_point) }
 func (gdClass Camera3D) ProjectRayOrigin(screen_point Vector2) Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodCamera3D[2], screen_point) }
@@ -3814,6 +4136,9 @@ func (CameraEffects) class() string { return "CameraEffects\000" }
 func (gdClass CameraEffects) Resource() Resource { return Resource(gdClass) }
 
 var methodCameraEffects [18]gdnative.Method
+func (gdClass CameraEffects) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass CameraEffects) SetDofBlurFarEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodCameraEffects[0], enabled) }
 func (gdClass CameraEffects) IsDofBlurFarEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCameraEffects[1]) }
 func (gdClass CameraEffects) SetDofBlurFarDistance(distance float64)  { gdnative.Call(gdnative.Object(gdClass), methodCameraEffects[2], distance) }
@@ -3856,6 +4181,9 @@ func (CameraFeed) class() string { return "CameraFeed\000" }
 func (gdClass CameraFeed) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodCameraFeed [8]gdnative.Method
+func (gdClass CameraFeed) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass CameraFeed) GetId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCameraFeed[0]) }
 func (gdClass CameraFeed) IsActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCameraFeed[1]) }
 func (gdClass CameraFeed) SetActive(active bool)  { gdnative.Call(gdnative.Object(gdClass), methodCameraFeed[2], active) }
@@ -3880,6 +4208,9 @@ func (CameraServer) class() string { return "CameraServer\000" }
 func (gdClass CameraServer) Object() Object { return Object(gdClass) }
 
 var methodCameraServer [5]gdnative.Method
+func (gdClass CameraServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass CameraServer) GetFeed(index int64) CameraFeed { return gdnative.Return[CameraFeed](gdnative.Object(gdClass), methodCameraServer[0], index) }
 func (gdClass CameraServer) GetFeedCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCameraServer[1]) }
 func (gdClass CameraServer) Feeds() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodCameraServer[2]) }
@@ -3892,6 +4223,9 @@ func (CameraTexture) class() string { return "CameraTexture\000" }
 func (gdClass CameraTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodCameraTexture [6]gdnative.Method
+func (gdClass CameraTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass CameraTexture) SetCameraFeedId(feed_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodCameraTexture[0], feed_id) }
 func (gdClass CameraTexture) GetCameraFeedId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCameraTexture[1]) }
 func (gdClass CameraTexture) SetWhichFeed(which_feed CameraServerFeedImage)  { gdnative.Call(gdnative.Object(gdClass), methodCameraTexture[2], which_feed) }
@@ -3905,6 +4239,9 @@ func (CanvasGroup) class() string { return "CanvasGroup\000" }
 func (gdClass CanvasGroup) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCanvasGroup [6]gdnative.Method
+func (gdClass CanvasGroup) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass CanvasGroup) SetFitMargin(fit_margin float64)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasGroup[0], fit_margin) }
 func (gdClass CanvasGroup) GetFitMargin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCanvasGroup[1]) }
 func (gdClass CanvasGroup) SetClearMargin(clear_margin float64)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasGroup[2], clear_margin) }
@@ -3941,14 +4278,15 @@ func (CanvasItem) class() string { return "CanvasItem\000" }
 func (gdClass CanvasItem) Node() Node { return Node(gdClass) }
 
 var methodCanvasItem [74]gdnative.Method
-func (gdClass CanvasItem) virtual(val any, name string) any {	switch name {
+func (gdClass CanvasItem) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_draw":
-		i, ok := val.(interface{ Draw()  })
-		if ok {
-			return i.Draw
+		if rtype.Implements(reflect.TypeOf([0]interface{ Draw()  }{}).Elem()) {
+			return rtype.MethodByName(`Draw`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node().virtual(rtype, name)
 }
 func (gdClass CanvasItem) GetCanvasItem() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodCanvasItem[0]) }
 func (gdClass CanvasItem) SetVisible(visible bool)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasItem[1], visible) }
@@ -4049,6 +4387,9 @@ func (CanvasItemMaterial) class() string { return "CanvasItemMaterial\000" }
 func (gdClass CanvasItemMaterial) Material() Material { return Material(gdClass) }
 
 var methodCanvasItemMaterial [12]gdnative.Method
+func (gdClass CanvasItemMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass CanvasItemMaterial) SetBlendMode(blend_mode CanvasItemMaterialBlendMode)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasItemMaterial[0], blend_mode) }
 func (gdClass CanvasItemMaterial) GetBlendMode() CanvasItemMaterialBlendMode { return gdnative.Return[CanvasItemMaterialBlendMode](gdnative.Object(gdClass), methodCanvasItemMaterial[1]) }
 func (gdClass CanvasItemMaterial) SetLightMode(light_mode CanvasItemMaterialLightMode)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasItemMaterial[2], light_mode) }
@@ -4068,6 +4409,9 @@ func (CanvasLayer) class() string { return "CanvasLayer\000" }
 func (gdClass CanvasLayer) Node() Node { return Node(gdClass) }
 
 var methodCanvasLayer [21]gdnative.Method
+func (gdClass CanvasLayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass CanvasLayer) SetLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasLayer[0], layer) }
 func (gdClass CanvasLayer) GetLayer() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCanvasLayer[1]) }
 func (gdClass CanvasLayer) SetVisible(visible bool)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasLayer[2], visible) }
@@ -4096,6 +4440,9 @@ func (CanvasModulate) class() string { return "CanvasModulate\000" }
 func (gdClass CanvasModulate) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCanvasModulate [2]gdnative.Method
+func (gdClass CanvasModulate) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass CanvasModulate) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasModulate[0], color) }
 func (gdClass CanvasModulate) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodCanvasModulate[1]) }
 
@@ -4105,6 +4452,9 @@ func (CanvasTexture) class() string { return "CanvasTexture\000" }
 func (gdClass CanvasTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodCanvasTexture [14]gdnative.Method
+func (gdClass CanvasTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass CanvasTexture) SetDiffuseTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasTexture[0], texture) }
 func (gdClass CanvasTexture) GetDiffuseTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodCanvasTexture[1]) }
 func (gdClass CanvasTexture) SetNormalTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodCanvasTexture[2], texture) }
@@ -4126,6 +4476,9 @@ func (CapsuleMesh) class() string { return "CapsuleMesh\000" }
 func (gdClass CapsuleMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodCapsuleMesh [8]gdnative.Method
+func (gdClass CapsuleMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass CapsuleMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleMesh[0], radius) }
 func (gdClass CapsuleMesh) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCapsuleMesh[1]) }
 func (gdClass CapsuleMesh) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleMesh[2], height) }
@@ -4141,6 +4494,9 @@ func (CapsuleShape2D) class() string { return "CapsuleShape2D\000" }
 func (gdClass CapsuleShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodCapsuleShape2D [4]gdnative.Method
+func (gdClass CapsuleShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass CapsuleShape2D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape2D[0], radius) }
 func (gdClass CapsuleShape2D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCapsuleShape2D[1]) }
 func (gdClass CapsuleShape2D) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape2D[2], height) }
@@ -4152,6 +4508,9 @@ func (CapsuleShape3D) class() string { return "CapsuleShape3D\000" }
 func (gdClass CapsuleShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodCapsuleShape3D [4]gdnative.Method
+func (gdClass CapsuleShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass CapsuleShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape3D[0], radius) }
 func (gdClass CapsuleShape3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCapsuleShape3D[1]) }
 func (gdClass CapsuleShape3D) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodCapsuleShape3D[2], height) }
@@ -4163,6 +4522,9 @@ func (CenterContainer) class() string { return "CenterContainer\000" }
 func (gdClass CenterContainer) Container() Container { return Container(gdClass) }
 
 var methodCenterContainer [2]gdnative.Method
+func (gdClass CenterContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass CenterContainer) SetUseTopLeft(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodCenterContainer[0], enable) }
 func (gdClass CenterContainer) IsUsingTopLeft() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCenterContainer[1]) }
 
@@ -4172,6 +4534,9 @@ func (CharFXTransform) class() string { return "CharFXTransform\000" }
 func (gdClass CharFXTransform) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodCharFXTransform [22]gdnative.Method
+func (gdClass CharFXTransform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass CharFXTransform) GetRange() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodCharFXTransform[0]) }
 func (gdClass CharFXTransform) SetRange(arange Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodCharFXTransform[1], arange) }
 func (gdClass CharFXTransform) GetElapsedTime() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCharFXTransform[2]) }
@@ -4216,6 +4581,9 @@ func (CharacterBody2D) class() string { return "CharacterBody2D\000" }
 func (gdClass CharacterBody2D) PhysicsBody2D() PhysicsBody2D { return PhysicsBody2D(gdClass) }
 
 var methodCharacterBody2D [47]gdnative.Method
+func (gdClass CharacterBody2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsBody2D().virtual(rtype, name)
+}
 func (gdClass CharacterBody2D) MoveAndSlide() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCharacterBody2D[0]) }
 func (gdClass CharacterBody2D) SetVelocity(velocity Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodCharacterBody2D[1], velocity) }
 func (gdClass CharacterBody2D) GetVelocity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodCharacterBody2D[2]) }
@@ -4285,6 +4653,9 @@ func (CharacterBody3D) class() string { return "CharacterBody3D\000" }
 func (gdClass CharacterBody3D) PhysicsBody3D() PhysicsBody3D { return PhysicsBody3D(gdClass) }
 
 var methodCharacterBody3D [47]gdnative.Method
+func (gdClass CharacterBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsBody3D().virtual(rtype, name)
+}
 func (gdClass CharacterBody3D) MoveAndSlide() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCharacterBody3D[0]) }
 func (gdClass CharacterBody3D) SetVelocity(velocity Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodCharacterBody3D[1], velocity) }
 func (gdClass CharacterBody3D) GetVelocity() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodCharacterBody3D[2]) }
@@ -4338,12 +4709,18 @@ func (CheckBox) class() string { return "CheckBox\000" }
 
 func (gdClass CheckBox) Button() Button { return Button(gdClass) }
 
+func (gdClass CheckBox) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Button().virtual(rtype, name)
+}
 
 type CheckButton gdnative.Object
 func (CheckButton) class() string { return "CheckButton\000" }
 
 func (gdClass CheckButton) Button() Button { return Button(gdClass) }
 
+func (gdClass CheckButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Button().virtual(rtype, name)
+}
 
 type CircleShape2D gdnative.Object
 func (CircleShape2D) class() string { return "CircleShape2D\000" }
@@ -4351,6 +4728,9 @@ func (CircleShape2D) class() string { return "CircleShape2D\000" }
 func (gdClass CircleShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodCircleShape2D [2]gdnative.Method
+func (gdClass CircleShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass CircleShape2D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCircleShape2D[0], radius) }
 func (gdClass CircleShape2D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCircleShape2D[1]) }
 
@@ -4360,6 +4740,9 @@ func (ClassDB) class() string { return "ClassDB\000" }
 func (gdClass ClassDB) Object() Object { return Object(gdClass) }
 
 var methodClassDB [23]gdnative.Method
+func (gdClass ClassDB) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass ClassDB) GetClassList() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodClassDB[0]) }
 func (gdClass ClassDB) GetInheritersFromClass(class string) []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodClassDB[1], class) }
 func (gdClass ClassDB) GetParentClass(class string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodClassDB[2], class) }
@@ -4405,24 +4788,25 @@ func (CodeEdit) class() string { return "CodeEdit\000" }
 func (gdClass CodeEdit) TextEdit() TextEdit { return TextEdit(gdClass) }
 
 var methodCodeEdit [96]gdnative.Method
-func (gdClass CodeEdit) virtual(val any, name string) any {	switch name {
+func (gdClass CodeEdit) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_confirm_code_completion":
-		i, ok := val.(interface{ ConfirmCodeCompletion(replace bool)  })
-		if ok {
-			return i.ConfirmCodeCompletion
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConfirmCodeCompletion(replace bool)  }{}).Elem()) {
+			return rtype.MethodByName(`ConfirmCodeCompletion`)
 		}
+		return
 	case "_request_code_completion":
-		i, ok := val.(interface{ RequestCodeCompletion(force bool)  })
-		if ok {
-			return i.RequestCodeCompletion
+		if rtype.Implements(reflect.TypeOf([0]interface{ RequestCodeCompletion(force bool)  }{}).Elem()) {
+			return rtype.MethodByName(`RequestCodeCompletion`)
 		}
+		return
 	case "_filter_code_completion_candidates":
-		i, ok := val.(interface{ FilterCodeCompletionCandidates(candidates Array) Array })
-		if ok {
-			return i.FilterCodeCompletionCandidates
+		if rtype.Implements(reflect.TypeOf([0]interface{ FilterCodeCompletionCandidates(candidates Array) Array }{}).Elem()) {
+			return rtype.MethodByName(`FilterCodeCompletionCandidates`)
 		}
+		return
 	}
-	return nil
+	return gdClass.TextEdit().virtual(rtype, name)
 }
 func (gdClass CodeEdit) SetIndentSize(size int64)  { gdnative.Call(gdnative.Object(gdClass), methodCodeEdit[0], size) }
 func (gdClass CodeEdit) GetIndentSize() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCodeEdit[1]) }
@@ -4527,6 +4911,9 @@ func (CodeHighlighter) class() string { return "CodeHighlighter\000" }
 func (gdClass CodeHighlighter) SyntaxHighlighter() SyntaxHighlighter { return SyntaxHighlighter(gdClass) }
 
 var methodCodeHighlighter [28]gdnative.Method
+func (gdClass CodeHighlighter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SyntaxHighlighter().virtual(rtype, name)
+}
 func (gdClass CodeHighlighter) AddKeywordColor(keyword string, color Color)  { gdnative.Call(gdnative.Object(gdClass), methodCodeHighlighter[0], keyword, color) }
 func (gdClass CodeHighlighter) RemoveKeywordColor(keyword string)  { gdnative.Call(gdnative.Object(gdClass), methodCodeHighlighter[1], keyword) }
 func (gdClass CodeHighlighter) HasKeywordColor(keyword string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCodeHighlighter[2], keyword) }
@@ -4570,14 +4957,15 @@ func (CollisionObject2D) class() string { return "CollisionObject2D\000" }
 func (gdClass CollisionObject2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCollisionObject2D [32]gdnative.Method
-func (gdClass CollisionObject2D) virtual(val any, name string) any {	switch name {
+func (gdClass CollisionObject2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_input_event":
-		i, ok := val.(interface{ InputEvent(viewport Viewport, event InputEvent, shape_idx int64)  })
-		if ok {
-			return i.InputEvent
+		if rtype.Implements(reflect.TypeOf([0]interface{ InputEvent(viewport Viewport, event InputEvent, shape_idx int64)  }{}).Elem()) {
+			return rtype.MethodByName(`InputEvent`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node2D().virtual(rtype, name)
 }
 func (gdClass CollisionObject2D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodCollisionObject2D[0]) }
 func (gdClass CollisionObject2D) SetCollisionLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionObject2D[1], layer) }
@@ -4626,14 +5014,15 @@ func (CollisionObject3D) class() string { return "CollisionObject3D\000" }
 func (gdClass CollisionObject3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodCollisionObject3D [30]gdnative.Method
-func (gdClass CollisionObject3D) virtual(val any, name string) any {	switch name {
+func (gdClass CollisionObject3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_input_event":
-		i, ok := val.(interface{ InputEvent(camera Camera3D, event InputEvent, position Vector3, normal Vector3, shape_idx int64)  })
-		if ok {
-			return i.InputEvent
+		if rtype.Implements(reflect.TypeOf([0]interface{ InputEvent(camera Camera3D, event InputEvent, position Vector3, normal Vector3, shape_idx int64)  }{}).Elem()) {
+			return rtype.MethodByName(`InputEvent`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node3D().virtual(rtype, name)
 }
 func (gdClass CollisionObject3D) SetCollisionLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionObject3D[0], layer) }
 func (gdClass CollisionObject3D) GetCollisionLayer() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCollisionObject3D[1]) }
@@ -4679,6 +5068,9 @@ func (CollisionPolygon2D) class() string { return "CollisionPolygon2D\000" }
 func (gdClass CollisionPolygon2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCollisionPolygon2D [10]gdnative.Method
+func (gdClass CollisionPolygon2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass CollisionPolygon2D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionPolygon2D[0], polygon) }
 func (gdClass CollisionPolygon2D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodCollisionPolygon2D[1]) }
 func (gdClass CollisionPolygon2D) SetBuildMode(build_mode CollisionPolygon2DBuildMode)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionPolygon2D[2], build_mode) }
@@ -4696,6 +5088,9 @@ func (CollisionPolygon3D) class() string { return "CollisionPolygon3D\000" }
 func (gdClass CollisionPolygon3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodCollisionPolygon3D [8]gdnative.Method
+func (gdClass CollisionPolygon3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass CollisionPolygon3D) SetDepth(depth float64)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionPolygon3D[0], depth) }
 func (gdClass CollisionPolygon3D) GetDepth() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCollisionPolygon3D[1]) }
 func (gdClass CollisionPolygon3D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionPolygon3D[2], polygon) }
@@ -4711,6 +5106,9 @@ func (CollisionShape2D) class() string { return "CollisionShape2D\000" }
 func (gdClass CollisionShape2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodCollisionShape2D [8]gdnative.Method
+func (gdClass CollisionShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass CollisionShape2D) SetShape(shape Shape2D)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape2D[0], shape) }
 func (gdClass CollisionShape2D) GetShape() Shape2D { return gdnative.Return[Shape2D](gdnative.Object(gdClass), methodCollisionShape2D[1]) }
 func (gdClass CollisionShape2D) SetDisabled(disabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape2D[2], disabled) }
@@ -4726,6 +5124,9 @@ func (CollisionShape3D) class() string { return "CollisionShape3D\000" }
 func (gdClass CollisionShape3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodCollisionShape3D [6]gdnative.Method
+func (gdClass CollisionShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass CollisionShape3D) ResourceChanged(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape3D[0], resource) }
 func (gdClass CollisionShape3D) SetShape(shape Shape3D)  { gdnative.Call(gdnative.Object(gdClass), methodCollisionShape3D[1], shape) }
 func (gdClass CollisionShape3D) GetShape() Shape3D { return gdnative.Return[Shape3D](gdnative.Object(gdClass), methodCollisionShape3D[2]) }
@@ -4757,6 +5158,9 @@ func (ColorPicker) class() string { return "ColorPicker\000" }
 func (gdClass ColorPicker) BoxContainer() BoxContainer { return BoxContainer(gdClass) }
 
 var methodColorPicker [17]gdnative.Method
+func (gdClass ColorPicker) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BoxContainer().virtual(rtype, name)
+}
 func (gdClass ColorPicker) SetPickColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodColorPicker[0], color) }
 func (gdClass ColorPicker) GetPickColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodColorPicker[1]) }
 func (gdClass ColorPicker) SetDeferredMode(mode bool)  { gdnative.Call(gdnative.Object(gdClass), methodColorPicker[2], mode) }
@@ -4781,6 +5185,9 @@ func (ColorPickerButton) class() string { return "ColorPickerButton\000" }
 func (gdClass ColorPickerButton) Button() Button { return Button(gdClass) }
 
 var methodColorPickerButton [6]gdnative.Method
+func (gdClass ColorPickerButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Button().virtual(rtype, name)
+}
 func (gdClass ColorPickerButton) SetPickColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodColorPickerButton[0], color) }
 func (gdClass ColorPickerButton) GetPickColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodColorPickerButton[1]) }
 func (gdClass ColorPickerButton) GetPicker() ColorPicker { return gdnative.Return[ColorPicker](gdnative.Object(gdClass), methodColorPickerButton[2]) }
@@ -4794,6 +5201,9 @@ func (ColorRect) class() string { return "ColorRect\000" }
 func (gdClass ColorRect) Control() Control { return Control(gdClass) }
 
 var methodColorRect [2]gdnative.Method
+func (gdClass ColorRect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass ColorRect) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodColorRect[0], color) }
 func (gdClass ColorRect) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodColorRect[1]) }
 
@@ -4802,12 +5212,18 @@ func (CompressedCubemap) class() string { return "CompressedCubemap\000" }
 
 func (gdClass CompressedCubemap) CompressedTextureLayered() CompressedTextureLayered { return CompressedTextureLayered(gdClass) }
 
+func (gdClass CompressedCubemap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CompressedTextureLayered().virtual(rtype, name)
+}
 
 type CompressedCubemapArray gdnative.Object
 func (CompressedCubemapArray) class() string { return "CompressedCubemapArray\000" }
 
 func (gdClass CompressedCubemapArray) CompressedTextureLayered() CompressedTextureLayered { return CompressedTextureLayered(gdClass) }
 
+func (gdClass CompressedCubemapArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CompressedTextureLayered().virtual(rtype, name)
+}
 
 type CompressedTexture2D gdnative.Object
 func (CompressedTexture2D) class() string { return "CompressedTexture2D\000" }
@@ -4815,6 +5231,9 @@ func (CompressedTexture2D) class() string { return "CompressedTexture2D\000" }
 func (gdClass CompressedTexture2D) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodCompressedTexture2D [2]gdnative.Method
+func (gdClass CompressedTexture2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass CompressedTexture2D) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTexture2D[0], path) }
 func (gdClass CompressedTexture2D) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTexture2D[1]) }
 
@@ -4823,6 +5242,9 @@ func (CompressedTexture2DArray) class() string { return "CompressedTexture2DArra
 
 func (gdClass CompressedTexture2DArray) CompressedTextureLayered() CompressedTextureLayered { return CompressedTextureLayered(gdClass) }
 
+func (gdClass CompressedTexture2DArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CompressedTextureLayered().virtual(rtype, name)
+}
 
 type CompressedTexture3D gdnative.Object
 func (CompressedTexture3D) class() string { return "CompressedTexture3D\000" }
@@ -4830,6 +5252,9 @@ func (CompressedTexture3D) class() string { return "CompressedTexture3D\000" }
 func (gdClass CompressedTexture3D) Texture3D() Texture3D { return Texture3D(gdClass) }
 
 var methodCompressedTexture3D [2]gdnative.Method
+func (gdClass CompressedTexture3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture3D().virtual(rtype, name)
+}
 func (gdClass CompressedTexture3D) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTexture3D[0], path) }
 func (gdClass CompressedTexture3D) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTexture3D[1]) }
 
@@ -4839,6 +5264,9 @@ func (CompressedTextureLayered) class() string { return "CompressedTextureLayere
 func (gdClass CompressedTextureLayered) TextureLayered() TextureLayered { return TextureLayered(gdClass) }
 
 var methodCompressedTextureLayered [2]gdnative.Method
+func (gdClass CompressedTextureLayered) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TextureLayered().virtual(rtype, name)
+}
 func (gdClass CompressedTextureLayered) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCompressedTextureLayered[0], path) }
 func (gdClass CompressedTextureLayered) GetLoadPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodCompressedTextureLayered[1]) }
 
@@ -4848,6 +5276,9 @@ func (ConcavePolygonShape2D) class() string { return "ConcavePolygonShape2D\000"
 func (gdClass ConcavePolygonShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodConcavePolygonShape2D [2]gdnative.Method
+func (gdClass ConcavePolygonShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass ConcavePolygonShape2D) SetSegments(segments []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodConcavePolygonShape2D[0], segments) }
 func (gdClass ConcavePolygonShape2D) GetSegments() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodConcavePolygonShape2D[1]) }
 
@@ -4857,6 +5288,9 @@ func (ConcavePolygonShape3D) class() string { return "ConcavePolygonShape3D\000"
 func (gdClass ConcavePolygonShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodConcavePolygonShape3D [4]gdnative.Method
+func (gdClass ConcavePolygonShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass ConcavePolygonShape3D) SetFaces(faces []Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodConcavePolygonShape3D[0], faces) }
 func (gdClass ConcavePolygonShape3D) GetFaces() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodConcavePolygonShape3D[1]) }
 func (gdClass ConcavePolygonShape3D) SetBackfaceCollisionEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodConcavePolygonShape3D[2], enabled) }
@@ -4879,6 +5313,9 @@ func (ConeTwistJoint3D) class() string { return "ConeTwistJoint3D\000" }
 func (gdClass ConeTwistJoint3D) Joint3D() Joint3D { return Joint3D(gdClass) }
 
 var methodConeTwistJoint3D [2]gdnative.Method
+func (gdClass ConeTwistJoint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint3D().virtual(rtype, name)
+}
 func (gdClass ConeTwistJoint3D) SetParam(param ConeTwistJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodConeTwistJoint3D[0], param, value) }
 func (gdClass ConeTwistJoint3D) GetParam(param ConeTwistJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodConeTwistJoint3D[1], param) }
 
@@ -4888,6 +5325,9 @@ func (ConfigFile) class() string { return "ConfigFile\000" }
 func (gdClass ConfigFile) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodConfigFile [16]gdnative.Method
+func (gdClass ConfigFile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass ConfigFile) SetValue(section string, key string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodConfigFile[0], section, key, value) }
 func (gdClass ConfigFile) GetValue(section string, key string, def any) any { return gdnative.Return[any](gdnative.Object(gdClass), methodConfigFile[1], section, key, def) }
 func (gdClass ConfigFile) HasSection(section string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodConfigFile[2], section) }
@@ -4911,6 +5351,9 @@ func (ConfirmationDialog) class() string { return "ConfirmationDialog\000" }
 func (gdClass ConfirmationDialog) AcceptDialog() AcceptDialog { return AcceptDialog(gdClass) }
 
 var methodConfirmationDialog [3]gdnative.Method
+func (gdClass ConfirmationDialog) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.AcceptDialog().virtual(rtype, name)
+}
 func (gdClass ConfirmationDialog) GetCancelButton() Button { return gdnative.Return[Button](gdnative.Object(gdClass), methodConfirmationDialog[0]) }
 func (gdClass ConfirmationDialog) SetCancelButtonText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodConfirmationDialog[1], text) }
 func (gdClass ConfirmationDialog) GetCancelButtonText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodConfirmationDialog[2]) }
@@ -4921,19 +5364,20 @@ func (Container) class() string { return "Container\000" }
 func (gdClass Container) Control() Control { return Control(gdClass) }
 
 var methodContainer [2]gdnative.Method
-func (gdClass Container) virtual(val any, name string) any {	switch name {
+func (gdClass Container) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_allowed_size_flags_horizontal":
-		i, ok := val.(interface{ GetAllowedSizeFlagsHorizontal() []int32 })
-		if ok {
-			return i.GetAllowedSizeFlagsHorizontal
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAllowedSizeFlagsHorizontal() []int32 }{}).Elem()) {
+			return rtype.MethodByName(`GetAllowedSizeFlagsHorizontal`)
 		}
+		return
 	case "_get_allowed_size_flags_vertical":
-		i, ok := val.(interface{ GetAllowedSizeFlagsVertical() []int32 })
-		if ok {
-			return i.GetAllowedSizeFlagsVertical
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAllowedSizeFlagsVertical() []int32 }{}).Elem()) {
+			return rtype.MethodByName(`GetAllowedSizeFlagsVertical`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Control().virtual(rtype, name)
 }
 func (gdClass Container) QueueSort()  { gdnative.Call(gdnative.Object(gdClass), methodContainer[0]) }
 func (gdClass Container) FitChildInRect(child Control, rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodContainer[1], child, rect) }
@@ -5056,49 +5500,50 @@ func (Control) class() string { return "Control\000" }
 func (gdClass Control) CanvasItem() CanvasItem { return CanvasItem(gdClass) }
 
 var methodControl [120]gdnative.Method
-func (gdClass Control) virtual(val any, name string) any {	switch name {
+func (gdClass Control) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_has_point":
-		i, ok := val.(interface{ HasPoint(position Vector2) bool })
-		if ok {
-			return i.HasPoint
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasPoint(position Vector2) bool }{}).Elem()) {
+			return rtype.MethodByName(`HasPoint`)
 		}
+		return
 	case "_structured_text_parser":
-		i, ok := val.(interface{ StructuredTextParser(args Array, text string) Array })
-		if ok {
-			return i.StructuredTextParser
+		if rtype.Implements(reflect.TypeOf([0]interface{ StructuredTextParser(args Array, text string) Array }{}).Elem()) {
+			return rtype.MethodByName(`StructuredTextParser`)
 		}
+		return
 	case "_get_minimum_size":
-		i, ok := val.(interface{ GetMinimumSize() Vector2 })
-		if ok {
-			return i.GetMinimumSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMinimumSize() Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`GetMinimumSize`)
 		}
+		return
 	case "_get_drag_data":
-		i, ok := val.(interface{ GetDragData(at_position Vector2) any })
-		if ok {
-			return i.GetDragData
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDragData(at_position Vector2) any }{}).Elem()) {
+			return rtype.MethodByName(`GetDragData`)
 		}
+		return
 	case "_can_drop_data":
-		i, ok := val.(interface{ CanDropData(at_position Vector2, data any) bool })
-		if ok {
-			return i.CanDropData
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanDropData(at_position Vector2, data any) bool }{}).Elem()) {
+			return rtype.MethodByName(`CanDropData`)
 		}
+		return
 	case "_drop_data":
-		i, ok := val.(interface{ DropData(at_position Vector2, data any)  })
-		if ok {
-			return i.DropData
+		if rtype.Implements(reflect.TypeOf([0]interface{ DropData(at_position Vector2, data any)  }{}).Elem()) {
+			return rtype.MethodByName(`DropData`)
 		}
+		return
 	case "_make_custom_tooltip":
-		i, ok := val.(interface{ MakeCustomTooltip(for_text string) Object })
-		if ok {
-			return i.MakeCustomTooltip
+		if rtype.Implements(reflect.TypeOf([0]interface{ MakeCustomTooltip(for_text string) Object }{}).Elem()) {
+			return rtype.MethodByName(`MakeCustomTooltip`)
 		}
+		return
 	case "_gui_input":
-		i, ok := val.(interface{ GuiInput(event InputEvent)  })
-		if ok {
-			return i.GuiInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ GuiInput(event InputEvent)  }{}).Elem()) {
+			return rtype.MethodByName(`GuiInput`)
 		}
+		return
 	}
-	return nil
+	return gdClass.CanvasItem().virtual(rtype, name)
 }
 func (gdClass Control) AcceptEvent()  { gdnative.Call(gdnative.Object(gdClass), methodControl[0]) }
 func (gdClass Control) GetMinimumSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodControl[1]) }
@@ -5227,6 +5672,9 @@ func (ConvexPolygonShape2D) class() string { return "ConvexPolygonShape2D\000" }
 func (gdClass ConvexPolygonShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodConvexPolygonShape2D [3]gdnative.Method
+func (gdClass ConvexPolygonShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass ConvexPolygonShape2D) SetPointCloud(point_cloud []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodConvexPolygonShape2D[0], point_cloud) }
 func (gdClass ConvexPolygonShape2D) SetPoints(points []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodConvexPolygonShape2D[1], points) }
 func (gdClass ConvexPolygonShape2D) GetPoints() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodConvexPolygonShape2D[2]) }
@@ -5237,6 +5685,9 @@ func (ConvexPolygonShape3D) class() string { return "ConvexPolygonShape3D\000" }
 func (gdClass ConvexPolygonShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodConvexPolygonShape3D [2]gdnative.Method
+func (gdClass ConvexPolygonShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass ConvexPolygonShape3D) SetPoints(points []Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodConvexPolygonShape3D[0], points) }
 func (gdClass ConvexPolygonShape3D) GetPoints() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodConvexPolygonShape3D[1]) }
 
@@ -5246,6 +5697,9 @@ func (Crypto) class() string { return "Crypto\000" }
 func (gdClass Crypto) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodCrypto [9]gdnative.Method
+func (gdClass Crypto) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Crypto) GenerateRandomBytes(size int64) []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodCrypto[0], size) }
 func (gdClass Crypto) GenerateRsa(size int64) CryptoKey { return gdnative.Return[CryptoKey](gdnative.Object(gdClass), methodCrypto[1], size) }
 func (gdClass Crypto) GenerateSelfSignedCertificate(key CryptoKey, issuer_name string, not_before string, not_after string) X509Certificate { return gdnative.Return[X509Certificate](gdnative.Object(gdClass), methodCrypto[2], key, issuer_name, not_before, not_after) }
@@ -5262,6 +5716,9 @@ func (CryptoKey) class() string { return "CryptoKey\000" }
 func (gdClass CryptoKey) Resource() Resource { return Resource(gdClass) }
 
 var methodCryptoKey [5]gdnative.Method
+func (gdClass CryptoKey) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass CryptoKey) Save(path string, public_only bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCryptoKey[0], path, public_only) }
 func (gdClass CryptoKey) Load(path string, public_only bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodCryptoKey[1], path, public_only) }
 func (gdClass CryptoKey) IsPublicOnly() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodCryptoKey[2]) }
@@ -5273,12 +5730,18 @@ func (Cubemap) class() string { return "Cubemap\000" }
 
 func (gdClass Cubemap) ImageTextureLayered() ImageTextureLayered { return ImageTextureLayered(gdClass) }
 
+func (gdClass Cubemap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ImageTextureLayered().virtual(rtype, name)
+}
 
 type CubemapArray gdnative.Object
 func (CubemapArray) class() string { return "CubemapArray\000" }
 
 func (gdClass CubemapArray) ImageTextureLayered() ImageTextureLayered { return ImageTextureLayered(gdClass) }
 
+func (gdClass CubemapArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ImageTextureLayered().virtual(rtype, name)
+}
 
 type CurveTangentMode int64
 
@@ -5294,6 +5757,9 @@ func (Curve) class() string { return "Curve\000" }
 func (gdClass Curve) Resource() Resource { return Resource(gdClass) }
 
 var methodCurve [26]gdnative.Method
+func (gdClass Curve) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Curve) GetPointCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve[0]) }
 func (gdClass Curve) SetPointCount(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve[1], count) }
 func (gdClass Curve) AddPoint(position Vector2, left_tangent float64, right_tangent float64, left_mode CurveTangentMode, right_mode CurveTangentMode) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve[2], position, left_tangent, right_tangent, left_mode, right_mode) }
@@ -5327,6 +5793,9 @@ func (Curve2D) class() string { return "Curve2D\000" }
 func (gdClass Curve2D) Resource() Resource { return Resource(gdClass) }
 
 var methodCurve2D [21]gdnative.Method
+func (gdClass Curve2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Curve2D) GetPointCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve2D[0]) }
 func (gdClass Curve2D) SetPointCount(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve2D[1], count) }
 func (gdClass Curve2D) AddPoint(position Vector2, in Vector2, out Vector2, index int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve2D[2], position, in, out, index) }
@@ -5355,6 +5824,9 @@ func (Curve3D) class() string { return "Curve3D\000" }
 func (gdClass Curve3D) Resource() Resource { return Resource(gdClass) }
 
 var methodCurve3D [28]gdnative.Method
+func (gdClass Curve3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Curve3D) GetPointCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodCurve3D[0]) }
 func (gdClass Curve3D) SetPointCount(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve3D[1], count) }
 func (gdClass Curve3D) AddPoint(position Vector3, in Vector3, out Vector3, index int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurve3D[2], position, in, out, index) }
@@ -5397,6 +5869,9 @@ func (CurveTexture) class() string { return "CurveTexture\000" }
 func (gdClass CurveTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodCurveTexture [5]gdnative.Method
+func (gdClass CurveTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass CurveTexture) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurveTexture[0], width) }
 func (gdClass CurveTexture) SetCurve(curve Curve)  { gdnative.Call(gdnative.Object(gdClass), methodCurveTexture[1], curve) }
 func (gdClass CurveTexture) GetCurve() Curve { return gdnative.Return[Curve](gdnative.Object(gdClass), methodCurveTexture[2]) }
@@ -5409,6 +5884,9 @@ func (CurveXYZTexture) class() string { return "CurveXYZTexture\000" }
 func (gdClass CurveXYZTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodCurveXYZTexture [7]gdnative.Method
+func (gdClass CurveXYZTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass CurveXYZTexture) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodCurveXYZTexture[0], width) }
 func (gdClass CurveXYZTexture) SetCurveX(curve Curve)  { gdnative.Call(gdnative.Object(gdClass), methodCurveXYZTexture[1], curve) }
 func (gdClass CurveXYZTexture) GetCurveX() Curve { return gdnative.Return[Curve](gdnative.Object(gdClass), methodCurveXYZTexture[2]) }
@@ -5423,6 +5901,9 @@ func (CylinderMesh) class() string { return "CylinderMesh\000" }
 func (gdClass CylinderMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodCylinderMesh [14]gdnative.Method
+func (gdClass CylinderMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass CylinderMesh) SetTopRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderMesh[0], radius) }
 func (gdClass CylinderMesh) GetTopRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCylinderMesh[1]) }
 func (gdClass CylinderMesh) SetBottomRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderMesh[2], radius) }
@@ -5444,6 +5925,9 @@ func (CylinderShape3D) class() string { return "CylinderShape3D\000" }
 func (gdClass CylinderShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodCylinderShape3D [4]gdnative.Method
+func (gdClass CylinderShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass CylinderShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderShape3D[0], radius) }
 func (gdClass CylinderShape3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodCylinderShape3D[1]) }
 func (gdClass CylinderShape3D) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodCylinderShape3D[2], height) }
@@ -5455,6 +5939,9 @@ func (DTLSServer) class() string { return "DTLSServer\000" }
 func (gdClass DTLSServer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodDTLSServer [2]gdnative.Method
+func (gdClass DTLSServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass DTLSServer) Setup(key CryptoKey, certificate X509Certificate, chain X509Certificate) error { return gdnative.Return[error](gdnative.Object(gdClass), methodDTLSServer[0], key, certificate, chain) }
 func (gdClass DTLSServer) TakeConnection(udp_peer PacketPeerUDP) PacketPeerDTLS { return gdnative.Return[PacketPeerDTLS](gdnative.Object(gdClass), methodDTLSServer[1], udp_peer) }
 
@@ -5464,6 +5951,9 @@ func (DampedSpringJoint2D) class() string { return "DampedSpringJoint2D\000" }
 func (gdClass DampedSpringJoint2D) Joint2D() Joint2D { return Joint2D(gdClass) }
 
 var methodDampedSpringJoint2D [8]gdnative.Method
+func (gdClass DampedSpringJoint2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint2D().virtual(rtype, name)
+}
 func (gdClass DampedSpringJoint2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodDampedSpringJoint2D[0], length) }
 func (gdClass DampedSpringJoint2D) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodDampedSpringJoint2D[1]) }
 func (gdClass DampedSpringJoint2D) SetRestLength(rest_length float64)  { gdnative.Call(gdnative.Object(gdClass), methodDampedSpringJoint2D[2], rest_length) }
@@ -5489,6 +5979,9 @@ func (Decal) class() string { return "Decal\000" }
 func (gdClass Decal) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodDecal [24]gdnative.Method
+func (gdClass Decal) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass Decal) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodDecal[0], extents) }
 func (gdClass Decal) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodDecal[1]) }
 func (gdClass Decal) SetTexture(atype DecalDecalTexture, texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodDecal[2], atype, texture) }
@@ -5520,6 +6013,9 @@ func (DirectionalLight2D) class() string { return "DirectionalLight2D\000" }
 func (gdClass DirectionalLight2D) Light2D() Light2D { return Light2D(gdClass) }
 
 var methodDirectionalLight2D [2]gdnative.Method
+func (gdClass DirectionalLight2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Light2D().virtual(rtype, name)
+}
 func (gdClass DirectionalLight2D) SetMaxDistance(pixels float64)  { gdnative.Call(gdnative.Object(gdClass), methodDirectionalLight2D[0], pixels) }
 func (gdClass DirectionalLight2D) GetMaxDistance() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodDirectionalLight2D[1]) }
 
@@ -5545,6 +6041,9 @@ func (DirectionalLight3D) class() string { return "DirectionalLight3D\000" }
 func (gdClass DirectionalLight3D) Light3D() Light3D { return Light3D(gdClass) }
 
 var methodDirectionalLight3D [6]gdnative.Method
+func (gdClass DirectionalLight3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Light3D().virtual(rtype, name)
+}
 func (gdClass DirectionalLight3D) SetShadowMode(mode DirectionalLight3DShadowMode)  { gdnative.Call(gdnative.Object(gdClass), methodDirectionalLight3D[0], mode) }
 func (gdClass DirectionalLight3D) GetShadowMode() DirectionalLight3DShadowMode { return gdnative.Return[DirectionalLight3DShadowMode](gdnative.Object(gdClass), methodDirectionalLight3D[1]) }
 func (gdClass DirectionalLight3D) SetBlendSplits(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodDirectionalLight3D[2], enabled) }
@@ -5558,6 +6057,9 @@ func (Directory) class() string { return "Directory\000" }
 func (gdClass Directory) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodDirectory [24]gdnative.Method
+func (gdClass Directory) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Directory) Open(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodDirectory[0], path) }
 func (gdClass Directory) ListDirBegin() error { return gdnative.Return[error](gdnative.Object(gdClass), methodDirectory[1]) }
 func (gdClass Directory) GetNext() string { return gdnative.Return[string](gdnative.Object(gdClass), methodDirectory[2]) }
@@ -5731,6 +6233,9 @@ func (DisplayServer) class() string { return "DisplayServer\000" }
 func (gdClass DisplayServer) Object() Object { return Object(gdClass) }
 
 var methodDisplayServer [144]gdnative.Method
+func (gdClass DisplayServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass DisplayServer) HasFeature(feature DisplayServerFeature) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodDisplayServer[0], feature) }
 func (gdClass DisplayServer) GetName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodDisplayServer[1]) }
 func (gdClass DisplayServer) GlobalMenuAddItem(menu_root string, label string, callback Callable, tag any, accelerator Key, index int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodDisplayServer[2], menu_root, label, callback, tag, accelerator, index) }
@@ -5911,6 +6416,9 @@ func (ENetConnection) class() string { return "ENetConnection\000" }
 func (gdClass ENetConnection) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodENetConnection [17]gdnative.Method
+func (gdClass ENetConnection) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass ENetConnection) CreateHostBound(bind_address string, bind_port int64, max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetConnection[0], bind_address, bind_port, max_peers, max_channels, in_bandwidth, out_bandwidth) }
 func (gdClass ENetConnection) CreateHost(max_peers int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetConnection[1], max_peers, max_channels, in_bandwidth, out_bandwidth) }
 func (gdClass ENetConnection) Destroy()  { gdnative.Call(gdnative.Object(gdClass), methodENetConnection[2]) }
@@ -5935,6 +6443,9 @@ func (ENetMultiplayerPeer) class() string { return "ENetMultiplayerPeer\000" }
 func (gdClass ENetMultiplayerPeer) MultiplayerPeer() MultiplayerPeer { return MultiplayerPeer(gdClass) }
 
 var methodENetMultiplayerPeer [10]gdnative.Method
+func (gdClass ENetMultiplayerPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MultiplayerPeer().virtual(rtype, name)
+}
 func (gdClass ENetMultiplayerPeer) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetMultiplayerPeer[0], port, max_clients, max_channels, in_bandwidth, out_bandwidth) }
 func (gdClass ENetMultiplayerPeer) CreateClient(address string, port int64, channel_count int64, in_bandwidth int64, out_bandwidth int64, local_port int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetMultiplayerPeer[1], address, port, channel_count, in_bandwidth, out_bandwidth, local_port) }
 func (gdClass ENetMultiplayerPeer) CreateMesh(unique_id int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodENetMultiplayerPeer[2], unique_id) }
@@ -5986,6 +6497,9 @@ func (ENetPacketPeer) class() string { return "ENetPacketPeer\000" }
 func (gdClass ENetPacketPeer) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodENetPacketPeer [13]gdnative.Method
+func (gdClass ENetPacketPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass ENetPacketPeer) PeerDisconnect(data int64)  { gdnative.Call(gdnative.Object(gdClass), methodENetPacketPeer[0], data) }
 func (gdClass ENetPacketPeer) PeerDisconnectLater(data int64)  { gdnative.Call(gdnative.Object(gdClass), methodENetPacketPeer[1], data) }
 func (gdClass ENetPacketPeer) PeerDisconnectNow(data int64)  { gdnative.Call(gdnative.Object(gdClass), methodENetPacketPeer[2], data) }
@@ -6006,6 +6520,9 @@ func (EditorCommandPalette) class() string { return "EditorCommandPalette\000" }
 func (gdClass EditorCommandPalette) ConfirmationDialog() ConfirmationDialog { return ConfirmationDialog(gdClass) }
 
 var methodEditorCommandPalette [2]gdnative.Method
+func (gdClass EditorCommandPalette) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ConfirmationDialog().virtual(rtype, name)
+}
 func (gdClass EditorCommandPalette) AddCommand(command_name string, key_name string, binded_callable Callable, shortcut_text string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorCommandPalette[0], command_name, key_name, binded_callable, shortcut_text) }
 func (gdClass EditorCommandPalette) RemoveCommand(key_name string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorCommandPalette[1], key_name) }
 
@@ -6015,6 +6532,9 @@ func (EditorDebuggerPlugin) class() string { return "EditorDebuggerPlugin\000" }
 func (gdClass EditorDebuggerPlugin) Control() Control { return Control(gdClass) }
 
 var methodEditorDebuggerPlugin [7]gdnative.Method
+func (gdClass EditorDebuggerPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass EditorDebuggerPlugin) SendMessage(message string, data Array)  { gdnative.Call(gdnative.Object(gdClass), methodEditorDebuggerPlugin[0], message, data) }
 func (gdClass EditorDebuggerPlugin) RegisterMessageCapture(name string, callable Callable)  { gdnative.Call(gdnative.Object(gdClass), methodEditorDebuggerPlugin[1], name, callable) }
 func (gdClass EditorDebuggerPlugin) UnregisterMessageCapture(name string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorDebuggerPlugin[2], name) }
@@ -6029,24 +6549,25 @@ func (EditorExportPlugin) class() string { return "EditorExportPlugin\000" }
 func (gdClass EditorExportPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorExportPlugin [11]gdnative.Method
-func (gdClass EditorExportPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorExportPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_export_file":
-		i, ok := val.(interface{ ExportFile(path string, atype string, features []string)  })
-		if ok {
-			return i.ExportFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportFile(path string, atype string, features []string)  }{}).Elem()) {
+			return rtype.MethodByName(`ExportFile`)
 		}
+		return
 	case "_export_begin":
-		i, ok := val.(interface{ ExportBegin(features []string, is_debug bool, path string, flags int64)  })
-		if ok {
-			return i.ExportBegin
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportBegin(features []string, is_debug bool, path string, flags int64)  }{}).Elem()) {
+			return rtype.MethodByName(`ExportBegin`)
 		}
+		return
 	case "_export_end":
-		i, ok := val.(interface{ ExportEnd()  })
-		if ok {
-			return i.ExportEnd
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportEnd()  }{}).Elem()) {
+			return rtype.MethodByName(`ExportEnd`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass EditorExportPlugin) AddSharedObject(path string, tags []string, target string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorExportPlugin[0], path, tags, target) }
 func (gdClass EditorExportPlugin) AddIosProjectStaticLib(path string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorExportPlugin[1], path) }
@@ -6079,6 +6600,9 @@ func (EditorFeatureProfile) class() string { return "EditorFeatureProfile\000" }
 func (gdClass EditorFeatureProfile) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorFeatureProfile [11]gdnative.Method
+func (gdClass EditorFeatureProfile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass EditorFeatureProfile) SetDisableClass(class_name string, disable bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorFeatureProfile[0], class_name, disable) }
 func (gdClass EditorFeatureProfile) IsClassDisabled(class_name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorFeatureProfile[1], class_name) }
 func (gdClass EditorFeatureProfile) SetDisableClassEditor(class_name string, disable bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorFeatureProfile[2], class_name, disable) }
@@ -6122,6 +6646,9 @@ func (EditorFileDialog) class() string { return "EditorFileDialog\000" }
 func (gdClass EditorFileDialog) ConfirmationDialog() ConfirmationDialog { return ConfirmationDialog(gdClass) }
 
 var methodEditorFileDialog [20]gdnative.Method
+func (gdClass EditorFileDialog) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ConfirmationDialog().virtual(rtype, name)
+}
 func (gdClass EditorFileDialog) ClearFilters()  { gdnative.Call(gdnative.Object(gdClass), methodEditorFileDialog[0]) }
 func (gdClass EditorFileDialog) AddFilter(filter string, description string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorFileDialog[1], filter, description) }
 func (gdClass EditorFileDialog) GetCurrentDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorFileDialog[2]) }
@@ -6149,6 +6676,9 @@ func (EditorFileSystem) class() string { return "EditorFileSystem\000" }
 func (gdClass EditorFileSystem) Node() Node { return Node(gdClass) }
 
 var methodEditorFileSystem [10]gdnative.Method
+func (gdClass EditorFileSystem) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass EditorFileSystem) GetFilesystem() EditorFileSystemDirectory { return gdnative.Return[EditorFileSystemDirectory](gdnative.Object(gdClass), methodEditorFileSystem[0]) }
 func (gdClass EditorFileSystem) IsScanning() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorFileSystem[1]) }
 func (gdClass EditorFileSystem) GetScanningProgress() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodEditorFileSystem[2]) }
@@ -6166,6 +6696,9 @@ func (EditorFileSystemDirectory) class() string { return "EditorFileSystemDirect
 func (gdClass EditorFileSystemDirectory) Object() Object { return Object(gdClass) }
 
 var methodEditorFileSystemDirectory [14]gdnative.Method
+func (gdClass EditorFileSystemDirectory) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass EditorFileSystemDirectory) GetSubdirCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorFileSystemDirectory[0]) }
 func (gdClass EditorFileSystemDirectory) GetSubdir(idx int64) EditorFileSystemDirectory { return gdnative.Return[EditorFileSystemDirectory](gdnative.Object(gdClass), methodEditorFileSystemDirectory[1], idx) }
 func (gdClass EditorFileSystemDirectory) GetFileCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEditorFileSystemDirectory[2]) }
@@ -6186,24 +6719,25 @@ func (EditorFileSystemImportFormatSupportQuery) class() string { return "EditorF
 
 func (gdClass EditorFileSystemImportFormatSupportQuery) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EditorFileSystemImportFormatSupportQuery) virtual(val any, name string) any {	switch name {
+func (gdClass EditorFileSystemImportFormatSupportQuery) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_is_active":
-		i, ok := val.(interface{ IsActive() bool })
-		if ok {
-			return i.IsActive
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsActive() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsActive`)
 		}
+		return
 	case "_get_file_extensions":
-		i, ok := val.(interface{ GetFileExtensions() []string })
-		if ok {
-			return i.GetFileExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetFileExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetFileExtensions`)
 		}
+		return
 	case "_query":
-		i, ok := val.(interface{ Query() bool })
-		if ok {
-			return i.Query
+		if rtype.Implements(reflect.TypeOf([0]interface{ Query() bool }{}).Elem()) {
+			return rtype.MethodByName(`Query`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EditorImportPlugin gdnative.Object
@@ -6211,69 +6745,70 @@ func (EditorImportPlugin) class() string { return "EditorImportPlugin\000" }
 
 func (gdClass EditorImportPlugin) ResourceImporter() ResourceImporter { return ResourceImporter(gdClass) }
 
-func (gdClass EditorImportPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorImportPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_importer_name":
-		i, ok := val.(interface{ GetImporterName() string })
-		if ok {
-			return i.GetImporterName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImporterName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetImporterName`)
 		}
+		return
 	case "_get_visible_name":
-		i, ok := val.(interface{ GetVisibleName() string })
-		if ok {
-			return i.GetVisibleName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetVisibleName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetVisibleName`)
 		}
+		return
 	case "_get_preset_count":
-		i, ok := val.(interface{ GetPresetCount() int64 })
-		if ok {
-			return i.GetPresetCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPresetCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPresetCount`)
 		}
+		return
 	case "_get_preset_name":
-		i, ok := val.(interface{ GetPresetName(preset_index int64) string })
-		if ok {
-			return i.GetPresetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPresetName(preset_index int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetPresetName`)
 		}
+		return
 	case "_get_recognized_extensions":
-		i, ok := val.(interface{ GetRecognizedExtensions() []string })
-		if ok {
-			return i.GetRecognizedExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRecognizedExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetRecognizedExtensions`)
 		}
+		return
 	case "_get_import_options":
-		i, ok := val.(interface{ GetImportOptions(path string, preset_index int64) Array })
-		if ok {
-			return i.GetImportOptions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImportOptions(path string, preset_index int64) Array }{}).Elem()) {
+			return rtype.MethodByName(`GetImportOptions`)
 		}
+		return
 	case "_get_save_extension":
-		i, ok := val.(interface{ GetSaveExtension() string })
-		if ok {
-			return i.GetSaveExtension
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSaveExtension() string }{}).Elem()) {
+			return rtype.MethodByName(`GetSaveExtension`)
 		}
+		return
 	case "_get_resource_type":
-		i, ok := val.(interface{ GetResourceType() string })
-		if ok {
-			return i.GetResourceType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetResourceType() string }{}).Elem()) {
+			return rtype.MethodByName(`GetResourceType`)
 		}
+		return
 	case "_get_priority":
-		i, ok := val.(interface{ GetPriority() float64 })
-		if ok {
-			return i.GetPriority
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPriority() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPriority`)
 		}
+		return
 	case "_get_import_order":
-		i, ok := val.(interface{ GetImportOrder() int64 })
-		if ok {
-			return i.GetImportOrder
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImportOrder() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetImportOrder`)
 		}
+		return
 	case "_get_option_visibility":
-		i, ok := val.(interface{ GetOptionVisibility(path string, option_name string, options Dictionary) bool })
-		if ok {
-			return i.GetOptionVisibility
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOptionVisibility(path string, option_name string, options Dictionary) bool }{}).Elem()) {
+			return rtype.MethodByName(`GetOptionVisibility`)
 		}
+		return
 	case "_import":
-		i, ok := val.(interface{ Import(source_file string, save_path string, options Dictionary, platform_variants Array, gen_files Array) int64 })
-		if ok {
-			return i.Import
+		if rtype.Implements(reflect.TypeOf([0]interface{ Import(source_file string, save_path string, options Dictionary, platform_variants Array, gen_files Array) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Import`)
 		}
+		return
 	}
-	return nil
+	return gdClass.ResourceImporter().virtual(rtype, name)
 }
 
 type EditorInspector gdnative.Object
@@ -6281,6 +6816,9 @@ func (EditorInspector) class() string { return "EditorInspector\000" }
 
 func (gdClass EditorInspector) ScrollContainer() ScrollContainer { return ScrollContainer(gdClass) }
 
+func (gdClass EditorInspector) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ScrollContainer().virtual(rtype, name)
+}
 
 type EditorInspectorPlugin gdnative.Object
 func (EditorInspectorPlugin) class() string { return "EditorInspectorPlugin\000" }
@@ -6288,39 +6826,40 @@ func (EditorInspectorPlugin) class() string { return "EditorInspectorPlugin\000"
 func (gdClass EditorInspectorPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorInspectorPlugin [3]gdnative.Method
-func (gdClass EditorInspectorPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorInspectorPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_can_handle":
-		i, ok := val.(interface{ CanHandle(object any) bool })
-		if ok {
-			return i.CanHandle
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanHandle(object any) bool }{}).Elem()) {
+			return rtype.MethodByName(`CanHandle`)
 		}
+		return
 	case "_parse_begin":
-		i, ok := val.(interface{ ParseBegin(object Object)  })
-		if ok {
-			return i.ParseBegin
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseBegin(object Object)  }{}).Elem()) {
+			return rtype.MethodByName(`ParseBegin`)
 		}
+		return
 	case "_parse_category":
-		i, ok := val.(interface{ ParseCategory(object Object, category string)  })
-		if ok {
-			return i.ParseCategory
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseCategory(object Object, category string)  }{}).Elem()) {
+			return rtype.MethodByName(`ParseCategory`)
 		}
+		return
 	case "_parse_group":
-		i, ok := val.(interface{ ParseGroup(object Object, group string)  })
-		if ok {
-			return i.ParseGroup
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseGroup(object Object, group string)  }{}).Elem()) {
+			return rtype.MethodByName(`ParseGroup`)
 		}
+		return
 	case "_parse_property":
-		i, ok := val.(interface{ ParseProperty(object Object, atype int64, name string, hint_type int64, hint_string string, usage_flags int64, wide bool) bool })
-		if ok {
-			return i.ParseProperty
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseProperty(object Object, atype int64, name string, hint_type int64, hint_string string, usage_flags int64, wide bool) bool }{}).Elem()) {
+			return rtype.MethodByName(`ParseProperty`)
 		}
+		return
 	case "_parse_end":
-		i, ok := val.(interface{ ParseEnd(object Object)  })
-		if ok {
-			return i.ParseEnd
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseEnd(object Object)  }{}).Elem()) {
+			return rtype.MethodByName(`ParseEnd`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass EditorInspectorPlugin) AddCustomControl(control Control)  { gdnative.Call(gdnative.Object(gdClass), methodEditorInspectorPlugin[0], control) }
 func (gdClass EditorInspectorPlugin) AddPropertyEditor(property string, editor Control, add_to_end bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorInspectorPlugin[1], property, editor, add_to_end) }
@@ -6332,6 +6871,9 @@ func (EditorInterface) class() string { return "EditorInterface\000" }
 func (gdClass EditorInterface) Node() Node { return Node(gdClass) }
 
 var methodEditorInterface [37]gdnative.Method
+func (gdClass EditorInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass EditorInterface) InspectObject(object Object, for_property string, inspector_only bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorInterface[0], object, for_property, inspector_only) }
 func (gdClass EditorInterface) GetSelection() EditorSelection { return gdnative.Return[EditorSelection](gdnative.Object(gdClass), methodEditorInterface[1]) }
 func (gdClass EditorInterface) GetEditorSettings() EditorSettings { return gdnative.Return[EditorSettings](gdnative.Object(gdClass), methodEditorInterface[2]) }
@@ -6376,64 +6918,65 @@ func (EditorNode3DGizmo) class() string { return "EditorNode3DGizmo\000" }
 func (gdClass EditorNode3DGizmo) Node3DGizmo() Node3DGizmo { return Node3DGizmo(gdClass) }
 
 var methodEditorNode3DGizmo [13]gdnative.Method
-func (gdClass EditorNode3DGizmo) virtual(val any, name string) any {	switch name {
+func (gdClass EditorNode3DGizmo) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_redraw":
-		i, ok := val.(interface{ Redraw()  })
-		if ok {
-			return i.Redraw
+		if rtype.Implements(reflect.TypeOf([0]interface{ Redraw()  }{}).Elem()) {
+			return rtype.MethodByName(`Redraw`)
 		}
+		return
 	case "_get_handle_name":
-		i, ok := val.(interface{ GetHandleName(id int64, secondary bool) string })
-		if ok {
-			return i.GetHandleName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHandleName(id int64, secondary bool) string }{}).Elem()) {
+			return rtype.MethodByName(`GetHandleName`)
 		}
+		return
 	case "_is_handle_highlighted":
-		i, ok := val.(interface{ IsHandleHighlighted(id int64, secondary bool) bool })
-		if ok {
-			return i.IsHandleHighlighted
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsHandleHighlighted(id int64, secondary bool) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsHandleHighlighted`)
 		}
+		return
 	case "_get_handle_value":
-		i, ok := val.(interface{ GetHandleValue(id int64, secondary bool) any })
-		if ok {
-			return i.GetHandleValue
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHandleValue(id int64, secondary bool) any }{}).Elem()) {
+			return rtype.MethodByName(`GetHandleValue`)
 		}
+		return
 	case "_set_handle":
-		i, ok := val.(interface{ SetHandle(id int64, secondary bool, camera Camera3D, point Vector2)  })
-		if ok {
-			return i.SetHandle
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetHandle(id int64, secondary bool, camera Camera3D, point Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`SetHandle`)
 		}
+		return
 	case "_commit_handle":
-		i, ok := val.(interface{ CommitHandle(id int64, secondary bool, restore any, cancel bool)  })
-		if ok {
-			return i.CommitHandle
+		if rtype.Implements(reflect.TypeOf([0]interface{ CommitHandle(id int64, secondary bool, restore any, cancel bool)  }{}).Elem()) {
+			return rtype.MethodByName(`CommitHandle`)
 		}
+		return
 	case "_subgizmos_intersect_ray":
-		i, ok := val.(interface{ SubgizmosIntersectRay(camera Camera3D, point Vector2) int64 })
-		if ok {
-			return i.SubgizmosIntersectRay
+		if rtype.Implements(reflect.TypeOf([0]interface{ SubgizmosIntersectRay(camera Camera3D, point Vector2) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SubgizmosIntersectRay`)
 		}
+		return
 	case "_subgizmos_intersect_frustum":
-		i, ok := val.(interface{ SubgizmosIntersectFrustum(camera Camera3D, frustum Array) []int32 })
-		if ok {
-			return i.SubgizmosIntersectFrustum
+		if rtype.Implements(reflect.TypeOf([0]interface{ SubgizmosIntersectFrustum(camera Camera3D, frustum Array) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`SubgizmosIntersectFrustum`)
 		}
+		return
 	case "_set_subgizmo_transform":
-		i, ok := val.(interface{ SetSubgizmoTransform(id int64, transform Transform3D)  })
-		if ok {
-			return i.SetSubgizmoTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetSubgizmoTransform(id int64, transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`SetSubgizmoTransform`)
 		}
+		return
 	case "_get_subgizmo_transform":
-		i, ok := val.(interface{ GetSubgizmoTransform(id int64) Transform3D })
-		if ok {
-			return i.GetSubgizmoTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSubgizmoTransform(id int64) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`GetSubgizmoTransform`)
 		}
+		return
 	case "_commit_subgizmos":
-		i, ok := val.(interface{ CommitSubgizmos(ids []int32, restores Array, cancel bool)  })
-		if ok {
-			return i.CommitSubgizmos
+		if rtype.Implements(reflect.TypeOf([0]interface{ CommitSubgizmos(ids []int32, restores Array, cancel bool)  }{}).Elem()) {
+			return rtype.MethodByName(`CommitSubgizmos`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node3DGizmo().virtual(rtype, name)
 }
 func (gdClass EditorNode3DGizmo) AddLines(lines []Vector3, material Material, billboard bool, modulate Color)  { gdnative.Call(gdnative.Object(gdClass), methodEditorNode3DGizmo[0], lines, material, billboard, modulate) }
 func (gdClass EditorNode3DGizmo) AddMesh(mesh Mesh, material Material, transform Transform3D, skeleton SkinReference)  { gdnative.Call(gdnative.Object(gdClass), methodEditorNode3DGizmo[1], mesh, material, transform, skeleton) }
@@ -6455,94 +6998,95 @@ func (EditorNode3DGizmoPlugin) class() string { return "EditorNode3DGizmoPlugin\
 func (gdClass EditorNode3DGizmoPlugin) Resource() Resource { return Resource(gdClass) }
 
 var methodEditorNode3DGizmoPlugin [5]gdnative.Method
-func (gdClass EditorNode3DGizmoPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorNode3DGizmoPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_has_gizmo":
-		i, ok := val.(interface{ HasGizmo(for_node_3d Node3D) bool })
-		if ok {
-			return i.HasGizmo
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasGizmo(for_node_3d Node3D) bool }{}).Elem()) {
+			return rtype.MethodByName(`HasGizmo`)
 		}
+		return
 	case "_create_gizmo":
-		i, ok := val.(interface{ CreateGizmo(for_node_3d Node3D) EditorNode3DGizmo })
-		if ok {
-			return i.CreateGizmo
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateGizmo(for_node_3d Node3D) EditorNode3DGizmo }{}).Elem()) {
+			return rtype.MethodByName(`CreateGizmo`)
 		}
+		return
 	case "_get_gizmo_name":
-		i, ok := val.(interface{ GetGizmoName() string })
-		if ok {
-			return i.GetGizmoName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetGizmoName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetGizmoName`)
 		}
+		return
 	case "_get_priority":
-		i, ok := val.(interface{ GetPriority() int64 })
-		if ok {
-			return i.GetPriority
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPriority() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPriority`)
 		}
+		return
 	case "_can_be_hidden":
-		i, ok := val.(interface{ CanBeHidden() bool })
-		if ok {
-			return i.CanBeHidden
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanBeHidden() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanBeHidden`)
 		}
+		return
 	case "_is_selectable_when_hidden":
-		i, ok := val.(interface{ IsSelectableWhenHidden() bool })
-		if ok {
-			return i.IsSelectableWhenHidden
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsSelectableWhenHidden() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsSelectableWhenHidden`)
 		}
+		return
 	case "_redraw":
-		i, ok := val.(interface{ Redraw(gizmo EditorNode3DGizmo)  })
-		if ok {
-			return i.Redraw
+		if rtype.Implements(reflect.TypeOf([0]interface{ Redraw(gizmo EditorNode3DGizmo)  }{}).Elem()) {
+			return rtype.MethodByName(`Redraw`)
 		}
+		return
 	case "_get_handle_name":
-		i, ok := val.(interface{ GetHandleName(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) string })
-		if ok {
-			return i.GetHandleName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHandleName(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) string }{}).Elem()) {
+			return rtype.MethodByName(`GetHandleName`)
 		}
+		return
 	case "_is_handle_highlighted":
-		i, ok := val.(interface{ IsHandleHighlighted(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) bool })
-		if ok {
-			return i.IsHandleHighlighted
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsHandleHighlighted(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsHandleHighlighted`)
 		}
+		return
 	case "_get_handle_value":
-		i, ok := val.(interface{ GetHandleValue(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) any })
-		if ok {
-			return i.GetHandleValue
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHandleValue(gizmo EditorNode3DGizmo, handle_id int64, secondary bool) any }{}).Elem()) {
+			return rtype.MethodByName(`GetHandleValue`)
 		}
+		return
 	case "_set_handle":
-		i, ok := val.(interface{ SetHandle(gizmo EditorNode3DGizmo, handle_id int64, secondary bool, camera Camera3D, screen_pos Vector2)  })
-		if ok {
-			return i.SetHandle
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetHandle(gizmo EditorNode3DGizmo, handle_id int64, secondary bool, camera Camera3D, screen_pos Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`SetHandle`)
 		}
+		return
 	case "_commit_handle":
-		i, ok := val.(interface{ CommitHandle(gizmo EditorNode3DGizmo, handle_id int64, secondary bool, restore any, cancel bool)  })
-		if ok {
-			return i.CommitHandle
+		if rtype.Implements(reflect.TypeOf([0]interface{ CommitHandle(gizmo EditorNode3DGizmo, handle_id int64, secondary bool, restore any, cancel bool)  }{}).Elem()) {
+			return rtype.MethodByName(`CommitHandle`)
 		}
+		return
 	case "_subgizmos_intersect_ray":
-		i, ok := val.(interface{ SubgizmosIntersectRay(gizmo EditorNode3DGizmo, camera Camera3D, screen_pos Vector2) int64 })
-		if ok {
-			return i.SubgizmosIntersectRay
+		if rtype.Implements(reflect.TypeOf([0]interface{ SubgizmosIntersectRay(gizmo EditorNode3DGizmo, camera Camera3D, screen_pos Vector2) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SubgizmosIntersectRay`)
 		}
+		return
 	case "_subgizmos_intersect_frustum":
-		i, ok := val.(interface{ SubgizmosIntersectFrustum(gizmo EditorNode3DGizmo, camera Camera3D, frustum_planes Array) []int32 })
-		if ok {
-			return i.SubgizmosIntersectFrustum
+		if rtype.Implements(reflect.TypeOf([0]interface{ SubgizmosIntersectFrustum(gizmo EditorNode3DGizmo, camera Camera3D, frustum_planes Array) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`SubgizmosIntersectFrustum`)
 		}
+		return
 	case "_get_subgizmo_transform":
-		i, ok := val.(interface{ GetSubgizmoTransform(gizmo EditorNode3DGizmo, subgizmo_id int64) Transform3D })
-		if ok {
-			return i.GetSubgizmoTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSubgizmoTransform(gizmo EditorNode3DGizmo, subgizmo_id int64) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`GetSubgizmoTransform`)
 		}
+		return
 	case "_set_subgizmo_transform":
-		i, ok := val.(interface{ SetSubgizmoTransform(gizmo EditorNode3DGizmo, subgizmo_id int64, transform Transform3D)  })
-		if ok {
-			return i.SetSubgizmoTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetSubgizmoTransform(gizmo EditorNode3DGizmo, subgizmo_id int64, transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`SetSubgizmoTransform`)
 		}
+		return
 	case "_commit_subgizmos":
-		i, ok := val.(interface{ CommitSubgizmos(gizmo EditorNode3DGizmo, ids []int32, restores Array, cancel bool)  })
-		if ok {
-			return i.CommitSubgizmos
+		if rtype.Implements(reflect.TypeOf([0]interface{ CommitSubgizmos(gizmo EditorNode3DGizmo, ids []int32, restores Array, cancel bool)  }{}).Elem()) {
+			return rtype.MethodByName(`CommitSubgizmos`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass EditorNode3DGizmoPlugin) CreateMaterial(name string, color Color, billboard bool, on_top bool, use_vertex_color bool)  { gdnative.Call(gdnative.Object(gdClass), methodEditorNode3DGizmoPlugin[0], name, color, billboard, on_top, use_vertex_color) }
 func (gdClass EditorNode3DGizmoPlugin) CreateIconMaterial(name string, texture Texture2D, on_top bool, color Color)  { gdnative.Call(gdnative.Object(gdClass), methodEditorNode3DGizmoPlugin[1], name, texture, on_top, color) }
@@ -6556,6 +7100,9 @@ func (EditorPaths) class() string { return "EditorPaths\000" }
 func (gdClass EditorPaths) Object() Object { return Object(gdClass) }
 
 var methodEditorPaths [6]gdnative.Method
+func (gdClass EditorPaths) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass EditorPaths) GetDataDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorPaths[0]) }
 func (gdClass EditorPaths) GetConfigDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorPaths[1]) }
 func (gdClass EditorPaths) GetCacheDir() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorPaths[2]) }
@@ -6600,124 +7147,125 @@ func (EditorPlugin) class() string { return "EditorPlugin\000" }
 func (gdClass EditorPlugin) Node() Node { return Node(gdClass) }
 
 var methodEditorPlugin [41]gdnative.Method
-func (gdClass EditorPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_forward_canvas_gui_input":
-		i, ok := val.(interface{ ForwardCanvasGuiInput(event InputEvent) bool })
-		if ok {
-			return i.ForwardCanvasGuiInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ ForwardCanvasGuiInput(event InputEvent) bool }{}).Elem()) {
+			return rtype.MethodByName(`ForwardCanvasGuiInput`)
 		}
+		return
 	case "_forward_canvas_draw_over_viewport":
-		i, ok := val.(interface{ ForwardCanvasDrawOverViewport(viewport_control Control)  })
-		if ok {
-			return i.ForwardCanvasDrawOverViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ ForwardCanvasDrawOverViewport(viewport_control Control)  }{}).Elem()) {
+			return rtype.MethodByName(`ForwardCanvasDrawOverViewport`)
 		}
+		return
 	case "_forward_canvas_force_draw_over_viewport":
-		i, ok := val.(interface{ ForwardCanvasForceDrawOverViewport(viewport_control Control)  })
-		if ok {
-			return i.ForwardCanvasForceDrawOverViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ ForwardCanvasForceDrawOverViewport(viewport_control Control)  }{}).Elem()) {
+			return rtype.MethodByName(`ForwardCanvasForceDrawOverViewport`)
 		}
+		return
 	case "_forward_3d_gui_input":
-		i, ok := val.(interface{ Forward3dGuiInput(viewport_camera Camera3D, event InputEvent) int64 })
-		if ok {
-			return i.Forward3dGuiInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ Forward3dGuiInput(viewport_camera Camera3D, event InputEvent) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Forward3dGuiInput`)
 		}
+		return
 	case "_forward_3d_draw_over_viewport":
-		i, ok := val.(interface{ Forward3dDrawOverViewport(viewport_control Control)  })
-		if ok {
-			return i.Forward3dDrawOverViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ Forward3dDrawOverViewport(viewport_control Control)  }{}).Elem()) {
+			return rtype.MethodByName(`Forward3dDrawOverViewport`)
 		}
+		return
 	case "_forward_3d_force_draw_over_viewport":
-		i, ok := val.(interface{ Forward3dForceDrawOverViewport(viewport_control Control)  })
-		if ok {
-			return i.Forward3dForceDrawOverViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ Forward3dForceDrawOverViewport(viewport_control Control)  }{}).Elem()) {
+			return rtype.MethodByName(`Forward3dForceDrawOverViewport`)
 		}
+		return
 	case "_get_plugin_name":
-		i, ok := val.(interface{ GetPluginName() string })
-		if ok {
-			return i.GetPluginName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPluginName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetPluginName`)
 		}
+		return
 	case "_get_plugin_icon":
-		i, ok := val.(interface{ GetPluginIcon() Texture2D })
-		if ok {
-			return i.GetPluginIcon
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPluginIcon() Texture2D }{}).Elem()) {
+			return rtype.MethodByName(`GetPluginIcon`)
 		}
+		return
 	case "_has_main_screen":
-		i, ok := val.(interface{ HasMainScreen() bool })
-		if ok {
-			return i.HasMainScreen
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasMainScreen() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasMainScreen`)
 		}
+		return
 	case "_make_visible":
-		i, ok := val.(interface{ MakeVisible(visible bool)  })
-		if ok {
-			return i.MakeVisible
+		if rtype.Implements(reflect.TypeOf([0]interface{ MakeVisible(visible bool)  }{}).Elem()) {
+			return rtype.MethodByName(`MakeVisible`)
 		}
+		return
 	case "_edit":
-		i, ok := val.(interface{ Edit(object any)  })
-		if ok {
-			return i.Edit
+		if rtype.Implements(reflect.TypeOf([0]interface{ Edit(object any)  }{}).Elem()) {
+			return rtype.MethodByName(`Edit`)
 		}
+		return
 	case "_handles":
-		i, ok := val.(interface{ Handles(object any) bool })
-		if ok {
-			return i.Handles
+		if rtype.Implements(reflect.TypeOf([0]interface{ Handles(object any) bool }{}).Elem()) {
+			return rtype.MethodByName(`Handles`)
 		}
+		return
 	case "_get_state":
-		i, ok := val.(interface{ GetState() Dictionary })
-		if ok {
-			return i.GetState
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetState() Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetState`)
 		}
+		return
 	case "_set_state":
-		i, ok := val.(interface{ SetState(state Dictionary)  })
-		if ok {
-			return i.SetState
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetState(state Dictionary)  }{}).Elem()) {
+			return rtype.MethodByName(`SetState`)
 		}
+		return
 	case "_clear":
-		i, ok := val.(interface{ Clear()  })
-		if ok {
-			return i.Clear
+		if rtype.Implements(reflect.TypeOf([0]interface{ Clear()  }{}).Elem()) {
+			return rtype.MethodByName(`Clear`)
 		}
+		return
 	case "_save_external_data":
-		i, ok := val.(interface{ SaveExternalData()  })
-		if ok {
-			return i.SaveExternalData
+		if rtype.Implements(reflect.TypeOf([0]interface{ SaveExternalData()  }{}).Elem()) {
+			return rtype.MethodByName(`SaveExternalData`)
 		}
+		return
 	case "_apply_changes":
-		i, ok := val.(interface{ ApplyChanges()  })
-		if ok {
-			return i.ApplyChanges
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyChanges()  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyChanges`)
 		}
+		return
 	case "_get_breakpoints":
-		i, ok := val.(interface{ GetBreakpoints() []string })
-		if ok {
-			return i.GetBreakpoints
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBreakpoints() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetBreakpoints`)
 		}
+		return
 	case "_set_window_layout":
-		i, ok := val.(interface{ SetWindowLayout(configuration ConfigFile)  })
-		if ok {
-			return i.SetWindowLayout
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetWindowLayout(configuration ConfigFile)  }{}).Elem()) {
+			return rtype.MethodByName(`SetWindowLayout`)
 		}
+		return
 	case "_get_window_layout":
-		i, ok := val.(interface{ GetWindowLayout(configuration ConfigFile)  })
-		if ok {
-			return i.GetWindowLayout
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWindowLayout(configuration ConfigFile)  }{}).Elem()) {
+			return rtype.MethodByName(`GetWindowLayout`)
 		}
+		return
 	case "_build":
-		i, ok := val.(interface{ Build() bool })
-		if ok {
-			return i.Build
+		if rtype.Implements(reflect.TypeOf([0]interface{ Build() bool }{}).Elem()) {
+			return rtype.MethodByName(`Build`)
 		}
+		return
 	case "_enable_plugin":
-		i, ok := val.(interface{ EnablePlugin()  })
-		if ok {
-			return i.EnablePlugin
+		if rtype.Implements(reflect.TypeOf([0]interface{ EnablePlugin()  }{}).Elem()) {
+			return rtype.MethodByName(`EnablePlugin`)
 		}
+		return
 	case "_disable_plugin":
-		i, ok := val.(interface{ DisablePlugin()  })
-		if ok {
-			return i.DisablePlugin
+		if rtype.Implements(reflect.TypeOf([0]interface{ DisablePlugin()  }{}).Elem()) {
+			return rtype.MethodByName(`DisablePlugin`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node().virtual(rtype, name)
 }
 func (gdClass EditorPlugin) AddControlToContainer(container EditorPluginCustomControlContainer, control Control)  { gdnative.Call(gdnative.Object(gdClass), methodEditorPlugin[0], container, control) }
 func (gdClass EditorPlugin) AddControlToBottomPanel(control Control, title string) Button { return gdnative.Return[Button](gdnative.Object(gdClass), methodEditorPlugin[1], control, title) }
@@ -6767,14 +7315,15 @@ func (EditorProperty) class() string { return "EditorProperty\000" }
 func (gdClass EditorProperty) Container() Container { return Container(gdClass) }
 
 var methodEditorProperty [21]gdnative.Method
-func (gdClass EditorProperty) virtual(val any, name string) any {	switch name {
+func (gdClass EditorProperty) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_update_property":
-		i, ok := val.(interface{ UpdateProperty()  })
-		if ok {
-			return i.UpdateProperty
+		if rtype.Implements(reflect.TypeOf([0]interface{ UpdateProperty()  }{}).Elem()) {
+			return rtype.MethodByName(`UpdateProperty`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Container().virtual(rtype, name)
 }
 func (gdClass EditorProperty) SetLabel(text string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorProperty[0], text) }
 func (gdClass EditorProperty) GetLabel() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorProperty[1]) }
@@ -6803,24 +7352,25 @@ func (EditorResourceConversionPlugin) class() string { return "EditorResourceCon
 
 func (gdClass EditorResourceConversionPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EditorResourceConversionPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorResourceConversionPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_converts_to":
-		i, ok := val.(interface{ ConvertsTo() string })
-		if ok {
-			return i.ConvertsTo
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConvertsTo() string }{}).Elem()) {
+			return rtype.MethodByName(`ConvertsTo`)
 		}
+		return
 	case "_handles":
-		i, ok := val.(interface{ Handles(resource Resource) bool })
-		if ok {
-			return i.Handles
+		if rtype.Implements(reflect.TypeOf([0]interface{ Handles(resource Resource) bool }{}).Elem()) {
+			return rtype.MethodByName(`Handles`)
 		}
+		return
 	case "_convert":
-		i, ok := val.(interface{ Convert(resource Resource) Resource })
-		if ok {
-			return i.Convert
+		if rtype.Implements(reflect.TypeOf([0]interface{ Convert(resource Resource) Resource }{}).Elem()) {
+			return rtype.MethodByName(`Convert`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EditorResourcePicker gdnative.Object
@@ -6829,19 +7379,20 @@ func (EditorResourcePicker) class() string { return "EditorResourcePicker\000" }
 func (gdClass EditorResourcePicker) HBoxContainer() HBoxContainer { return HBoxContainer(gdClass) }
 
 var methodEditorResourcePicker [10]gdnative.Method
-func (gdClass EditorResourcePicker) virtual(val any, name string) any {	switch name {
+func (gdClass EditorResourcePicker) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_set_create_options":
-		i, ok := val.(interface{ SetCreateOptions(menu_node Object)  })
-		if ok {
-			return i.SetCreateOptions
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetCreateOptions(menu_node Object)  }{}).Elem()) {
+			return rtype.MethodByName(`SetCreateOptions`)
 		}
+		return
 	case "_handle_menu_selected":
-		i, ok := val.(interface{ HandleMenuSelected(id int64) bool })
-		if ok {
-			return i.HandleMenuSelected
+		if rtype.Implements(reflect.TypeOf([0]interface{ HandleMenuSelected(id int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`HandleMenuSelected`)
 		}
+		return
 	}
-	return nil
+	return gdClass.HBoxContainer().virtual(rtype, name)
 }
 func (gdClass EditorResourcePicker) SetBaseType(base_type string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePicker[0], base_type) }
 func (gdClass EditorResourcePicker) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorResourcePicker[1]) }
@@ -6860,6 +7411,9 @@ func (EditorResourcePreview) class() string { return "EditorResourcePreview\000"
 func (gdClass EditorResourcePreview) Node() Node { return Node(gdClass) }
 
 var methodEditorResourcePreview [5]gdnative.Method
+func (gdClass EditorResourcePreview) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass EditorResourcePreview) QueueResourcePreview(path string, receiver Object, receiver_func string, userdata any)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePreview[0], path, receiver, receiver_func, userdata) }
 func (gdClass EditorResourcePreview) QueueEditedResourcePreview(resource Resource, receiver Object, receiver_func string, userdata any)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePreview[1], resource, receiver, receiver_func, userdata) }
 func (gdClass EditorResourcePreview) AddPreviewGenerator(generator EditorResourcePreviewGenerator)  { gdnative.Call(gdnative.Object(gdClass), methodEditorResourcePreview[2], generator) }
@@ -6871,34 +7425,35 @@ func (EditorResourcePreviewGenerator) class() string { return "EditorResourcePre
 
 func (gdClass EditorResourcePreviewGenerator) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EditorResourcePreviewGenerator) virtual(val any, name string) any {	switch name {
+func (gdClass EditorResourcePreviewGenerator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_handles":
-		i, ok := val.(interface{ Handles(atype string) bool })
-		if ok {
-			return i.Handles
+		if rtype.Implements(reflect.TypeOf([0]interface{ Handles(atype string) bool }{}).Elem()) {
+			return rtype.MethodByName(`Handles`)
 		}
+		return
 	case "_generate":
-		i, ok := val.(interface{ Generate(resource Resource, size Vector2i) Texture2D })
-		if ok {
-			return i.Generate
+		if rtype.Implements(reflect.TypeOf([0]interface{ Generate(resource Resource, size Vector2i) Texture2D }{}).Elem()) {
+			return rtype.MethodByName(`Generate`)
 		}
+		return
 	case "_generate_from_path":
-		i, ok := val.(interface{ GenerateFromPath(path string, size Vector2i) Texture2D })
-		if ok {
-			return i.GenerateFromPath
+		if rtype.Implements(reflect.TypeOf([0]interface{ GenerateFromPath(path string, size Vector2i) Texture2D }{}).Elem()) {
+			return rtype.MethodByName(`GenerateFromPath`)
 		}
+		return
 	case "_generate_small_preview_automatically":
-		i, ok := val.(interface{ GenerateSmallPreviewAutomatically() bool })
-		if ok {
-			return i.GenerateSmallPreviewAutomatically
+		if rtype.Implements(reflect.TypeOf([0]interface{ GenerateSmallPreviewAutomatically() bool }{}).Elem()) {
+			return rtype.MethodByName(`GenerateSmallPreviewAutomatically`)
 		}
+		return
 	case "_can_generate_small_preview":
-		i, ok := val.(interface{ CanGenerateSmallPreview() bool })
-		if ok {
-			return i.CanGenerateSmallPreview
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanGenerateSmallPreview() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanGenerateSmallPreview`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EditorSceneFormatImporter gdnative.Object
@@ -6906,34 +7461,35 @@ func (EditorSceneFormatImporter) class() string { return "EditorSceneFormatImpor
 
 func (gdClass EditorSceneFormatImporter) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EditorSceneFormatImporter) virtual(val any, name string) any {	switch name {
+func (gdClass EditorSceneFormatImporter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_import_flags":
-		i, ok := val.(interface{ GetImportFlags() int64 })
-		if ok {
-			return i.GetImportFlags
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImportFlags() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetImportFlags`)
 		}
+		return
 	case "_get_extensions":
-		i, ok := val.(interface{ GetExtensions() []string })
-		if ok {
-			return i.GetExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetExtensions`)
 		}
+		return
 	case "_import_scene":
-		i, ok := val.(interface{ ImportScene(path string, flags int64, options Dictionary, bake_fps int64) Object })
-		if ok {
-			return i.ImportScene
+		if rtype.Implements(reflect.TypeOf([0]interface{ ImportScene(path string, flags int64, options Dictionary, bake_fps int64) Object }{}).Elem()) {
+			return rtype.MethodByName(`ImportScene`)
 		}
+		return
 	case "_get_import_options":
-		i, ok := val.(interface{ GetImportOptions(path string)  })
-		if ok {
-			return i.GetImportOptions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImportOptions(path string)  }{}).Elem()) {
+			return rtype.MethodByName(`GetImportOptions`)
 		}
+		return
 	case "_get_option_visibility":
-		i, ok := val.(interface{ GetOptionVisibility(path string, for_animation bool, option string) any })
-		if ok {
-			return i.GetOptionVisibility
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOptionVisibility(path string, for_animation bool, option string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetOptionVisibility`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EditorSceneFormatImporterBlend gdnative.Object
@@ -6941,18 +7497,27 @@ func (EditorSceneFormatImporterBlend) class() string { return "EditorSceneFormat
 
 func (gdClass EditorSceneFormatImporterBlend) EditorSceneFormatImporter() EditorSceneFormatImporter { return EditorSceneFormatImporter(gdClass) }
 
+func (gdClass EditorSceneFormatImporterBlend) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.EditorSceneFormatImporter().virtual(rtype, name)
+}
 
 type EditorSceneFormatImporterFBX gdnative.Object
 func (EditorSceneFormatImporterFBX) class() string { return "EditorSceneFormatImporterFBX\000" }
 
 func (gdClass EditorSceneFormatImporterFBX) EditorSceneFormatImporter() EditorSceneFormatImporter { return EditorSceneFormatImporter(gdClass) }
 
+func (gdClass EditorSceneFormatImporterFBX) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.EditorSceneFormatImporter().virtual(rtype, name)
+}
 
 type EditorSceneFormatImporterGLTF gdnative.Object
 func (EditorSceneFormatImporterGLTF) class() string { return "EditorSceneFormatImporterGLTF\000" }
 
 func (gdClass EditorSceneFormatImporterGLTF) EditorSceneFormatImporter() EditorSceneFormatImporter { return EditorSceneFormatImporter(gdClass) }
 
+func (gdClass EditorSceneFormatImporterGLTF) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.EditorSceneFormatImporter().virtual(rtype, name)
+}
 
 type EditorScenePostImport gdnative.Object
 func (EditorScenePostImport) class() string { return "EditorScenePostImport\000" }
@@ -6960,14 +7525,15 @@ func (EditorScenePostImport) class() string { return "EditorScenePostImport\000"
 func (gdClass EditorScenePostImport) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorScenePostImport [1]gdnative.Method
-func (gdClass EditorScenePostImport) virtual(val any, name string) any {	switch name {
+func (gdClass EditorScenePostImport) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_post_import":
-		i, ok := val.(interface{ PostImport(scene Node) Object })
-		if ok {
-			return i.PostImport
+		if rtype.Implements(reflect.TypeOf([0]interface{ PostImport(scene Node) Object }{}).Elem()) {
+			return rtype.MethodByName(`PostImport`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass EditorScenePostImport) GetSourceFile() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorScenePostImport[0]) }
 
@@ -6990,49 +7556,50 @@ func (EditorScenePostImportPlugin) class() string { return "EditorScenePostImpor
 func (gdClass EditorScenePostImportPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorScenePostImportPlugin [3]gdnative.Method
-func (gdClass EditorScenePostImportPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorScenePostImportPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_internal_import_options":
-		i, ok := val.(interface{ GetInternalImportOptions(category int64)  })
-		if ok {
-			return i.GetInternalImportOptions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInternalImportOptions(category int64)  }{}).Elem()) {
+			return rtype.MethodByName(`GetInternalImportOptions`)
 		}
+		return
 	case "_get_internal_option_visibility":
-		i, ok := val.(interface{ GetInternalOptionVisibility(category int64, for_animation bool, option string) any })
-		if ok {
-			return i.GetInternalOptionVisibility
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInternalOptionVisibility(category int64, for_animation bool, option string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetInternalOptionVisibility`)
 		}
+		return
 	case "_get_internal_option_update_view_required":
-		i, ok := val.(interface{ GetInternalOptionUpdateViewRequired(category int64, option string) any })
-		if ok {
-			return i.GetInternalOptionUpdateViewRequired
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInternalOptionUpdateViewRequired(category int64, option string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetInternalOptionUpdateViewRequired`)
 		}
+		return
 	case "_internal_process":
-		i, ok := val.(interface{ InternalProcess(category int64, base_node Node, node Node, resource Resource)  })
-		if ok {
-			return i.InternalProcess
+		if rtype.Implements(reflect.TypeOf([0]interface{ InternalProcess(category int64, base_node Node, node Node, resource Resource)  }{}).Elem()) {
+			return rtype.MethodByName(`InternalProcess`)
 		}
+		return
 	case "_get_import_options":
-		i, ok := val.(interface{ GetImportOptions(path string)  })
-		if ok {
-			return i.GetImportOptions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetImportOptions(path string)  }{}).Elem()) {
+			return rtype.MethodByName(`GetImportOptions`)
 		}
+		return
 	case "_get_option_visibility":
-		i, ok := val.(interface{ GetOptionVisibility(path string, for_animation bool, option string) any })
-		if ok {
-			return i.GetOptionVisibility
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOptionVisibility(path string, for_animation bool, option string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetOptionVisibility`)
 		}
+		return
 	case "_pre_process":
-		i, ok := val.(interface{ PreProcess(scene Node)  })
-		if ok {
-			return i.PreProcess
+		if rtype.Implements(reflect.TypeOf([0]interface{ PreProcess(scene Node)  }{}).Elem()) {
+			return rtype.MethodByName(`PreProcess`)
 		}
+		return
 	case "_post_process":
-		i, ok := val.(interface{ PostProcess(scene Node)  })
-		if ok {
-			return i.PostProcess
+		if rtype.Implements(reflect.TypeOf([0]interface{ PostProcess(scene Node)  }{}).Elem()) {
+			return rtype.MethodByName(`PostProcess`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass EditorScenePostImportPlugin) GetOptionValue(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodEditorScenePostImportPlugin[0], name) }
 func (gdClass EditorScenePostImportPlugin) AddImportOption(name string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodEditorScenePostImportPlugin[1], name, value) }
@@ -7044,14 +7611,15 @@ func (EditorScript) class() string { return "EditorScript\000" }
 func (gdClass EditorScript) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEditorScript [3]gdnative.Method
-func (gdClass EditorScript) virtual(val any, name string) any {	switch name {
+func (gdClass EditorScript) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_run":
-		i, ok := val.(interface{ Run()  })
-		if ok {
-			return i.Run
+		if rtype.Implements(reflect.TypeOf([0]interface{ Run()  }{}).Elem()) {
+			return rtype.MethodByName(`Run`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 func (gdClass EditorScript) AddRootNode(node Node)  { gdnative.Call(gdnative.Object(gdClass), methodEditorScript[0], node) }
 func (gdClass EditorScript) GetScene() Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodEditorScript[1]) }
@@ -7063,6 +7631,9 @@ func (EditorScriptPicker) class() string { return "EditorScriptPicker\000" }
 func (gdClass EditorScriptPicker) EditorResourcePicker() EditorResourcePicker { return EditorResourcePicker(gdClass) }
 
 var methodEditorScriptPicker [2]gdnative.Method
+func (gdClass EditorScriptPicker) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.EditorResourcePicker().virtual(rtype, name)
+}
 func (gdClass EditorScriptPicker) SetScriptOwner(owner_node Node)  { gdnative.Call(gdnative.Object(gdClass), methodEditorScriptPicker[0], owner_node) }
 func (gdClass EditorScriptPicker) GetScriptOwner() Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodEditorScriptPicker[1]) }
 
@@ -7072,6 +7643,9 @@ func (EditorSelection) class() string { return "EditorSelection\000" }
 func (gdClass EditorSelection) Object() Object { return Object(gdClass) }
 
 var methodEditorSelection [5]gdnative.Method
+func (gdClass EditorSelection) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass EditorSelection) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodEditorSelection[0]) }
 func (gdClass EditorSelection) AddNode(node Node)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSelection[1], node) }
 func (gdClass EditorSelection) RemoveNode(node Node)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSelection[2], node) }
@@ -7084,6 +7658,9 @@ func (EditorSettings) class() string { return "EditorSettings\000" }
 func (gdClass EditorSettings) Resource() Resource { return Resource(gdClass) }
 
 var methodEditorSettings [16]gdnative.Method
+func (gdClass EditorSettings) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass EditorSettings) HasSetting(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorSettings[0], name) }
 func (gdClass EditorSettings) SetSetting(name string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSettings[1], name, value) }
 func (gdClass EditorSettings) GetSetting(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodEditorSettings[2], name) }
@@ -7107,6 +7684,9 @@ func (EditorSpinSlider) class() string { return "EditorSpinSlider\000" }
 func (gdClass EditorSpinSlider) Range() Range { return Range(gdClass) }
 
 var methodEditorSpinSlider [10]gdnative.Method
+func (gdClass EditorSpinSlider) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass EditorSpinSlider) SetLabel(label string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSpinSlider[0], label) }
 func (gdClass EditorSpinSlider) GetLabel() string { return gdnative.Return[string](gdnative.Object(gdClass), methodEditorSpinSlider[1]) }
 func (gdClass EditorSpinSlider) SetSuffix(suffix string)  { gdnative.Call(gdnative.Object(gdClass), methodEditorSpinSlider[2], suffix) }
@@ -7123,19 +7703,20 @@ func (EditorSyntaxHighlighter) class() string { return "EditorSyntaxHighlighter\
 
 func (gdClass EditorSyntaxHighlighter) SyntaxHighlighter() SyntaxHighlighter { return SyntaxHighlighter(gdClass) }
 
-func (gdClass EditorSyntaxHighlighter) virtual(val any, name string) any {	switch name {
+func (gdClass EditorSyntaxHighlighter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_name":
-		i, ok := val.(interface{ GetName() string })
-		if ok {
-			return i.GetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetName`)
 		}
+		return
 	case "_get_supported_languages":
-		i, ok := val.(interface{ GetSupportedLanguages() Array })
-		if ok {
-			return i.GetSupportedLanguages
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSupportedLanguages() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetSupportedLanguages`)
 		}
+		return
 	}
-	return nil
+	return gdClass.SyntaxHighlighter().virtual(rtype, name)
 }
 
 type EditorTranslationParserPlugin gdnative.Object
@@ -7143,19 +7724,20 @@ func (EditorTranslationParserPlugin) class() string { return "EditorTranslationP
 
 func (gdClass EditorTranslationParserPlugin) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EditorTranslationParserPlugin) virtual(val any, name string) any {	switch name {
+func (gdClass EditorTranslationParserPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_parse_file":
-		i, ok := val.(interface{ ParseFile(path string, msgids Array, msgids_context_plural Array)  })
-		if ok {
-			return i.ParseFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseFile(path string, msgids Array, msgids_context_plural Array)  }{}).Elem()) {
+			return rtype.MethodByName(`ParseFile`)
 		}
+		return
 	case "_get_recognized_extensions":
-		i, ok := val.(interface{ GetRecognizedExtensions() []string })
-		if ok {
-			return i.GetRecognizedExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRecognizedExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetRecognizedExtensions`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EditorVCSInterface gdnative.Object
@@ -7164,6 +7746,9 @@ func (EditorVCSInterface) class() string { return "EditorVCSInterface\000" }
 func (gdClass EditorVCSInterface) Object() Object { return Object(gdClass) }
 
 var methodEditorVCSInterface [11]gdnative.Method
+func (gdClass EditorVCSInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass EditorVCSInterface) IsAddonReady() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorVCSInterface[0]) }
 func (gdClass EditorVCSInterface) Initialize(project_root_path string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorVCSInterface[1], project_root_path) }
 func (gdClass EditorVCSInterface) IsVcsInitialized() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEditorVCSInterface[2]) }
@@ -7182,6 +7767,9 @@ func (EncodedObjectAsID) class() string { return "EncodedObjectAsID\000" }
 func (gdClass EncodedObjectAsID) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodEncodedObjectAsID [2]gdnative.Method
+func (gdClass EncodedObjectAsID) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass EncodedObjectAsID) SetObjectId(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodEncodedObjectAsID[0], id) }
 func (gdClass EncodedObjectAsID) GetObjectId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEncodedObjectAsID[1]) }
 
@@ -7191,6 +7779,9 @@ func (Engine) class() string { return "Engine\000" }
 func (gdClass Engine) Object() Object { return Object(gdClass) }
 
 var methodEngine [34]gdnative.Method
+func (gdClass Engine) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Engine) SetPhysicsTicksPerSecond(physics_ticks_per_second int64)  { gdnative.Call(gdnative.Object(gdClass), methodEngine[0], physics_ticks_per_second) }
 func (gdClass Engine) GetPhysicsTicksPerSecond() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodEngine[1]) }
 func (gdClass Engine) SetPhysicsJitterFix(physics_jitter_fix float64)  { gdnative.Call(gdnative.Object(gdClass), methodEngine[2], physics_jitter_fix) }
@@ -7232,6 +7823,9 @@ func (EngineDebugger) class() string { return "EngineDebugger\000" }
 func (gdClass EngineDebugger) Object() Object { return Object(gdClass) }
 
 var methodEngineDebugger [11]gdnative.Method
+func (gdClass EngineDebugger) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass EngineDebugger) IsActive() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodEngineDebugger[0]) }
 func (gdClass EngineDebugger) RegisterProfiler(name string, profiler EngineProfiler)  { gdnative.Call(gdnative.Object(gdClass), methodEngineDebugger[1], name, profiler) }
 func (gdClass EngineDebugger) UnregisterProfiler(name string)  { gdnative.Call(gdnative.Object(gdClass), methodEngineDebugger[2], name) }
@@ -7249,24 +7843,25 @@ func (EngineProfiler) class() string { return "EngineProfiler\000" }
 
 func (gdClass EngineProfiler) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass EngineProfiler) virtual(val any, name string) any {	switch name {
+func (gdClass EngineProfiler) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_toggle":
-		i, ok := val.(interface{ Toggle(enable bool, options Array)  })
-		if ok {
-			return i.Toggle
+		if rtype.Implements(reflect.TypeOf([0]interface{ Toggle(enable bool, options Array)  }{}).Elem()) {
+			return rtype.MethodByName(`Toggle`)
 		}
+		return
 	case "_add_frame":
-		i, ok := val.(interface{ AddFrame(data Array)  })
-		if ok {
-			return i.AddFrame
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddFrame(data Array)  }{}).Elem()) {
+			return rtype.MethodByName(`AddFrame`)
 		}
+		return
 	case "_tick":
-		i, ok := val.(interface{ Tick(frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)  })
-		if ok {
-			return i.Tick
+		if rtype.Implements(reflect.TypeOf([0]interface{ Tick(frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Tick`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type EnvironmentBGMode int64
@@ -7331,6 +7926,9 @@ func (Environment) class() string { return "Environment\000" }
 func (gdClass Environment) Resource() Resource { return Resource(gdClass) }
 
 var methodEnvironment [180]gdnative.Method
+func (gdClass Environment) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Environment) SetBackground(mode EnvironmentBGMode)  { gdnative.Call(gdnative.Object(gdClass), methodEnvironment[0], mode) }
 func (gdClass Environment) GetBackground() EnvironmentBGMode { return gdnative.Return[EnvironmentBGMode](gdnative.Object(gdClass), methodEnvironment[1]) }
 func (gdClass Environment) SetSky(sky Sky)  { gdnative.Call(gdnative.Object(gdClass), methodEnvironment[2], sky) }
@@ -7518,6 +8116,9 @@ func (Expression) class() string { return "Expression\000" }
 func (gdClass Expression) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodExpression [4]gdnative.Method
+func (gdClass Expression) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Expression) Parse(expression string, input_names []string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodExpression[0], expression, input_names) }
 func (gdClass Expression) Execute(inputs Array, base_instance Object, show_error bool, const_calls_only bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodExpression[1], inputs, base_instance, show_error, const_calls_only) }
 func (gdClass Expression) HasExecuteFailed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodExpression[2]) }
@@ -7586,6 +8187,9 @@ func (FastNoiseLite) class() string { return "FastNoiseLite\000" }
 func (gdClass FastNoiseLite) Noise() Noise { return Noise(gdClass) }
 
 var methodFastNoiseLite [42]gdnative.Method
+func (gdClass FastNoiseLite) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Noise().virtual(rtype, name)
+}
 func (gdClass FastNoiseLite) SetNoiseType(atype FastNoiseLiteNoiseType)  { gdnative.Call(gdnative.Object(gdClass), methodFastNoiseLite[0], atype) }
 func (gdClass FastNoiseLite) GetNoiseType() FastNoiseLiteNoiseType { return gdnative.Return[FastNoiseLiteNoiseType](gdnative.Object(gdClass), methodFastNoiseLite[1]) }
 func (gdClass FastNoiseLite) SetSeed(seed int64)  { gdnative.Call(gdnative.Object(gdClass), methodFastNoiseLite[2], seed) }
@@ -7653,6 +8257,9 @@ func (File) class() string { return "File\000" }
 func (gdClass File) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodFile [47]gdnative.Method
+func (gdClass File) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass File) OpenEncrypted(path string, mode_flags FileModeFlags, key []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFile[0], path, mode_flags, key) }
 func (gdClass File) OpenEncryptedWithPass(path string, mode_flags FileModeFlags, pass string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFile[1], path, mode_flags, pass) }
 func (gdClass File) OpenCompressed(path string, mode_flags FileModeFlags, compression_mode FileCompressionMode) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFile[2], path, mode_flags, compression_mode) }
@@ -7725,6 +8332,9 @@ func (FileDialog) class() string { return "FileDialog\000" }
 func (gdClass FileDialog) ConfirmationDialog() ConfirmationDialog { return ConfirmationDialog(gdClass) }
 
 var methodFileDialog [24]gdnative.Method
+func (gdClass FileDialog) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ConfirmationDialog().virtual(rtype, name)
+}
 func (gdClass FileDialog) ClearFilters()  { gdnative.Call(gdnative.Object(gdClass), methodFileDialog[0]) }
 func (gdClass FileDialog) AddFilter(filter string, description string)  { gdnative.Call(gdnative.Object(gdClass), methodFileDialog[1], filter, description) }
 func (gdClass FileDialog) SetFilters(filters []string)  { gdnative.Call(gdnative.Object(gdClass), methodFileDialog[2], filters) }
@@ -7756,6 +8366,9 @@ func (FileSystemDock) class() string { return "FileSystemDock\000" }
 func (gdClass FileSystemDock) VBoxContainer() VBoxContainer { return VBoxContainer(gdClass) }
 
 var methodFileSystemDock [1]gdnative.Method
+func (gdClass FileSystemDock) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VBoxContainer().virtual(rtype, name)
+}
 func (gdClass FileSystemDock) NavigateToPath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodFileSystemDock[0], path) }
 
 type FlowContainer gdnative.Object
@@ -7764,6 +8377,9 @@ func (FlowContainer) class() string { return "FlowContainer\000" }
 func (gdClass FlowContainer) Container() Container { return Container(gdClass) }
 
 var methodFlowContainer [1]gdnative.Method
+func (gdClass FlowContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass FlowContainer) GetLineCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodFlowContainer[0]) }
 
 type FogMaterial gdnative.Object
@@ -7772,6 +8388,9 @@ func (FogMaterial) class() string { return "FogMaterial\000" }
 func (gdClass FogMaterial) Material() Material { return Material(gdClass) }
 
 var methodFogMaterial [12]gdnative.Method
+func (gdClass FogMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass FogMaterial) SetDensity(density float64)  { gdnative.Call(gdnative.Object(gdClass), methodFogMaterial[0], density) }
 func (gdClass FogMaterial) GetDensity() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodFogMaterial[1]) }
 func (gdClass FogMaterial) SetAlbedo(albedo Color)  { gdnative.Call(gdnative.Object(gdClass), methodFogMaterial[2], albedo) }
@@ -7791,6 +8410,9 @@ func (FogVolume) class() string { return "FogVolume\000" }
 func (gdClass FogVolume) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodFogVolume [6]gdnative.Method
+func (gdClass FogVolume) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass FogVolume) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodFogVolume[0], extents) }
 func (gdClass FogVolume) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodFogVolume[1]) }
 func (gdClass FogVolume) SetShape(shape RenderingServerFogVolumeShape)  { gdnative.Call(gdnative.Object(gdClass), methodFogVolume[2], shape) }
@@ -7804,6 +8426,9 @@ func (Font) class() string { return "Font\000" }
 func (gdClass Font) Resource() Resource { return Resource(gdClass) }
 
 var methodFont [31]gdnative.Method
+func (gdClass Font) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Font) SetFallbacks(fallbacks Array)  { gdnative.Call(gdnative.Object(gdClass), methodFont[0], fallbacks) }
 func (gdClass Font) GetFallbacks() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodFont[1]) }
 func (gdClass Font) FindVariation(variation_coordinates Dictionary, face_index int64, strength float64, transform Transform2D) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodFont[2], variation_coordinates, face_index, strength, transform) }
@@ -7842,6 +8467,9 @@ func (FontFile) class() string { return "FontFile\000" }
 func (gdClass FontFile) Font() Font { return Font(gdClass) }
 
 var methodFontFile [89]gdnative.Method
+func (gdClass FontFile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Font().virtual(rtype, name)
+}
 func (gdClass FontFile) LoadBitmapFont(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFontFile[0], path) }
 func (gdClass FontFile) LoadDynamicFont(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodFontFile[1], path) }
 func (gdClass FontFile) SetData(data []byte)  { gdnative.Call(gdnative.Object(gdClass), methodFontFile[2], data) }
@@ -7938,6 +8566,9 @@ func (FontVariation) class() string { return "FontVariation\000" }
 func (gdClass FontVariation) Font() Font { return Font(gdClass) }
 
 var methodFontVariation [12]gdnative.Method
+func (gdClass FontVariation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Font().virtual(rtype, name)
+}
 func (gdClass FontVariation) SetBaseFont(font Font)  { gdnative.Call(gdnative.Object(gdClass), methodFontVariation[0], font) }
 func (gdClass FontVariation) GetBaseFont() Font { return gdnative.Return[Font](gdnative.Object(gdClass), methodFontVariation[1]) }
 func (gdClass FontVariation) SetVariationOpentype(coords Dictionary)  { gdnative.Call(gdnative.Object(gdClass), methodFontVariation[2], coords) }
@@ -7956,6 +8587,9 @@ func (FramebufferCacheRD) class() string { return "FramebufferCacheRD\000" }
 
 func (gdClass FramebufferCacheRD) Object() Object { return Object(gdClass) }
 
+func (gdClass FramebufferCacheRD) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 
 type GDScript gdnative.Object
 func (GDScript) class() string { return "GDScript\000" }
@@ -7963,6 +8597,9 @@ func (GDScript) class() string { return "GDScript\000" }
 func (gdClass GDScript) Script() Script { return Script(gdClass) }
 
 var methodGDScript [2]gdnative.Method
+func (gdClass GDScript) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Script().virtual(rtype, name)
+}
 func (gdClass GDScript) New() any { return gdnative.Return[any](gdnative.Object(gdClass), methodGDScript[0]) }
 func (gdClass GDScript) GetAsByteCode() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodGDScript[1]) }
 
@@ -7971,6 +8608,9 @@ func (GDScriptEditorTranslationParserPlugin) class() string { return "GDScriptEd
 
 func (gdClass GDScriptEditorTranslationParserPlugin) EditorTranslationParserPlugin() EditorTranslationParserPlugin { return EditorTranslationParserPlugin(gdClass) }
 
+func (gdClass GDScriptEditorTranslationParserPlugin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.EditorTranslationParserPlugin().virtual(rtype, name)
+}
 
 type GDScriptNativeClass gdnative.Object
 func (GDScriptNativeClass) class() string { return "GDScriptNativeClass\000" }
@@ -7978,6 +8618,9 @@ func (GDScriptNativeClass) class() string { return "GDScriptNativeClass\000" }
 func (gdClass GDScriptNativeClass) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodGDScriptNativeClass [1]gdnative.Method
+func (gdClass GDScriptNativeClass) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass GDScriptNativeClass) New() any { return gdnative.Return[any](gdnative.Object(gdClass), methodGDScriptNativeClass[0]) }
 
 type GLTFAccessor gdnative.Object
@@ -7986,6 +8629,9 @@ func (GLTFAccessor) class() string { return "GLTFAccessor\000" }
 func (gdClass GLTFAccessor) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFAccessor [28]gdnative.Method
+func (gdClass GLTFAccessor) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFAccessor) GetBufferView() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFAccessor[0]) }
 func (gdClass GLTFAccessor) SetBufferView(buffer_view int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFAccessor[1], buffer_view) }
 func (gdClass GLTFAccessor) GetByteOffset() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFAccessor[2]) }
@@ -8021,6 +8667,9 @@ func (GLTFAnimation) class() string { return "GLTFAnimation\000" }
 func (gdClass GLTFAnimation) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFAnimation [2]gdnative.Method
+func (gdClass GLTFAnimation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFAnimation) GetLoop() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGLTFAnimation[0]) }
 func (gdClass GLTFAnimation) SetLoop(loop bool)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFAnimation[1], loop) }
 
@@ -8030,6 +8679,9 @@ func (GLTFBufferView) class() string { return "GLTFBufferView\000" }
 func (gdClass GLTFBufferView) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFBufferView [10]gdnative.Method
+func (gdClass GLTFBufferView) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFBufferView) GetBuffer() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFBufferView[0]) }
 func (gdClass GLTFBufferView) SetBuffer(buffer int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFBufferView[1], buffer) }
 func (gdClass GLTFBufferView) GetByteOffset() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFBufferView[2]) }
@@ -8047,6 +8699,9 @@ func (GLTFCamera) class() string { return "GLTFCamera\000" }
 func (gdClass GLTFCamera) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFCamera [8]gdnative.Method
+func (gdClass GLTFCamera) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFCamera) GetPerspective() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGLTFCamera[0]) }
 func (gdClass GLTFCamera) SetPerspective(perspective bool)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFCamera[1], perspective) }
 func (gdClass GLTFCamera) GetFovSize() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGLTFCamera[2]) }
@@ -8062,6 +8717,9 @@ func (GLTFDocument) class() string { return "GLTFDocument\000" }
 func (gdClass GLTFDocument) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFDocument [8]gdnative.Method
+func (gdClass GLTFDocument) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFDocument) AppendFromFile(path string, state GLTFState, flags int64, bake_fps int64, base_path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodGLTFDocument[0], path, state, flags, bake_fps, base_path) }
 func (gdClass GLTFDocument) AppendFromBuffer(bytes []byte, base_path string, state GLTFState, flags int64, bake_fps int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodGLTFDocument[1], bytes, base_path, state, flags, bake_fps) }
 func (gdClass GLTFDocument) AppendFromScene(node Node, state GLTFState, flags int64, bake_fps int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodGLTFDocument[2], node, state, flags, bake_fps) }
@@ -8076,44 +8734,45 @@ func (GLTFDocumentExtension) class() string { return "GLTFDocumentExtension\000"
 
 func (gdClass GLTFDocumentExtension) Resource() Resource { return Resource(gdClass) }
 
-func (gdClass GLTFDocumentExtension) virtual(val any, name string) any {	switch name {
+func (gdClass GLTFDocumentExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_import_preflight":
-		i, ok := val.(interface{ ImportPreflight(state GLTFState) int64 })
-		if ok {
-			return i.ImportPreflight
+		if rtype.Implements(reflect.TypeOf([0]interface{ ImportPreflight(state GLTFState) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ImportPreflight`)
 		}
+		return
 	case "_import_post_parse":
-		i, ok := val.(interface{ ImportPostParse(state GLTFState) int64 })
-		if ok {
-			return i.ImportPostParse
+		if rtype.Implements(reflect.TypeOf([0]interface{ ImportPostParse(state GLTFState) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ImportPostParse`)
 		}
+		return
 	case "_import_node":
-		i, ok := val.(interface{ ImportNode(state GLTFState, gltf_node GLTFNode, json Dictionary, node Node) int64 })
-		if ok {
-			return i.ImportNode
+		if rtype.Implements(reflect.TypeOf([0]interface{ ImportNode(state GLTFState, gltf_node GLTFNode, json Dictionary, node Node) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ImportNode`)
 		}
+		return
 	case "_import_post":
-		i, ok := val.(interface{ ImportPost(state GLTFState, root Node) int64 })
-		if ok {
-			return i.ImportPost
+		if rtype.Implements(reflect.TypeOf([0]interface{ ImportPost(state GLTFState, root Node) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ImportPost`)
 		}
+		return
 	case "_export_preflight":
-		i, ok := val.(interface{ ExportPreflight(root Node) int64 })
-		if ok {
-			return i.ExportPreflight
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportPreflight(root Node) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ExportPreflight`)
 		}
+		return
 	case "_export_node":
-		i, ok := val.(interface{ ExportNode(state GLTFState, gltf_node GLTFNode, json Dictionary, node Node) int64 })
-		if ok {
-			return i.ExportNode
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportNode(state GLTFState, gltf_node GLTFNode, json Dictionary, node Node) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ExportNode`)
 		}
+		return
 	case "_export_post":
-		i, ok := val.(interface{ ExportPost(state GLTFState) int64 })
-		if ok {
-			return i.ExportPost
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExportPost(state GLTFState) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ExportPost`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 
 type GLTFDocumentExtensionConvertImporterMesh gdnative.Object
@@ -8121,6 +8780,9 @@ func (GLTFDocumentExtensionConvertImporterMesh) class() string { return "GLTFDoc
 
 func (gdClass GLTFDocumentExtensionConvertImporterMesh) GLTFDocumentExtension() GLTFDocumentExtension { return GLTFDocumentExtension(gdClass) }
 
+func (gdClass GLTFDocumentExtensionConvertImporterMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GLTFDocumentExtension().virtual(rtype, name)
+}
 
 type GLTFLight gdnative.Object
 func (GLTFLight) class() string { return "GLTFLight\000" }
@@ -8128,6 +8790,9 @@ func (GLTFLight) class() string { return "GLTFLight\000" }
 func (gdClass GLTFLight) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFLight [12]gdnative.Method
+func (gdClass GLTFLight) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFLight) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodGLTFLight[0]) }
 func (gdClass GLTFLight) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFLight[1], color) }
 func (gdClass GLTFLight) GetIntensity() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGLTFLight[2]) }
@@ -8147,6 +8812,9 @@ func (GLTFMesh) class() string { return "GLTFMesh\000" }
 func (gdClass GLTFMesh) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFMesh [6]gdnative.Method
+func (gdClass GLTFMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFMesh) GetMesh() ImporterMesh { return gdnative.Return[ImporterMesh](gdnative.Object(gdClass), methodGLTFMesh[0]) }
 func (gdClass GLTFMesh) SetMesh(mesh ImporterMesh)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFMesh[1], mesh) }
 func (gdClass GLTFMesh) GetBlendWeights() []float32 { return gdnative.Return[[]float32](gdnative.Object(gdClass), methodGLTFMesh[2]) }
@@ -8160,6 +8828,9 @@ func (GLTFNode) class() string { return "GLTFNode\000" }
 func (gdClass GLTFNode) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFNode [26]gdnative.Method
+func (gdClass GLTFNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFNode) GetParent() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFNode[0]) }
 func (gdClass GLTFNode) SetParent(parent int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFNode[1], parent) }
 func (gdClass GLTFNode) GetHeight() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFNode[2]) }
@@ -8193,6 +8864,9 @@ func (GLTFSkeleton) class() string { return "GLTFSkeleton\000" }
 func (gdClass GLTFSkeleton) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFSkeleton [11]gdnative.Method
+func (gdClass GLTFSkeleton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFSkeleton) GetJoints() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodGLTFSkeleton[0]) }
 func (gdClass GLTFSkeleton) SetJoints(joints []int32)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFSkeleton[1], joints) }
 func (gdClass GLTFSkeleton) GetRoots() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodGLTFSkeleton[2]) }
@@ -8211,6 +8885,9 @@ func (GLTFSkin) class() string { return "GLTFSkin\000" }
 func (gdClass GLTFSkin) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFSkin [20]gdnative.Method
+func (gdClass GLTFSkin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFSkin) GetSkinRoot() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFSkin[0]) }
 func (gdClass GLTFSkin) SetSkinRoot(skin_root int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFSkin[1], skin_root) }
 func (gdClass GLTFSkin) GetJointsOriginal() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodGLTFSkin[2]) }
@@ -8238,6 +8915,9 @@ func (GLTFSpecGloss) class() string { return "GLTFSpecGloss\000" }
 func (gdClass GLTFSpecGloss) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFSpecGloss [10]gdnative.Method
+func (gdClass GLTFSpecGloss) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFSpecGloss) GetDiffuseImg() Image { return gdnative.Return[Image](gdnative.Object(gdClass), methodGLTFSpecGloss[0]) }
 func (gdClass GLTFSpecGloss) SetDiffuseImg(diffuse_img Image)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFSpecGloss[1], diffuse_img) }
 func (gdClass GLTFSpecGloss) GetDiffuseFactor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodGLTFSpecGloss[2]) }
@@ -8255,6 +8935,9 @@ func (GLTFState) class() string { return "GLTFState\000" }
 func (gdClass GLTFState) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFState [53]gdnative.Method
+func (gdClass GLTFState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFState) GetJson() Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodGLTFState[0]) }
 func (gdClass GLTFState) SetJson(json Dictionary)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFState[1], json) }
 func (gdClass GLTFState) GetMajorVersion() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFState[2]) }
@@ -8315,6 +8998,9 @@ func (GLTFTexture) class() string { return "GLTFTexture\000" }
 func (gdClass GLTFTexture) Resource() Resource { return Resource(gdClass) }
 
 var methodGLTFTexture [2]gdnative.Method
+func (gdClass GLTFTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass GLTFTexture) GetSrcImage() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGLTFTexture[0]) }
 func (gdClass GLTFTexture) SetSrcImage(src_image int64)  { gdnative.Call(gdnative.Object(gdClass), methodGLTFTexture[1], src_image) }
 
@@ -8342,6 +9028,9 @@ func (GPUParticles2D) class() string { return "GPUParticles2D\000" }
 func (gdClass GPUParticles2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodGPUParticles2D [47]gdnative.Method
+func (gdClass GPUParticles2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass GPUParticles2D) SetEmitting(emitting bool)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles2D[0], emitting) }
 func (gdClass GPUParticles2D) SetAmount(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles2D[1], amount) }
 func (gdClass GPUParticles2D) SetLifetime(secs float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles2D[2], secs) }
@@ -8424,6 +9113,9 @@ func (GPUParticles3D) class() string { return "GPUParticles3D\000" }
 func (gdClass GPUParticles3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodGPUParticles3D [49]gdnative.Method
+func (gdClass GPUParticles3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass GPUParticles3D) SetEmitting(emitting bool)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles3D[0], emitting) }
 func (gdClass GPUParticles3D) SetAmount(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles3D[1], amount) }
 func (gdClass GPUParticles3D) SetLifetime(secs float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticles3D[2], secs) }
@@ -8480,6 +9172,9 @@ func (GPUParticlesAttractor3D) class() string { return "GPUParticlesAttractor3D\
 func (gdClass GPUParticlesAttractor3D) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodGPUParticlesAttractor3D [8]gdnative.Method
+func (gdClass GPUParticlesAttractor3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesAttractor3D) SetCullMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractor3D[0], mask) }
 func (gdClass GPUParticlesAttractor3D) GetCullMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGPUParticlesAttractor3D[1]) }
 func (gdClass GPUParticlesAttractor3D) SetStrength(strength float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractor3D[2], strength) }
@@ -8495,6 +9190,9 @@ func (GPUParticlesAttractorBox3D) class() string { return "GPUParticlesAttractor
 func (gdClass GPUParticlesAttractorBox3D) GPUParticlesAttractor3D() GPUParticlesAttractor3D { return GPUParticlesAttractor3D(gdClass) }
 
 var methodGPUParticlesAttractorBox3D [2]gdnative.Method
+func (gdClass GPUParticlesAttractorBox3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesAttractor3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesAttractorBox3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorBox3D[0], extents) }
 func (gdClass GPUParticlesAttractorBox3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesAttractorBox3D[1]) }
 
@@ -8504,6 +9202,9 @@ func (GPUParticlesAttractorSphere3D) class() string { return "GPUParticlesAttrac
 func (gdClass GPUParticlesAttractorSphere3D) GPUParticlesAttractor3D() GPUParticlesAttractor3D { return GPUParticlesAttractor3D(gdClass) }
 
 var methodGPUParticlesAttractorSphere3D [2]gdnative.Method
+func (gdClass GPUParticlesAttractorSphere3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesAttractor3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesAttractorSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorSphere3D[0], radius) }
 func (gdClass GPUParticlesAttractorSphere3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGPUParticlesAttractorSphere3D[1]) }
 
@@ -8513,6 +9214,9 @@ func (GPUParticlesAttractorVectorField3D) class() string { return "GPUParticlesA
 func (gdClass GPUParticlesAttractorVectorField3D) GPUParticlesAttractor3D() GPUParticlesAttractor3D { return GPUParticlesAttractor3D(gdClass) }
 
 var methodGPUParticlesAttractorVectorField3D [4]gdnative.Method
+func (gdClass GPUParticlesAttractorVectorField3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesAttractor3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesAttractorVectorField3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorVectorField3D[0], extents) }
 func (gdClass GPUParticlesAttractorVectorField3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesAttractorVectorField3D[1]) }
 func (gdClass GPUParticlesAttractorVectorField3D) SetTexture(texture Texture3D)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesAttractorVectorField3D[2], texture) }
@@ -8524,6 +9228,9 @@ func (GPUParticlesCollision3D) class() string { return "GPUParticlesCollision3D\
 func (gdClass GPUParticlesCollision3D) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodGPUParticlesCollision3D [2]gdnative.Method
+func (gdClass GPUParticlesCollision3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesCollision3D) SetCullMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollision3D[0], mask) }
 func (gdClass GPUParticlesCollision3D) GetCullMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGPUParticlesCollision3D[1]) }
 
@@ -8533,6 +9240,9 @@ func (GPUParticlesCollisionBox3D) class() string { return "GPUParticlesCollision
 func (gdClass GPUParticlesCollisionBox3D) GPUParticlesCollision3D() GPUParticlesCollision3D { return GPUParticlesCollision3D(gdClass) }
 
 var methodGPUParticlesCollisionBox3D [2]gdnative.Method
+func (gdClass GPUParticlesCollisionBox3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesCollision3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesCollisionBox3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionBox3D[0], extents) }
 func (gdClass GPUParticlesCollisionBox3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesCollisionBox3D[1]) }
 
@@ -8561,6 +9271,9 @@ func (GPUParticlesCollisionHeightField3D) class() string { return "GPUParticlesC
 func (gdClass GPUParticlesCollisionHeightField3D) GPUParticlesCollision3D() GPUParticlesCollision3D { return GPUParticlesCollision3D(gdClass) }
 
 var methodGPUParticlesCollisionHeightField3D [8]gdnative.Method
+func (gdClass GPUParticlesCollisionHeightField3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesCollision3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesCollisionHeightField3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionHeightField3D[0], extents) }
 func (gdClass GPUParticlesCollisionHeightField3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesCollisionHeightField3D[1]) }
 func (gdClass GPUParticlesCollisionHeightField3D) SetResolution(resolution GPUParticlesCollisionHeightField3DResolution)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionHeightField3D[2], resolution) }
@@ -8588,6 +9301,9 @@ func (GPUParticlesCollisionSDF3D) class() string { return "GPUParticlesCollision
 func (gdClass GPUParticlesCollisionSDF3D) GPUParticlesCollision3D() GPUParticlesCollision3D { return GPUParticlesCollision3D(gdClass) }
 
 var methodGPUParticlesCollisionSDF3D [12]gdnative.Method
+func (gdClass GPUParticlesCollisionSDF3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesCollision3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesCollisionSDF3D) SetExtents(extents Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionSDF3D[0], extents) }
 func (gdClass GPUParticlesCollisionSDF3D) GetExtents() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodGPUParticlesCollisionSDF3D[1]) }
 func (gdClass GPUParticlesCollisionSDF3D) SetResolution(resolution GPUParticlesCollisionSDF3DResolution)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionSDF3D[2], resolution) }
@@ -8607,6 +9323,9 @@ func (GPUParticlesCollisionSphere3D) class() string { return "GPUParticlesCollis
 func (gdClass GPUParticlesCollisionSphere3D) GPUParticlesCollision3D() GPUParticlesCollision3D { return GPUParticlesCollision3D(gdClass) }
 
 var methodGPUParticlesCollisionSphere3D [2]gdnative.Method
+func (gdClass GPUParticlesCollisionSphere3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GPUParticlesCollision3D().virtual(rtype, name)
+}
 func (gdClass GPUParticlesCollisionSphere3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodGPUParticlesCollisionSphere3D[0], radius) }
 func (gdClass GPUParticlesCollisionSphere3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGPUParticlesCollisionSphere3D[1]) }
 
@@ -8656,6 +9375,9 @@ func (Generic6DOFJoint3D) class() string { return "Generic6DOFJoint3D\000" }
 func (gdClass Generic6DOFJoint3D) Joint3D() Joint3D { return Joint3D(gdClass) }
 
 var methodGeneric6DOFJoint3D [12]gdnative.Method
+func (gdClass Generic6DOFJoint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint3D().virtual(rtype, name)
+}
 func (gdClass Generic6DOFJoint3D) SetParamX(param Generic6DOFJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodGeneric6DOFJoint3D[0], param, value) }
 func (gdClass Generic6DOFJoint3D) GetParamX(param Generic6DOFJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGeneric6DOFJoint3D[1], param) }
 func (gdClass Generic6DOFJoint3D) SetParamY(param Generic6DOFJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodGeneric6DOFJoint3D[2], param, value) }
@@ -8702,6 +9424,9 @@ func (Geometry2D) class() string { return "Geometry2D\000" }
 func (gdClass Geometry2D) Object() Object { return Object(gdClass) }
 
 var methodGeometry2D [22]gdnative.Method
+func (gdClass Geometry2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Geometry2D) IsPointInCircle(point Vector2, circle_position Vector2, circle_radius float64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGeometry2D[0], point, circle_position, circle_radius) }
 func (gdClass Geometry2D) SegmentIntersectsCircle(segment_from Vector2, segment_to Vector2, circle_position Vector2, circle_radius float64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGeometry2D[1], segment_from, segment_to, circle_position, circle_radius) }
 func (gdClass Geometry2D) SegmentIntersectsSegment(from_a Vector2, to_a Vector2, from_b Vector2, to_b Vector2) any { return gdnative.Return[any](gdnative.Object(gdClass), methodGeometry2D[2], from_a, to_a, from_b, to_b) }
@@ -8731,6 +9456,9 @@ func (Geometry3D) class() string { return "Geometry3D\000" }
 func (gdClass Geometry3D) Object() Object { return Object(gdClass) }
 
 var methodGeometry3D [12]gdnative.Method
+func (gdClass Geometry3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Geometry3D) BuildBoxPlanes(extents Vector3) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodGeometry3D[0], extents) }
 func (gdClass Geometry3D) BuildCylinderPlanes(radius float64, height float64, sides int64, axis Vector3Axis) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodGeometry3D[1], radius, height, sides, axis) }
 func (gdClass Geometry3D) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis Vector3Axis) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodGeometry3D[2], radius, height, sides, lats, axis) }
@@ -8785,6 +9513,9 @@ func (GeometryInstance3D) class() string { return "GeometryInstance3D\000" }
 func (gdClass GeometryInstance3D) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodGeometryInstance3D [31]gdnative.Method
+func (gdClass GeometryInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass GeometryInstance3D) SetMaterialOverride(material Material)  { gdnative.Call(gdnative.Object(gdClass), methodGeometryInstance3D[0], material) }
 func (gdClass GeometryInstance3D) GetMaterialOverride() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodGeometryInstance3D[1]) }
 func (gdClass GeometryInstance3D) SetMaterialOverlay(material Material)  { gdnative.Call(gdnative.Object(gdClass), methodGeometryInstance3D[2], material) }
@@ -8822,12 +9553,18 @@ func (GodotPhysicsServer2D) class() string { return "GodotPhysicsServer2D\000" }
 
 func (gdClass GodotPhysicsServer2D) PhysicsServer2D() PhysicsServer2D { return PhysicsServer2D(gdClass) }
 
+func (gdClass GodotPhysicsServer2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsServer2D().virtual(rtype, name)
+}
 
 type GodotPhysicsServer3D gdnative.Object
 func (GodotPhysicsServer3D) class() string { return "GodotPhysicsServer3D\000" }
 
 func (gdClass GodotPhysicsServer3D) PhysicsServer3D() PhysicsServer3D { return PhysicsServer3D(gdClass) }
 
+func (gdClass GodotPhysicsServer3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsServer3D().virtual(rtype, name)
+}
 
 type GradientInterpolationMode int64
 
@@ -8843,6 +9580,9 @@ func (Gradient) class() string { return "Gradient\000" }
 func (gdClass Gradient) Resource() Resource { return Resource(gdClass) }
 
 var methodGradient [15]gdnative.Method
+func (gdClass Gradient) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Gradient) AddPoint(offset float64, color Color)  { gdnative.Call(gdnative.Object(gdClass), methodGradient[0], offset, color) }
 func (gdClass Gradient) RemovePoint(point int64)  { gdnative.Call(gdnative.Object(gdClass), methodGradient[1], point) }
 func (gdClass Gradient) SetOffset(point int64, offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodGradient[2], point, offset) }
@@ -8865,6 +9605,9 @@ func (GradientTexture1D) class() string { return "GradientTexture1D\000" }
 func (gdClass GradientTexture1D) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodGradientTexture1D [5]gdnative.Method
+func (gdClass GradientTexture1D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass GradientTexture1D) SetGradient(gradient Gradient)  { gdnative.Call(gdnative.Object(gdClass), methodGradientTexture1D[0], gradient) }
 func (gdClass GradientTexture1D) GetGradient() Gradient { return gdnative.Return[Gradient](gdnative.Object(gdClass), methodGradientTexture1D[1]) }
 func (gdClass GradientTexture1D) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodGradientTexture1D[2], width) }
@@ -8892,6 +9635,9 @@ func (GradientTexture2D) class() string { return "GradientTexture2D\000" }
 func (gdClass GradientTexture2D) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodGradientTexture2D [14]gdnative.Method
+func (gdClass GradientTexture2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass GradientTexture2D) SetGradient(gradient Gradient)  { gdnative.Call(gdnative.Object(gdClass), methodGradientTexture2D[0], gradient) }
 func (gdClass GradientTexture2D) GetGradient() Gradient { return gdnative.Return[Gradient](gdnative.Object(gdClass), methodGradientTexture2D[1]) }
 func (gdClass GradientTexture2D) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodGradientTexture2D[2], width) }
@@ -8920,29 +9666,30 @@ func (GraphEdit) class() string { return "GraphEdit\000" }
 func (gdClass GraphEdit) Control() Control { return Control(gdClass) }
 
 var methodGraphEdit [50]gdnative.Method
-func (gdClass GraphEdit) virtual(val any, name string) any {	switch name {
+func (gdClass GraphEdit) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_is_in_input_hotzone":
-		i, ok := val.(interface{ IsInInputHotzone(graph_node Object, slot_index int64, mouse_position Vector2) bool })
-		if ok {
-			return i.IsInInputHotzone
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsInInputHotzone(graph_node Object, slot_index int64, mouse_position Vector2) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsInInputHotzone`)
 		}
+		return
 	case "_is_in_output_hotzone":
-		i, ok := val.(interface{ IsInOutputHotzone(graph_node Object, slot_index int64, mouse_position Vector2) bool })
-		if ok {
-			return i.IsInOutputHotzone
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsInOutputHotzone(graph_node Object, slot_index int64, mouse_position Vector2) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsInOutputHotzone`)
 		}
+		return
 	case "_get_connection_line":
-		i, ok := val.(interface{ GetConnectionLine(from Vector2, to Vector2) []Vector2 })
-		if ok {
-			return i.GetConnectionLine
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConnectionLine(from Vector2, to Vector2) []Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`GetConnectionLine`)
 		}
+		return
 	case "_is_node_hover_valid":
-		i, ok := val.(interface{ IsNodeHoverValid(from string, from_slot int64, to string, to_slot int64) bool })
-		if ok {
-			return i.IsNodeHoverValid
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsNodeHoverValid(from string, from_slot int64, to string, to_slot int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsNodeHoverValid`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Control().virtual(rtype, name)
 }
 func (gdClass GraphEdit) ConnectNode(from string, from_port int64, to string, to_port int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodGraphEdit[0], from, from_port, to, to_port) }
 func (gdClass GraphEdit) IsNodeConnected(from string, from_port int64, to string, to_port int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodGraphEdit[1], from, from_port, to, to_port) }
@@ -9009,6 +9756,9 @@ func (GraphNode) class() string { return "GraphNode\000" }
 func (gdClass GraphNode) Container() Container { return Container(gdClass) }
 
 var methodGraphNode [45]gdnative.Method
+func (gdClass GraphNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass GraphNode) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodGraphNode[0], title) }
 func (gdClass GraphNode) GetTitle() string { return gdnative.Return[string](gdnative.Object(gdClass), methodGraphNode[1]) }
 func (gdClass GraphNode) SetTextDirection(direction ControlTextDirection)  { gdnative.Call(gdnative.Object(gdClass), methodGraphNode[2], direction) }
@@ -9061,6 +9811,9 @@ func (GridContainer) class() string { return "GridContainer\000" }
 func (gdClass GridContainer) Container() Container { return Container(gdClass) }
 
 var methodGridContainer [2]gdnative.Method
+func (gdClass GridContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass GridContainer) SetColumns(columns int64)  { gdnative.Call(gdnative.Object(gdClass), methodGridContainer[0], columns) }
 func (gdClass GridContainer) GetColumns() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGridContainer[1]) }
 
@@ -9070,6 +9823,9 @@ func (GridMap) class() string { return "GridMap\000" }
 func (gdClass GridMap) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodGridMap [44]gdnative.Method
+func (gdClass GridMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass GridMap) SetCollisionLayer(layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodGridMap[0], layer) }
 func (gdClass GridMap) GetCollisionLayer() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodGridMap[1]) }
 func (gdClass GridMap) SetCollisionMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodGridMap[2], mask) }
@@ -9121,6 +9877,9 @@ func (GrooveJoint2D) class() string { return "GrooveJoint2D\000" }
 func (gdClass GrooveJoint2D) Joint2D() Joint2D { return Joint2D(gdClass) }
 
 var methodGrooveJoint2D [4]gdnative.Method
+func (gdClass GrooveJoint2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint2D().virtual(rtype, name)
+}
 func (gdClass GrooveJoint2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodGrooveJoint2D[0], length) }
 func (gdClass GrooveJoint2D) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodGrooveJoint2D[1]) }
 func (gdClass GrooveJoint2D) SetInitialOffset(offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodGrooveJoint2D[2], offset) }
@@ -9131,12 +9890,18 @@ func (HBoxContainer) class() string { return "HBoxContainer\000" }
 
 func (gdClass HBoxContainer) BoxContainer() BoxContainer { return BoxContainer(gdClass) }
 
+func (gdClass HBoxContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BoxContainer().virtual(rtype, name)
+}
 
 type HFlowContainer gdnative.Object
 func (HFlowContainer) class() string { return "HFlowContainer\000" }
 
 func (gdClass HFlowContainer) FlowContainer() FlowContainer { return FlowContainer(gdClass) }
 
+func (gdClass HFlowContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.FlowContainer().virtual(rtype, name)
+}
 
 type HMACContext gdnative.Object
 func (HMACContext) class() string { return "HMACContext\000" }
@@ -9144,6 +9909,9 @@ func (HMACContext) class() string { return "HMACContext\000" }
 func (gdClass HMACContext) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodHMACContext [3]gdnative.Method
+func (gdClass HMACContext) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass HMACContext) Start(hash_type HashingContextHashType, key []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHMACContext[0], hash_type, key) }
 func (gdClass HMACContext) Update(data []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHMACContext[1], data) }
 func (gdClass HMACContext) Finish() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodHMACContext[2]) }
@@ -9153,24 +9921,36 @@ func (HScrollBar) class() string { return "HScrollBar\000" }
 
 func (gdClass HScrollBar) ScrollBar() ScrollBar { return ScrollBar(gdClass) }
 
+func (gdClass HScrollBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ScrollBar().virtual(rtype, name)
+}
 
 type HSeparator gdnative.Object
 func (HSeparator) class() string { return "HSeparator\000" }
 
 func (gdClass HSeparator) Separator() Separator { return Separator(gdClass) }
 
+func (gdClass HSeparator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Separator().virtual(rtype, name)
+}
 
 type HSlider gdnative.Object
 func (HSlider) class() string { return "HSlider\000" }
 
 func (gdClass HSlider) Slider() Slider { return Slider(gdClass) }
 
+func (gdClass HSlider) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Slider().virtual(rtype, name)
+}
 
 type HSplitContainer gdnative.Object
 func (HSplitContainer) class() string { return "HSplitContainer\000" }
 
 func (gdClass HSplitContainer) SplitContainer() SplitContainer { return SplitContainer(gdClass) }
 
+func (gdClass HSplitContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SplitContainer().virtual(rtype, name)
+}
 
 type HTTPClientMethod int64
 
@@ -9274,6 +10054,9 @@ func (HTTPClient) class() string { return "HTTPClient\000" }
 func (gdClass HTTPClient) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodHTTPClient [22]gdnative.Method
+func (gdClass HTTPClient) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass HTTPClient) ConnectToHost(host string, port int64, use_ssl bool, verify_host bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHTTPClient[0], host, port, use_ssl, verify_host) }
 func (gdClass HTTPClient) SetConnection(connection StreamPeer)  { gdnative.Call(gdnative.Object(gdClass), methodHTTPClient[1], connection) }
 func (gdClass HTTPClient) GetConnection() StreamPeer { return gdnative.Return[StreamPeer](gdnative.Object(gdClass), methodHTTPClient[2]) }
@@ -9322,6 +10105,9 @@ func (HTTPRequest) class() string { return "HTTPRequest\000" }
 func (gdClass HTTPRequest) Node() Node { return Node(gdClass) }
 
 var methodHTTPRequest [22]gdnative.Method
+func (gdClass HTTPRequest) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass HTTPRequest) Request(url string, custom_headers []string, ssl_validate_domain bool, method HTTPClientMethod, request_data string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHTTPRequest[0], url, custom_headers, ssl_validate_domain, method, request_data) }
 func (gdClass HTTPRequest) RequestRaw(url string, custom_headers []string, ssl_validate_domain bool, method HTTPClientMethod, request_data_raw []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHTTPRequest[1], url, custom_headers, ssl_validate_domain, method, request_data_raw) }
 func (gdClass HTTPRequest) CancelRequest()  { gdnative.Call(gdnative.Object(gdClass), methodHTTPRequest[2]) }
@@ -9359,6 +10145,9 @@ func (HashingContext) class() string { return "HashingContext\000" }
 func (gdClass HashingContext) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodHashingContext [3]gdnative.Method
+func (gdClass HashingContext) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass HashingContext) Start(atype HashingContextHashType) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHashingContext[0], atype) }
 func (gdClass HashingContext) Update(chunk []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodHashingContext[1], chunk) }
 func (gdClass HashingContext) Finish() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodHashingContext[2]) }
@@ -9369,6 +10158,9 @@ func (HeightMapShape3D) class() string { return "HeightMapShape3D\000" }
 func (gdClass HeightMapShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodHeightMapShape3D [6]gdnative.Method
+func (gdClass HeightMapShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass HeightMapShape3D) SetMapWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodHeightMapShape3D[0], width) }
 func (gdClass HeightMapShape3D) GetMapWidth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodHeightMapShape3D[1]) }
 func (gdClass HeightMapShape3D) SetMapDepth(height int64)  { gdnative.Call(gdnative.Object(gdClass), methodHeightMapShape3D[2], height) }
@@ -9404,6 +10196,9 @@ func (HingeJoint3D) class() string { return "HingeJoint3D\000" }
 func (gdClass HingeJoint3D) Joint3D() Joint3D { return Joint3D(gdClass) }
 
 var methodHingeJoint3D [4]gdnative.Method
+func (gdClass HingeJoint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint3D().virtual(rtype, name)
+}
 func (gdClass HingeJoint3D) SetParam(param HingeJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodHingeJoint3D[0], param, value) }
 func (gdClass HingeJoint3D) GetParam(param HingeJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodHingeJoint3D[1], param) }
 func (gdClass HingeJoint3D) SetFlag(flag HingeJoint3DFlag, enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodHingeJoint3D[2], flag, enabled) }
@@ -9433,6 +10228,9 @@ func (IP) class() string { return "IP\000" }
 func (gdClass IP) Object() Object { return Object(gdClass) }
 
 var methodIP [10]gdnative.Method
+func (gdClass IP) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass IP) ResolveHostname(host string, ip_type IPType) string { return gdnative.Return[string](gdnative.Object(gdClass), methodIP[0], host, ip_type) }
 func (gdClass IP) ResolveHostnameAddresses(host string, ip_type IPType) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodIP[1], host, ip_type) }
 func (gdClass IP) ResolveHostnameQueueItem(host string, ip_type IPType) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodIP[2], host, ip_type) }
@@ -9449,6 +10247,9 @@ func (IPUnix) class() string { return "IPUnix\000" }
 
 func (gdClass IPUnix) IP() IP { return IP(gdClass) }
 
+func (gdClass IPUnix) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.IP().virtual(rtype, name)
+}
 
 type ImageFormat int64
 
@@ -9543,6 +10344,9 @@ func (Image) class() string { return "Image\000" }
 func (gdClass Image) Resource() Resource { return Resource(gdClass) }
 
 var methodImage [64]gdnative.Method
+func (gdClass Image) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Image) GetWidth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodImage[0]) }
 func (gdClass Image) GetHeight() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodImage[1]) }
 func (gdClass Image) GetSize() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodImage[2]) }
@@ -9614,6 +10418,9 @@ func (ImageTexture) class() string { return "ImageTexture\000" }
 func (gdClass ImageTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodImageTexture [5]gdnative.Method
+func (gdClass ImageTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass ImageTexture) CreateFromImage(image Image) ImageTexture { return gdnative.Return[ImageTexture](gdnative.Object(gdClass), methodImageTexture[0], image) }
 func (gdClass ImageTexture) GetFormat() ImageFormat { return gdnative.Return[ImageFormat](gdnative.Object(gdClass), methodImageTexture[1]) }
 func (gdClass ImageTexture) SetImage(image Image)  { gdnative.Call(gdnative.Object(gdClass), methodImageTexture[2], image) }
@@ -9626,6 +10433,9 @@ func (ImageTexture3D) class() string { return "ImageTexture3D\000" }
 func (gdClass ImageTexture3D) Texture3D() Texture3D { return Texture3D(gdClass) }
 
 var methodImageTexture3D [2]gdnative.Method
+func (gdClass ImageTexture3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture3D().virtual(rtype, name)
+}
 func (gdClass ImageTexture3D) Create(format ImageFormat, width int64, height int64, depth int64, use_mipmaps bool, data Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodImageTexture3D[0], format, width, height, depth, use_mipmaps, data) }
 func (gdClass ImageTexture3D) Update(data Array)  { gdnative.Call(gdnative.Object(gdClass), methodImageTexture3D[1], data) }
 
@@ -9635,6 +10445,9 @@ func (ImageTextureLayered) class() string { return "ImageTextureLayered\000" }
 func (gdClass ImageTextureLayered) TextureLayered() TextureLayered { return TextureLayered(gdClass) }
 
 var methodImageTextureLayered [2]gdnative.Method
+func (gdClass ImageTextureLayered) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TextureLayered().virtual(rtype, name)
+}
 func (gdClass ImageTextureLayered) CreateFromImages(images Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodImageTextureLayered[0], images) }
 func (gdClass ImageTextureLayered) UpdateLayer(image Image, layer int64)  { gdnative.Call(gdnative.Object(gdClass), methodImageTextureLayered[1], image, layer) }
 
@@ -9644,6 +10457,9 @@ func (ImmediateMesh) class() string { return "ImmediateMesh\000" }
 func (gdClass ImmediateMesh) Mesh() Mesh { return Mesh(gdClass) }
 
 var methodImmediateMesh [10]gdnative.Method
+func (gdClass ImmediateMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Mesh().virtual(rtype, name)
+}
 func (gdClass ImmediateMesh) SurfaceBegin(primitive MeshPrimitiveType, material Material)  { gdnative.Call(gdnative.Object(gdClass), methodImmediateMesh[0], primitive, material) }
 func (gdClass ImmediateMesh) SurfaceSetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodImmediateMesh[1], color) }
 func (gdClass ImmediateMesh) SurfaceSetNormal(normal Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodImmediateMesh[2], normal) }
@@ -9661,6 +10477,9 @@ func (ImporterMesh) class() string { return "ImporterMesh\000" }
 func (gdClass ImporterMesh) Resource() Resource { return Resource(gdClass) }
 
 var methodImporterMesh [23]gdnative.Method
+func (gdClass ImporterMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass ImporterMesh) AddBlendShape(name string)  { gdnative.Call(gdnative.Object(gdClass), methodImporterMesh[0], name) }
 func (gdClass ImporterMesh) GetBlendShapeCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodImporterMesh[1]) }
 func (gdClass ImporterMesh) GetBlendShapeName(blend_shape_idx int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodImporterMesh[2], blend_shape_idx) }
@@ -9691,6 +10510,9 @@ func (ImporterMeshInstance3D) class() string { return "ImporterMeshInstance3D\00
 func (gdClass ImporterMeshInstance3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodImporterMeshInstance3D [6]gdnative.Method
+func (gdClass ImporterMeshInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass ImporterMeshInstance3D) SetMesh(mesh ImporterMesh)  { gdnative.Call(gdnative.Object(gdClass), methodImporterMeshInstance3D[0], mesh) }
 func (gdClass ImporterMeshInstance3D) GetMesh() ImporterMesh { return gdnative.Return[ImporterMesh](gdnative.Object(gdClass), methodImporterMeshInstance3D[1]) }
 func (gdClass ImporterMeshInstance3D) SetSkin(skin Skin)  { gdnative.Call(gdnative.Object(gdClass), methodImporterMeshInstance3D[2], skin) }
@@ -9736,6 +10558,9 @@ func (Input) class() string { return "Input\000" }
 func (gdClass Input) Object() Object { return Object(gdClass) }
 
 var methodInput [46]gdnative.Method
+func (gdClass Input) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Input) IsAnythingPressed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInput[0]) }
 func (gdClass Input) IsKeyPressed(keycode Key) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInput[1], keycode) }
 func (gdClass Input) IsPhysicalKeyPressed(keycode Key) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInput[2], keycode) }
@@ -9789,6 +10614,9 @@ func (InputEvent) class() string { return "InputEvent\000" }
 func (gdClass InputEvent) Resource() Resource { return Resource(gdClass) }
 
 var methodInputEvent [13]gdnative.Method
+func (gdClass InputEvent) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass InputEvent) SetDevice(device int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEvent[0], device) }
 func (gdClass InputEvent) GetDevice() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEvent[1]) }
 func (gdClass InputEvent) IsAction(action string, exact_match bool) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputEvent[2], action, exact_match) }
@@ -9809,6 +10637,9 @@ func (InputEventAction) class() string { return "InputEventAction\000" }
 func (gdClass InputEventAction) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventAction [5]gdnative.Method
+func (gdClass InputEventAction) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventAction) SetAction(action string)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventAction[0], action) }
 func (gdClass InputEventAction) GetAction() string { return gdnative.Return[string](gdnative.Object(gdClass), methodInputEventAction[1]) }
 func (gdClass InputEventAction) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventAction[2], pressed) }
@@ -9821,6 +10652,9 @@ func (InputEventFromWindow) class() string { return "InputEventFromWindow\000" }
 func (gdClass InputEventFromWindow) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventFromWindow [2]gdnative.Method
+func (gdClass InputEventFromWindow) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventFromWindow) SetWindowId(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventFromWindow[0], id) }
 func (gdClass InputEventFromWindow) GetWindowId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventFromWindow[1]) }
 
@@ -9830,6 +10664,9 @@ func (InputEventGesture) class() string { return "InputEventGesture\000" }
 func (gdClass InputEventGesture) InputEventWithModifiers() InputEventWithModifiers { return InputEventWithModifiers(gdClass) }
 
 var methodInputEventGesture [2]gdnative.Method
+func (gdClass InputEventGesture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventWithModifiers().virtual(rtype, name)
+}
 func (gdClass InputEventGesture) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventGesture[0], position) }
 func (gdClass InputEventGesture) GetPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventGesture[1]) }
 
@@ -9839,6 +10676,9 @@ func (InputEventJoypadButton) class() string { return "InputEventJoypadButton\00
 func (gdClass InputEventJoypadButton) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventJoypadButton [5]gdnative.Method
+func (gdClass InputEventJoypadButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventJoypadButton) SetButtonIndex(button_index JoyButton)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadButton[0], button_index) }
 func (gdClass InputEventJoypadButton) GetButtonIndex() JoyButton { return gdnative.Return[JoyButton](gdnative.Object(gdClass), methodInputEventJoypadButton[1]) }
 func (gdClass InputEventJoypadButton) SetPressure(pressure float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadButton[2], pressure) }
@@ -9851,6 +10691,9 @@ func (InputEventJoypadMotion) class() string { return "InputEventJoypadMotion\00
 func (gdClass InputEventJoypadMotion) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventJoypadMotion [4]gdnative.Method
+func (gdClass InputEventJoypadMotion) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventJoypadMotion) SetAxis(axis JoyAxis)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadMotion[0], axis) }
 func (gdClass InputEventJoypadMotion) GetAxis() JoyAxis { return gdnative.Return[JoyAxis](gdnative.Object(gdClass), methodInputEventJoypadMotion[1]) }
 func (gdClass InputEventJoypadMotion) SetAxisValue(axis_value float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventJoypadMotion[2], axis_value) }
@@ -9862,6 +10705,9 @@ func (InputEventKey) class() string { return "InputEventKey\000" }
 func (gdClass InputEventKey) InputEventWithModifiers() InputEventWithModifiers { return InputEventWithModifiers(gdClass) }
 
 var methodInputEventKey [10]gdnative.Method
+func (gdClass InputEventKey) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventWithModifiers().virtual(rtype, name)
+}
 func (gdClass InputEventKey) SetPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventKey[0], pressed) }
 func (gdClass InputEventKey) SetKeycode(keycode Key)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventKey[1], keycode) }
 func (gdClass InputEventKey) GetKeycode() Key { return gdnative.Return[Key](gdnative.Object(gdClass), methodInputEventKey[2]) }
@@ -9879,6 +10725,9 @@ func (InputEventMIDI) class() string { return "InputEventMIDI\000" }
 func (gdClass InputEventMIDI) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventMIDI [16]gdnative.Method
+func (gdClass InputEventMIDI) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventMIDI) SetChannel(channel int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMIDI[0], channel) }
 func (gdClass InputEventMIDI) GetChannel() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventMIDI[1]) }
 func (gdClass InputEventMIDI) SetMessage(message MIDIMessage)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMIDI[2], message) }
@@ -9902,6 +10751,9 @@ func (InputEventMagnifyGesture) class() string { return "InputEventMagnifyGestur
 func (gdClass InputEventMagnifyGesture) InputEventGesture() InputEventGesture { return InputEventGesture(gdClass) }
 
 var methodInputEventMagnifyGesture [2]gdnative.Method
+func (gdClass InputEventMagnifyGesture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventGesture().virtual(rtype, name)
+}
 func (gdClass InputEventMagnifyGesture) SetFactor(factor float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMagnifyGesture[0], factor) }
 func (gdClass InputEventMagnifyGesture) GetFactor() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodInputEventMagnifyGesture[1]) }
 
@@ -9911,6 +10763,9 @@ func (InputEventMouse) class() string { return "InputEventMouse\000" }
 func (gdClass InputEventMouse) InputEventWithModifiers() InputEventWithModifiers { return InputEventWithModifiers(gdClass) }
 
 var methodInputEventMouse [6]gdnative.Method
+func (gdClass InputEventMouse) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventWithModifiers().virtual(rtype, name)
+}
 func (gdClass InputEventMouse) SetButtonMask(button_mask MouseButton)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouse[0], button_mask) }
 func (gdClass InputEventMouse) GetButtonMask() MouseButton { return gdnative.Return[MouseButton](gdnative.Object(gdClass), methodInputEventMouse[1]) }
 func (gdClass InputEventMouse) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouse[2], position) }
@@ -9924,6 +10779,9 @@ func (InputEventMouseButton) class() string { return "InputEventMouseButton\000"
 func (gdClass InputEventMouseButton) InputEventMouse() InputEventMouse { return InputEventMouse(gdClass) }
 
 var methodInputEventMouseButton [7]gdnative.Method
+func (gdClass InputEventMouseButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventMouse().virtual(rtype, name)
+}
 func (gdClass InputEventMouseButton) SetFactor(factor float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseButton[0], factor) }
 func (gdClass InputEventMouseButton) GetFactor() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodInputEventMouseButton[1]) }
 func (gdClass InputEventMouseButton) SetButtonIndex(button_index MouseButton)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseButton[2], button_index) }
@@ -9938,6 +10796,9 @@ func (InputEventMouseMotion) class() string { return "InputEventMouseMotion\000"
 func (gdClass InputEventMouseMotion) InputEventMouse() InputEventMouse { return InputEventMouse(gdClass) }
 
 var methodInputEventMouseMotion [10]gdnative.Method
+func (gdClass InputEventMouseMotion) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventMouse().virtual(rtype, name)
+}
 func (gdClass InputEventMouseMotion) SetTilt(tilt Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseMotion[0], tilt) }
 func (gdClass InputEventMouseMotion) GetTilt() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventMouseMotion[1]) }
 func (gdClass InputEventMouseMotion) SetPressure(pressure float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventMouseMotion[2], pressure) }
@@ -9955,6 +10816,9 @@ func (InputEventPanGesture) class() string { return "InputEventPanGesture\000" }
 func (gdClass InputEventPanGesture) InputEventGesture() InputEventGesture { return InputEventGesture(gdClass) }
 
 var methodInputEventPanGesture [2]gdnative.Method
+func (gdClass InputEventPanGesture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventGesture().virtual(rtype, name)
+}
 func (gdClass InputEventPanGesture) SetDelta(delta Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventPanGesture[0], delta) }
 func (gdClass InputEventPanGesture) GetDelta() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodInputEventPanGesture[1]) }
 
@@ -9964,6 +10828,9 @@ func (InputEventScreenDrag) class() string { return "InputEventScreenDrag\000" }
 func (gdClass InputEventScreenDrag) InputEventFromWindow() InputEventFromWindow { return InputEventFromWindow(gdClass) }
 
 var methodInputEventScreenDrag [8]gdnative.Method
+func (gdClass InputEventScreenDrag) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventFromWindow().virtual(rtype, name)
+}
 func (gdClass InputEventScreenDrag) SetIndex(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenDrag[0], index) }
 func (gdClass InputEventScreenDrag) GetIndex() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventScreenDrag[1]) }
 func (gdClass InputEventScreenDrag) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenDrag[2], position) }
@@ -9979,6 +10846,9 @@ func (InputEventScreenTouch) class() string { return "InputEventScreenTouch\000"
 func (gdClass InputEventScreenTouch) InputEventFromWindow() InputEventFromWindow { return InputEventFromWindow(gdClass) }
 
 var methodInputEventScreenTouch [5]gdnative.Method
+func (gdClass InputEventScreenTouch) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventFromWindow().virtual(rtype, name)
+}
 func (gdClass InputEventScreenTouch) SetIndex(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenTouch[0], index) }
 func (gdClass InputEventScreenTouch) GetIndex() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodInputEventScreenTouch[1]) }
 func (gdClass InputEventScreenTouch) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventScreenTouch[2], position) }
@@ -9991,6 +10861,9 @@ func (InputEventShortcut) class() string { return "InputEventShortcut\000" }
 func (gdClass InputEventShortcut) InputEvent() InputEvent { return InputEvent(gdClass) }
 
 var methodInputEventShortcut [2]gdnative.Method
+func (gdClass InputEventShortcut) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEvent().virtual(rtype, name)
+}
 func (gdClass InputEventShortcut) SetShortcut(shortcut Shortcut)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventShortcut[0], shortcut) }
 func (gdClass InputEventShortcut) GetShortcut() Shortcut { return gdnative.Return[Shortcut](gdnative.Object(gdClass), methodInputEventShortcut[1]) }
 
@@ -10000,6 +10873,9 @@ func (InputEventWithModifiers) class() string { return "InputEventWithModifiers\
 func (gdClass InputEventWithModifiers) InputEventFromWindow() InputEventFromWindow { return InputEventFromWindow(gdClass) }
 
 var methodInputEventWithModifiers [12]gdnative.Method
+func (gdClass InputEventWithModifiers) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.InputEventFromWindow().virtual(rtype, name)
+}
 func (gdClass InputEventWithModifiers) SetStoreCommand(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventWithModifiers[0], enable) }
 func (gdClass InputEventWithModifiers) IsStoringCommand() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputEventWithModifiers[1]) }
 func (gdClass InputEventWithModifiers) SetAltPressed(pressed bool)  { gdnative.Call(gdnative.Object(gdClass), methodInputEventWithModifiers[2], pressed) }
@@ -10019,6 +10895,9 @@ func (InputMap) class() string { return "InputMap\000" }
 func (gdClass InputMap) Object() Object { return Object(gdClass) }
 
 var methodInputMap [13]gdnative.Method
+func (gdClass InputMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass InputMap) HasAction(action string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodInputMap[0], action) }
 func (gdClass InputMap) GetActions() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodInputMap[1]) }
 func (gdClass InputMap) AddAction(action string, deadzone float64)  { gdnative.Call(gdnative.Object(gdClass), methodInputMap[2], action, deadzone) }
@@ -10039,6 +10918,9 @@ func (InstancePlaceholder) class() string { return "InstancePlaceholder\000" }
 func (gdClass InstancePlaceholder) Node() Node { return Node(gdClass) }
 
 var methodInstancePlaceholder [3]gdnative.Method
+func (gdClass InstancePlaceholder) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass InstancePlaceholder) GetStoredValues(with_order bool) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodInstancePlaceholder[0], with_order) }
 func (gdClass InstancePlaceholder) CreateInstance(replace bool, custom_scene PackedScene) Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodInstancePlaceholder[1], replace, custom_scene) }
 func (gdClass InstancePlaceholder) GetInstancePath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodInstancePlaceholder[2]) }
@@ -10048,6 +10930,9 @@ func (IntervalTweener) class() string { return "IntervalTweener\000" }
 
 func (gdClass IntervalTweener) Tweener() Tweener { return Tweener(gdClass) }
 
+func (gdClass IntervalTweener) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Tweener().virtual(rtype, name)
+}
 
 type ItemListIconMode int64
 
@@ -10069,6 +10954,9 @@ func (ItemList) class() string { return "ItemList\000" }
 func (gdClass ItemList) Control() Control { return Control(gdClass) }
 
 var methodItemList [69]gdnative.Method
+func (gdClass ItemList) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass ItemList) AddItem(text string, icon Texture2D, selectable bool) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodItemList[0], text, icon, selectable) }
 func (gdClass ItemList) AddIconItem(icon Texture2D, selectable bool) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodItemList[1], icon, selectable) }
 func (gdClass ItemList) SetItemText(idx int64, text string)  { gdnative.Call(gdnative.Object(gdClass), methodItemList[2], idx, text) }
@@ -10144,6 +11032,9 @@ func (JNISingleton) class() string { return "JNISingleton\000" }
 
 func (gdClass JNISingleton) Object() Object { return Object(gdClass) }
 
+func (gdClass JNISingleton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 
 type JSON gdnative.Object
 func (JSON) class() string { return "JSON\000" }
@@ -10151,6 +11042,9 @@ func (JSON) class() string { return "JSON\000" }
 func (gdClass JSON) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodJSON [5]gdnative.Method
+func (gdClass JSON) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass JSON) Stringify(data any, indent string, sort_keys bool, full_precision bool) string { return gdnative.Return[string](gdnative.Object(gdClass), methodJSON[0], data, indent, sort_keys, full_precision) }
 func (gdClass JSON) Parse(json_string string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodJSON[1], json_string) }
 func (gdClass JSON) GetData() any { return gdnative.Return[any](gdnative.Object(gdClass), methodJSON[2]) }
@@ -10173,6 +11067,9 @@ func (JSONRPC) class() string { return "JSONRPC\000" }
 func (gdClass JSONRPC) Object() Object { return Object(gdClass) }
 
 var methodJSONRPC [7]gdnative.Method
+func (gdClass JSONRPC) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass JSONRPC) SetScope(scope string, target Object)  { gdnative.Call(gdnative.Object(gdClass), methodJSONRPC[0], scope, target) }
 func (gdClass JSONRPC) ProcessAction(action any, recurse bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodJSONRPC[1], action, recurse) }
 func (gdClass JSONRPC) ProcessString(action string) string { return gdnative.Return[string](gdnative.Object(gdClass), methodJSONRPC[2], action) }
@@ -10186,6 +11083,9 @@ func (JavaClass) class() string { return "JavaClass\000" }
 
 func (gdClass JavaClass) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass JavaClass) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type JavaClassWrapper gdnative.Object
 func (JavaClassWrapper) class() string { return "JavaClassWrapper\000" }
@@ -10193,6 +11093,9 @@ func (JavaClassWrapper) class() string { return "JavaClassWrapper\000" }
 func (gdClass JavaClassWrapper) Object() Object { return Object(gdClass) }
 
 var methodJavaClassWrapper [1]gdnative.Method
+func (gdClass JavaClassWrapper) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass JavaClassWrapper) Wrap(name string) JavaClass { return gdnative.Return[JavaClass](gdnative.Object(gdClass), methodJavaClassWrapper[0], name) }
 
 type JavaScript gdnative.Object
@@ -10201,6 +11104,9 @@ func (JavaScript) class() string { return "JavaScript\000" }
 func (gdClass JavaScript) Object() Object { return Object(gdClass) }
 
 var methodJavaScript [7]gdnative.Method
+func (gdClass JavaScript) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass JavaScript) Eval(code string, use_global_execution_context bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodJavaScript[0], code, use_global_execution_context) }
 func (gdClass JavaScript) GetInterface(intf string) JavaScriptObject { return gdnative.Return[JavaScriptObject](gdnative.Object(gdClass), methodJavaScript[1], intf) }
 func (gdClass JavaScript) CreateCallback(callable Callable) JavaScriptObject { return gdnative.Return[JavaScriptObject](gdnative.Object(gdClass), methodJavaScript[2], callable) }
@@ -10214,6 +11120,9 @@ func (JavaScriptObject) class() string { return "JavaScriptObject\000" }
 
 func (gdClass JavaScriptObject) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass JavaScriptObject) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type Joint2D gdnative.Object
 func (Joint2D) class() string { return "Joint2D\000" }
@@ -10221,6 +11130,9 @@ func (Joint2D) class() string { return "Joint2D\000" }
 func (gdClass Joint2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodJoint2D [8]gdnative.Method
+func (gdClass Joint2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Joint2D) SetNodeA(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint2D[0], node) }
 func (gdClass Joint2D) GetNodeA() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodJoint2D[1]) }
 func (gdClass Joint2D) SetNodeB(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint2D[2], node) }
@@ -10236,6 +11148,9 @@ func (Joint3D) class() string { return "Joint3D\000" }
 func (gdClass Joint3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodJoint3D [8]gdnative.Method
+func (gdClass Joint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass Joint3D) SetNodeA(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint3D[0], node) }
 func (gdClass Joint3D) GetNodeA() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodJoint3D[1]) }
 func (gdClass Joint3D) SetNodeB(node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodJoint3D[2], node) }
@@ -10251,6 +11166,9 @@ func (KinematicCollision2D) class() string { return "KinematicCollision2D\000" }
 func (gdClass KinematicCollision2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodKinematicCollision2D [13]gdnative.Method
+func (gdClass KinematicCollision2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass KinematicCollision2D) GetPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodKinematicCollision2D[0]) }
 func (gdClass KinematicCollision2D) GetNormal() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodKinematicCollision2D[1]) }
 func (gdClass KinematicCollision2D) GetTravel() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodKinematicCollision2D[2]) }
@@ -10271,6 +11189,9 @@ func (KinematicCollision3D) class() string { return "KinematicCollision3D\000" }
 func (gdClass KinematicCollision3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodKinematicCollision3D [14]gdnative.Method
+func (gdClass KinematicCollision3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass KinematicCollision3D) GetTravel() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodKinematicCollision3D[0]) }
 func (gdClass KinematicCollision3D) GetRemainder() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodKinematicCollision3D[1]) }
 func (gdClass KinematicCollision3D) GetDepth() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodKinematicCollision3D[2]) }
@@ -10292,6 +11213,9 @@ func (Label) class() string { return "Label\000" }
 func (gdClass Label) Control() Control { return Control(gdClass) }
 
 var methodLabel [38]gdnative.Method
+func (gdClass Label) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass Label) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLabel[0], alignment) }
 func (gdClass Label) GetHorizontalAlignment() HorizontalAlignment { return gdnative.Return[HorizontalAlignment](gdnative.Object(gdClass), methodLabel[1]) }
 func (gdClass Label) SetVerticalAlignment(alignment VerticalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLabel[2], alignment) }
@@ -10355,6 +11279,9 @@ func (Label3D) class() string { return "Label3D\000" }
 func (gdClass Label3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodLabel3D [51]gdnative.Method
+func (gdClass Label3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass Label3D) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLabel3D[0], alignment) }
 func (gdClass Label3D) GetHorizontalAlignment() HorizontalAlignment { return gdnative.Return[HorizontalAlignment](gdnative.Object(gdClass), methodLabel3D[1]) }
 func (gdClass Label3D) SetVerticalAlignment(alignment VerticalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLabel3D[2], alignment) }
@@ -10413,6 +11340,9 @@ func (LabelSettings) class() string { return "LabelSettings\000" }
 func (gdClass LabelSettings) Resource() Resource { return Resource(gdClass) }
 
 var methodLabelSettings [18]gdnative.Method
+func (gdClass LabelSettings) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass LabelSettings) SetLineSpacing(spacing float64)  { gdnative.Call(gdnative.Object(gdClass), methodLabelSettings[0], spacing) }
 func (gdClass LabelSettings) GetLineSpacing() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodLabelSettings[1]) }
 func (gdClass LabelSettings) SetFont(font Font)  { gdnative.Call(gdnative.Object(gdClass), methodLabelSettings[2], font) }
@@ -10454,6 +11384,9 @@ func (Light2D) class() string { return "Light2D\000" }
 func (gdClass Light2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodLight2D [32]gdnative.Method
+func (gdClass Light2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Light2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodLight2D[0], enabled) }
 func (gdClass Light2D) IsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLight2D[1]) }
 func (gdClass Light2D) SetEditorOnly(editor_only bool)  { gdnative.Call(gdnative.Object(gdClass), methodLight2D[2], editor_only) }
@@ -10527,6 +11460,9 @@ func (Light3D) class() string { return "Light3D\000" }
 func (gdClass Light3D) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodLight3D [26]gdnative.Method
+func (gdClass Light3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass Light3D) SetEditorOnly(editor_only bool)  { gdnative.Call(gdnative.Object(gdClass), methodLight3D[0], editor_only) }
 func (gdClass Light3D) IsEditorOnly() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodLight3D[1]) }
 func (gdClass Light3D) SetParam(param Light3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodLight3D[2], param, value) }
@@ -10560,6 +11496,9 @@ func (LightOccluder2D) class() string { return "LightOccluder2D\000" }
 func (gdClass LightOccluder2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodLightOccluder2D [6]gdnative.Method
+func (gdClass LightOccluder2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass LightOccluder2D) SetOccluderPolygon(polygon OccluderPolygon2D)  { gdnative.Call(gdnative.Object(gdClass), methodLightOccluder2D[0], polygon) }
 func (gdClass LightOccluder2D) GetOccluderPolygon() OccluderPolygon2D { return gdnative.Return[OccluderPolygon2D](gdnative.Object(gdClass), methodLightOccluder2D[1]) }
 func (gdClass LightOccluder2D) SetOccluderLightMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodLightOccluder2D[2], mask) }
@@ -10613,6 +11552,9 @@ func (LightmapGI) class() string { return "LightmapGI\000" }
 func (gdClass LightmapGI) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodLightmapGI [26]gdnative.Method
+func (gdClass LightmapGI) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass LightmapGI) SetLightData(data LightmapGIData)  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGI[0], data) }
 func (gdClass LightmapGI) GetLightData() LightmapGIData { return gdnative.Return[LightmapGIData](gdnative.Object(gdClass), methodLightmapGI[1]) }
 func (gdClass LightmapGI) SetBakeQuality(bake_quality LightmapGIBakeQuality)  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGI[2], bake_quality) }
@@ -10646,6 +11588,9 @@ func (LightmapGIData) class() string { return "LightmapGIData\000" }
 func (gdClass LightmapGIData) Resource() Resource { return Resource(gdClass) }
 
 var methodLightmapGIData [8]gdnative.Method
+func (gdClass LightmapGIData) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass LightmapGIData) SetLightTexture(light_texture TextureLayered)  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGIData[0], light_texture) }
 func (gdClass LightmapGIData) GetLightTexture() TextureLayered { return gdnative.Return[TextureLayered](gdnative.Object(gdClass), methodLightmapGIData[1]) }
 func (gdClass LightmapGIData) SetUsesSphericalHarmonics(uses_spherical_harmonics bool)  { gdnative.Call(gdnative.Object(gdClass), methodLightmapGIData[2], uses_spherical_harmonics) }
@@ -10660,18 +11605,27 @@ func (LightmapProbe) class() string { return "LightmapProbe\000" }
 
 func (gdClass LightmapProbe) Node3D() Node3D { return Node3D(gdClass) }
 
+func (gdClass LightmapProbe) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 
 type Lightmapper gdnative.Object
 func (Lightmapper) class() string { return "Lightmapper\000" }
 
 func (gdClass Lightmapper) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass Lightmapper) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type LightmapperRD gdnative.Object
 func (LightmapperRD) class() string { return "LightmapperRD\000" }
 
 func (gdClass LightmapperRD) Lightmapper() Lightmapper { return Lightmapper(gdClass) }
 
+func (gdClass LightmapperRD) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Lightmapper().virtual(rtype, name)
+}
 
 type Line2DLineJointMode int64
 
@@ -10703,6 +11657,9 @@ func (Line2D) class() string { return "Line2D\000" }
 func (gdClass Line2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodLine2D [32]gdnative.Method
+func (gdClass Line2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Line2D) SetPoints(points []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodLine2D[0], points) }
 func (gdClass Line2D) GetPoints() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodLine2D[1]) }
 func (gdClass Line2D) SetPointPosition(index int64, position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodLine2D[2], index, position) }
@@ -10789,6 +11746,9 @@ func (LineEdit) class() string { return "LineEdit\000" }
 func (gdClass LineEdit) Control() Control { return Control(gdClass) }
 
 var methodLineEdit [70]gdnative.Method
+func (gdClass LineEdit) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass LineEdit) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodLineEdit[0], alignment) }
 func (gdClass LineEdit) GetHorizontalAlignment() HorizontalAlignment { return gdnative.Return[HorizontalAlignment](gdnative.Object(gdClass), methodLineEdit[1]) }
 func (gdClass LineEdit) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodLineEdit[2]) }
@@ -10874,6 +11834,9 @@ func (LinkButton) class() string { return "LinkButton\000" }
 func (gdClass LinkButton) BaseButton() BaseButton { return BaseButton(gdClass) }
 
 var methodLinkButton [12]gdnative.Method
+func (gdClass LinkButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BaseButton().virtual(rtype, name)
+}
 func (gdClass LinkButton) SetText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodLinkButton[0], text) }
 func (gdClass LinkButton) GetText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodLinkButton[1]) }
 func (gdClass LinkButton) SetTextDirection(direction ControlTextDirection)  { gdnative.Call(gdnative.Object(gdClass), methodLinkButton[2], direction) }
@@ -10892,29 +11855,30 @@ func (MainLoop) class() string { return "MainLoop\000" }
 
 func (gdClass MainLoop) Object() Object { return Object(gdClass) }
 
-func (gdClass MainLoop) virtual(val any, name string) any {	switch name {
+func (gdClass MainLoop) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_initialize":
-		i, ok := val.(interface{ Initialize()  })
-		if ok {
-			return i.Initialize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Initialize()  }{}).Elem()) {
+			return rtype.MethodByName(`Initialize`)
 		}
+		return
 	case "_physics_process":
-		i, ok := val.(interface{ PhysicsProcess(delta float64) bool })
-		if ok {
-			return i.PhysicsProcess
+		if rtype.Implements(reflect.TypeOf([0]interface{ PhysicsProcess(delta float64) bool }{}).Elem()) {
+			return rtype.MethodByName(`PhysicsProcess`)
 		}
+		return
 	case "_process":
-		i, ok := val.(interface{ Process(delta float64) bool })
-		if ok {
-			return i.Process
+		if rtype.Implements(reflect.TypeOf([0]interface{ Process(delta float64) bool }{}).Elem()) {
+			return rtype.MethodByName(`Process`)
 		}
+		return
 	case "_finalize":
-		i, ok := val.(interface{ Finalize()  })
-		if ok {
-			return i.Finalize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Finalize()  }{}).Elem()) {
+			return rtype.MethodByName(`Finalize`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Object().virtual(rtype, name)
 }
 
 type MarginContainer gdnative.Object
@@ -10922,6 +11886,9 @@ func (MarginContainer) class() string { return "MarginContainer\000" }
 
 func (gdClass MarginContainer) Container() Container { return Container(gdClass) }
 
+func (gdClass MarginContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 
 type Marshalls gdnative.Object
 func (Marshalls) class() string { return "Marshalls\000" }
@@ -10929,6 +11896,9 @@ func (Marshalls) class() string { return "Marshalls\000" }
 func (gdClass Marshalls) Object() Object { return Object(gdClass) }
 
 var methodMarshalls [6]gdnative.Method
+func (gdClass Marshalls) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Marshalls) VariantToBase64(variant any, full_objects bool) string { return gdnative.Return[string](gdnative.Object(gdClass), methodMarshalls[0], variant, full_objects) }
 func (gdClass Marshalls) Base64ToVariant(base64_str string, allow_objects bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodMarshalls[1], base64_str, allow_objects) }
 func (gdClass Marshalls) RawToBase64(array []byte) string { return gdnative.Return[string](gdnative.Object(gdClass), methodMarshalls[2], array) }
@@ -10942,29 +11912,30 @@ func (Material) class() string { return "Material\000" }
 func (gdClass Material) Resource() Resource { return Resource(gdClass) }
 
 var methodMaterial [5]gdnative.Method
-func (gdClass Material) virtual(val any, name string) any {	switch name {
+func (gdClass Material) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_shader_rid":
-		i, ok := val.(interface{ GetShaderRid() RID })
-		if ok {
-			return i.GetShaderRid
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetShaderRid() RID }{}).Elem()) {
+			return rtype.MethodByName(`GetShaderRid`)
 		}
+		return
 	case "_get_shader_mode":
-		i, ok := val.(interface{ GetShaderMode() ShaderMode })
-		if ok {
-			return i.GetShaderMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetShaderMode() ShaderMode }{}).Elem()) {
+			return rtype.MethodByName(`GetShaderMode`)
 		}
+		return
 	case "_can_do_next_pass":
-		i, ok := val.(interface{ CanDoNextPass() bool })
-		if ok {
-			return i.CanDoNextPass
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanDoNextPass() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanDoNextPass`)
 		}
+		return
 	case "_can_use_render_priority":
-		i, ok := val.(interface{ CanUseRenderPriority() bool })
-		if ok {
-			return i.CanUseRenderPriority
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanUseRenderPriority() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanUseRenderPriority`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass Material) SetNextPass(next_pass Material)  { gdnative.Call(gdnative.Object(gdClass), methodMaterial[0], next_pass) }
 func (gdClass Material) GetNextPass() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodMaterial[1]) }
@@ -10978,6 +11949,9 @@ func (MenuBar) class() string { return "MenuBar\000" }
 func (gdClass MenuBar) Control() Control { return Control(gdClass) }
 
 var methodMenuBar [26]gdnative.Method
+func (gdClass MenuBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass MenuBar) SetSwitchOnHover(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodMenuBar[0], enable) }
 func (gdClass MenuBar) IsSwitchOnHover() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMenuBar[1]) }
 func (gdClass MenuBar) SetDisableShortcuts(disabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodMenuBar[2], disabled) }
@@ -11011,6 +11985,9 @@ func (MenuButton) class() string { return "MenuButton\000" }
 func (gdClass MenuButton) Button() Button { return Button(gdClass) }
 
 var methodMenuButton [6]gdnative.Method
+func (gdClass MenuButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Button().virtual(rtype, name)
+}
 func (gdClass MenuButton) GetPopup() PopupMenu { return gdnative.Return[PopupMenu](gdnative.Object(gdClass), methodMenuButton[0]) }
 func (gdClass MenuButton) SetSwitchOnHover(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodMenuButton[1], enable) }
 func (gdClass MenuButton) IsSwitchOnHover() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMenuButton[2]) }
@@ -11104,79 +12081,80 @@ func (Mesh) class() string { return "Mesh\000" }
 func (gdClass Mesh) Resource() Resource { return Resource(gdClass) }
 
 var methodMesh [13]gdnative.Method
-func (gdClass Mesh) virtual(val any, name string) any {	switch name {
+func (gdClass Mesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_surface_count":
-		i, ok := val.(interface{ GetSurfaceCount() int64 })
-		if ok {
-			return i.GetSurfaceCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSurfaceCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetSurfaceCount`)
 		}
+		return
 	case "_surface_get_array_len":
-		i, ok := val.(interface{ SurfaceGetArrayLen(index int64) int64 })
-		if ok {
-			return i.SurfaceGetArrayLen
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetArrayLen(index int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetArrayLen`)
 		}
+		return
 	case "_surface_get_array_index_len":
-		i, ok := val.(interface{ SurfaceGetArrayIndexLen(index int64) int64 })
-		if ok {
-			return i.SurfaceGetArrayIndexLen
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetArrayIndexLen(index int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetArrayIndexLen`)
 		}
+		return
 	case "_surface_get_arrays":
-		i, ok := val.(interface{ SurfaceGetArrays(index int64) Array })
-		if ok {
-			return i.SurfaceGetArrays
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetArrays(index int64) Array }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetArrays`)
 		}
+		return
 	case "_surface_get_blend_shape_arrays":
-		i, ok := val.(interface{ SurfaceGetBlendShapeArrays(index int64) Array })
-		if ok {
-			return i.SurfaceGetBlendShapeArrays
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetBlendShapeArrays(index int64) Array }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetBlendShapeArrays`)
 		}
+		return
 	case "_surface_get_lods":
-		i, ok := val.(interface{ SurfaceGetLods(index int64) Dictionary })
-		if ok {
-			return i.SurfaceGetLods
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetLods(index int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetLods`)
 		}
+		return
 	case "_surface_get_format":
-		i, ok := val.(interface{ SurfaceGetFormat(index int64) int64 })
-		if ok {
-			return i.SurfaceGetFormat
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetFormat(index int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetFormat`)
 		}
+		return
 	case "_surface_get_primitive_type":
-		i, ok := val.(interface{ SurfaceGetPrimitiveType(index int64) int64 })
-		if ok {
-			return i.SurfaceGetPrimitiveType
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetPrimitiveType(index int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetPrimitiveType`)
 		}
+		return
 	case "_surface_set_material":
-		i, ok := val.(interface{ SurfaceSetMaterial(index int64, material Material)  })
-		if ok {
-			return i.SurfaceSetMaterial
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceSetMaterial(index int64, material Material)  }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceSetMaterial`)
 		}
+		return
 	case "_surface_get_material":
-		i, ok := val.(interface{ SurfaceGetMaterial(index int64) Material })
-		if ok {
-			return i.SurfaceGetMaterial
+		if rtype.Implements(reflect.TypeOf([0]interface{ SurfaceGetMaterial(index int64) Material }{}).Elem()) {
+			return rtype.MethodByName(`SurfaceGetMaterial`)
 		}
+		return
 	case "_get_blend_shape_count":
-		i, ok := val.(interface{ GetBlendShapeCount() int64 })
-		if ok {
-			return i.GetBlendShapeCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBlendShapeCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetBlendShapeCount`)
 		}
+		return
 	case "_get_blend_shape_name":
-		i, ok := val.(interface{ GetBlendShapeName(index int64) string })
-		if ok {
-			return i.GetBlendShapeName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBlendShapeName(index int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetBlendShapeName`)
 		}
+		return
 	case "_set_blend_shape_name":
-		i, ok := val.(interface{ SetBlendShapeName(index int64, name string)  })
-		if ok {
-			return i.SetBlendShapeName
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetBlendShapeName(index int64, name string)  }{}).Elem()) {
+			return rtype.MethodByName(`SetBlendShapeName`)
 		}
+		return
 	case "_get_aabb":
-		i, ok := val.(interface{ GetAabb() AABB })
-		if ok {
-			return i.GetAabb
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAabb() AABB }{}).Elem()) {
+			return rtype.MethodByName(`GetAabb`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass Mesh) SetLightmapSizeHint(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodMesh[0], size) }
 func (gdClass Mesh) GetLightmapSizeHint() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodMesh[1]) }
@@ -11198,6 +12176,9 @@ func (MeshDataTool) class() string { return "MeshDataTool\000" }
 func (gdClass MeshDataTool) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodMeshDataTool [38]gdnative.Method
+func (gdClass MeshDataTool) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass MeshDataTool) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodMeshDataTool[0]) }
 func (gdClass MeshDataTool) CreateFromSurface(mesh ArrayMesh, surface int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodMeshDataTool[1], mesh, surface) }
 func (gdClass MeshDataTool) CommitToSurface(mesh ArrayMesh) error { return gdnative.Return[error](gdnative.Object(gdClass), methodMeshDataTool[2], mesh) }
@@ -11243,6 +12224,9 @@ func (MeshInstance2D) class() string { return "MeshInstance2D\000" }
 func (gdClass MeshInstance2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodMeshInstance2D [6]gdnative.Method
+func (gdClass MeshInstance2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass MeshInstance2D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance2D[0], mesh) }
 func (gdClass MeshInstance2D) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodMeshInstance2D[1]) }
 func (gdClass MeshInstance2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance2D[2], texture) }
@@ -11256,6 +12240,9 @@ func (MeshInstance3D) class() string { return "MeshInstance3D\000" }
 func (gdClass MeshInstance3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodMeshInstance3D [18]gdnative.Method
+func (gdClass MeshInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass MeshInstance3D) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance3D[0], mesh) }
 func (gdClass MeshInstance3D) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodMeshInstance3D[1]) }
 func (gdClass MeshInstance3D) SetSkeletonPath(skeleton_path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodMeshInstance3D[2], skeleton_path) }
@@ -11281,6 +12268,9 @@ func (MeshLibrary) class() string { return "MeshLibrary\000" }
 func (gdClass MeshLibrary) Resource() Resource { return Resource(gdClass) }
 
 var methodMeshLibrary [20]gdnative.Method
+func (gdClass MeshLibrary) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass MeshLibrary) CreateItem(id int64)  { gdnative.Call(gdnative.Object(gdClass), methodMeshLibrary[0], id) }
 func (gdClass MeshLibrary) SetItemName(id int64, name string)  { gdnative.Call(gdnative.Object(gdClass), methodMeshLibrary[1], id, name) }
 func (gdClass MeshLibrary) SetItemMesh(id int64, mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshLibrary[2], id, mesh) }
@@ -11308,6 +12298,9 @@ func (MeshTexture) class() string { return "MeshTexture\000" }
 func (gdClass MeshTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodMeshTexture [6]gdnative.Method
+func (gdClass MeshTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass MeshTexture) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMeshTexture[0], mesh) }
 func (gdClass MeshTexture) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodMeshTexture[1]) }
 func (gdClass MeshTexture) SetImageSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodMeshTexture[2], size) }
@@ -11321,6 +12314,9 @@ func (MethodTweener) class() string { return "MethodTweener\000" }
 func (gdClass MethodTweener) Tweener() Tweener { return Tweener(gdClass) }
 
 var methodMethodTweener [3]gdnative.Method
+func (gdClass MethodTweener) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Tweener().virtual(rtype, name)
+}
 func (gdClass MethodTweener) SetDelay(delay float64) MethodTweener { return gdnative.Return[MethodTweener](gdnative.Object(gdClass), methodMethodTweener[0], delay) }
 func (gdClass MethodTweener) SetTrans(trans TweenTransitionType) MethodTweener { return gdnative.Return[MethodTweener](gdnative.Object(gdClass), methodMethodTweener[1], trans) }
 func (gdClass MethodTweener) SetEase(ease TweenEaseType) MethodTweener { return gdnative.Return[MethodTweener](gdnative.Object(gdClass), methodMethodTweener[2], ease) }
@@ -11331,6 +12327,9 @@ func (MissingNode) class() string { return "MissingNode\000" }
 func (gdClass MissingNode) Node() Node { return Node(gdClass) }
 
 var methodMissingNode [4]gdnative.Method
+func (gdClass MissingNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass MissingNode) SetOriginalClass(name string)  { gdnative.Call(gdnative.Object(gdClass), methodMissingNode[0], name) }
 func (gdClass MissingNode) GetOriginalClass() string { return gdnative.Return[string](gdnative.Object(gdClass), methodMissingNode[1]) }
 func (gdClass MissingNode) SetRecordingProperties(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodMissingNode[2], enable) }
@@ -11342,6 +12341,9 @@ func (MissingResource) class() string { return "MissingResource\000" }
 func (gdClass MissingResource) Resource() Resource { return Resource(gdClass) }
 
 var methodMissingResource [4]gdnative.Method
+func (gdClass MissingResource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass MissingResource) SetOriginalClass(name string)  { gdnative.Call(gdnative.Object(gdClass), methodMissingResource[0], name) }
 func (gdClass MissingResource) GetOriginalClass() string { return gdnative.Return[string](gdnative.Object(gdClass), methodMissingResource[1]) }
 func (gdClass MissingResource) SetRecordingProperties(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodMissingResource[2], enable) }
@@ -11353,6 +12355,9 @@ func (MobileVRInterface) class() string { return "MobileVRInterface\000" }
 func (gdClass MobileVRInterface) XRInterface() XRInterface { return XRInterface(gdClass) }
 
 var methodMobileVRInterface [14]gdnative.Method
+func (gdClass MobileVRInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.XRInterface().virtual(rtype, name)
+}
 func (gdClass MobileVRInterface) SetEyeHeight(eye_height float64)  { gdnative.Call(gdnative.Object(gdClass), methodMobileVRInterface[0], eye_height) }
 func (gdClass MobileVRInterface) GetEyeHeight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodMobileVRInterface[1]) }
 func (gdClass MobileVRInterface) SetIod(iod float64)  { gdnative.Call(gdnative.Object(gdClass), methodMobileVRInterface[2], iod) }
@@ -11374,39 +12379,40 @@ func (MovieWriter) class() string { return "MovieWriter\000" }
 func (gdClass MovieWriter) Object() Object { return Object(gdClass) }
 
 var methodMovieWriter [1]gdnative.Method
-func (gdClass MovieWriter) virtual(val any, name string) any {	switch name {
+func (gdClass MovieWriter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_audio_mix_rate":
-		i, ok := val.(interface{ GetAudioMixRate() int64 })
-		if ok {
-			return i.GetAudioMixRate
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAudioMixRate() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetAudioMixRate`)
 		}
+		return
 	case "_get_audio_speaker_mode":
-		i, ok := val.(interface{ GetAudioSpeakerMode() AudioServerSpeakerMode })
-		if ok {
-			return i.GetAudioSpeakerMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAudioSpeakerMode() AudioServerSpeakerMode }{}).Elem()) {
+			return rtype.MethodByName(`GetAudioSpeakerMode`)
 		}
+		return
 	case "_handles_file":
-		i, ok := val.(interface{ HandlesFile(path string) bool })
-		if ok {
-			return i.HandlesFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ HandlesFile(path string) bool }{}).Elem()) {
+			return rtype.MethodByName(`HandlesFile`)
 		}
+		return
 	case "_write_begin":
-		i, ok := val.(interface{ WriteBegin(movie_size Vector2i, fps int64, base_path string) error })
-		if ok {
-			return i.WriteBegin
+		if rtype.Implements(reflect.TypeOf([0]interface{ WriteBegin(movie_size Vector2i, fps int64, base_path string) error }{}).Elem()) {
+			return rtype.MethodByName(`WriteBegin`)
 		}
+		return
 	case "_write_frame":
-		i, ok := val.(interface{ WriteFrame(frame_image Image, audio_frame_block []byte) error })
-		if ok {
-			return i.WriteFrame
+		if rtype.Implements(reflect.TypeOf([0]interface{ WriteFrame(frame_image Image, audio_frame_block []byte) error }{}).Elem()) {
+			return rtype.MethodByName(`WriteFrame`)
 		}
+		return
 	case "_write_end":
-		i, ok := val.(interface{ WriteEnd()  })
-		if ok {
-			return i.WriteEnd
+		if rtype.Implements(reflect.TypeOf([0]interface{ WriteEnd()  }{}).Elem()) {
+			return rtype.MethodByName(`WriteEnd`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Object().virtual(rtype, name)
 }
 func (gdClass MovieWriter) AddWriter(writer MovieWriter)  { gdnative.Call(gdnative.Object(gdClass), methodMovieWriter[0], writer) }
 
@@ -11415,12 +12421,18 @@ func (MovieWriterMJPEG) class() string { return "MovieWriterMJPEG\000" }
 
 func (gdClass MovieWriterMJPEG) MovieWriter() MovieWriter { return MovieWriter(gdClass) }
 
+func (gdClass MovieWriterMJPEG) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MovieWriter().virtual(rtype, name)
+}
 
 type MovieWriterPNGWAV gdnative.Object
 func (MovieWriterPNGWAV) class() string { return "MovieWriterPNGWAV\000" }
 
 func (gdClass MovieWriterPNGWAV) MovieWriter() MovieWriter { return MovieWriter(gdClass) }
 
+func (gdClass MovieWriterPNGWAV) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MovieWriter().virtual(rtype, name)
+}
 
 type MultiMeshTransformFormat int64
 
@@ -11435,6 +12447,9 @@ func (MultiMesh) class() string { return "MultiMesh\000" }
 func (gdClass MultiMesh) Resource() Resource { return Resource(gdClass) }
 
 var methodMultiMesh [23]gdnative.Method
+func (gdClass MultiMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass MultiMesh) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMesh[0], mesh) }
 func (gdClass MultiMesh) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodMultiMesh[1]) }
 func (gdClass MultiMesh) SetUseColors(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMesh[2], enable) }
@@ -11465,6 +12480,9 @@ func (MultiMeshInstance2D) class() string { return "MultiMeshInstance2D\000" }
 func (gdClass MultiMeshInstance2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodMultiMeshInstance2D [6]gdnative.Method
+func (gdClass MultiMeshInstance2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass MultiMeshInstance2D) SetMultimesh(multimesh MultiMesh)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMeshInstance2D[0], multimesh) }
 func (gdClass MultiMeshInstance2D) GetMultimesh() MultiMesh { return gdnative.Return[MultiMesh](gdnative.Object(gdClass), methodMultiMeshInstance2D[1]) }
 func (gdClass MultiMeshInstance2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMeshInstance2D[2], texture) }
@@ -11478,6 +12496,9 @@ func (MultiMeshInstance3D) class() string { return "MultiMeshInstance3D\000" }
 func (gdClass MultiMeshInstance3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodMultiMeshInstance3D [2]gdnative.Method
+func (gdClass MultiMeshInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass MultiMeshInstance3D) SetMultimesh(multimesh MultiMesh)  { gdnative.Call(gdnative.Object(gdClass), methodMultiMeshInstance3D[0], multimesh) }
 func (gdClass MultiMeshInstance3D) GetMultimesh() MultiMesh { return gdnative.Return[MultiMesh](gdnative.Object(gdClass), methodMultiMeshInstance3D[1]) }
 
@@ -11495,6 +12516,9 @@ func (MultiplayerAPI) class() string { return "MultiplayerAPI\000" }
 func (gdClass MultiplayerAPI) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodMultiplayerAPI [14]gdnative.Method
+func (gdClass MultiplayerAPI) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass MultiplayerAPI) HasMultiplayerPeer() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodMultiplayerAPI[0]) }
 func (gdClass MultiplayerAPI) GetMultiplayerPeer() MultiplayerPeer { return gdnative.Return[MultiplayerPeer](gdnative.Object(gdClass), methodMultiplayerAPI[1]) }
 func (gdClass MultiplayerAPI) SetMultiplayerPeer(peer MultiplayerPeer)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerAPI[2], peer) }
@@ -11515,54 +12539,55 @@ func (MultiplayerAPIExtension) class() string { return "MultiplayerAPIExtension\
 
 func (gdClass MultiplayerAPIExtension) MultiplayerAPI() MultiplayerAPI { return MultiplayerAPI(gdClass) }
 
-func (gdClass MultiplayerAPIExtension) virtual(val any, name string) any {	switch name {
+func (gdClass MultiplayerAPIExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_poll":
-		i, ok := val.(interface{ Poll() int64 })
-		if ok {
-			return i.Poll
+		if rtype.Implements(reflect.TypeOf([0]interface{ Poll() int64 }{}).Elem()) {
+			return rtype.MethodByName(`Poll`)
 		}
+		return
 	case "_set_multiplayer_peer":
-		i, ok := val.(interface{ SetMultiplayerPeer(multiplayer_peer MultiplayerPeer)  })
-		if ok {
-			return i.SetMultiplayerPeer
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetMultiplayerPeer(multiplayer_peer MultiplayerPeer)  }{}).Elem()) {
+			return rtype.MethodByName(`SetMultiplayerPeer`)
 		}
+		return
 	case "_get_multiplayer_peer":
-		i, ok := val.(interface{ GetMultiplayerPeer() MultiplayerPeer })
-		if ok {
-			return i.GetMultiplayerPeer
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMultiplayerPeer() MultiplayerPeer }{}).Elem()) {
+			return rtype.MethodByName(`GetMultiplayerPeer`)
 		}
+		return
 	case "_get_unique_id":
-		i, ok := val.(interface{ GetUniqueId() int64 })
-		if ok {
-			return i.GetUniqueId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetUniqueId() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetUniqueId`)
 		}
+		return
 	case "_get_peer_ids":
-		i, ok := val.(interface{ GetPeerIds() []int32 })
-		if ok {
-			return i.GetPeerIds
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPeerIds() []int32 }{}).Elem()) {
+			return rtype.MethodByName(`GetPeerIds`)
 		}
+		return
 	case "_rpc":
-		i, ok := val.(interface{ Rpc(peer int64, object Object, method string, args Array) int64 })
-		if ok {
-			return i.Rpc
+		if rtype.Implements(reflect.TypeOf([0]interface{ Rpc(peer int64, object Object, method string, args Array) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Rpc`)
 		}
+		return
 	case "_get_remote_sender_id":
-		i, ok := val.(interface{ GetRemoteSenderId() int64 })
-		if ok {
-			return i.GetRemoteSenderId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRemoteSenderId() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetRemoteSenderId`)
 		}
+		return
 	case "_object_configuration_add":
-		i, ok := val.(interface{ ObjectConfigurationAdd(object Object, configuration any) int64 })
-		if ok {
-			return i.ObjectConfigurationAdd
+		if rtype.Implements(reflect.TypeOf([0]interface{ ObjectConfigurationAdd(object Object, configuration any) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ObjectConfigurationAdd`)
 		}
+		return
 	case "_object_configuration_remove":
-		i, ok := val.(interface{ ObjectConfigurationRemove(object Object, configuration any) int64 })
-		if ok {
-			return i.ObjectConfigurationRemove
+		if rtype.Implements(reflect.TypeOf([0]interface{ ObjectConfigurationRemove(object Object, configuration any) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ObjectConfigurationRemove`)
 		}
+		return
 	}
-	return nil
+	return gdClass.MultiplayerAPI().virtual(rtype, name)
 }
 
 type MultiplayerPeerConnectionStatus int64
@@ -11587,6 +12612,9 @@ func (MultiplayerPeer) class() string { return "MultiplayerPeer\000" }
 func (gdClass MultiplayerPeer) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodMultiplayerPeer [12]gdnative.Method
+func (gdClass MultiplayerPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass MultiplayerPeer) SetTransferChannel(channel int64)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerPeer[0], channel) }
 func (gdClass MultiplayerPeer) GetTransferChannel() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerPeer[1]) }
 func (gdClass MultiplayerPeer) SetTransferMode(mode MultiplayerPeerTransferMode)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerPeer[2], mode) }
@@ -11605,99 +12633,100 @@ func (MultiplayerPeerExtension) class() string { return "MultiplayerPeerExtensio
 
 func (gdClass MultiplayerPeerExtension) MultiplayerPeer() MultiplayerPeer { return MultiplayerPeer(gdClass) }
 
-func (gdClass MultiplayerPeerExtension) virtual(val any, name string) any {	switch name {
+func (gdClass MultiplayerPeerExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_packet":
-		i, ok := val.(interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 })
-		if ok {
-			return i.GetPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPacket`)
 		}
+		return
 	case "_put_packet":
-		i, ok := val.(interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 })
-		if ok {
-			return i.PutPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutPacket`)
 		}
+		return
 	case "_get_available_packet_count":
-		i, ok := val.(interface{ GetAvailablePacketCount() int64 })
-		if ok {
-			return i.GetAvailablePacketCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAvailablePacketCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetAvailablePacketCount`)
 		}
+		return
 	case "_get_max_packet_size":
-		i, ok := val.(interface{ GetMaxPacketSize() int64 })
-		if ok {
-			return i.GetMaxPacketSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMaxPacketSize() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMaxPacketSize`)
 		}
+		return
 	case "_get_packet_script":
-		i, ok := val.(interface{ GetPacketScript() []byte })
-		if ok {
-			return i.GetPacketScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPacketScript() []byte }{}).Elem()) {
+			return rtype.MethodByName(`GetPacketScript`)
 		}
+		return
 	case "_put_packet_script":
-		i, ok := val.(interface{ PutPacketScript(p_buffer []byte) int64 })
-		if ok {
-			return i.PutPacketScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutPacketScript(p_buffer []byte) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutPacketScript`)
 		}
+		return
 	case "_set_transfer_channel":
-		i, ok := val.(interface{ SetTransferChannel(p_channel int64)  })
-		if ok {
-			return i.SetTransferChannel
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetTransferChannel(p_channel int64)  }{}).Elem()) {
+			return rtype.MethodByName(`SetTransferChannel`)
 		}
+		return
 	case "_get_transfer_channel":
-		i, ok := val.(interface{ GetTransferChannel() int64 })
-		if ok {
-			return i.GetTransferChannel
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTransferChannel() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetTransferChannel`)
 		}
+		return
 	case "_set_transfer_mode":
-		i, ok := val.(interface{ SetTransferMode(p_mode int64)  })
-		if ok {
-			return i.SetTransferMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetTransferMode(p_mode int64)  }{}).Elem()) {
+			return rtype.MethodByName(`SetTransferMode`)
 		}
+		return
 	case "_get_transfer_mode":
-		i, ok := val.(interface{ GetTransferMode() int64 })
-		if ok {
-			return i.GetTransferMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTransferMode() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetTransferMode`)
 		}
+		return
 	case "_set_target_peer":
-		i, ok := val.(interface{ SetTargetPeer(p_peer int64)  })
-		if ok {
-			return i.SetTargetPeer
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetTargetPeer(p_peer int64)  }{}).Elem()) {
+			return rtype.MethodByName(`SetTargetPeer`)
 		}
+		return
 	case "_get_packet_peer":
-		i, ok := val.(interface{ GetPacketPeer() int64 })
-		if ok {
-			return i.GetPacketPeer
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPacketPeer() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPacketPeer`)
 		}
+		return
 	case "_is_server":
-		i, ok := val.(interface{ IsServer() bool })
-		if ok {
-			return i.IsServer
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsServer() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsServer`)
 		}
+		return
 	case "_poll":
-		i, ok := val.(interface{ Poll() int64 })
-		if ok {
-			return i.Poll
+		if rtype.Implements(reflect.TypeOf([0]interface{ Poll() int64 }{}).Elem()) {
+			return rtype.MethodByName(`Poll`)
 		}
+		return
 	case "_get_unique_id":
-		i, ok := val.(interface{ GetUniqueId() int64 })
-		if ok {
-			return i.GetUniqueId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetUniqueId() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetUniqueId`)
 		}
+		return
 	case "_set_refuse_new_connections":
-		i, ok := val.(interface{ SetRefuseNewConnections(p_enable bool)  })
-		if ok {
-			return i.SetRefuseNewConnections
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetRefuseNewConnections(p_enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`SetRefuseNewConnections`)
 		}
+		return
 	case "_is_refusing_new_connections":
-		i, ok := val.(interface{ IsRefusingNewConnections() bool })
-		if ok {
-			return i.IsRefusingNewConnections
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsRefusingNewConnections() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsRefusingNewConnections`)
 		}
+		return
 	case "_get_connection_status":
-		i, ok := val.(interface{ GetConnectionStatus() int64 })
-		if ok {
-			return i.GetConnectionStatus
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConnectionStatus() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetConnectionStatus`)
 		}
+		return
 	}
-	return nil
+	return gdClass.MultiplayerPeer().virtual(rtype, name)
 }
 
 type MultiplayerSpawner gdnative.Object
@@ -11706,14 +12735,15 @@ func (MultiplayerSpawner) class() string { return "MultiplayerSpawner\000" }
 func (gdClass MultiplayerSpawner) Node() Node { return Node(gdClass) }
 
 var methodMultiplayerSpawner [9]gdnative.Method
-func (gdClass MultiplayerSpawner) virtual(val any, name string) any {	switch name {
+func (gdClass MultiplayerSpawner) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_spawn_custom":
-		i, ok := val.(interface{ SpawnCustom(data any) Node })
-		if ok {
-			return i.SpawnCustom
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpawnCustom(data any) Node }{}).Elem()) {
+			return rtype.MethodByName(`SpawnCustom`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node().virtual(rtype, name)
 }
 func (gdClass MultiplayerSpawner) AddSpawnableScene(path string)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerSpawner[0], path) }
 func (gdClass MultiplayerSpawner) GetSpawnableSceneCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodMultiplayerSpawner[1]) }
@@ -11739,6 +12769,9 @@ func (MultiplayerSynchronizer) class() string { return "MultiplayerSynchronizer\
 func (gdClass MultiplayerSynchronizer) Node() Node { return Node(gdClass) }
 
 var methodMultiplayerSynchronizer [15]gdnative.Method
+func (gdClass MultiplayerSynchronizer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass MultiplayerSynchronizer) SetRootPath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerSynchronizer[0], path) }
 func (gdClass MultiplayerSynchronizer) GetRootPath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodMultiplayerSynchronizer[1]) }
 func (gdClass MultiplayerSynchronizer) SetReplicationInterval(milliseconds float64)  { gdnative.Call(gdnative.Object(gdClass), methodMultiplayerSynchronizer[2], milliseconds) }
@@ -11761,6 +12794,9 @@ func (Mutex) class() string { return "Mutex\000" }
 func (gdClass Mutex) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodMutex [3]gdnative.Method
+func (gdClass Mutex) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Mutex) Lock()  { gdnative.Call(gdnative.Object(gdClass), methodMutex[0]) }
 func (gdClass Mutex) TryLock() error { return gdnative.Return[error](gdnative.Object(gdClass), methodMutex[1]) }
 func (gdClass Mutex) Unlock()  { gdnative.Call(gdnative.Object(gdClass), methodMutex[2]) }
@@ -11780,6 +12816,9 @@ func (NativeExtension) class() string { return "NativeExtension\000" }
 func (gdClass NativeExtension) Resource() Resource { return Resource(gdClass) }
 
 var methodNativeExtension [5]gdnative.Method
+func (gdClass NativeExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass NativeExtension) OpenLibrary(path string, entry_symbol string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodNativeExtension[0], path, entry_symbol) }
 func (gdClass NativeExtension) CloseLibrary()  { gdnative.Call(gdnative.Object(gdClass), methodNativeExtension[1]) }
 func (gdClass NativeExtension) IsLibraryOpen() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodNativeExtension[2]) }
@@ -11802,6 +12841,9 @@ func (NativeExtensionManager) class() string { return "NativeExtensionManager\00
 func (gdClass NativeExtensionManager) Object() Object { return Object(gdClass) }
 
 var methodNativeExtensionManager [6]gdnative.Method
+func (gdClass NativeExtensionManager) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass NativeExtensionManager) LoadExtension(path string) NativeExtensionManagerLoadStatus { return gdnative.Return[NativeExtensionManagerLoadStatus](gdnative.Object(gdClass), methodNativeExtensionManager[0], path) }
 func (gdClass NativeExtensionManager) ReloadExtension(path string) NativeExtensionManagerLoadStatus { return gdnative.Return[NativeExtensionManagerLoadStatus](gdnative.Object(gdClass), methodNativeExtensionManager[1], path) }
 func (gdClass NativeExtensionManager) UnloadExtension(path string) NativeExtensionManagerLoadStatus { return gdnative.Return[NativeExtensionManagerLoadStatus](gdnative.Object(gdClass), methodNativeExtensionManager[2], path) }
@@ -11815,6 +12857,9 @@ func (NavigationAgent2D) class() string { return "NavigationAgent2D\000" }
 func (gdClass NavigationAgent2D) Node() Node { return Node(gdClass) }
 
 var methodNavigationAgent2D [36]gdnative.Method
+func (gdClass NavigationAgent2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass NavigationAgent2D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationAgent2D[0]) }
 func (gdClass NavigationAgent2D) SetAvoidanceEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationAgent2D[1], enabled) }
 func (gdClass NavigationAgent2D) GetAvoidanceEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodNavigationAgent2D[2]) }
@@ -11858,6 +12903,9 @@ func (NavigationAgent3D) class() string { return "NavigationAgent3D\000" }
 func (gdClass NavigationAgent3D) Node() Node { return Node(gdClass) }
 
 var methodNavigationAgent3D [40]gdnative.Method
+func (gdClass NavigationAgent3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass NavigationAgent3D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationAgent3D[0]) }
 func (gdClass NavigationAgent3D) SetAvoidanceEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationAgent3D[1], enabled) }
 func (gdClass NavigationAgent3D) GetAvoidanceEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodNavigationAgent3D[2]) }
@@ -11932,6 +12980,9 @@ func (NavigationMesh) class() string { return "NavigationMesh\000" }
 func (gdClass NavigationMesh) Resource() Resource { return Resource(gdClass) }
 
 var methodNavigationMesh [55]gdnative.Method
+func (gdClass NavigationMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass NavigationMesh) SetSamplePartitionType(sample_partition_type NavigationMeshSamplePartitionType)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMesh[0], sample_partition_type) }
 func (gdClass NavigationMesh) GetSamplePartitionType() NavigationMeshSamplePartitionType { return gdnative.Return[NavigationMeshSamplePartitionType](gdnative.Object(gdClass), methodNavigationMesh[1]) }
 func (gdClass NavigationMesh) SetParsedGeometryType(geometry_type NavigationMeshParsedGeometryType)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMesh[2], geometry_type) }
@@ -11994,6 +13045,9 @@ func (NavigationMeshGenerator) class() string { return "NavigationMeshGenerator\
 func (gdClass NavigationMeshGenerator) Object() Object { return Object(gdClass) }
 
 var methodNavigationMeshGenerator [2]gdnative.Method
+func (gdClass NavigationMeshGenerator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass NavigationMeshGenerator) Bake(nav_mesh NavigationMesh, root_node Node)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMeshGenerator[0], nav_mesh, root_node) }
 func (gdClass NavigationMeshGenerator) Clear(nav_mesh NavigationMesh)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationMeshGenerator[1], nav_mesh) }
 
@@ -12003,6 +13057,9 @@ func (NavigationObstacle2D) class() string { return "NavigationObstacle2D\000" }
 func (gdClass NavigationObstacle2D) Node() Node { return Node(gdClass) }
 
 var methodNavigationObstacle2D [5]gdnative.Method
+func (gdClass NavigationObstacle2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass NavigationObstacle2D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationObstacle2D[0]) }
 func (gdClass NavigationObstacle2D) SetEstimateRadius(estimate_radius bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationObstacle2D[1], estimate_radius) }
 func (gdClass NavigationObstacle2D) IsRadiusEstimated() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodNavigationObstacle2D[2]) }
@@ -12015,6 +13072,9 @@ func (NavigationObstacle3D) class() string { return "NavigationObstacle3D\000" }
 func (gdClass NavigationObstacle3D) Node() Node { return Node(gdClass) }
 
 var methodNavigationObstacle3D [5]gdnative.Method
+func (gdClass NavigationObstacle3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass NavigationObstacle3D) GetRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationObstacle3D[0]) }
 func (gdClass NavigationObstacle3D) SetEstimateRadius(estimate_radius bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationObstacle3D[1], estimate_radius) }
 func (gdClass NavigationObstacle3D) IsRadiusEstimated() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodNavigationObstacle3D[2]) }
@@ -12027,6 +13087,9 @@ func (NavigationPolygon) class() string { return "NavigationPolygon\000" }
 func (gdClass NavigationPolygon) Resource() Resource { return Resource(gdClass) }
 
 var methodNavigationPolygon [15]gdnative.Method
+func (gdClass NavigationPolygon) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass NavigationPolygon) SetVertices(vertices []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationPolygon[0], vertices) }
 func (gdClass NavigationPolygon) GetVertices() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodNavigationPolygon[1]) }
 func (gdClass NavigationPolygon) AddPolygon(polygon []int32)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationPolygon[2], polygon) }
@@ -12049,6 +13112,9 @@ func (NavigationRegion2D) class() string { return "NavigationRegion2D\000" }
 func (gdClass NavigationRegion2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodNavigationRegion2D [13]gdnative.Method
+func (gdClass NavigationRegion2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass NavigationRegion2D) SetNavigationPolygon(navpoly NavigationPolygon)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion2D[0], navpoly) }
 func (gdClass NavigationRegion2D) GetNavigationPolygon() NavigationPolygon { return gdnative.Return[NavigationPolygon](gdnative.Object(gdClass), methodNavigationRegion2D[1]) }
 func (gdClass NavigationRegion2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion2D[2], enabled) }
@@ -12069,6 +13135,9 @@ func (NavigationRegion3D) class() string { return "NavigationRegion3D\000" }
 func (gdClass NavigationRegion3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodNavigationRegion3D [14]gdnative.Method
+func (gdClass NavigationRegion3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass NavigationRegion3D) SetNavigationMesh(navmesh NavigationMesh)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion3D[0], navmesh) }
 func (gdClass NavigationRegion3D) GetNavigationMesh() NavigationMesh { return gdnative.Return[NavigationMesh](gdnative.Object(gdClass), methodNavigationRegion3D[1]) }
 func (gdClass NavigationRegion3D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationRegion3D[2], enabled) }
@@ -12090,6 +13159,9 @@ func (NavigationServer2D) class() string { return "NavigationServer2D\000" }
 func (gdClass NavigationServer2D) Object() Object { return Object(gdClass) }
 
 var methodNavigationServer2D [43]gdnative.Method
+func (gdClass NavigationServer2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass NavigationServer2D) GetMaps() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodNavigationServer2D[0]) }
 func (gdClass NavigationServer2D) MapCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationServer2D[1]) }
 func (gdClass NavigationServer2D) MapSetActive(mapping RID, active bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationServer2D[2], mapping, active) }
@@ -12140,6 +13212,9 @@ func (NavigationServer3D) class() string { return "NavigationServer3D\000" }
 func (gdClass NavigationServer3D) Object() Object { return Object(gdClass) }
 
 var methodNavigationServer3D [50]gdnative.Method
+func (gdClass NavigationServer3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass NavigationServer3D) GetMaps() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodNavigationServer3D[0]) }
 func (gdClass NavigationServer3D) MapCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodNavigationServer3D[1]) }
 func (gdClass NavigationServer3D) MapSetActive(mapping RID, active bool)  { gdnative.Call(gdnative.Object(gdClass), methodNavigationServer3D[2], mapping, active) }
@@ -12205,6 +13280,9 @@ func (NinePatchRect) class() string { return "NinePatchRect\000" }
 func (gdClass NinePatchRect) Control() Control { return Control(gdClass) }
 
 var methodNinePatchRect [12]gdnative.Method
+func (gdClass NinePatchRect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass NinePatchRect) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodNinePatchRect[0], texture) }
 func (gdClass NinePatchRect) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodNinePatchRect[1]) }
 func (gdClass NinePatchRect) SetPatchMargin(margin Side, value int64)  { gdnative.Call(gdnative.Object(gdClass), methodNinePatchRect[2], margin, value) }
@@ -12251,59 +13329,60 @@ func (Node) class() string { return "Node\000" }
 func (gdClass Node) Object() Object { return Object(gdClass) }
 
 var methodNode [87]gdnative.Method
-func (gdClass Node) virtual(val any, name string) any {	switch name {
+func (gdClass Node) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_process":
-		i, ok := val.(interface{ Process(delta float64)  })
-		if ok {
-			return i.Process
+		if rtype.Implements(reflect.TypeOf([0]interface{ Process(delta float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Process`)
 		}
+		return
 	case "_physics_process":
-		i, ok := val.(interface{ PhysicsProcess(delta float64)  })
-		if ok {
-			return i.PhysicsProcess
+		if rtype.Implements(reflect.TypeOf([0]interface{ PhysicsProcess(delta float64)  }{}).Elem()) {
+			return rtype.MethodByName(`PhysicsProcess`)
 		}
+		return
 	case "_enter_tree":
-		i, ok := val.(interface{ EnterTree()  })
-		if ok {
-			return i.EnterTree
+		if rtype.Implements(reflect.TypeOf([0]interface{ EnterTree()  }{}).Elem()) {
+			return rtype.MethodByName(`EnterTree`)
 		}
+		return
 	case "_exit_tree":
-		i, ok := val.(interface{ ExitTree()  })
-		if ok {
-			return i.ExitTree
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExitTree()  }{}).Elem()) {
+			return rtype.MethodByName(`ExitTree`)
 		}
+		return
 	case "_ready":
-		i, ok := val.(interface{ Ready()  })
-		if ok {
-			return i.Ready
+		if rtype.Implements(reflect.TypeOf([0]interface{ Ready()  }{}).Elem()) {
+			return rtype.MethodByName(`Ready`)
 		}
+		return
 	case "_get_configuration_warnings":
-		i, ok := val.(interface{ GetConfigurationWarnings() []string })
-		if ok {
-			return i.GetConfigurationWarnings
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConfigurationWarnings() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetConfigurationWarnings`)
 		}
+		return
 	case "_input":
-		i, ok := val.(interface{ Input(event InputEvent)  })
-		if ok {
-			return i.Input
+		if rtype.Implements(reflect.TypeOf([0]interface{ Input(event InputEvent)  }{}).Elem()) {
+			return rtype.MethodByName(`Input`)
 		}
+		return
 	case "_shortcut_input":
-		i, ok := val.(interface{ ShortcutInput(event InputEvent)  })
-		if ok {
-			return i.ShortcutInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShortcutInput(event InputEvent)  }{}).Elem()) {
+			return rtype.MethodByName(`ShortcutInput`)
 		}
+		return
 	case "_unhandled_input":
-		i, ok := val.(interface{ UnhandledInput(event InputEvent)  })
-		if ok {
-			return i.UnhandledInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ UnhandledInput(event InputEvent)  }{}).Elem()) {
+			return rtype.MethodByName(`UnhandledInput`)
 		}
+		return
 	case "_unhandled_key_input":
-		i, ok := val.(interface{ UnhandledKeyInput(event InputEvent)  })
-		if ok {
-			return i.UnhandledKeyInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ UnhandledKeyInput(event InputEvent)  }{}).Elem()) {
+			return rtype.MethodByName(`UnhandledKeyInput`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Object().virtual(rtype, name)
 }
 func (gdClass Node) AddSibling(sibling Node, legible_unique_name bool)  { gdnative.Call(gdnative.Object(gdClass), methodNode[0], sibling, legible_unique_name) }
 func (gdClass Node) SetName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodNode[1], name) }
@@ -12399,6 +13478,9 @@ func (Node2D) class() string { return "Node2D\000" }
 func (gdClass Node2D) CanvasItem() CanvasItem { return CanvasItem(gdClass) }
 
 var methodNode2D [35]gdnative.Method
+func (gdClass Node2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CanvasItem().virtual(rtype, name)
+}
 func (gdClass Node2D) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodNode2D[0], position) }
 func (gdClass Node2D) SetRotation(radians float64)  { gdnative.Call(gdnative.Object(gdClass), methodNode2D[1], radians) }
 func (gdClass Node2D) SetSkew(radians float64)  { gdnative.Call(gdnative.Object(gdClass), methodNode2D[2], radians) }
@@ -12460,6 +13542,9 @@ func (Node3D) class() string { return "Node3D\000" }
 func (gdClass Node3D) Node() Node { return Node(gdClass) }
 
 var methodNode3D [64]gdnative.Method
+func (gdClass Node3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass Node3D) SetTransform(local Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodNode3D[0], local) }
 func (gdClass Node3D) GetTransform() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodNode3D[1]) }
 func (gdClass Node3D) SetPosition(position Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodNode3D[2], position) }
@@ -12530,6 +13615,9 @@ func (Node3DGizmo) class() string { return "Node3DGizmo\000" }
 
 func (gdClass Node3DGizmo) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass Node3DGizmo) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type Noise gdnative.Object
 func (Noise) class() string { return "Noise\000" }
@@ -12537,6 +13625,9 @@ func (Noise) class() string { return "Noise\000" }
 func (gdClass Noise) Resource() Resource { return Resource(gdClass) }
 
 var methodNoise [7]gdnative.Method
+func (gdClass Noise) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Noise) GetNoise1d(x float64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNoise[0], x) }
 func (gdClass Noise) GetNoise2d(x float64, y float64) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNoise[1], x, y) }
 func (gdClass Noise) GetNoise2dv(v Vector2) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodNoise[2], v) }
@@ -12551,6 +13642,9 @@ func (NoiseTexture) class() string { return "NoiseTexture\000" }
 func (gdClass NoiseTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodNoiseTexture [20]gdnative.Method
+func (gdClass NoiseTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass NoiseTexture) SetWidth(width int64)  { gdnative.Call(gdnative.Object(gdClass), methodNoiseTexture[0], width) }
 func (gdClass NoiseTexture) SetHeight(height int64)  { gdnative.Call(gdnative.Object(gdClass), methodNoiseTexture[1], height) }
 func (gdClass NoiseTexture) SetInvert(invert bool)  { gdnative.Call(gdnative.Object(gdClass), methodNoiseTexture[2], invert) }
@@ -12577,6 +13671,9 @@ func (ORMMaterial3D) class() string { return "ORMMaterial3D\000" }
 
 func (gdClass ORMMaterial3D) BaseMaterial3D() BaseMaterial3D { return BaseMaterial3D(gdClass) }
 
+func (gdClass ORMMaterial3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BaseMaterial3D().virtual(rtype, name)
+}
 
 type OSVideoDriver int64
 
@@ -12633,6 +13730,9 @@ func (OS) class() string { return "OS\000" }
 func (gdClass OS) Object() Object { return Object(gdClass) }
 
 var methodOS [65]gdnative.Method
+func (gdClass OS) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass OS) GetConnectedMidiInputs() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodOS[0]) }
 func (gdClass OS) OpenMidiInputs()  { gdnative.Call(gdnative.Object(gdClass), methodOS[1]) }
 func (gdClass OS) CloseMidiInputs()  { gdnative.Call(gdnative.Object(gdClass), methodOS[2]) }
@@ -12712,6 +13812,9 @@ type Object gdnative.Object
 func (Object) class() string { return "Object\000" }
 
 var methodObject [41]gdnative.Method
+func (gdClass Object) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return
+}
 func (gdClass Object) GetClass() string { return gdnative.Return[string](gdnative.Object(gdClass), methodObject[0]) }
 func (gdClass Object) IsClass(class string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodObject[1], class) }
 func (gdClass Object) Set(property string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodObject[2], property, value) }
@@ -12760,6 +13863,9 @@ func (Occluder3D) class() string { return "Occluder3D\000" }
 func (gdClass Occluder3D) Resource() Resource { return Resource(gdClass) }
 
 var methodOccluder3D [2]gdnative.Method
+func (gdClass Occluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Occluder3D) GetVertices() []Vector3 { return gdnative.Return[[]Vector3](gdnative.Object(gdClass), methodOccluder3D[0]) }
 func (gdClass Occluder3D) GetIndices() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodOccluder3D[1]) }
 
@@ -12769,6 +13875,9 @@ func (OccluderInstance3D) class() string { return "OccluderInstance3D\000" }
 func (gdClass OccluderInstance3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodOccluderInstance3D [8]gdnative.Method
+func (gdClass OccluderInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass OccluderInstance3D) SetBakeMask(mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodOccluderInstance3D[0], mask) }
 func (gdClass OccluderInstance3D) GetBakeMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodOccluderInstance3D[1]) }
 func (gdClass OccluderInstance3D) SetBakeMaskValue(layer_number int64, value bool)  { gdnative.Call(gdnative.Object(gdClass), methodOccluderInstance3D[2], layer_number, value) }
@@ -12792,6 +13901,9 @@ func (OccluderPolygon2D) class() string { return "OccluderPolygon2D\000" }
 func (gdClass OccluderPolygon2D) Resource() Resource { return Resource(gdClass) }
 
 var methodOccluderPolygon2D [6]gdnative.Method
+func (gdClass OccluderPolygon2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OccluderPolygon2D) SetClosed(closed bool)  { gdnative.Call(gdnative.Object(gdClass), methodOccluderPolygon2D[0], closed) }
 func (gdClass OccluderPolygon2D) IsClosed() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodOccluderPolygon2D[1]) }
 func (gdClass OccluderPolygon2D) SetCullMode(cull_mode OccluderPolygon2DCullMode)  { gdnative.Call(gdnative.Object(gdClass), methodOccluderPolygon2D[2], cull_mode) }
@@ -12805,6 +13917,9 @@ func (OggPacketSequence) class() string { return "OggPacketSequence\000" }
 func (gdClass OggPacketSequence) Resource() Resource { return Resource(gdClass) }
 
 var methodOggPacketSequence [7]gdnative.Method
+func (gdClass OggPacketSequence) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OggPacketSequence) SetPacketData(packet_data Array)  { gdnative.Call(gdnative.Object(gdClass), methodOggPacketSequence[0], packet_data) }
 func (gdClass OggPacketSequence) GetPacketData() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodOggPacketSequence[1]) }
 func (gdClass OggPacketSequence) SetPacketGranulePositions(granule_positions Array)  { gdnative.Call(gdnative.Object(gdClass), methodOggPacketSequence[2], granule_positions) }
@@ -12818,6 +13933,9 @@ func (OggPacketSequencePlayback) class() string { return "OggPacketSequencePlayb
 
 func (gdClass OggPacketSequencePlayback) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass OggPacketSequencePlayback) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type OmniLight3DShadowMode int64
 
@@ -12832,6 +13950,9 @@ func (OmniLight3D) class() string { return "OmniLight3D\000" }
 func (gdClass OmniLight3D) Light3D() Light3D { return Light3D(gdClass) }
 
 var methodOmniLight3D [2]gdnative.Method
+func (gdClass OmniLight3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Light3D().virtual(rtype, name)
+}
 func (gdClass OmniLight3D) SetShadowMode(mode OmniLight3DShadowMode)  { gdnative.Call(gdnative.Object(gdClass), methodOmniLight3D[0], mode) }
 func (gdClass OmniLight3D) GetShadowMode() OmniLight3DShadowMode { return gdnative.Return[OmniLight3DShadowMode](gdnative.Object(gdClass), methodOmniLight3D[1]) }
 
@@ -12850,6 +13971,9 @@ func (OpenXRAction) class() string { return "OpenXRAction\000" }
 func (gdClass OpenXRAction) Resource() Resource { return Resource(gdClass) }
 
 var methodOpenXRAction [6]gdnative.Method
+func (gdClass OpenXRAction) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OpenXRAction) SetLocalizedName(localized_name string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRAction[0], localized_name) }
 func (gdClass OpenXRAction) GetLocalizedName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodOpenXRAction[1]) }
 func (gdClass OpenXRAction) SetActionType(action_type OpenXRActionActionType)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRAction[2], action_type) }
@@ -12863,6 +13987,9 @@ func (OpenXRActionMap) class() string { return "OpenXRActionMap\000" }
 func (gdClass OpenXRActionMap) Resource() Resource { return Resource(gdClass) }
 
 var methodOpenXRActionMap [15]gdnative.Method
+func (gdClass OpenXRActionMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OpenXRActionMap) SetActionSets(action_sets Array)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionMap[0], action_sets) }
 func (gdClass OpenXRActionMap) GetActionSets() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodOpenXRActionMap[1]) }
 func (gdClass OpenXRActionMap) GetActionSetCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodOpenXRActionMap[2]) }
@@ -12885,6 +14012,9 @@ func (OpenXRActionSet) class() string { return "OpenXRActionSet\000" }
 func (gdClass OpenXRActionSet) Resource() Resource { return Resource(gdClass) }
 
 var methodOpenXRActionSet [9]gdnative.Method
+func (gdClass OpenXRActionSet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OpenXRActionSet) SetLocalizedName(localized_name string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionSet[0], localized_name) }
 func (gdClass OpenXRActionSet) GetLocalizedName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodOpenXRActionSet[1]) }
 func (gdClass OpenXRActionSet) SetPriority(priority int64)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRActionSet[2], priority) }
@@ -12901,6 +14031,9 @@ func (OpenXRIPBinding) class() string { return "OpenXRIPBinding\000" }
 func (gdClass OpenXRIPBinding) Resource() Resource { return Resource(gdClass) }
 
 var methodOpenXRIPBinding [8]gdnative.Method
+func (gdClass OpenXRIPBinding) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OpenXRIPBinding) SetAction(action OpenXRAction)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRIPBinding[0], action) }
 func (gdClass OpenXRIPBinding) GetAction() OpenXRAction { return gdnative.Return[OpenXRAction](gdnative.Object(gdClass), methodOpenXRIPBinding[1]) }
 func (gdClass OpenXRIPBinding) GetPathCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodOpenXRIPBinding[2]) }
@@ -12916,6 +14049,9 @@ func (OpenXRInteractionProfile) class() string { return "OpenXRInteractionProfil
 func (gdClass OpenXRInteractionProfile) Resource() Resource { return Resource(gdClass) }
 
 var methodOpenXRInteractionProfile [6]gdnative.Method
+func (gdClass OpenXRInteractionProfile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass OpenXRInteractionProfile) SetInteractionProfilePath(interaction_profile_path string)  { gdnative.Call(gdnative.Object(gdClass), methodOpenXRInteractionProfile[0], interaction_profile_path) }
 func (gdClass OpenXRInteractionProfile) GetInteractionProfilePath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodOpenXRInteractionProfile[1]) }
 func (gdClass OpenXRInteractionProfile) GetBindingCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodOpenXRInteractionProfile[2]) }
@@ -12928,6 +14064,9 @@ func (OpenXRInterface) class() string { return "OpenXRInterface\000" }
 
 func (gdClass OpenXRInterface) XRInterface() XRInterface { return XRInterface(gdClass) }
 
+func (gdClass OpenXRInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.XRInterface().virtual(rtype, name)
+}
 
 type OptimizedTranslation gdnative.Object
 func (OptimizedTranslation) class() string { return "OptimizedTranslation\000" }
@@ -12935,6 +14074,9 @@ func (OptimizedTranslation) class() string { return "OptimizedTranslation\000" }
 func (gdClass OptimizedTranslation) Translation() Translation { return Translation(gdClass) }
 
 var methodOptimizedTranslation [1]gdnative.Method
+func (gdClass OptimizedTranslation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Translation().virtual(rtype, name)
+}
 func (gdClass OptimizedTranslation) Generate(from Translation)  { gdnative.Call(gdnative.Object(gdClass), methodOptimizedTranslation[0], from) }
 
 type OptionButton gdnative.Object
@@ -12943,6 +14085,9 @@ func (OptionButton) class() string { return "OptionButton\000" }
 func (gdClass OptionButton) Button() Button { return Button(gdClass) }
 
 var methodOptionButton [30]gdnative.Method
+func (gdClass OptionButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Button().virtual(rtype, name)
+}
 func (gdClass OptionButton) AddItem(label string, id int64)  { gdnative.Call(gdnative.Object(gdClass), methodOptionButton[0], label, id) }
 func (gdClass OptionButton) AddIconItem(texture Texture2D, label string, id int64)  { gdnative.Call(gdnative.Object(gdClass), methodOptionButton[1], texture, label, id) }
 func (gdClass OptionButton) SetItemText(idx int64, text string)  { gdnative.Call(gdnative.Object(gdClass), methodOptionButton[2], idx, text) }
@@ -12980,6 +14125,9 @@ func (PCKPacker) class() string { return "PCKPacker\000" }
 func (gdClass PCKPacker) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPCKPacker [3]gdnative.Method
+func (gdClass PCKPacker) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PCKPacker) PckStart(pck_name string, alignment int64, key string, encrypt_directory bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPCKPacker[0], pck_name, alignment, key, encrypt_directory) }
 func (gdClass PCKPacker) AddFile(pck_path string, source_path string, encrypt bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPCKPacker[1], pck_path, source_path, encrypt) }
 func (gdClass PCKPacker) Flush(verbose bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPCKPacker[2], verbose) }
@@ -12990,6 +14138,9 @@ func (PackedDataContainer) class() string { return "PackedDataContainer\000" }
 func (gdClass PackedDataContainer) Resource() Resource { return Resource(gdClass) }
 
 var methodPackedDataContainer [2]gdnative.Method
+func (gdClass PackedDataContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass PackedDataContainer) Pack(value any) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPackedDataContainer[0], value) }
 func (gdClass PackedDataContainer) Size() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPackedDataContainer[1]) }
 
@@ -12999,6 +14150,9 @@ func (PackedDataContainerRef) class() string { return "PackedDataContainerRef\00
 func (gdClass PackedDataContainerRef) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPackedDataContainerRef [1]gdnative.Method
+func (gdClass PackedDataContainerRef) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PackedDataContainerRef) Size() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodPackedDataContainerRef[0]) }
 
 type PackedSceneGenEditState int64
@@ -13016,6 +14170,9 @@ func (PackedScene) class() string { return "PackedScene\000" }
 func (gdClass PackedScene) Resource() Resource { return Resource(gdClass) }
 
 var methodPackedScene [4]gdnative.Method
+func (gdClass PackedScene) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass PackedScene) Pack(path Node) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPackedScene[0], path) }
 func (gdClass PackedScene) Instantiate(edit_state PackedSceneGenEditState) Node { return gdnative.Return[Node](gdnative.Object(gdClass), methodPackedScene[1], edit_state) }
 func (gdClass PackedScene) CanInstantiate() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPackedScene[2]) }
@@ -13027,6 +14184,9 @@ func (PacketPeer) class() string { return "PacketPeer\000" }
 func (gdClass PacketPeer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPacketPeer [8]gdnative.Method
+func (gdClass PacketPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PacketPeer) GetVar(allow_objects bool) any { return gdnative.Return[any](gdnative.Object(gdClass), methodPacketPeer[0], allow_objects) }
 func (gdClass PacketPeer) PutVar(v any, full_objects bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeer[1], v, full_objects) }
 func (gdClass PacketPeer) GetPacket() []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodPacketPeer[2]) }
@@ -13052,6 +14212,9 @@ func (PacketPeerDTLS) class() string { return "PacketPeerDTLS\000" }
 func (gdClass PacketPeerDTLS) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodPacketPeerDTLS [4]gdnative.Method
+func (gdClass PacketPeerDTLS) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass PacketPeerDTLS) Poll()  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerDTLS[0]) }
 func (gdClass PacketPeerDTLS) ConnectToPeer(packet_peer PacketPeerUDP, validate_certs bool, for_hostname string, valid_certificate X509Certificate) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeerDTLS[1], packet_peer, validate_certs, for_hostname, valid_certificate) }
 func (gdClass PacketPeerDTLS) GetStatus() PacketPeerDTLSStatus { return gdnative.Return[PacketPeerDTLSStatus](gdnative.Object(gdClass), methodPacketPeerDTLS[2]) }
@@ -13062,29 +14225,30 @@ func (PacketPeerExtension) class() string { return "PacketPeerExtension\000" }
 
 func (gdClass PacketPeerExtension) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
-func (gdClass PacketPeerExtension) virtual(val any, name string) any {	switch name {
+func (gdClass PacketPeerExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_packet":
-		i, ok := val.(interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 })
-		if ok {
-			return i.GetPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPacket`)
 		}
+		return
 	case "_put_packet":
-		i, ok := val.(interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 })
-		if ok {
-			return i.PutPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutPacket`)
 		}
+		return
 	case "_get_available_packet_count":
-		i, ok := val.(interface{ GetAvailablePacketCount() int64 })
-		if ok {
-			return i.GetAvailablePacketCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAvailablePacketCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetAvailablePacketCount`)
 		}
+		return
 	case "_get_max_packet_size":
-		i, ok := val.(interface{ GetMaxPacketSize() int64 })
-		if ok {
-			return i.GetMaxPacketSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMaxPacketSize() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMaxPacketSize`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PacketPeer().virtual(rtype, name)
 }
 
 type PacketPeerStream gdnative.Object
@@ -13093,6 +14257,9 @@ func (PacketPeerStream) class() string { return "PacketPeerStream\000" }
 func (gdClass PacketPeerStream) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodPacketPeerStream [6]gdnative.Method
+func (gdClass PacketPeerStream) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass PacketPeerStream) SetStreamPeer(peer StreamPeer)  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerStream[0], peer) }
 func (gdClass PacketPeerStream) GetStreamPeer() StreamPeer { return gdnative.Return[StreamPeer](gdnative.Object(gdClass), methodPacketPeerStream[1]) }
 func (gdClass PacketPeerStream) SetInputBufferMaxSize(max_size_bytes int64)  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerStream[2], max_size_bytes) }
@@ -13106,6 +14273,9 @@ func (PacketPeerUDP) class() string { return "PacketPeerUDP\000" }
 func (gdClass PacketPeerUDP) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodPacketPeerUDP [13]gdnative.Method
+func (gdClass PacketPeerUDP) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass PacketPeerUDP) Bind(port int64, bind_address string, recv_buf_size int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeerUDP[0], port, bind_address, recv_buf_size) }
 func (gdClass PacketPeerUDP) Close()  { gdnative.Call(gdnative.Object(gdClass), methodPacketPeerUDP[1]) }
 func (gdClass PacketPeerUDP) Wait() error { return gdnative.Return[error](gdnative.Object(gdClass), methodPacketPeerUDP[2]) }
@@ -13125,12 +14295,18 @@ func (Panel) class() string { return "Panel\000" }
 
 func (gdClass Panel) Control() Control { return Control(gdClass) }
 
+func (gdClass Panel) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 
 type PanelContainer gdnative.Object
 func (PanelContainer) class() string { return "PanelContainer\000" }
 
 func (gdClass PanelContainer) Container() Container { return Container(gdClass) }
 
+func (gdClass PanelContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 
 type PanoramaSkyMaterial gdnative.Object
 func (PanoramaSkyMaterial) class() string { return "PanoramaSkyMaterial\000" }
@@ -13138,6 +14314,9 @@ func (PanoramaSkyMaterial) class() string { return "PanoramaSkyMaterial\000" }
 func (gdClass PanoramaSkyMaterial) Material() Material { return Material(gdClass) }
 
 var methodPanoramaSkyMaterial [4]gdnative.Method
+func (gdClass PanoramaSkyMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass PanoramaSkyMaterial) SetPanorama(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodPanoramaSkyMaterial[0], texture) }
 func (gdClass PanoramaSkyMaterial) GetPanorama() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodPanoramaSkyMaterial[1]) }
 func (gdClass PanoramaSkyMaterial) SetFilteringEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodPanoramaSkyMaterial[2], enabled) }
@@ -13149,6 +14328,9 @@ func (ParallaxBackground) class() string { return "ParallaxBackground\000" }
 func (gdClass ParallaxBackground) CanvasLayer() CanvasLayer { return CanvasLayer(gdClass) }
 
 var methodParallaxBackground [12]gdnative.Method
+func (gdClass ParallaxBackground) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CanvasLayer().virtual(rtype, name)
+}
 func (gdClass ParallaxBackground) SetScrollOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxBackground[0], offset) }
 func (gdClass ParallaxBackground) GetScrollOffset() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodParallaxBackground[1]) }
 func (gdClass ParallaxBackground) SetScrollBaseOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxBackground[2], offset) }
@@ -13168,6 +14350,9 @@ func (ParallaxLayer) class() string { return "ParallaxLayer\000" }
 func (gdClass ParallaxLayer) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodParallaxLayer [6]gdnative.Method
+func (gdClass ParallaxLayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass ParallaxLayer) SetMotionScale(scale Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxLayer[0], scale) }
 func (gdClass ParallaxLayer) GetMotionScale() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodParallaxLayer[1]) }
 func (gdClass ParallaxLayer) SetMotionOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodParallaxLayer[2], offset) }
@@ -13234,6 +14419,9 @@ func (ParticlesMaterial) class() string { return "ParticlesMaterial\000" }
 func (gdClass ParticlesMaterial) Material() Material { return Material(gdClass) }
 
 var methodParticlesMaterial [74]gdnative.Method
+func (gdClass ParticlesMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass ParticlesMaterial) SetDirection(degrees Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodParticlesMaterial[0], degrees) }
 func (gdClass ParticlesMaterial) GetDirection() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodParticlesMaterial[1]) }
 func (gdClass ParticlesMaterial) SetSpread(degrees float64)  { gdnative.Call(gdnative.Object(gdClass), methodParticlesMaterial[2], degrees) }
@@ -13315,6 +14503,9 @@ func (Path2D) class() string { return "Path2D\000" }
 func (gdClass Path2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodPath2D [2]gdnative.Method
+func (gdClass Path2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Path2D) SetCurve(curve Curve2D)  { gdnative.Call(gdnative.Object(gdClass), methodPath2D[0], curve) }
 func (gdClass Path2D) GetCurve() Curve2D { return gdnative.Return[Curve2D](gdnative.Object(gdClass), methodPath2D[1]) }
 
@@ -13324,6 +14515,9 @@ func (Path3D) class() string { return "Path3D\000" }
 func (gdClass Path3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodPath3D [2]gdnative.Method
+func (gdClass Path3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass Path3D) SetCurve(curve Curve3D)  { gdnative.Call(gdnative.Object(gdClass), methodPath3D[0], curve) }
 func (gdClass Path3D) GetCurve() Curve3D { return gdnative.Return[Curve3D](gdnative.Object(gdClass), methodPath3D[1]) }
 
@@ -13333,6 +14527,9 @@ func (PathFollow2D) class() string { return "PathFollow2D\000" }
 func (gdClass PathFollow2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodPathFollow2D [16]gdnative.Method
+func (gdClass PathFollow2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass PathFollow2D) SetOffset(offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodPathFollow2D[0], offset) }
 func (gdClass PathFollow2D) GetOffset() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPathFollow2D[1]) }
 func (gdClass PathFollow2D) SetHOffset(h_offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodPathFollow2D[2], h_offset) }
@@ -13366,6 +14563,9 @@ func (PathFollow3D) class() string { return "PathFollow3D\000" }
 func (gdClass PathFollow3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodPathFollow3D [14]gdnative.Method
+func (gdClass PathFollow3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass PathFollow3D) SetOffset(offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodPathFollow3D[0], offset) }
 func (gdClass PathFollow3D) GetOffset() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPathFollow3D[1]) }
 func (gdClass PathFollow3D) SetHOffset(h_offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodPathFollow3D[2], h_offset) }
@@ -13416,6 +14616,9 @@ func (Performance) class() string { return "Performance\000" }
 func (gdClass Performance) Object() Object { return Object(gdClass) }
 
 var methodPerformance [7]gdnative.Method
+func (gdClass Performance) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Performance) GetMonitor(monitor PerformanceMonitor) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPerformance[0], monitor) }
 func (gdClass Performance) AddCustomMonitor(id string, callable Callable, arguments Array)  { gdnative.Call(gdnative.Object(gdClass), methodPerformance[1], id, callable, arguments) }
 func (gdClass Performance) RemoveCustomMonitor(id string)  { gdnative.Call(gdnative.Object(gdClass), methodPerformance[2], id) }
@@ -13430,6 +14633,9 @@ func (PhysicalBone2D) class() string { return "PhysicalBone2D\000" }
 func (gdClass PhysicalBone2D) RigidDynamicBody2D() RigidDynamicBody2D { return RigidDynamicBody2D(gdClass) }
 
 var methodPhysicalBone2D [12]gdnative.Method
+func (gdClass PhysicalBone2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RigidDynamicBody2D().virtual(rtype, name)
+}
 func (gdClass PhysicalBone2D) GetJoint() Joint2D { return gdnative.Return[Joint2D](gdnative.Object(gdClass), methodPhysicalBone2D[0]) }
 func (gdClass PhysicalBone2D) GetAutoConfigureJoint() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicalBone2D[1]) }
 func (gdClass PhysicalBone2D) SetAutoConfigureJoint(auto_configure_joint bool)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalBone2D[2], auto_configure_joint) }
@@ -13467,14 +14673,15 @@ func (PhysicalBone3D) class() string { return "PhysicalBone3D\000" }
 func (gdClass PhysicalBone3D) PhysicsBody3D() PhysicsBody3D { return PhysicsBody3D(gdClass) }
 
 var methodPhysicalBone3D [37]gdnative.Method
-func (gdClass PhysicalBone3D) virtual(val any, name string) any {	switch name {
+func (gdClass PhysicalBone3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_integrate_forces":
-		i, ok := val.(interface{ IntegrateForces(state PhysicsDirectBodyState3D)  })
-		if ok {
-			return i.IntegrateForces
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntegrateForces(state PhysicsDirectBodyState3D)  }{}).Elem()) {
+			return rtype.MethodByName(`IntegrateForces`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsBody3D().virtual(rtype, name)
 }
 func (gdClass PhysicalBone3D) ApplyCentralImpulse(impulse Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalBone3D[0], impulse) }
 func (gdClass PhysicalBone3D) ApplyImpulse(impulse Vector3, position Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalBone3D[1], impulse, position) }
@@ -13520,6 +14727,9 @@ func (PhysicalSkyMaterial) class() string { return "PhysicalSkyMaterial\000" }
 func (gdClass PhysicalSkyMaterial) Material() Material { return Material(gdClass) }
 
 var methodPhysicalSkyMaterial [22]gdnative.Method
+func (gdClass PhysicalSkyMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass PhysicalSkyMaterial) SetRayleighCoefficient(rayleigh float64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalSkyMaterial[0], rayleigh) }
 func (gdClass PhysicalSkyMaterial) GetRayleighCoefficient() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicalSkyMaterial[1]) }
 func (gdClass PhysicalSkyMaterial) SetRayleighColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicalSkyMaterial[2], color) }
@@ -13549,6 +14759,9 @@ func (PhysicsBody2D) class() string { return "PhysicsBody2D\000" }
 func (gdClass PhysicsBody2D) CollisionObject2D() CollisionObject2D { return CollisionObject2D(gdClass) }
 
 var methodPhysicsBody2D [5]gdnative.Method
+func (gdClass PhysicsBody2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CollisionObject2D().virtual(rtype, name)
+}
 func (gdClass PhysicsBody2D) MoveAndCollide(distance Vector2, test_only bool, safe_margin float64) KinematicCollision2D { return gdnative.Return[KinematicCollision2D](gdnative.Object(gdClass), methodPhysicsBody2D[0], distance, test_only, safe_margin) }
 func (gdClass PhysicsBody2D) TestMove(from Transform2D, distance Vector2, collision KinematicCollision2D, safe_margin float64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsBody2D[1], from, distance, collision, safe_margin) }
 func (gdClass PhysicsBody2D) GetCollisionExceptions() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsBody2D[2]) }
@@ -13561,6 +14774,9 @@ func (PhysicsBody3D) class() string { return "PhysicsBody3D\000" }
 func (gdClass PhysicsBody3D) CollisionObject3D() CollisionObject3D { return CollisionObject3D(gdClass) }
 
 var methodPhysicsBody3D [7]gdnative.Method
+func (gdClass PhysicsBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.CollisionObject3D().virtual(rtype, name)
+}
 func (gdClass PhysicsBody3D) MoveAndCollide(distance Vector3, test_only bool, safe_margin float64, max_collisions int64) KinematicCollision3D { return gdnative.Return[KinematicCollision3D](gdnative.Object(gdClass), methodPhysicsBody3D[0], distance, test_only, safe_margin, max_collisions) }
 func (gdClass PhysicsBody3D) TestMove(from Transform3D, distance Vector3, collision KinematicCollision3D, safe_margin float64, max_collisions int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodPhysicsBody3D[1], from, distance, collision, safe_margin, max_collisions) }
 func (gdClass PhysicsBody3D) SetAxisLock(axis PhysicsServer3DBodyAxis, lock bool)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsBody3D[2], axis, lock) }
@@ -13575,6 +14791,9 @@ func (PhysicsDirectBodyState2D) class() string { return "PhysicsDirectBodyState2
 func (gdClass PhysicsDirectBodyState2D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsDirectBodyState2D [42]gdnative.Method
+func (gdClass PhysicsDirectBodyState2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsDirectBodyState2D) GetTotalGravity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsDirectBodyState2D[0]) }
 func (gdClass PhysicsDirectBodyState2D) GetTotalLinearDamp() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsDirectBodyState2D[1]) }
 func (gdClass PhysicsDirectBodyState2D) GetTotalAngularDamp() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsDirectBodyState2D[2]) }
@@ -13624,6 +14843,9 @@ func (PhysicsDirectBodyState3D) class() string { return "PhysicsDirectBodyState3
 func (gdClass PhysicsDirectBodyState3D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsDirectBodyState3D [44]gdnative.Method
+func (gdClass PhysicsDirectBodyState3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsDirectBodyState3D) GetTotalGravity() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsDirectBodyState3D[0]) }
 func (gdClass PhysicsDirectBodyState3D) GetTotalLinearDamp() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsDirectBodyState3D[1]) }
 func (gdClass PhysicsDirectBodyState3D) GetTotalAngularDamp() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsDirectBodyState3D[2]) }
@@ -13674,229 +14896,230 @@ func (PhysicsDirectBodyState3DExtension) class() string { return "PhysicsDirectB
 
 func (gdClass PhysicsDirectBodyState3DExtension) PhysicsDirectBodyState3D() PhysicsDirectBodyState3D { return PhysicsDirectBodyState3D(gdClass) }
 
-func (gdClass PhysicsDirectBodyState3DExtension) virtual(val any, name string) any {	switch name {
+func (gdClass PhysicsDirectBodyState3DExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_total_gravity":
-		i, ok := val.(interface{ GetTotalGravity() Vector3 })
-		if ok {
-			return i.GetTotalGravity
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTotalGravity() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetTotalGravity`)
 		}
+		return
 	case "_get_total_linear_damp":
-		i, ok := val.(interface{ GetTotalLinearDamp() float64 })
-		if ok {
-			return i.GetTotalLinearDamp
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTotalLinearDamp() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetTotalLinearDamp`)
 		}
+		return
 	case "_get_total_angular_damp":
-		i, ok := val.(interface{ GetTotalAngularDamp() float64 })
-		if ok {
-			return i.GetTotalAngularDamp
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTotalAngularDamp() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetTotalAngularDamp`)
 		}
+		return
 	case "_get_center_of_mass":
-		i, ok := val.(interface{ GetCenterOfMass() Vector3 })
-		if ok {
-			return i.GetCenterOfMass
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCenterOfMass() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetCenterOfMass`)
 		}
+		return
 	case "_get_center_of_mass_local":
-		i, ok := val.(interface{ GetCenterOfMassLocal() Vector3 })
-		if ok {
-			return i.GetCenterOfMassLocal
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCenterOfMassLocal() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetCenterOfMassLocal`)
 		}
+		return
 	case "_get_principal_inertia_axes":
-		i, ok := val.(interface{ GetPrincipalInertiaAxes() Basis })
-		if ok {
-			return i.GetPrincipalInertiaAxes
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPrincipalInertiaAxes() Basis }{}).Elem()) {
+			return rtype.MethodByName(`GetPrincipalInertiaAxes`)
 		}
+		return
 	case "_get_inverse_mass":
-		i, ok := val.(interface{ GetInverseMass() float64 })
-		if ok {
-			return i.GetInverseMass
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInverseMass() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInverseMass`)
 		}
+		return
 	case "_get_inverse_inertia":
-		i, ok := val.(interface{ GetInverseInertia() Vector3 })
-		if ok {
-			return i.GetInverseInertia
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInverseInertia() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetInverseInertia`)
 		}
+		return
 	case "_set_linear_velocity":
-		i, ok := val.(interface{ SetLinearVelocity(velocity Vector3)  })
-		if ok {
-			return i.SetLinearVelocity
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetLinearVelocity(velocity Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`SetLinearVelocity`)
 		}
+		return
 	case "_get_linear_velocity":
-		i, ok := val.(interface{ GetLinearVelocity() Vector3 })
-		if ok {
-			return i.GetLinearVelocity
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLinearVelocity() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetLinearVelocity`)
 		}
+		return
 	case "_set_angular_velocity":
-		i, ok := val.(interface{ SetAngularVelocity(velocity Vector3)  })
-		if ok {
-			return i.SetAngularVelocity
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetAngularVelocity(velocity Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`SetAngularVelocity`)
 		}
+		return
 	case "_get_angular_velocity":
-		i, ok := val.(interface{ GetAngularVelocity() Vector3 })
-		if ok {
-			return i.GetAngularVelocity
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAngularVelocity() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetAngularVelocity`)
 		}
+		return
 	case "_set_transform":
-		i, ok := val.(interface{ SetTransform(transform Transform3D)  })
-		if ok {
-			return i.SetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetTransform(transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`SetTransform`)
 		}
+		return
 	case "_get_transform":
-		i, ok := val.(interface{ GetTransform() Transform3D })
-		if ok {
-			return i.GetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTransform() Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`GetTransform`)
 		}
+		return
 	case "_get_velocity_at_local_position":
-		i, ok := val.(interface{ GetVelocityAtLocalPosition(local_position Vector3) Vector3 })
-		if ok {
-			return i.GetVelocityAtLocalPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetVelocityAtLocalPosition(local_position Vector3) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetVelocityAtLocalPosition`)
 		}
+		return
 	case "_apply_central_impulse":
-		i, ok := val.(interface{ ApplyCentralImpulse(impulse Vector3)  })
-		if ok {
-			return i.ApplyCentralImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyCentralImpulse(impulse Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyCentralImpulse`)
 		}
+		return
 	case "_apply_impulse":
-		i, ok := val.(interface{ ApplyImpulse(impulse Vector3, position Vector3)  })
-		if ok {
-			return i.ApplyImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyImpulse(impulse Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyImpulse`)
 		}
+		return
 	case "_apply_torque_impulse":
-		i, ok := val.(interface{ ApplyTorqueImpulse(impulse Vector3)  })
-		if ok {
-			return i.ApplyTorqueImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyTorqueImpulse(impulse Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyTorqueImpulse`)
 		}
+		return
 	case "_apply_central_force":
-		i, ok := val.(interface{ ApplyCentralForce(force Vector3)  })
-		if ok {
-			return i.ApplyCentralForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyCentralForce(force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyCentralForce`)
 		}
+		return
 	case "_apply_force":
-		i, ok := val.(interface{ ApplyForce(force Vector3, position Vector3)  })
-		if ok {
-			return i.ApplyForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyForce(force Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyForce`)
 		}
+		return
 	case "_apply_torque":
-		i, ok := val.(interface{ ApplyTorque(torque Vector3)  })
-		if ok {
-			return i.ApplyTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ ApplyTorque(torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`ApplyTorque`)
 		}
+		return
 	case "_add_constant_central_force":
-		i, ok := val.(interface{ AddConstantCentralForce(force Vector3)  })
-		if ok {
-			return i.AddConstantCentralForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddConstantCentralForce(force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`AddConstantCentralForce`)
 		}
+		return
 	case "_add_constant_force":
-		i, ok := val.(interface{ AddConstantForce(force Vector3, position Vector3)  })
-		if ok {
-			return i.AddConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddConstantForce(force Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`AddConstantForce`)
 		}
+		return
 	case "_add_constant_torque":
-		i, ok := val.(interface{ AddConstantTorque(torque Vector3)  })
-		if ok {
-			return i.AddConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddConstantTorque(torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`AddConstantTorque`)
 		}
+		return
 	case "_set_constant_force":
-		i, ok := val.(interface{ SetConstantForce(force Vector3)  })
-		if ok {
-			return i.SetConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetConstantForce(force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`SetConstantForce`)
 		}
+		return
 	case "_get_constant_force":
-		i, ok := val.(interface{ GetConstantForce() Vector3 })
-		if ok {
-			return i.GetConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConstantForce() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetConstantForce`)
 		}
+		return
 	case "_set_constant_torque":
-		i, ok := val.(interface{ SetConstantTorque(torque Vector3)  })
-		if ok {
-			return i.SetConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetConstantTorque(torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`SetConstantTorque`)
 		}
+		return
 	case "_get_constant_torque":
-		i, ok := val.(interface{ GetConstantTorque() Vector3 })
-		if ok {
-			return i.GetConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConstantTorque() Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetConstantTorque`)
 		}
+		return
 	case "_set_sleep_state":
-		i, ok := val.(interface{ SetSleepState(enabled bool)  })
-		if ok {
-			return i.SetSleepState
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetSleepState(enabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`SetSleepState`)
 		}
+		return
 	case "_is_sleeping":
-		i, ok := val.(interface{ IsSleeping() bool })
-		if ok {
-			return i.IsSleeping
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsSleeping() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsSleeping`)
 		}
+		return
 	case "_get_contact_count":
-		i, ok := val.(interface{ GetContactCount() int64 })
-		if ok {
-			return i.GetContactCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactCount`)
 		}
+		return
 	case "_get_contact_local_position":
-		i, ok := val.(interface{ GetContactLocalPosition(contact_idx int64) Vector3 })
-		if ok {
-			return i.GetContactLocalPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactLocalPosition(contact_idx int64) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactLocalPosition`)
 		}
+		return
 	case "_get_contact_local_normal":
-		i, ok := val.(interface{ GetContactLocalNormal(contact_idx int64) Vector3 })
-		if ok {
-			return i.GetContactLocalNormal
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactLocalNormal(contact_idx int64) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactLocalNormal`)
 		}
+		return
 	case "_get_contact_impulse":
-		i, ok := val.(interface{ GetContactImpulse(contact_idx int64) float64 })
-		if ok {
-			return i.GetContactImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactImpulse(contact_idx int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactImpulse`)
 		}
+		return
 	case "_get_contact_local_shape":
-		i, ok := val.(interface{ GetContactLocalShape(contact_idx int64) int64 })
-		if ok {
-			return i.GetContactLocalShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactLocalShape(contact_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactLocalShape`)
 		}
+		return
 	case "_get_contact_collider":
-		i, ok := val.(interface{ GetContactCollider(contact_idx int64) RID })
-		if ok {
-			return i.GetContactCollider
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactCollider(contact_idx int64) RID }{}).Elem()) {
+			return rtype.MethodByName(`GetContactCollider`)
 		}
+		return
 	case "_get_contact_collider_position":
-		i, ok := val.(interface{ GetContactColliderPosition(contact_idx int64) Vector3 })
-		if ok {
-			return i.GetContactColliderPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactColliderPosition(contact_idx int64) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactColliderPosition`)
 		}
+		return
 	case "_get_contact_collider_id":
-		i, ok := val.(interface{ GetContactColliderId(contact_idx int64) int64 })
-		if ok {
-			return i.GetContactColliderId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactColliderId(contact_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactColliderId`)
 		}
+		return
 	case "_get_contact_collider_object":
-		i, ok := val.(interface{ GetContactColliderObject(contact_idx int64) Object })
-		if ok {
-			return i.GetContactColliderObject
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactColliderObject(contact_idx int64) Object }{}).Elem()) {
+			return rtype.MethodByName(`GetContactColliderObject`)
 		}
+		return
 	case "_get_contact_collider_shape":
-		i, ok := val.(interface{ GetContactColliderShape(contact_idx int64) int64 })
-		if ok {
-			return i.GetContactColliderShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactColliderShape(contact_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactColliderShape`)
 		}
+		return
 	case "_get_contact_collider_velocity_at_position":
-		i, ok := val.(interface{ GetContactColliderVelocityAtPosition(contact_idx int64) Vector3 })
-		if ok {
-			return i.GetContactColliderVelocityAtPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetContactColliderVelocityAtPosition(contact_idx int64) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetContactColliderVelocityAtPosition`)
 		}
+		return
 	case "_get_step":
-		i, ok := val.(interface{ GetStep() float64 })
-		if ok {
-			return i.GetStep
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetStep() float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetStep`)
 		}
+		return
 	case "_integrate_forces":
-		i, ok := val.(interface{ IntegrateForces()  })
-		if ok {
-			return i.IntegrateForces
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntegrateForces()  }{}).Elem()) {
+			return rtype.MethodByName(`IntegrateForces`)
 		}
+		return
 	case "_get_space_state":
-		i, ok := val.(interface{ GetSpaceState() PhysicsDirectSpaceState3D })
-		if ok {
-			return i.GetSpaceState
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSpaceState() PhysicsDirectSpaceState3D }{}).Elem()) {
+			return rtype.MethodByName(`GetSpaceState`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsDirectBodyState3D().virtual(rtype, name)
 }
 
 type PhysicsDirectSpaceState2D gdnative.Object
@@ -13905,6 +15128,9 @@ func (PhysicsDirectSpaceState2D) class() string { return "PhysicsDirectSpaceStat
 func (gdClass PhysicsDirectSpaceState2D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsDirectSpaceState2D [6]gdnative.Method
+func (gdClass PhysicsDirectSpaceState2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsDirectSpaceState2D) IntersectPoint(parameters PhysicsPointQueryParameters2D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState2D[0], parameters, max_results) }
 func (gdClass PhysicsDirectSpaceState2D) IntersectRay(parameters PhysicsRayQueryParameters2D) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodPhysicsDirectSpaceState2D[1], parameters) }
 func (gdClass PhysicsDirectSpaceState2D) IntersectShape(parameters PhysicsShapeQueryParameters2D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState2D[2], parameters, max_results) }
@@ -13918,6 +15144,9 @@ func (PhysicsDirectSpaceState3D) class() string { return "PhysicsDirectSpaceStat
 func (gdClass PhysicsDirectSpaceState3D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsDirectSpaceState3D [6]gdnative.Method
+func (gdClass PhysicsDirectSpaceState3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsDirectSpaceState3D) IntersectPoint(parameters PhysicsPointQueryParameters3D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3D[0], parameters, max_results) }
 func (gdClass PhysicsDirectSpaceState3D) IntersectRay(parameters PhysicsRayQueryParameters3D) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3D[1], parameters) }
 func (gdClass PhysicsDirectSpaceState3D) IntersectShape(parameters PhysicsShapeQueryParameters3D, max_results int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodPhysicsDirectSpaceState3D[2], parameters, max_results) }
@@ -13930,44 +15159,45 @@ func (PhysicsDirectSpaceState3DExtension) class() string { return "PhysicsDirect
 
 func (gdClass PhysicsDirectSpaceState3DExtension) PhysicsDirectSpaceState3D() PhysicsDirectSpaceState3D { return PhysicsDirectSpaceState3D(gdClass) }
 
-func (gdClass PhysicsDirectSpaceState3DExtension) virtual(val any, name string) any {	switch name {
+func (gdClass PhysicsDirectSpaceState3DExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_intersect_ray":
-		i, ok := val.(interface{ IntersectRay(from Vector3, to Vector3, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, result *PhysicsServer3DExtensionRayResult) bool })
-		if ok {
-			return i.IntersectRay
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntersectRay(from Vector3, to Vector3, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, hit_from_inside bool, hit_back_faces bool, result *PhysicsServer3DExtensionRayResult) bool }{}).Elem()) {
+			return rtype.MethodByName(`IntersectRay`)
 		}
+		return
 	case "_intersect_point":
-		i, ok := val.(interface{ IntersectPoint(position Vector3, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results int64) int64 })
-		if ok {
-			return i.IntersectPoint
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntersectPoint(position Vector3, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results *PhysicsServer3DExtensionShapeResult, max_results int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`IntersectPoint`)
 		}
+		return
 	case "_intersect_shape":
-		i, ok := val.(interface{ IntersectShape(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results int64) int64 })
-		if ok {
-			return i.IntersectShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntersectShape(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, result_count *PhysicsServer3DExtensionShapeResult, max_results int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`IntersectShape`)
 		}
+		return
 	case "_cast_motion":
-		i, ok := val.(interface{ CastMotion(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) bool })
-		if ok {
-			return i.CastMotion
+		if rtype.Implements(reflect.TypeOf([0]interface{ CastMotion(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, closest_safe *float64, closest_unsafe *float64, info *PhysicsServer3DExtensionShapeRestInfo) bool }{}).Elem()) {
+			return rtype.MethodByName(`CastMotion`)
 		}
+		return
 	case "_collide_shape":
-		i, ok := val.(interface{ CollideShape(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results []byte, max_results int64, result_count *int32) bool })
-		if ok {
-			return i.CollideShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ CollideShape(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, results []byte, max_results int64, result_count *int32) bool }{}).Elem()) {
+			return rtype.MethodByName(`CollideShape`)
 		}
+		return
 	case "_rest_info":
-		i, ok := val.(interface{ RestInfo(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) bool })
-		if ok {
-			return i.RestInfo
+		if rtype.Implements(reflect.TypeOf([0]interface{ RestInfo(shape_rid RID, transform Transform3D, motion Vector3, margin float64, collision_mask int64, collide_with_bodies bool, collide_with_areas bool, rest_info *PhysicsServer3DExtensionShapeRestInfo) bool }{}).Elem()) {
+			return rtype.MethodByName(`RestInfo`)
 		}
+		return
 	case "_get_closest_point_to_object_volume":
-		i, ok := val.(interface{ GetClosestPointToObjectVolume(object RID, point Vector3) Vector3 })
-		if ok {
-			return i.GetClosestPointToObjectVolume
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetClosestPointToObjectVolume(object RID, point Vector3) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetClosestPointToObjectVolume`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsDirectSpaceState3D().virtual(rtype, name)
 }
 
 type PhysicsMaterial gdnative.Object
@@ -13976,6 +15206,9 @@ func (PhysicsMaterial) class() string { return "PhysicsMaterial\000" }
 func (gdClass PhysicsMaterial) Resource() Resource { return Resource(gdClass) }
 
 var methodPhysicsMaterial [8]gdnative.Method
+func (gdClass PhysicsMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass PhysicsMaterial) SetFriction(friction float64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsMaterial[0], friction) }
 func (gdClass PhysicsMaterial) GetFriction() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsMaterial[1]) }
 func (gdClass PhysicsMaterial) SetRough(rough bool)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsMaterial[2], rough) }
@@ -13991,6 +15224,9 @@ func (PhysicsPointQueryParameters2D) class() string { return "PhysicsPointQueryP
 func (gdClass PhysicsPointQueryParameters2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsPointQueryParameters2D [12]gdnative.Method
+func (gdClass PhysicsPointQueryParameters2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsPointQueryParameters2D) SetPosition(position Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters2D[0], position) }
 func (gdClass PhysicsPointQueryParameters2D) GetPosition() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsPointQueryParameters2D[1]) }
 func (gdClass PhysicsPointQueryParameters2D) SetCanvasInstanceId(canvas_instance_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters2D[2], canvas_instance_id) }
@@ -14010,6 +15246,9 @@ func (PhysicsPointQueryParameters3D) class() string { return "PhysicsPointQueryP
 func (gdClass PhysicsPointQueryParameters3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsPointQueryParameters3D [10]gdnative.Method
+func (gdClass PhysicsPointQueryParameters3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsPointQueryParameters3D) SetPosition(position Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters3D[0], position) }
 func (gdClass PhysicsPointQueryParameters3D) GetPosition() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsPointQueryParameters3D[1]) }
 func (gdClass PhysicsPointQueryParameters3D) SetCollisionMask(collision_mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsPointQueryParameters3D[2], collision_mask) }
@@ -14027,6 +15266,9 @@ func (PhysicsRayQueryParameters2D) class() string { return "PhysicsRayQueryParam
 func (gdClass PhysicsRayQueryParameters2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsRayQueryParameters2D [15]gdnative.Method
+func (gdClass PhysicsRayQueryParameters2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsRayQueryParameters2D) Create(from Vector2, to Vector2, collision_mask int64, exclude Array) PhysicsRayQueryParameters2D { return gdnative.Return[PhysicsRayQueryParameters2D](gdnative.Object(gdClass), methodPhysicsRayQueryParameters2D[0], from, to, collision_mask, exclude) }
 func (gdClass PhysicsRayQueryParameters2D) SetFrom(from Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsRayQueryParameters2D[1], from) }
 func (gdClass PhysicsRayQueryParameters2D) GetFrom() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsRayQueryParameters2D[2]) }
@@ -14049,6 +15291,9 @@ func (PhysicsRayQueryParameters3D) class() string { return "PhysicsRayQueryParam
 func (gdClass PhysicsRayQueryParameters3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsRayQueryParameters3D [17]gdnative.Method
+func (gdClass PhysicsRayQueryParameters3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsRayQueryParameters3D) Create(from Vector3, to Vector3, collision_mask int64, exclude Array) PhysicsRayQueryParameters3D { return gdnative.Return[PhysicsRayQueryParameters3D](gdnative.Object(gdClass), methodPhysicsRayQueryParameters3D[0], from, to, collision_mask, exclude) }
 func (gdClass PhysicsRayQueryParameters3D) SetFrom(from Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsRayQueryParameters3D[1], from) }
 func (gdClass PhysicsRayQueryParameters3D) GetFrom() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsRayQueryParameters3D[2]) }
@@ -14217,6 +15462,9 @@ func (PhysicsServer2D) class() string { return "PhysicsServer2D\000" }
 func (gdClass PhysicsServer2D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsServer2D [108]gdnative.Method
+func (gdClass PhysicsServer2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsServer2D) WorldBoundaryShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer2D[0]) }
 func (gdClass PhysicsServer2D) SeparationRayShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer2D[1]) }
 func (gdClass PhysicsServer2D) SegmentShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer2D[2]) }
@@ -14566,6 +15814,9 @@ func (PhysicsServer3D) class() string { return "PhysicsServer3D\000" }
 func (gdClass PhysicsServer3D) Object() Object { return Object(gdClass) }
 
 var methodPhysicsServer3D [128]gdnative.Method
+func (gdClass PhysicsServer3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass PhysicsServer3D) WorldBoundaryShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer3D[0]) }
 func (gdClass PhysicsServer3D) SeparationRayShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer3D[1]) }
 func (gdClass PhysicsServer3D) SphereShapeCreate() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodPhysicsServer3D[2]) }
@@ -14700,649 +15951,650 @@ func (PhysicsServer3DExtension) class() string { return "PhysicsServer3DExtensio
 
 func (gdClass PhysicsServer3DExtension) PhysicsServer3D() PhysicsServer3D { return PhysicsServer3D(gdClass) }
 
-func (gdClass PhysicsServer3DExtension) virtual(val any, name string) any {	switch name {
+func (gdClass PhysicsServer3DExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_world_boundary_shape_create":
-		i, ok := val.(interface{ WorldBoundaryShapeCreate() RID })
-		if ok {
-			return i.WorldBoundaryShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ WorldBoundaryShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`WorldBoundaryShapeCreate`)
 		}
+		return
 	case "_separation_ray_shape_create":
-		i, ok := val.(interface{ SeparationRayShapeCreate() RID })
-		if ok {
-			return i.SeparationRayShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ SeparationRayShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`SeparationRayShapeCreate`)
 		}
+		return
 	case "_sphere_shape_create":
-		i, ok := val.(interface{ SphereShapeCreate() RID })
-		if ok {
-			return i.SphereShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ SphereShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`SphereShapeCreate`)
 		}
+		return
 	case "_box_shape_create":
-		i, ok := val.(interface{ BoxShapeCreate() RID })
-		if ok {
-			return i.BoxShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ BoxShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`BoxShapeCreate`)
 		}
+		return
 	case "_capsule_shape_create":
-		i, ok := val.(interface{ CapsuleShapeCreate() RID })
-		if ok {
-			return i.CapsuleShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ CapsuleShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`CapsuleShapeCreate`)
 		}
+		return
 	case "_cylinder_shape_create":
-		i, ok := val.(interface{ CylinderShapeCreate() RID })
-		if ok {
-			return i.CylinderShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ CylinderShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`CylinderShapeCreate`)
 		}
+		return
 	case "_convex_polygon_shape_create":
-		i, ok := val.(interface{ ConvexPolygonShapeCreate() RID })
-		if ok {
-			return i.ConvexPolygonShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConvexPolygonShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`ConvexPolygonShapeCreate`)
 		}
+		return
 	case "_concave_polygon_shape_create":
-		i, ok := val.(interface{ ConcavePolygonShapeCreate() RID })
-		if ok {
-			return i.ConcavePolygonShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConcavePolygonShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`ConcavePolygonShapeCreate`)
 		}
+		return
 	case "_heightmap_shape_create":
-		i, ok := val.(interface{ HeightmapShapeCreate() RID })
-		if ok {
-			return i.HeightmapShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ HeightmapShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`HeightmapShapeCreate`)
 		}
+		return
 	case "_custom_shape_create":
-		i, ok := val.(interface{ CustomShapeCreate() RID })
-		if ok {
-			return i.CustomShapeCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ CustomShapeCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`CustomShapeCreate`)
 		}
+		return
 	case "_shape_set_data":
-		i, ok := val.(interface{ ShapeSetData(shape RID, data any)  })
-		if ok {
-			return i.ShapeSetData
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapeSetData(shape RID, data any)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapeSetData`)
 		}
+		return
 	case "_shape_get_type":
-		i, ok := val.(interface{ ShapeGetType(shape RID) PhysicsServer3DShapeType })
-		if ok {
-			return i.ShapeGetType
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapeGetType(shape RID) PhysicsServer3DShapeType }{}).Elem()) {
+			return rtype.MethodByName(`ShapeGetType`)
 		}
+		return
 	case "_shape_get_data":
-		i, ok := val.(interface{ ShapeGetData(shape RID) any })
-		if ok {
-			return i.ShapeGetData
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapeGetData(shape RID) any }{}).Elem()) {
+			return rtype.MethodByName(`ShapeGetData`)
 		}
+		return
 	case "_space_create":
-		i, ok := val.(interface{ SpaceCreate() RID })
-		if ok {
-			return i.SpaceCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`SpaceCreate`)
 		}
+		return
 	case "_space_set_active":
-		i, ok := val.(interface{ SpaceSetActive(space RID, active bool)  })
-		if ok {
-			return i.SpaceSetActive
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceSetActive(space RID, active bool)  }{}).Elem()) {
+			return rtype.MethodByName(`SpaceSetActive`)
 		}
+		return
 	case "_space_is_active":
-		i, ok := val.(interface{ SpaceIsActive(space RID) bool })
-		if ok {
-			return i.SpaceIsActive
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceIsActive(space RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`SpaceIsActive`)
 		}
+		return
 	case "_space_set_param":
-		i, ok := val.(interface{ SpaceSetParam(space RID, param PhysicsServer3DSpaceParameter, value float64)  })
-		if ok {
-			return i.SpaceSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceSetParam(space RID, param PhysicsServer3DSpaceParameter, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`SpaceSetParam`)
 		}
+		return
 	case "_space_get_param":
-		i, ok := val.(interface{ SpaceGetParam(space RID, param PhysicsServer3DSpaceParameter) float64 })
-		if ok {
-			return i.SpaceGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceGetParam(space RID, param PhysicsServer3DSpaceParameter) float64 }{}).Elem()) {
+			return rtype.MethodByName(`SpaceGetParam`)
 		}
+		return
 	case "_space_get_direct_state":
-		i, ok := val.(interface{ SpaceGetDirectState(space RID) PhysicsDirectSpaceState3D })
-		if ok {
-			return i.SpaceGetDirectState
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpaceGetDirectState(space RID) PhysicsDirectSpaceState3D }{}).Elem()) {
+			return rtype.MethodByName(`SpaceGetDirectState`)
 		}
+		return
 	case "_area_create":
-		i, ok := val.(interface{ AreaCreate() RID })
-		if ok {
-			return i.AreaCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`AreaCreate`)
 		}
+		return
 	case "_area_set_space":
-		i, ok := val.(interface{ AreaSetSpace(area RID, space RID)  })
-		if ok {
-			return i.AreaSetSpace
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetSpace(area RID, space RID)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetSpace`)
 		}
+		return
 	case "_area_get_space":
-		i, ok := val.(interface{ AreaGetSpace(area RID) RID })
-		if ok {
-			return i.AreaGetSpace
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetSpace(area RID) RID }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetSpace`)
 		}
+		return
 	case "_area_add_shape":
-		i, ok := val.(interface{ AreaAddShape(area RID, shape RID, transform Transform3D, disabled bool)  })
-		if ok {
-			return i.AreaAddShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaAddShape(area RID, shape RID, transform Transform3D, disabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaAddShape`)
 		}
+		return
 	case "_area_set_shape":
-		i, ok := val.(interface{ AreaSetShape(area RID, shape_idx int64, shape RID)  })
-		if ok {
-			return i.AreaSetShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetShape(area RID, shape_idx int64, shape RID)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetShape`)
 		}
+		return
 	case "_area_set_shape_transform":
-		i, ok := val.(interface{ AreaSetShapeTransform(area RID, shape_idx int64, transform Transform3D)  })
-		if ok {
-			return i.AreaSetShapeTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetShapeTransform(area RID, shape_idx int64, transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetShapeTransform`)
 		}
+		return
 	case "_area_set_shape_disabled":
-		i, ok := val.(interface{ AreaSetShapeDisabled(area RID, shape_idx int64, disabled bool)  })
-		if ok {
-			return i.AreaSetShapeDisabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetShapeDisabled(area RID, shape_idx int64, disabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetShapeDisabled`)
 		}
+		return
 	case "_area_get_shape_count":
-		i, ok := val.(interface{ AreaGetShapeCount(area RID) int64 })
-		if ok {
-			return i.AreaGetShapeCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetShapeCount(area RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetShapeCount`)
 		}
+		return
 	case "_area_get_shape":
-		i, ok := val.(interface{ AreaGetShape(area RID, shape_idx int64) RID })
-		if ok {
-			return i.AreaGetShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetShape(area RID, shape_idx int64) RID }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetShape`)
 		}
+		return
 	case "_area_get_shape_transform":
-		i, ok := val.(interface{ AreaGetShapeTransform(area RID, shape_idx int64) Transform3D })
-		if ok {
-			return i.AreaGetShapeTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetShapeTransform(area RID, shape_idx int64) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetShapeTransform`)
 		}
+		return
 	case "_area_remove_shape":
-		i, ok := val.(interface{ AreaRemoveShape(area RID, shape_idx int64)  })
-		if ok {
-			return i.AreaRemoveShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaRemoveShape(area RID, shape_idx int64)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaRemoveShape`)
 		}
+		return
 	case "_area_clear_shapes":
-		i, ok := val.(interface{ AreaClearShapes(area RID)  })
-		if ok {
-			return i.AreaClearShapes
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaClearShapes(area RID)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaClearShapes`)
 		}
+		return
 	case "_area_set_collision_layer":
-		i, ok := val.(interface{ AreaSetCollisionLayer(area RID, layer int64)  })
-		if ok {
-			return i.AreaSetCollisionLayer
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetCollisionLayer(area RID, layer int64)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetCollisionLayer`)
 		}
+		return
 	case "_area_set_collision_mask":
-		i, ok := val.(interface{ AreaSetCollisionMask(area RID, mask int64)  })
-		if ok {
-			return i.AreaSetCollisionMask
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetCollisionMask(area RID, mask int64)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetCollisionMask`)
 		}
+		return
 	case "_area_set_param":
-		i, ok := val.(interface{ AreaSetParam(area RID, param PhysicsServer3DAreaParameter, value any)  })
-		if ok {
-			return i.AreaSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetParam(area RID, param PhysicsServer3DAreaParameter, value any)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetParam`)
 		}
+		return
 	case "_area_set_transform":
-		i, ok := val.(interface{ AreaSetTransform(area RID, transform Transform3D)  })
-		if ok {
-			return i.AreaSetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetTransform(area RID, transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetTransform`)
 		}
+		return
 	case "_area_get_param":
-		i, ok := val.(interface{ AreaGetParam(area RID, param PhysicsServer3DAreaParameter) any })
-		if ok {
-			return i.AreaGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetParam(area RID, param PhysicsServer3DAreaParameter) any }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetParam`)
 		}
+		return
 	case "_area_get_transform":
-		i, ok := val.(interface{ AreaGetTransform(area RID) Transform3D })
-		if ok {
-			return i.AreaGetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetTransform(area RID) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetTransform`)
 		}
+		return
 	case "_area_attach_object_instance_id":
-		i, ok := val.(interface{ AreaAttachObjectInstanceId(area RID, id int64)  })
-		if ok {
-			return i.AreaAttachObjectInstanceId
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaAttachObjectInstanceId(area RID, id int64)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaAttachObjectInstanceId`)
 		}
+		return
 	case "_area_get_object_instance_id":
-		i, ok := val.(interface{ AreaGetObjectInstanceId(area RID) int64 })
-		if ok {
-			return i.AreaGetObjectInstanceId
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaGetObjectInstanceId(area RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`AreaGetObjectInstanceId`)
 		}
+		return
 	case "_area_set_monitor_callback":
-		i, ok := val.(interface{ AreaSetMonitorCallback(area RID, callback Callable)  })
-		if ok {
-			return i.AreaSetMonitorCallback
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetMonitorCallback(area RID, callback Callable)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetMonitorCallback`)
 		}
+		return
 	case "_area_set_area_monitor_callback":
-		i, ok := val.(interface{ AreaSetAreaMonitorCallback(area RID, callback Callable)  })
-		if ok {
-			return i.AreaSetAreaMonitorCallback
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetAreaMonitorCallback(area RID, callback Callable)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetAreaMonitorCallback`)
 		}
+		return
 	case "_area_set_monitorable":
-		i, ok := val.(interface{ AreaSetMonitorable(area RID, monitorable bool)  })
-		if ok {
-			return i.AreaSetMonitorable
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetMonitorable(area RID, monitorable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetMonitorable`)
 		}
+		return
 	case "_area_set_ray_pickable":
-		i, ok := val.(interface{ AreaSetRayPickable(area RID, enable bool)  })
-		if ok {
-			return i.AreaSetRayPickable
+		if rtype.Implements(reflect.TypeOf([0]interface{ AreaSetRayPickable(area RID, enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`AreaSetRayPickable`)
 		}
+		return
 	case "_body_create":
-		i, ok := val.(interface{ BodyCreate() RID })
-		if ok {
-			return i.BodyCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`BodyCreate`)
 		}
+		return
 	case "_body_set_space":
-		i, ok := val.(interface{ BodySetSpace(body RID, space RID)  })
-		if ok {
-			return i.BodySetSpace
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetSpace(body RID, space RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetSpace`)
 		}
+		return
 	case "_body_get_space":
-		i, ok := val.(interface{ BodyGetSpace(body RID) RID })
-		if ok {
-			return i.BodyGetSpace
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetSpace(body RID) RID }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetSpace`)
 		}
+		return
 	case "_body_set_mode":
-		i, ok := val.(interface{ BodySetMode(body RID, mode PhysicsServer3DBodyMode)  })
-		if ok {
-			return i.BodySetMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetMode(body RID, mode PhysicsServer3DBodyMode)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetMode`)
 		}
+		return
 	case "_body_get_mode":
-		i, ok := val.(interface{ BodyGetMode(body RID) PhysicsServer3DBodyMode })
-		if ok {
-			return i.BodyGetMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetMode(body RID) PhysicsServer3DBodyMode }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetMode`)
 		}
+		return
 	case "_body_set_collision_layer":
-		i, ok := val.(interface{ BodySetCollisionLayer(body RID, layer int64)  })
-		if ok {
-			return i.BodySetCollisionLayer
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetCollisionLayer(body RID, layer int64)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetCollisionLayer`)
 		}
+		return
 	case "_body_get_collision_layer":
-		i, ok := val.(interface{ BodyGetCollisionLayer(body RID) int64 })
-		if ok {
-			return i.BodyGetCollisionLayer
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetCollisionLayer(body RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetCollisionLayer`)
 		}
+		return
 	case "_body_set_collision_mask":
-		i, ok := val.(interface{ BodySetCollisionMask(body RID, mask int64)  })
-		if ok {
-			return i.BodySetCollisionMask
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetCollisionMask(body RID, mask int64)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetCollisionMask`)
 		}
+		return
 	case "_body_get_collision_mask":
-		i, ok := val.(interface{ BodyGetCollisionMask(body RID) int64 })
-		if ok {
-			return i.BodyGetCollisionMask
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetCollisionMask(body RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetCollisionMask`)
 		}
+		return
 	case "_body_add_shape":
-		i, ok := val.(interface{ BodyAddShape(body RID, shape RID, transform Transform3D, disabled bool)  })
-		if ok {
-			return i.BodyAddShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAddShape(body RID, shape RID, transform Transform3D, disabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAddShape`)
 		}
+		return
 	case "_body_set_shape":
-		i, ok := val.(interface{ BodySetShape(body RID, shape_idx int64, shape RID)  })
-		if ok {
-			return i.BodySetShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetShape(body RID, shape_idx int64, shape RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetShape`)
 		}
+		return
 	case "_body_set_shape_transform":
-		i, ok := val.(interface{ BodySetShapeTransform(body RID, shape_idx int64, transform Transform3D)  })
-		if ok {
-			return i.BodySetShapeTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetShapeTransform(body RID, shape_idx int64, transform Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetShapeTransform`)
 		}
+		return
 	case "_body_set_shape_disabled":
-		i, ok := val.(interface{ BodySetShapeDisabled(body RID, shape_idx int64, disabled bool)  })
-		if ok {
-			return i.BodySetShapeDisabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetShapeDisabled(body RID, shape_idx int64, disabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetShapeDisabled`)
 		}
+		return
 	case "_body_get_shape_count":
-		i, ok := val.(interface{ BodyGetShapeCount(body RID) int64 })
-		if ok {
-			return i.BodyGetShapeCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetShapeCount(body RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetShapeCount`)
 		}
+		return
 	case "_body_get_shape":
-		i, ok := val.(interface{ BodyGetShape(body RID, shape_idx int64) RID })
-		if ok {
-			return i.BodyGetShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetShape(body RID, shape_idx int64) RID }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetShape`)
 		}
+		return
 	case "_body_get_shape_transform":
-		i, ok := val.(interface{ BodyGetShapeTransform(body RID, shape_idx int64) Transform3D })
-		if ok {
-			return i.BodyGetShapeTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetShapeTransform(body RID, shape_idx int64) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetShapeTransform`)
 		}
+		return
 	case "_body_remove_shape":
-		i, ok := val.(interface{ BodyRemoveShape(body RID, shape_idx int64)  })
-		if ok {
-			return i.BodyRemoveShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyRemoveShape(body RID, shape_idx int64)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyRemoveShape`)
 		}
+		return
 	case "_body_clear_shapes":
-		i, ok := val.(interface{ BodyClearShapes(body RID)  })
-		if ok {
-			return i.BodyClearShapes
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyClearShapes(body RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyClearShapes`)
 		}
+		return
 	case "_body_attach_object_instance_id":
-		i, ok := val.(interface{ BodyAttachObjectInstanceId(body RID, id int64)  })
-		if ok {
-			return i.BodyAttachObjectInstanceId
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAttachObjectInstanceId(body RID, id int64)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAttachObjectInstanceId`)
 		}
+		return
 	case "_body_get_object_instance_id":
-		i, ok := val.(interface{ BodyGetObjectInstanceId(body RID) int64 })
-		if ok {
-			return i.BodyGetObjectInstanceId
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetObjectInstanceId(body RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetObjectInstanceId`)
 		}
+		return
 	case "_body_set_enable_continuous_collision_detection":
-		i, ok := val.(interface{ BodySetEnableContinuousCollisionDetection(body RID, enable bool)  })
-		if ok {
-			return i.BodySetEnableContinuousCollisionDetection
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetEnableContinuousCollisionDetection(body RID, enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetEnableContinuousCollisionDetection`)
 		}
+		return
 	case "_body_is_continuous_collision_detection_enabled":
-		i, ok := val.(interface{ BodyIsContinuousCollisionDetectionEnabled(body RID) bool })
-		if ok {
-			return i.BodyIsContinuousCollisionDetectionEnabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyIsContinuousCollisionDetectionEnabled(body RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`BodyIsContinuousCollisionDetectionEnabled`)
 		}
+		return
 	case "_body_set_param":
-		i, ok := val.(interface{ BodySetParam(body RID, param PhysicsServer3DBodyParameter, value any)  })
-		if ok {
-			return i.BodySetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetParam(body RID, param PhysicsServer3DBodyParameter, value any)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetParam`)
 		}
+		return
 	case "_body_get_param":
-		i, ok := val.(interface{ BodyGetParam(body RID, param PhysicsServer3DBodyParameter) any })
-		if ok {
-			return i.BodyGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetParam(body RID, param PhysicsServer3DBodyParameter) any }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetParam`)
 		}
+		return
 	case "_body_reset_mass_properties":
-		i, ok := val.(interface{ BodyResetMassProperties(body RID)  })
-		if ok {
-			return i.BodyResetMassProperties
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyResetMassProperties(body RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyResetMassProperties`)
 		}
+		return
 	case "_body_set_state":
-		i, ok := val.(interface{ BodySetState(body RID, state PhysicsServer3DBodyState, value any)  })
-		if ok {
-			return i.BodySetState
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetState(body RID, state PhysicsServer3DBodyState, value any)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetState`)
 		}
+		return
 	case "_body_get_state":
-		i, ok := val.(interface{ BodyGetState(body RID, state PhysicsServer3DBodyState) any })
-		if ok {
-			return i.BodyGetState
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetState(body RID, state PhysicsServer3DBodyState) any }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetState`)
 		}
+		return
 	case "_body_apply_central_impulse":
-		i, ok := val.(interface{ BodyApplyCentralImpulse(body RID, impulse Vector3)  })
-		if ok {
-			return i.BodyApplyCentralImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyCentralImpulse(body RID, impulse Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyCentralImpulse`)
 		}
+		return
 	case "_body_apply_impulse":
-		i, ok := val.(interface{ BodyApplyImpulse(body RID, impulse Vector3, position Vector3)  })
-		if ok {
-			return i.BodyApplyImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyImpulse(body RID, impulse Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyImpulse`)
 		}
+		return
 	case "_body_apply_torque_impulse":
-		i, ok := val.(interface{ BodyApplyTorqueImpulse(body RID, impulse Vector3)  })
-		if ok {
-			return i.BodyApplyTorqueImpulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyTorqueImpulse(body RID, impulse Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyTorqueImpulse`)
 		}
+		return
 	case "_body_apply_central_force":
-		i, ok := val.(interface{ BodyApplyCentralForce(body RID, force Vector3)  })
-		if ok {
-			return i.BodyApplyCentralForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyCentralForce(body RID, force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyCentralForce`)
 		}
+		return
 	case "_body_apply_force":
-		i, ok := val.(interface{ BodyApplyForce(body RID, force Vector3, position Vector3)  })
-		if ok {
-			return i.BodyApplyForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyForce(body RID, force Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyForce`)
 		}
+		return
 	case "_body_apply_torque":
-		i, ok := val.(interface{ BodyApplyTorque(body RID, torque Vector3)  })
-		if ok {
-			return i.BodyApplyTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyApplyTorque(body RID, torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyApplyTorque`)
 		}
+		return
 	case "_body_add_constant_central_force":
-		i, ok := val.(interface{ BodyAddConstantCentralForce(body RID, force Vector3)  })
-		if ok {
-			return i.BodyAddConstantCentralForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAddConstantCentralForce(body RID, force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAddConstantCentralForce`)
 		}
+		return
 	case "_body_add_constant_force":
-		i, ok := val.(interface{ BodyAddConstantForce(body RID, force Vector3, position Vector3)  })
-		if ok {
-			return i.BodyAddConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAddConstantForce(body RID, force Vector3, position Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAddConstantForce`)
 		}
+		return
 	case "_body_add_constant_torque":
-		i, ok := val.(interface{ BodyAddConstantTorque(body RID, torque Vector3)  })
-		if ok {
-			return i.BodyAddConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAddConstantTorque(body RID, torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAddConstantTorque`)
 		}
+		return
 	case "_body_set_constant_force":
-		i, ok := val.(interface{ BodySetConstantForce(body RID, force Vector3)  })
-		if ok {
-			return i.BodySetConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetConstantForce(body RID, force Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetConstantForce`)
 		}
+		return
 	case "_body_get_constant_force":
-		i, ok := val.(interface{ BodyGetConstantForce(body RID) Vector3 })
-		if ok {
-			return i.BodyGetConstantForce
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetConstantForce(body RID) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetConstantForce`)
 		}
+		return
 	case "_body_set_constant_torque":
-		i, ok := val.(interface{ BodySetConstantTorque(body RID, torque Vector3)  })
-		if ok {
-			return i.BodySetConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetConstantTorque(body RID, torque Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetConstantTorque`)
 		}
+		return
 	case "_body_get_constant_torque":
-		i, ok := val.(interface{ BodyGetConstantTorque(body RID) Vector3 })
-		if ok {
-			return i.BodyGetConstantTorque
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetConstantTorque(body RID) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetConstantTorque`)
 		}
+		return
 	case "_body_set_axis_velocity":
-		i, ok := val.(interface{ BodySetAxisVelocity(body RID, axis_velocity Vector3)  })
-		if ok {
-			return i.BodySetAxisVelocity
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetAxisVelocity(body RID, axis_velocity Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetAxisVelocity`)
 		}
+		return
 	case "_body_set_axis_lock":
-		i, ok := val.(interface{ BodySetAxisLock(body RID, axis PhysicsServer3DBodyAxis, lock bool)  })
-		if ok {
-			return i.BodySetAxisLock
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetAxisLock(body RID, axis PhysicsServer3DBodyAxis, lock bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetAxisLock`)
 		}
+		return
 	case "_body_is_axis_locked":
-		i, ok := val.(interface{ BodyIsAxisLocked(body RID, axis PhysicsServer3DBodyAxis) bool })
-		if ok {
-			return i.BodyIsAxisLocked
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyIsAxisLocked(body RID, axis PhysicsServer3DBodyAxis) bool }{}).Elem()) {
+			return rtype.MethodByName(`BodyIsAxisLocked`)
 		}
+		return
 	case "_body_add_collision_exception":
-		i, ok := val.(interface{ BodyAddCollisionException(body RID, excepted_body RID)  })
-		if ok {
-			return i.BodyAddCollisionException
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyAddCollisionException(body RID, excepted_body RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyAddCollisionException`)
 		}
+		return
 	case "_body_remove_collision_exception":
-		i, ok := val.(interface{ BodyRemoveCollisionException(body RID, excepted_body RID)  })
-		if ok {
-			return i.BodyRemoveCollisionException
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyRemoveCollisionException(body RID, excepted_body RID)  }{}).Elem()) {
+			return rtype.MethodByName(`BodyRemoveCollisionException`)
 		}
+		return
 	case "_body_set_max_contacts_reported":
-		i, ok := val.(interface{ BodySetMaxContactsReported(body RID, amount int64)  })
-		if ok {
-			return i.BodySetMaxContactsReported
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetMaxContactsReported(body RID, amount int64)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetMaxContactsReported`)
 		}
+		return
 	case "_body_get_max_contacts_reported":
-		i, ok := val.(interface{ BodyGetMaxContactsReported(body RID) int64 })
-		if ok {
-			return i.BodyGetMaxContactsReported
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetMaxContactsReported(body RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetMaxContactsReported`)
 		}
+		return
 	case "_body_set_omit_force_integration":
-		i, ok := val.(interface{ BodySetOmitForceIntegration(body RID, enable bool)  })
-		if ok {
-			return i.BodySetOmitForceIntegration
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetOmitForceIntegration(body RID, enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetOmitForceIntegration`)
 		}
+		return
 	case "_body_is_omitting_force_integration":
-		i, ok := val.(interface{ BodyIsOmittingForceIntegration(body RID) bool })
-		if ok {
-			return i.BodyIsOmittingForceIntegration
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyIsOmittingForceIntegration(body RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`BodyIsOmittingForceIntegration`)
 		}
+		return
 	case "_body_set_force_integration_callback":
-		i, ok := val.(interface{ BodySetForceIntegrationCallback(body RID, callable Callable, userdata any)  })
-		if ok {
-			return i.BodySetForceIntegrationCallback
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetForceIntegrationCallback(body RID, callable Callable, userdata any)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetForceIntegrationCallback`)
 		}
+		return
 	case "_body_set_ray_pickable":
-		i, ok := val.(interface{ BodySetRayPickable(body RID, enable bool)  })
-		if ok {
-			return i.BodySetRayPickable
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodySetRayPickable(body RID, enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`BodySetRayPickable`)
 		}
+		return
 	case "_body_test_motion":
-		i, ok := val.(interface{ BodyTestMotion(body RID, from Transform3D, motion Vector3, margin float64, max_collisions int64, collide_separation_ray bool, result *PhysicsServer3DExtensionMotionResult) bool })
-		if ok {
-			return i.BodyTestMotion
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyTestMotion(body RID, from Transform3D, motion Vector3, margin float64, max_collisions int64, collide_separation_ray bool, result *PhysicsServer3DExtensionMotionResult) bool }{}).Elem()) {
+			return rtype.MethodByName(`BodyTestMotion`)
 		}
+		return
 	case "_body_get_direct_state":
-		i, ok := val.(interface{ BodyGetDirectState(body RID) PhysicsDirectBodyState3D })
-		if ok {
-			return i.BodyGetDirectState
+		if rtype.Implements(reflect.TypeOf([0]interface{ BodyGetDirectState(body RID) PhysicsDirectBodyState3D }{}).Elem()) {
+			return rtype.MethodByName(`BodyGetDirectState`)
 		}
+		return
 	case "_soft_body_get_bounds":
-		i, ok := val.(interface{ SoftBodyGetBounds(body RID) AABB })
-		if ok {
-			return i.SoftBodyGetBounds
+		if rtype.Implements(reflect.TypeOf([0]interface{ SoftBodyGetBounds(body RID) AABB }{}).Elem()) {
+			return rtype.MethodByName(`SoftBodyGetBounds`)
 		}
+		return
 	case "_joint_create":
-		i, ok := val.(interface{ JointCreate() RID })
-		if ok {
-			return i.JointCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointCreate() RID }{}).Elem()) {
+			return rtype.MethodByName(`JointCreate`)
 		}
+		return
 	case "_joint_clear":
-		i, ok := val.(interface{ JointClear(joint RID)  })
-		if ok {
-			return i.JointClear
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointClear(joint RID)  }{}).Elem()) {
+			return rtype.MethodByName(`JointClear`)
 		}
+		return
 	case "_joint_make_pin":
-		i, ok := val.(interface{ JointMakePin(joint RID, body_A RID, local_A Vector3, body_B RID, local_B Vector3)  })
-		if ok {
-			return i.JointMakePin
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointMakePin(joint RID, body_A RID, local_A Vector3, body_B RID, local_B Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`JointMakePin`)
 		}
+		return
 	case "_pin_joint_set_param":
-		i, ok := val.(interface{ PinJointSetParam(joint RID, param PhysicsServer3DPinJointParam, value float64)  })
-		if ok {
-			return i.PinJointSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointSetParam(joint RID, param PhysicsServer3DPinJointParam, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`PinJointSetParam`)
 		}
+		return
 	case "_pin_joint_get_param":
-		i, ok := val.(interface{ PinJointGetParam(joint RID, param PhysicsServer3DPinJointParam) float64 })
-		if ok {
-			return i.PinJointGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointGetParam(joint RID, param PhysicsServer3DPinJointParam) float64 }{}).Elem()) {
+			return rtype.MethodByName(`PinJointGetParam`)
 		}
+		return
 	case "_pin_joint_set_local_a":
-		i, ok := val.(interface{ PinJointSetLocalA(joint RID, local_A Vector3)  })
-		if ok {
-			return i.PinJointSetLocalA
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointSetLocalA(joint RID, local_A Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`PinJointSetLocalA`)
 		}
+		return
 	case "_pin_joint_get_local_a":
-		i, ok := val.(interface{ PinJointGetLocalA(joint RID) Vector3 })
-		if ok {
-			return i.PinJointGetLocalA
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointGetLocalA(joint RID) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`PinJointGetLocalA`)
 		}
+		return
 	case "_pin_joint_set_local_b":
-		i, ok := val.(interface{ PinJointSetLocalB(joint RID, local_B Vector3)  })
-		if ok {
-			return i.PinJointSetLocalB
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointSetLocalB(joint RID, local_B Vector3)  }{}).Elem()) {
+			return rtype.MethodByName(`PinJointSetLocalB`)
 		}
+		return
 	case "_pin_joint_get_local_b":
-		i, ok := val.(interface{ PinJointGetLocalB(joint RID) Vector3 })
-		if ok {
-			return i.PinJointGetLocalB
+		if rtype.Implements(reflect.TypeOf([0]interface{ PinJointGetLocalB(joint RID) Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`PinJointGetLocalB`)
 		}
+		return
 	case "_joint_make_hinge":
-		i, ok := val.(interface{ JointMakeHinge(joint RID, body_A RID, hinge_A Transform3D, body_B RID, hinge_B Transform3D)  })
-		if ok {
-			return i.JointMakeHinge
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointMakeHinge(joint RID, body_A RID, hinge_A Transform3D, body_B RID, hinge_B Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`JointMakeHinge`)
 		}
+		return
 	case "_hinge_joint_set_param":
-		i, ok := val.(interface{ HingeJointSetParam(joint RID, param PhysicsServer3DHingeJointParam, value float64)  })
-		if ok {
-			return i.HingeJointSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ HingeJointSetParam(joint RID, param PhysicsServer3DHingeJointParam, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`HingeJointSetParam`)
 		}
+		return
 	case "_hinge_joint_get_param":
-		i, ok := val.(interface{ HingeJointGetParam(joint RID, param PhysicsServer3DHingeJointParam) float64 })
-		if ok {
-			return i.HingeJointGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ HingeJointGetParam(joint RID, param PhysicsServer3DHingeJointParam) float64 }{}).Elem()) {
+			return rtype.MethodByName(`HingeJointGetParam`)
 		}
+		return
 	case "_hinge_joint_set_flag":
-		i, ok := val.(interface{ HingeJointSetFlag(joint RID, flag PhysicsServer3DHingeJointFlag, enabled bool)  })
-		if ok {
-			return i.HingeJointSetFlag
+		if rtype.Implements(reflect.TypeOf([0]interface{ HingeJointSetFlag(joint RID, flag PhysicsServer3DHingeJointFlag, enabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`HingeJointSetFlag`)
 		}
+		return
 	case "_hinge_joint_get_flag":
-		i, ok := val.(interface{ HingeJointGetFlag(joint RID, flag PhysicsServer3DHingeJointFlag) bool })
-		if ok {
-			return i.HingeJointGetFlag
+		if rtype.Implements(reflect.TypeOf([0]interface{ HingeJointGetFlag(joint RID, flag PhysicsServer3DHingeJointFlag) bool }{}).Elem()) {
+			return rtype.MethodByName(`HingeJointGetFlag`)
 		}
+		return
 	case "_joint_make_slider":
-		i, ok := val.(interface{ JointMakeSlider(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  })
-		if ok {
-			return i.JointMakeSlider
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointMakeSlider(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`JointMakeSlider`)
 		}
+		return
 	case "_slider_joint_set_param":
-		i, ok := val.(interface{ SliderJointSetParam(joint RID, param PhysicsServer3DSliderJointParam, value float64)  })
-		if ok {
-			return i.SliderJointSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ SliderJointSetParam(joint RID, param PhysicsServer3DSliderJointParam, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`SliderJointSetParam`)
 		}
+		return
 	case "_slider_joint_get_param":
-		i, ok := val.(interface{ SliderJointGetParam(joint RID, param PhysicsServer3DSliderJointParam) float64 })
-		if ok {
-			return i.SliderJointGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ SliderJointGetParam(joint RID, param PhysicsServer3DSliderJointParam) float64 }{}).Elem()) {
+			return rtype.MethodByName(`SliderJointGetParam`)
 		}
+		return
 	case "_joint_make_cone_twist":
-		i, ok := val.(interface{ JointMakeConeTwist(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  })
-		if ok {
-			return i.JointMakeConeTwist
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointMakeConeTwist(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`JointMakeConeTwist`)
 		}
+		return
 	case "_cone_twist_joint_set_param":
-		i, ok := val.(interface{ ConeTwistJointSetParam(joint RID, param PhysicsServer3DConeTwistJointParam, value float64)  })
-		if ok {
-			return i.ConeTwistJointSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConeTwistJointSetParam(joint RID, param PhysicsServer3DConeTwistJointParam, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`ConeTwistJointSetParam`)
 		}
+		return
 	case "_cone_twist_joint_get_param":
-		i, ok := val.(interface{ ConeTwistJointGetParam(joint RID, param PhysicsServer3DConeTwistJointParam) float64 })
-		if ok {
-			return i.ConeTwistJointGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ ConeTwistJointGetParam(joint RID, param PhysicsServer3DConeTwistJointParam) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ConeTwistJointGetParam`)
 		}
+		return
 	case "_joint_get_type":
-		i, ok := val.(interface{ JointGetType(joint RID) PhysicsServer3DJointType })
-		if ok {
-			return i.JointGetType
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointGetType(joint RID) PhysicsServer3DJointType }{}).Elem()) {
+			return rtype.MethodByName(`JointGetType`)
 		}
+		return
 	case "_joint_set_solver_priority":
-		i, ok := val.(interface{ JointSetSolverPriority(joint RID, priority int64)  })
-		if ok {
-			return i.JointSetSolverPriority
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointSetSolverPriority(joint RID, priority int64)  }{}).Elem()) {
+			return rtype.MethodByName(`JointSetSolverPriority`)
 		}
+		return
 	case "_joint_get_solver_priority":
-		i, ok := val.(interface{ JointGetSolverPriority(joint RID) int64 })
-		if ok {
-			return i.JointGetSolverPriority
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointGetSolverPriority(joint RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`JointGetSolverPriority`)
 		}
+		return
 	case "_joint_make_generic_6dof":
-		i, ok := val.(interface{ JointMakeGeneric6dof(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  })
-		if ok {
-			return i.JointMakeGeneric6dof
+		if rtype.Implements(reflect.TypeOf([0]interface{ JointMakeGeneric6dof(joint RID, body_A RID, local_ref_A Transform3D, body_B RID, local_ref_B Transform3D)  }{}).Elem()) {
+			return rtype.MethodByName(`JointMakeGeneric6dof`)
 		}
+		return
 	case "_generic_6dof_joint_set_param":
-		i, ok := val.(interface{ Generic6dofJointSetParam(joint RID, axis Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam, value float64)  })
-		if ok {
-			return i.Generic6dofJointSetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ Generic6dofJointSetParam(joint RID, axis Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam, value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Generic6dofJointSetParam`)
 		}
+		return
 	case "_generic_6dof_joint_get_param":
-		i, ok := val.(interface{ Generic6dofJointGetParam(joint RID, axis Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam) float64 })
-		if ok {
-			return i.Generic6dofJointGetParam
+		if rtype.Implements(reflect.TypeOf([0]interface{ Generic6dofJointGetParam(joint RID, axis Vector3Axis, param PhysicsServer3DG6DOFJointAxisParam) float64 }{}).Elem()) {
+			return rtype.MethodByName(`Generic6dofJointGetParam`)
 		}
+		return
 	case "_generic_6dof_joint_set_flag":
-		i, ok := val.(interface{ Generic6dofJointSetFlag(joint RID, axis Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag, enable bool)  })
-		if ok {
-			return i.Generic6dofJointSetFlag
+		if rtype.Implements(reflect.TypeOf([0]interface{ Generic6dofJointSetFlag(joint RID, axis Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag, enable bool)  }{}).Elem()) {
+			return rtype.MethodByName(`Generic6dofJointSetFlag`)
 		}
+		return
 	case "_generic_6dof_joint_get_flag":
-		i, ok := val.(interface{ Generic6dofJointGetFlag(joint RID, axis Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag) bool })
-		if ok {
-			return i.Generic6dofJointGetFlag
+		if rtype.Implements(reflect.TypeOf([0]interface{ Generic6dofJointGetFlag(joint RID, axis Vector3Axis, flag PhysicsServer3DG6DOFJointAxisFlag) bool }{}).Elem()) {
+			return rtype.MethodByName(`Generic6dofJointGetFlag`)
 		}
+		return
 	case "_free_rid":
-		i, ok := val.(interface{ FreeRid(rid RID)  })
-		if ok {
-			return i.FreeRid
+		if rtype.Implements(reflect.TypeOf([0]interface{ FreeRid(rid RID)  }{}).Elem()) {
+			return rtype.MethodByName(`FreeRid`)
 		}
+		return
 	case "_set_active":
-		i, ok := val.(interface{ SetActive(active bool)  })
-		if ok {
-			return i.SetActive
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetActive(active bool)  }{}).Elem()) {
+			return rtype.MethodByName(`SetActive`)
 		}
+		return
 	case "_get_process_info":
-		i, ok := val.(interface{ GetProcessInfo(process_info PhysicsServer3DProcessInfo) int64 })
-		if ok {
-			return i.GetProcessInfo
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetProcessInfo(process_info PhysicsServer3DProcessInfo) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetProcessInfo`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsServer3D().virtual(rtype, name)
 }
 
 type PhysicsServer3DRenderingServerHandler gdnative.Object
@@ -15350,24 +16602,25 @@ func (PhysicsServer3DRenderingServerHandler) class() string { return "PhysicsSer
 
 func (gdClass PhysicsServer3DRenderingServerHandler) Object() Object { return Object(gdClass) }
 
-func (gdClass PhysicsServer3DRenderingServerHandler) virtual(val any, name string) any {	switch name {
+func (gdClass PhysicsServer3DRenderingServerHandler) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_set_vertex":
-		i, ok := val.(interface{ SetVertex(vertex_id int64, vertices []byte)  })
-		if ok {
-			return i.SetVertex
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetVertex(vertex_id int64, vertices []byte)  }{}).Elem()) {
+			return rtype.MethodByName(`SetVertex`)
 		}
+		return
 	case "_set_normal":
-		i, ok := val.(interface{ SetNormal(vertex_id int64, normals []byte)  })
-		if ok {
-			return i.SetNormal
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetNormal(vertex_id int64, normals []byte)  }{}).Elem()) {
+			return rtype.MethodByName(`SetNormal`)
 		}
+		return
 	case "_set_aabb":
-		i, ok := val.(interface{ SetAabb(aabb AABB)  })
-		if ok {
-			return i.SetAabb
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetAabb(aabb AABB)  }{}).Elem()) {
+			return rtype.MethodByName(`SetAabb`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Object().virtual(rtype, name)
 }
 
 type PhysicsShapeQueryParameters2D gdnative.Object
@@ -15376,6 +16629,9 @@ func (PhysicsShapeQueryParameters2D) class() string { return "PhysicsShapeQueryP
 func (gdClass PhysicsShapeQueryParameters2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsShapeQueryParameters2D [18]gdnative.Method
+func (gdClass PhysicsShapeQueryParameters2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsShapeQueryParameters2D) SetShape(shape Resource)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters2D[0], shape) }
 func (gdClass PhysicsShapeQueryParameters2D) GetShape() Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodPhysicsShapeQueryParameters2D[1]) }
 func (gdClass PhysicsShapeQueryParameters2D) SetShapeRid(shape RID)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters2D[2], shape) }
@@ -15401,6 +16657,9 @@ func (PhysicsShapeQueryParameters3D) class() string { return "PhysicsShapeQueryP
 func (gdClass PhysicsShapeQueryParameters3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsShapeQueryParameters3D [18]gdnative.Method
+func (gdClass PhysicsShapeQueryParameters3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsShapeQueryParameters3D) SetShape(shape Resource)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters3D[0], shape) }
 func (gdClass PhysicsShapeQueryParameters3D) GetShape() Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodPhysicsShapeQueryParameters3D[1]) }
 func (gdClass PhysicsShapeQueryParameters3D) SetShapeRid(shape RID)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsShapeQueryParameters3D[2], shape) }
@@ -15426,6 +16685,9 @@ func (PhysicsTestMotionParameters2D) class() string { return "PhysicsTestMotionP
 func (gdClass PhysicsTestMotionParameters2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsTestMotionParameters2D [14]gdnative.Method
+func (gdClass PhysicsTestMotionParameters2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsTestMotionParameters2D) GetFrom() Transform2D { return gdnative.Return[Transform2D](gdnative.Object(gdClass), methodPhysicsTestMotionParameters2D[0]) }
 func (gdClass PhysicsTestMotionParameters2D) SetFrom(from Transform2D)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsTestMotionParameters2D[1], from) }
 func (gdClass PhysicsTestMotionParameters2D) GetMotion() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsTestMotionParameters2D[2]) }
@@ -15447,6 +16709,9 @@ func (PhysicsTestMotionParameters3D) class() string { return "PhysicsTestMotionP
 func (gdClass PhysicsTestMotionParameters3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsTestMotionParameters3D [16]gdnative.Method
+func (gdClass PhysicsTestMotionParameters3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsTestMotionParameters3D) GetFrom() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodPhysicsTestMotionParameters3D[0]) }
 func (gdClass PhysicsTestMotionParameters3D) SetFrom(from Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodPhysicsTestMotionParameters3D[1], from) }
 func (gdClass PhysicsTestMotionParameters3D) GetMotion() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsTestMotionParameters3D[2]) }
@@ -15470,6 +16735,9 @@ func (PhysicsTestMotionResult2D) class() string { return "PhysicsTestMotionResul
 func (gdClass PhysicsTestMotionResult2D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsTestMotionResult2D [13]gdnative.Method
+func (gdClass PhysicsTestMotionResult2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsTestMotionResult2D) GetTravel() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsTestMotionResult2D[0]) }
 func (gdClass PhysicsTestMotionResult2D) GetRemainder() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsTestMotionResult2D[1]) }
 func (gdClass PhysicsTestMotionResult2D) GetCollisionPoint() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPhysicsTestMotionResult2D[2]) }
@@ -15490,6 +16758,9 @@ func (PhysicsTestMotionResult3D) class() string { return "PhysicsTestMotionResul
 func (gdClass PhysicsTestMotionResult3D) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodPhysicsTestMotionResult3D [14]gdnative.Method
+func (gdClass PhysicsTestMotionResult3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass PhysicsTestMotionResult3D) GetTravel() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsTestMotionResult3D[0]) }
 func (gdClass PhysicsTestMotionResult3D) GetRemainder() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodPhysicsTestMotionResult3D[1]) }
 func (gdClass PhysicsTestMotionResult3D) GetCollisionSafeFraction() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPhysicsTestMotionResult3D[2]) }
@@ -15511,6 +16782,9 @@ func (PinJoint2D) class() string { return "PinJoint2D\000" }
 func (gdClass PinJoint2D) Joint2D() Joint2D { return Joint2D(gdClass) }
 
 var methodPinJoint2D [2]gdnative.Method
+func (gdClass PinJoint2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint2D().virtual(rtype, name)
+}
 func (gdClass PinJoint2D) SetSoftness(softness float64)  { gdnative.Call(gdnative.Object(gdClass), methodPinJoint2D[0], softness) }
 func (gdClass PinJoint2D) GetSoftness() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPinJoint2D[1]) }
 
@@ -15528,6 +16802,9 @@ func (PinJoint3D) class() string { return "PinJoint3D\000" }
 func (gdClass PinJoint3D) Joint3D() Joint3D { return Joint3D(gdClass) }
 
 var methodPinJoint3D [2]gdnative.Method
+func (gdClass PinJoint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint3D().virtual(rtype, name)
+}
 func (gdClass PinJoint3D) SetParam(param PinJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodPinJoint3D[0], param, value) }
 func (gdClass PinJoint3D) GetParam(param PinJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPinJoint3D[1], param) }
 
@@ -15536,18 +16813,27 @@ func (PlaceholderCubemap) class() string { return "PlaceholderCubemap\000" }
 
 func (gdClass PlaceholderCubemap) PlaceholderTextureLayered() PlaceholderTextureLayered { return PlaceholderTextureLayered(gdClass) }
 
+func (gdClass PlaceholderCubemap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PlaceholderTextureLayered().virtual(rtype, name)
+}
 
 type PlaceholderCubemapArray gdnative.Object
 func (PlaceholderCubemapArray) class() string { return "PlaceholderCubemapArray\000" }
 
 func (gdClass PlaceholderCubemapArray) PlaceholderTextureLayered() PlaceholderTextureLayered { return PlaceholderTextureLayered(gdClass) }
 
+func (gdClass PlaceholderCubemapArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PlaceholderTextureLayered().virtual(rtype, name)
+}
 
 type PlaceholderMaterial gdnative.Object
 func (PlaceholderMaterial) class() string { return "PlaceholderMaterial\000" }
 
 func (gdClass PlaceholderMaterial) Material() Material { return Material(gdClass) }
 
+func (gdClass PlaceholderMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 
 type PlaceholderMesh gdnative.Object
 func (PlaceholderMesh) class() string { return "PlaceholderMesh\000" }
@@ -15555,6 +16841,9 @@ func (PlaceholderMesh) class() string { return "PlaceholderMesh\000" }
 func (gdClass PlaceholderMesh) Mesh() Mesh { return Mesh(gdClass) }
 
 var methodPlaceholderMesh [1]gdnative.Method
+func (gdClass PlaceholderMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Mesh().virtual(rtype, name)
+}
 func (gdClass PlaceholderMesh) SetAabb(aabb AABB)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderMesh[0], aabb) }
 
 type PlaceholderTexture2D gdnative.Object
@@ -15563,6 +16852,9 @@ func (PlaceholderTexture2D) class() string { return "PlaceholderTexture2D\000" }
 func (gdClass PlaceholderTexture2D) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodPlaceholderTexture2D [1]gdnative.Method
+func (gdClass PlaceholderTexture2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass PlaceholderTexture2D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTexture2D[0], size) }
 
 type PlaceholderTexture2DArray gdnative.Object
@@ -15570,6 +16862,9 @@ func (PlaceholderTexture2DArray) class() string { return "PlaceholderTexture2DAr
 
 func (gdClass PlaceholderTexture2DArray) PlaceholderTextureLayered() PlaceholderTextureLayered { return PlaceholderTextureLayered(gdClass) }
 
+func (gdClass PlaceholderTexture2DArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PlaceholderTextureLayered().virtual(rtype, name)
+}
 
 type PlaceholderTexture3D gdnative.Object
 func (PlaceholderTexture3D) class() string { return "PlaceholderTexture3D\000" }
@@ -15577,6 +16872,9 @@ func (PlaceholderTexture3D) class() string { return "PlaceholderTexture3D\000" }
 func (gdClass PlaceholderTexture3D) Texture3D() Texture3D { return Texture3D(gdClass) }
 
 var methodPlaceholderTexture3D [2]gdnative.Method
+func (gdClass PlaceholderTexture3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture3D().virtual(rtype, name)
+}
 func (gdClass PlaceholderTexture3D) SetSize(size Vector3i)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTexture3D[0], size) }
 func (gdClass PlaceholderTexture3D) GetSize() Vector3i { return gdnative.Return[Vector3i](gdnative.Object(gdClass), methodPlaceholderTexture3D[1]) }
 
@@ -15586,6 +16884,9 @@ func (PlaceholderTextureLayered) class() string { return "PlaceholderTextureLaye
 func (gdClass PlaceholderTextureLayered) TextureLayered() TextureLayered { return TextureLayered(gdClass) }
 
 var methodPlaceholderTextureLayered [3]gdnative.Method
+func (gdClass PlaceholderTextureLayered) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TextureLayered().virtual(rtype, name)
+}
 func (gdClass PlaceholderTextureLayered) SetSize(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTextureLayered[0], size) }
 func (gdClass PlaceholderTextureLayered) GetSize() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodPlaceholderTextureLayered[1]) }
 func (gdClass PlaceholderTextureLayered) SetLayers(layers int64)  { gdnative.Call(gdnative.Object(gdClass), methodPlaceholderTextureLayered[2], layers) }
@@ -15596,6 +16897,9 @@ func (PlaneMesh) class() string { return "PlaneMesh\000" }
 func (gdClass PlaneMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodPlaneMesh [8]gdnative.Method
+func (gdClass PlaneMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass PlaneMesh) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPlaneMesh[0], size) }
 func (gdClass PlaneMesh) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodPlaneMesh[1]) }
 func (gdClass PlaneMesh) SetSubdivideWidth(subdivide int64)  { gdnative.Call(gdnative.Object(gdClass), methodPlaneMesh[2], subdivide) }
@@ -15611,6 +16915,9 @@ func (PointLight2D) class() string { return "PointLight2D\000" }
 func (gdClass PointLight2D) Light2D() Light2D { return Light2D(gdClass) }
 
 var methodPointLight2D [6]gdnative.Method
+func (gdClass PointLight2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Light2D().virtual(rtype, name)
+}
 func (gdClass PointLight2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodPointLight2D[0], texture) }
 func (gdClass PointLight2D) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodPointLight2D[1]) }
 func (gdClass PointLight2D) SetTextureOffset(texture_offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPointLight2D[2], texture_offset) }
@@ -15623,6 +16930,9 @@ func (PointMesh) class() string { return "PointMesh\000" }
 
 func (gdClass PointMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
+func (gdClass PointMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 
 type Polygon2D gdnative.Object
 func (Polygon2D) class() string { return "Polygon2D\000" }
@@ -15630,6 +16940,9 @@ func (Polygon2D) class() string { return "Polygon2D\000" }
 func (gdClass Polygon2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodPolygon2D [38]gdnative.Method
+func (gdClass Polygon2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Polygon2D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPolygon2D[0], polygon) }
 func (gdClass Polygon2D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodPolygon2D[1]) }
 func (gdClass Polygon2D) SetUv(uv []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPolygon2D[2], uv) }
@@ -15675,6 +16988,9 @@ func (PolygonOccluder3D) class() string { return "PolygonOccluder3D\000" }
 func (gdClass PolygonOccluder3D) Occluder3D() Occluder3D { return Occluder3D(gdClass) }
 
 var methodPolygonOccluder3D [2]gdnative.Method
+func (gdClass PolygonOccluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Occluder3D().virtual(rtype, name)
+}
 func (gdClass PolygonOccluder3D) SetPolygon(polygon []Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodPolygonOccluder3D[0], polygon) }
 func (gdClass PolygonOccluder3D) GetPolygon() []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodPolygonOccluder3D[1]) }
 
@@ -15684,6 +17000,9 @@ func (PolygonPathFinder) class() string { return "PolygonPathFinder\000" }
 func (gdClass PolygonPathFinder) Resource() Resource { return Resource(gdClass) }
 
 var methodPolygonPathFinder [8]gdnative.Method
+func (gdClass PolygonPathFinder) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass PolygonPathFinder) Setup(points []Vector2, connections []int32)  { gdnative.Call(gdnative.Object(gdClass), methodPolygonPathFinder[0], points, connections) }
 func (gdClass PolygonPathFinder) FindPath(from Vector2, to Vector2) []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodPolygonPathFinder[1], from, to) }
 func (gdClass PolygonPathFinder) GetIntersections(from Vector2, to Vector2) []Vector2 { return gdnative.Return[[]Vector2](gdnative.Object(gdClass), methodPolygonPathFinder[2], from, to) }
@@ -15698,6 +17017,9 @@ func (Popup) class() string { return "Popup\000" }
 
 func (gdClass Popup) Window() Window { return Window(gdClass) }
 
+func (gdClass Popup) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Window().virtual(rtype, name)
+}
 
 type PopupMenu gdnative.Object
 func (PopupMenu) class() string { return "PopupMenu\000" }
@@ -15705,6 +17027,9 @@ func (PopupMenu) class() string { return "PopupMenu\000" }
 func (gdClass PopupMenu) Popup() Popup { return Popup(gdClass) }
 
 var methodPopupMenu [70]gdnative.Method
+func (gdClass PopupMenu) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Popup().virtual(rtype, name)
+}
 func (gdClass PopupMenu) AddItem(label string, id int64, accel Key)  { gdnative.Call(gdnative.Object(gdClass), methodPopupMenu[0], label, id, accel) }
 func (gdClass PopupMenu) AddIconItem(texture Texture2D, label string, id int64, accel Key)  { gdnative.Call(gdnative.Object(gdClass), methodPopupMenu[1], texture, label, id, accel) }
 func (gdClass PopupMenu) AddCheckItem(label string, id int64, accel Key)  { gdnative.Call(gdnative.Object(gdClass), methodPopupMenu[2], label, id, accel) }
@@ -15781,6 +17106,9 @@ func (PopupPanel) class() string { return "PopupPanel\000" }
 
 func (gdClass PopupPanel) Popup() Popup { return Popup(gdClass) }
 
+func (gdClass PopupPanel) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Popup().virtual(rtype, name)
+}
 
 type PortableCompressedTexture2DCompressionMode int64
 
@@ -15799,6 +17127,9 @@ func (PortableCompressedTexture2D) class() string { return "PortableCompressedTe
 func (gdClass PortableCompressedTexture2D) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodPortableCompressedTexture2D [9]gdnative.Method
+func (gdClass PortableCompressedTexture2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass PortableCompressedTexture2D) CreateFromImage(image Image, compression_mode PortableCompressedTexture2DCompressionMode, normal_map bool, lossy_quality float64)  { gdnative.Call(gdnative.Object(gdClass), methodPortableCompressedTexture2D[0], image, compression_mode, normal_map, lossy_quality) }
 func (gdClass PortableCompressedTexture2D) GetFormat() ImageFormat { return gdnative.Return[ImageFormat](gdnative.Object(gdClass), methodPortableCompressedTexture2D[1]) }
 func (gdClass PortableCompressedTexture2D) GetCompressionMode() PortableCompressedTexture2DCompressionMode { return gdnative.Return[PortableCompressedTexture2DCompressionMode](gdnative.Object(gdClass), methodPortableCompressedTexture2D[2]) }
@@ -15815,6 +17146,9 @@ func (Position2D) class() string { return "Position2D\000" }
 func (gdClass Position2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodPosition2D [2]gdnative.Method
+func (gdClass Position2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Position2D) SetGizmoExtents(extents float64)  { gdnative.Call(gdnative.Object(gdClass), methodPosition2D[0], extents) }
 func (gdClass Position2D) GetGizmoExtents() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPosition2D[1]) }
 
@@ -15823,6 +17157,9 @@ func (Position3D) class() string { return "Position3D\000" }
 
 func (gdClass Position3D) Node3D() Node3D { return Node3D(gdClass) }
 
+func (gdClass Position3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 
 type PrimitiveMesh gdnative.Object
 func (PrimitiveMesh) class() string { return "PrimitiveMesh\000" }
@@ -15830,14 +17167,15 @@ func (PrimitiveMesh) class() string { return "PrimitiveMesh\000" }
 func (gdClass PrimitiveMesh) Mesh() Mesh { return Mesh(gdClass) }
 
 var methodPrimitiveMesh [7]gdnative.Method
-func (gdClass PrimitiveMesh) virtual(val any, name string) any {	switch name {
+func (gdClass PrimitiveMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_create_mesh_array":
-		i, ok := val.(interface{ CreateMeshArray() Array })
-		if ok {
-			return i.CreateMeshArray
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateMeshArray() Array }{}).Elem()) {
+			return rtype.MethodByName(`CreateMeshArray`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Mesh().virtual(rtype, name)
 }
 func (gdClass PrimitiveMesh) SetMaterial(material Material)  { gdnative.Call(gdnative.Object(gdClass), methodPrimitiveMesh[0], material) }
 func (gdClass PrimitiveMesh) GetMaterial() Material { return gdnative.Return[Material](gdnative.Object(gdClass), methodPrimitiveMesh[1]) }
@@ -15853,6 +17191,9 @@ func (PrismMesh) class() string { return "PrismMesh\000" }
 func (gdClass PrismMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodPrismMesh [10]gdnative.Method
+func (gdClass PrismMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass PrismMesh) SetLeftToRight(left_to_right float64)  { gdnative.Call(gdnative.Object(gdClass), methodPrismMesh[0], left_to_right) }
 func (gdClass PrismMesh) GetLeftToRight() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodPrismMesh[1]) }
 func (gdClass PrismMesh) SetSize(size Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodPrismMesh[2], size) }
@@ -15870,6 +17211,9 @@ func (ProceduralSkyMaterial) class() string { return "ProceduralSkyMaterial\000"
 func (gdClass ProceduralSkyMaterial) Material() Material { return Material(gdClass) }
 
 var methodProceduralSkyMaterial [26]gdnative.Method
+func (gdClass ProceduralSkyMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass ProceduralSkyMaterial) SetSkyTopColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodProceduralSkyMaterial[0], color) }
 func (gdClass ProceduralSkyMaterial) GetSkyTopColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodProceduralSkyMaterial[1]) }
 func (gdClass ProceduralSkyMaterial) SetSkyHorizonColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodProceduralSkyMaterial[2], color) }
@@ -15912,6 +17256,9 @@ func (ProgressBar) class() string { return "ProgressBar\000" }
 func (gdClass ProgressBar) Range() Range { return Range(gdClass) }
 
 var methodProgressBar [4]gdnative.Method
+func (gdClass ProgressBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass ProgressBar) SetFillMode(mode int64)  { gdnative.Call(gdnative.Object(gdClass), methodProgressBar[0], mode) }
 func (gdClass ProgressBar) GetFillMode() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodProgressBar[1]) }
 func (gdClass ProgressBar) SetPercentVisible(visible bool)  { gdnative.Call(gdnative.Object(gdClass), methodProgressBar[2], visible) }
@@ -15923,6 +17270,9 @@ func (ProjectSettings) class() string { return "ProjectSettings\000" }
 func (gdClass ProjectSettings) Object() Object { return Object(gdClass) }
 
 var methodProjectSettings [13]gdnative.Method
+func (gdClass ProjectSettings) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass ProjectSettings) HasSetting(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodProjectSettings[0], name) }
 func (gdClass ProjectSettings) SetSetting(name string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodProjectSettings[1], name, value) }
 func (gdClass ProjectSettings) GetSetting(name string) any { return gdnative.Return[any](gdnative.Object(gdClass), methodProjectSettings[2], name) }
@@ -15943,6 +17293,9 @@ func (PropertyTweener) class() string { return "PropertyTweener\000" }
 func (gdClass PropertyTweener) Tweener() Tweener { return Tweener(gdClass) }
 
 var methodPropertyTweener [6]gdnative.Method
+func (gdClass PropertyTweener) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Tweener().virtual(rtype, name)
+}
 func (gdClass PropertyTweener) From(value any) PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodPropertyTweener[0], value) }
 func (gdClass PropertyTweener) FromCurrent() PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodPropertyTweener[1]) }
 func (gdClass PropertyTweener) AsRelative() PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodPropertyTweener[2]) }
@@ -15956,6 +17309,9 @@ func (QuadMesh) class() string { return "QuadMesh\000" }
 func (gdClass QuadMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodQuadMesh [4]gdnative.Method
+func (gdClass QuadMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass QuadMesh) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodQuadMesh[0], size) }
 func (gdClass QuadMesh) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodQuadMesh[1]) }
 func (gdClass QuadMesh) SetCenterOffset(center_offset Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodQuadMesh[2], center_offset) }
@@ -15967,6 +17323,9 @@ func (QuadOccluder3D) class() string { return "QuadOccluder3D\000" }
 func (gdClass QuadOccluder3D) Occluder3D() Occluder3D { return Occluder3D(gdClass) }
 
 var methodQuadOccluder3D [2]gdnative.Method
+func (gdClass QuadOccluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Occluder3D().virtual(rtype, name)
+}
 func (gdClass QuadOccluder3D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodQuadOccluder3D[0], size) }
 func (gdClass QuadOccluder3D) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodQuadOccluder3D[1]) }
 
@@ -15976,6 +17335,9 @@ func (RDAttachmentFormat) class() string { return "RDAttachmentFormat\000" }
 func (gdClass RDAttachmentFormat) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDAttachmentFormat [6]gdnative.Method
+func (gdClass RDAttachmentFormat) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDAttachmentFormat) SetFormat(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDAttachmentFormat[0], p_member) }
 func (gdClass RDAttachmentFormat) GetFormat() RenderingDeviceDataFormat { return gdnative.Return[RenderingDeviceDataFormat](gdnative.Object(gdClass), methodRDAttachmentFormat[1]) }
 func (gdClass RDAttachmentFormat) SetSamples(p_member RenderingDeviceTextureSamples)  { gdnative.Call(gdnative.Object(gdClass), methodRDAttachmentFormat[2], p_member) }
@@ -15989,6 +17351,9 @@ func (RDFramebufferPass) class() string { return "RDFramebufferPass\000" }
 func (gdClass RDFramebufferPass) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDFramebufferPass [10]gdnative.Method
+func (gdClass RDFramebufferPass) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDFramebufferPass) SetColorAttachments(p_member []int32)  { gdnative.Call(gdnative.Object(gdClass), methodRDFramebufferPass[0], p_member) }
 func (gdClass RDFramebufferPass) GetColorAttachments() []int32 { return gdnative.Return[[]int32](gdnative.Object(gdClass), methodRDFramebufferPass[1]) }
 func (gdClass RDFramebufferPass) SetInputAttachments(p_member []int32)  { gdnative.Call(gdnative.Object(gdClass), methodRDFramebufferPass[2], p_member) }
@@ -16006,6 +17371,9 @@ func (RDPipelineColorBlendState) class() string { return "RDPipelineColorBlendSt
 func (gdClass RDPipelineColorBlendState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineColorBlendState [8]gdnative.Method
+func (gdClass RDPipelineColorBlendState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineColorBlendState) SetEnableLogicOp(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendState[0], p_member) }
 func (gdClass RDPipelineColorBlendState) GetEnableLogicOp() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDPipelineColorBlendState[1]) }
 func (gdClass RDPipelineColorBlendState) SetLogicOp(p_member RenderingDeviceLogicOperation)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendState[2], p_member) }
@@ -16021,6 +17389,9 @@ func (RDPipelineColorBlendStateAttachment) class() string { return "RDPipelineCo
 func (gdClass RDPipelineColorBlendStateAttachment) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineColorBlendStateAttachment [23]gdnative.Method
+func (gdClass RDPipelineColorBlendStateAttachment) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineColorBlendStateAttachment) SetAsMix()  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendStateAttachment[0]) }
 func (gdClass RDPipelineColorBlendStateAttachment) SetEnableBlend(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineColorBlendStateAttachment[1], p_member) }
 func (gdClass RDPipelineColorBlendStateAttachment) GetEnableBlend() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDPipelineColorBlendStateAttachment[2]) }
@@ -16051,6 +17422,9 @@ func (RDPipelineDepthStencilState) class() string { return "RDPipelineDepthStenc
 func (gdClass RDPipelineDepthStencilState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineDepthStencilState [42]gdnative.Method
+func (gdClass RDPipelineDepthStencilState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineDepthStencilState) SetEnableDepthTest(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineDepthStencilState[0], p_member) }
 func (gdClass RDPipelineDepthStencilState) GetEnableDepthTest() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDPipelineDepthStencilState[1]) }
 func (gdClass RDPipelineDepthStencilState) SetEnableDepthWrite(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineDepthStencilState[2], p_member) }
@@ -16100,6 +17474,9 @@ func (RDPipelineMultisampleState) class() string { return "RDPipelineMultisample
 func (gdClass RDPipelineMultisampleState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineMultisampleState [12]gdnative.Method
+func (gdClass RDPipelineMultisampleState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineMultisampleState) SetSampleCount(p_member RenderingDeviceTextureSamples)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineMultisampleState[0], p_member) }
 func (gdClass RDPipelineMultisampleState) GetSampleCount() RenderingDeviceTextureSamples { return gdnative.Return[RenderingDeviceTextureSamples](gdnative.Object(gdClass), methodRDPipelineMultisampleState[1]) }
 func (gdClass RDPipelineMultisampleState) SetEnableSampleShading(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineMultisampleState[2], p_member) }
@@ -16119,6 +17496,9 @@ func (RDPipelineRasterizationState) class() string { return "RDPipelineRasteriza
 func (gdClass RDPipelineRasterizationState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineRasterizationState [22]gdnative.Method
+func (gdClass RDPipelineRasterizationState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineRasterizationState) SetEnableDepthClamp(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineRasterizationState[0], p_member) }
 func (gdClass RDPipelineRasterizationState) GetEnableDepthClamp() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRDPipelineRasterizationState[1]) }
 func (gdClass RDPipelineRasterizationState) SetDiscardPrimitives(p_member bool)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineRasterizationState[2], p_member) }
@@ -16148,6 +17528,9 @@ func (RDPipelineSpecializationConstant) class() string { return "RDPipelineSpeci
 func (gdClass RDPipelineSpecializationConstant) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDPipelineSpecializationConstant [4]gdnative.Method
+func (gdClass RDPipelineSpecializationConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDPipelineSpecializationConstant) SetValue(value any)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineSpecializationConstant[0], value) }
 func (gdClass RDPipelineSpecializationConstant) GetValue() any { return gdnative.Return[any](gdnative.Object(gdClass), methodRDPipelineSpecializationConstant[1]) }
 func (gdClass RDPipelineSpecializationConstant) SetConstantId(constant_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDPipelineSpecializationConstant[2], constant_id) }
@@ -16159,6 +17542,9 @@ func (RDSamplerState) class() string { return "RDSamplerState\000" }
 func (gdClass RDSamplerState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDSamplerState [30]gdnative.Method
+func (gdClass RDSamplerState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDSamplerState) SetMagFilter(p_member RenderingDeviceSamplerFilter)  { gdnative.Call(gdnative.Object(gdClass), methodRDSamplerState[0], p_member) }
 func (gdClass RDSamplerState) GetMagFilter() RenderingDeviceSamplerFilter { return gdnative.Return[RenderingDeviceSamplerFilter](gdnative.Object(gdClass), methodRDSamplerState[1]) }
 func (gdClass RDSamplerState) SetMinFilter(p_member RenderingDeviceSamplerFilter)  { gdnative.Call(gdnative.Object(gdClass), methodRDSamplerState[2], p_member) }
@@ -16196,6 +17582,9 @@ func (RDShaderFile) class() string { return "RDShaderFile\000" }
 func (gdClass RDShaderFile) Resource() Resource { return Resource(gdClass) }
 
 var methodRDShaderFile [5]gdnative.Method
+func (gdClass RDShaderFile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass RDShaderFile) SetBytecode(bytecode RDShaderSPIRV, version string)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderFile[0], bytecode, version) }
 func (gdClass RDShaderFile) GetSpirv(version string) RDShaderSPIRV { return gdnative.Return[RDShaderSPIRV](gdnative.Object(gdClass), methodRDShaderFile[1], version) }
 func (gdClass RDShaderFile) GetVersionList() []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodRDShaderFile[2]) }
@@ -16208,6 +17597,9 @@ func (RDShaderSPIRV) class() string { return "RDShaderSPIRV\000" }
 func (gdClass RDShaderSPIRV) Resource() Resource { return Resource(gdClass) }
 
 var methodRDShaderSPIRV [4]gdnative.Method
+func (gdClass RDShaderSPIRV) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass RDShaderSPIRV) SetStageBytecode(stage RenderingDeviceShaderStage, bytecode []byte)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSPIRV[0], stage, bytecode) }
 func (gdClass RDShaderSPIRV) GetStageBytecode(stage RenderingDeviceShaderStage) []byte { return gdnative.Return[[]byte](gdnative.Object(gdClass), methodRDShaderSPIRV[1], stage) }
 func (gdClass RDShaderSPIRV) SetStageCompileError(stage RenderingDeviceShaderStage, compile_error string)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSPIRV[2], stage, compile_error) }
@@ -16219,6 +17611,9 @@ func (RDShaderSource) class() string { return "RDShaderSource\000" }
 func (gdClass RDShaderSource) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDShaderSource [4]gdnative.Method
+func (gdClass RDShaderSource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDShaderSource) SetStageSource(stage RenderingDeviceShaderStage, source string)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSource[0], stage, source) }
 func (gdClass RDShaderSource) GetStageSource(stage RenderingDeviceShaderStage) string { return gdnative.Return[string](gdnative.Object(gdClass), methodRDShaderSource[1], stage) }
 func (gdClass RDShaderSource) SetLanguage(language RenderingDeviceShaderLanguage)  { gdnative.Call(gdnative.Object(gdClass), methodRDShaderSource[2], language) }
@@ -16230,6 +17625,9 @@ func (RDTextureFormat) class() string { return "RDTextureFormat\000" }
 func (gdClass RDTextureFormat) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDTextureFormat [20]gdnative.Method
+func (gdClass RDTextureFormat) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDTextureFormat) SetFormat(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureFormat[0], p_member) }
 func (gdClass RDTextureFormat) GetFormat() RenderingDeviceDataFormat { return gdnative.Return[RenderingDeviceDataFormat](gdnative.Object(gdClass), methodRDTextureFormat[1]) }
 func (gdClass RDTextureFormat) SetWidth(p_member int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureFormat[2], p_member) }
@@ -16257,6 +17655,9 @@ func (RDTextureView) class() string { return "RDTextureView\000" }
 func (gdClass RDTextureView) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDTextureView [10]gdnative.Method
+func (gdClass RDTextureView) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDTextureView) SetFormatOverride(p_member RenderingDeviceDataFormat)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureView[0], p_member) }
 func (gdClass RDTextureView) GetFormatOverride() RenderingDeviceDataFormat { return gdnative.Return[RenderingDeviceDataFormat](gdnative.Object(gdClass), methodRDTextureView[1]) }
 func (gdClass RDTextureView) SetSwizzleR(p_member RenderingDeviceTextureSwizzle)  { gdnative.Call(gdnative.Object(gdClass), methodRDTextureView[2], p_member) }
@@ -16274,6 +17675,9 @@ func (RDUniform) class() string { return "RDUniform\000" }
 func (gdClass RDUniform) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDUniform [7]gdnative.Method
+func (gdClass RDUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDUniform) SetUniformType(p_member RenderingDeviceUniformType)  { gdnative.Call(gdnative.Object(gdClass), methodRDUniform[0], p_member) }
 func (gdClass RDUniform) GetUniformType() RenderingDeviceUniformType { return gdnative.Return[RenderingDeviceUniformType](gdnative.Object(gdClass), methodRDUniform[1]) }
 func (gdClass RDUniform) SetBinding(p_member int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDUniform[2], p_member) }
@@ -16288,6 +17692,9 @@ func (RDVertexAttribute) class() string { return "RDVertexAttribute\000" }
 func (gdClass RDVertexAttribute) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRDVertexAttribute [10]gdnative.Method
+func (gdClass RDVertexAttribute) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RDVertexAttribute) SetLocation(p_member int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDVertexAttribute[0], p_member) }
 func (gdClass RDVertexAttribute) GetLocation() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRDVertexAttribute[1]) }
 func (gdClass RDVertexAttribute) SetOffset(p_member int64)  { gdnative.Call(gdnative.Object(gdClass), methodRDVertexAttribute[2], p_member) }
@@ -16305,6 +17712,9 @@ func (RandomNumberGenerator) class() string { return "RandomNumberGenerator\000"
 func (gdClass RandomNumberGenerator) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRandomNumberGenerator [10]gdnative.Method
+func (gdClass RandomNumberGenerator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RandomNumberGenerator) SetSeed(seed int64)  { gdnative.Call(gdnative.Object(gdClass), methodRandomNumberGenerator[0], seed) }
 func (gdClass RandomNumberGenerator) GetSeed() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRandomNumberGenerator[1]) }
 func (gdClass RandomNumberGenerator) SetState(state int64)  { gdnative.Call(gdnative.Object(gdClass), methodRandomNumberGenerator[2], state) }
@@ -16322,14 +17732,15 @@ func (Range) class() string { return "Range\000" }
 func (gdClass Range) Control() Control { return Control(gdClass) }
 
 var methodRange [22]gdnative.Method
-func (gdClass Range) virtual(val any, name string) any {	switch name {
+func (gdClass Range) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_value_changed":
-		i, ok := val.(interface{ ValueChanged(new_value float64)  })
-		if ok {
-			return i.ValueChanged
+		if rtype.Implements(reflect.TypeOf([0]interface{ ValueChanged(new_value float64)  }{}).Elem()) {
+			return rtype.MethodByName(`ValueChanged`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Control().virtual(rtype, name)
 }
 func (gdClass Range) GetValue() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodRange[0]) }
 func (gdClass Range) GetMin() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodRange[1]) }
@@ -16360,6 +17771,9 @@ func (RayCast2D) class() string { return "RayCast2D\000" }
 func (gdClass RayCast2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodRayCast2D [27]gdnative.Method
+func (gdClass RayCast2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass RayCast2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast2D[0], enabled) }
 func (gdClass RayCast2D) IsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRayCast2D[1]) }
 func (gdClass RayCast2D) SetTargetPosition(local_point Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast2D[2], local_point) }
@@ -16394,6 +17808,9 @@ func (RayCast3D) class() string { return "RayCast3D\000" }
 func (gdClass RayCast3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodRayCast3D [31]gdnative.Method
+func (gdClass RayCast3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass RayCast3D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast3D[0], enabled) }
 func (gdClass RayCast3D) IsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRayCast3D[1]) }
 func (gdClass RayCast3D) SetTargetPosition(local_point Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodRayCast3D[2], local_point) }
@@ -16432,6 +17849,9 @@ func (RectangleShape2D) class() string { return "RectangleShape2D\000" }
 func (gdClass RectangleShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodRectangleShape2D [2]gdnative.Method
+func (gdClass RectangleShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass RectangleShape2D) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodRectangleShape2D[0], size) }
 func (gdClass RectangleShape2D) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodRectangleShape2D[1]) }
 
@@ -16441,6 +17861,9 @@ func (RefCounted) class() string { return "RefCounted\000" }
 func (gdClass RefCounted) Object() Object { return Object(gdClass) }
 
 var methodRefCounted [3]gdnative.Method
+func (gdClass RefCounted) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass RefCounted) InitRef() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRefCounted[0]) }
 func (gdClass RefCounted) Reference() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRefCounted[1]) }
 func (gdClass RefCounted) Unreference() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodRefCounted[2]) }
@@ -16451,6 +17874,9 @@ func (ReferenceRect) class() string { return "ReferenceRect\000" }
 func (gdClass ReferenceRect) Control() Control { return Control(gdClass) }
 
 var methodReferenceRect [6]gdnative.Method
+func (gdClass ReferenceRect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass ReferenceRect) GetBorderColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodReferenceRect[0]) }
 func (gdClass ReferenceRect) SetBorderColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodReferenceRect[1], color) }
 func (gdClass ReferenceRect) GetBorderWidth() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodReferenceRect[2]) }
@@ -16479,6 +17905,9 @@ func (ReflectionProbe) class() string { return "ReflectionProbe\000" }
 func (gdClass ReflectionProbe) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodReflectionProbe [26]gdnative.Method
+func (gdClass ReflectionProbe) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass ReflectionProbe) SetIntensity(intensity float64)  { gdnative.Call(gdnative.Object(gdClass), methodReflectionProbe[0], intensity) }
 func (gdClass ReflectionProbe) GetIntensity() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodReflectionProbe[1]) }
 func (gdClass ReflectionProbe) SetAmbientMode(ambient ReflectionProbeAmbientMode)  { gdnative.Call(gdnative.Object(gdClass), methodReflectionProbe[2], ambient) }
@@ -16512,6 +17941,9 @@ func (RegEx) class() string { return "RegEx\000" }
 func (gdClass RegEx) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRegEx [10]gdnative.Method
+func (gdClass RegEx) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RegEx) CreateFromString(pattern string) RegEx { return gdnative.Return[RegEx](gdnative.Object(gdClass), methodRegEx[0], pattern) }
 func (gdClass RegEx) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodRegEx[1]) }
 func (gdClass RegEx) Compile(pattern string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodRegEx[2], pattern) }
@@ -16529,6 +17961,9 @@ func (RegExMatch) class() string { return "RegExMatch\000" }
 func (gdClass RegExMatch) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodRegExMatch [7]gdnative.Method
+func (gdClass RegExMatch) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass RegExMatch) GetSubject() string { return gdnative.Return[string](gdnative.Object(gdClass), methodRegExMatch[0]) }
 func (gdClass RegExMatch) GetGroupCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodRegExMatch[1]) }
 func (gdClass RegExMatch) GetNames() Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodRegExMatch[2]) }
@@ -16543,6 +17978,9 @@ func (RemoteTransform2D) class() string { return "RemoteTransform2D\000" }
 func (gdClass RemoteTransform2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodRemoteTransform2D [11]gdnative.Method
+func (gdClass RemoteTransform2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass RemoteTransform2D) SetRemoteNode(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform2D[0], path) }
 func (gdClass RemoteTransform2D) GetRemoteNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodRemoteTransform2D[1]) }
 func (gdClass RemoteTransform2D) ForceUpdateCache()  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform2D[2]) }
@@ -16561,6 +17999,9 @@ func (RemoteTransform3D) class() string { return "RemoteTransform3D\000" }
 func (gdClass RemoteTransform3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodRemoteTransform3D [11]gdnative.Method
+func (gdClass RemoteTransform3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass RemoteTransform3D) SetRemoteNode(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform3D[0], path) }
 func (gdClass RemoteTransform3D) GetRemoteNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodRemoteTransform3D[1]) }
 func (gdClass RemoteTransform3D) ForceUpdateCache()  { gdnative.Call(gdnative.Object(gdClass), methodRemoteTransform3D[2]) }
@@ -17190,6 +18631,9 @@ func (RenderingDevice) class() string { return "RenderingDevice\000" }
 func (gdClass RenderingDevice) Object() Object { return Object(gdClass) }
 
 var methodRenderingDevice [89]gdnative.Method
+func (gdClass RenderingDevice) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass RenderingDevice) TextureCreate(format RDTextureFormat, view RDTextureView, data Array) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingDevice[0], format, view, data) }
 func (gdClass RenderingDevice) TextureCreateShared(view RDTextureView, with_texture RID) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingDevice[1], view, with_texture) }
 func (gdClass RenderingDevice) TextureCreateSharedFromSlice(view RDTextureView, with_texture RID, layer int64, mipmap int64, mipmaps int64, slice_type RenderingDeviceTextureSliceType) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingDevice[2], view, with_texture, layer, mipmap, mipmaps, slice_type) }
@@ -18066,6 +19510,9 @@ func (RenderingServer) class() string { return "RenderingServer\000" }
 func (gdClass RenderingServer) Object() Object { return Object(gdClass) }
 
 var methodRenderingServer [448]gdnative.Method
+func (gdClass RenderingServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass RenderingServer) Texture2dCreate(image Image) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingServer[0], image) }
 func (gdClass RenderingServer) Texture2dLayeredCreate(layers Array, layered_type RenderingServerTextureLayeredType) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingServer[1], layers, layered_type) }
 func (gdClass RenderingServer) Texture3dCreate(format ImageFormat, width int64, height int64, depth int64, mipmaps bool, data Array) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodRenderingServer[2], format, width, height, depth, mipmaps, data) }
@@ -18521,6 +19968,9 @@ func (Resource) class() string { return "Resource\000" }
 func (gdClass Resource) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodResource [12]gdnative.Method
+func (gdClass Resource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Resource) SetPath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodResource[0], path) }
 func (gdClass Resource) TakeOverPath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodResource[1], path) }
 func (gdClass Resource) GetPath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodResource[2]) }
@@ -18547,54 +19997,55 @@ func (ResourceFormatLoader) class() string { return "ResourceFormatLoader\000" }
 
 func (gdClass ResourceFormatLoader) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass ResourceFormatLoader) virtual(val any, name string) any {	switch name {
+func (gdClass ResourceFormatLoader) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_recognized_extensions":
-		i, ok := val.(interface{ GetRecognizedExtensions() []string })
-		if ok {
-			return i.GetRecognizedExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRecognizedExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetRecognizedExtensions`)
 		}
+		return
 	case "_handles_type":
-		i, ok := val.(interface{ HandlesType(atype string) bool })
-		if ok {
-			return i.HandlesType
+		if rtype.Implements(reflect.TypeOf([0]interface{ HandlesType(atype string) bool }{}).Elem()) {
+			return rtype.MethodByName(`HandlesType`)
 		}
+		return
 	case "_get_resource_type":
-		i, ok := val.(interface{ GetResourceType(path string) string })
-		if ok {
-			return i.GetResourceType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetResourceType(path string) string }{}).Elem()) {
+			return rtype.MethodByName(`GetResourceType`)
 		}
+		return
 	case "_get_resource_uid":
-		i, ok := val.(interface{ GetResourceUid(path string) int64 })
-		if ok {
-			return i.GetResourceUid
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetResourceUid(path string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetResourceUid`)
 		}
+		return
 	case "_get_dependencies":
-		i, ok := val.(interface{ GetDependencies(path string, add_types bool) []string })
-		if ok {
-			return i.GetDependencies
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDependencies(path string, add_types bool) []string }{}).Elem()) {
+			return rtype.MethodByName(`GetDependencies`)
 		}
+		return
 	case "_rename_dependencies":
-		i, ok := val.(interface{ RenameDependencies(path string, renames Dictionary) int64 })
-		if ok {
-			return i.RenameDependencies
+		if rtype.Implements(reflect.TypeOf([0]interface{ RenameDependencies(path string, renames Dictionary) int64 }{}).Elem()) {
+			return rtype.MethodByName(`RenameDependencies`)
 		}
+		return
 	case "_exists":
-		i, ok := val.(interface{ Exists(path string) bool })
-		if ok {
-			return i.Exists
+		if rtype.Implements(reflect.TypeOf([0]interface{ Exists(path string) bool }{}).Elem()) {
+			return rtype.MethodByName(`Exists`)
 		}
+		return
 	case "_get_classes_used":
-		i, ok := val.(interface{ GetClassesUsed(path string) []string })
-		if ok {
-			return i.GetClassesUsed
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetClassesUsed(path string) []string }{}).Elem()) {
+			return rtype.MethodByName(`GetClassesUsed`)
 		}
+		return
 	case "_load":
-		i, ok := val.(interface{ Load(path string, original_path string, use_sub_threads bool, cache_mode int64) any })
-		if ok {
-			return i.Load
+		if rtype.Implements(reflect.TypeOf([0]interface{ Load(path string, original_path string, use_sub_threads bool, cache_mode int64) any }{}).Elem()) {
+			return rtype.MethodByName(`Load`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type ResourceFormatSaver gdnative.Object
@@ -18602,24 +20053,25 @@ func (ResourceFormatSaver) class() string { return "ResourceFormatSaver\000" }
 
 func (gdClass ResourceFormatSaver) RefCounted() RefCounted { return RefCounted(gdClass) }
 
-func (gdClass ResourceFormatSaver) virtual(val any, name string) any {	switch name {
+func (gdClass ResourceFormatSaver) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_save":
-		i, ok := val.(interface{ Save(path Resource, resource string, flags int64) int64 })
-		if ok {
-			return i.Save
+		if rtype.Implements(reflect.TypeOf([0]interface{ Save(path Resource, resource string, flags int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Save`)
 		}
+		return
 	case "_recognize":
-		i, ok := val.(interface{ Recognize(resource Resource) bool })
-		if ok {
-			return i.Recognize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Recognize(resource Resource) bool }{}).Elem()) {
+			return rtype.MethodByName(`Recognize`)
 		}
+		return
 	case "_get_recognized_extensions":
-		i, ok := val.(interface{ GetRecognizedExtensions(resource Resource) []string })
-		if ok {
-			return i.GetRecognizedExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRecognizedExtensions(resource Resource) []string }{}).Elem()) {
+			return rtype.MethodByName(`GetRecognizedExtensions`)
 		}
+		return
 	}
-	return nil
+	return gdClass.RefCounted().virtual(rtype, name)
 }
 
 type ResourceImporterImportOrder int64
@@ -18634,6 +20086,9 @@ func (ResourceImporter) class() string { return "ResourceImporter\000" }
 
 func (gdClass ResourceImporter) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass ResourceImporter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type ResourceLoaderThreadLoadStatus int64
 
@@ -18658,6 +20113,9 @@ func (ResourceLoader) class() string { return "ResourceLoader\000" }
 func (gdClass ResourceLoader) Object() Object { return Object(gdClass) }
 
 var methodResourceLoader [12]gdnative.Method
+func (gdClass ResourceLoader) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass ResourceLoader) LoadThreadedRequest(path string, type_hint string, use_sub_threads bool, cache_mode ResourceLoaderCacheMode) error { return gdnative.Return[error](gdnative.Object(gdClass), methodResourceLoader[0], path, type_hint, use_sub_threads, cache_mode) }
 func (gdClass ResourceLoader) LoadThreadedGetStatus(path string, progress Array) ResourceLoaderThreadLoadStatus { return gdnative.Return[ResourceLoaderThreadLoadStatus](gdnative.Object(gdClass), methodResourceLoader[1], path, progress) }
 func (gdClass ResourceLoader) LoadThreadedGet(path string) Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodResourceLoader[2], path) }
@@ -18677,6 +20135,9 @@ func (ResourcePreloader) class() string { return "ResourcePreloader\000" }
 func (gdClass ResourcePreloader) Node() Node { return Node(gdClass) }
 
 var methodResourcePreloader [6]gdnative.Method
+func (gdClass ResourcePreloader) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass ResourcePreloader) AddResource(name string, resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodResourcePreloader[0], name, resource) }
 func (gdClass ResourcePreloader) RemoveResource(name string)  { gdnative.Call(gdnative.Object(gdClass), methodResourcePreloader[1], name) }
 func (gdClass ResourcePreloader) RenameResource(name string, newname string)  { gdnative.Call(gdnative.Object(gdClass), methodResourcePreloader[2], name, newname) }
@@ -18703,6 +20164,9 @@ func (ResourceSaver) class() string { return "ResourceSaver\000" }
 func (gdClass ResourceSaver) Object() Object { return Object(gdClass) }
 
 var methodResourceSaver [4]gdnative.Method
+func (gdClass ResourceSaver) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass ResourceSaver) Save(resource Resource, path string, flags ResourceSaverSaverFlags) error { return gdnative.Return[error](gdnative.Object(gdClass), methodResourceSaver[0], resource, path, flags) }
 func (gdClass ResourceSaver) GetRecognizedExtensions(atype Resource) []string { return gdnative.Return[[]string](gdnative.Object(gdClass), methodResourceSaver[1], atype) }
 func (gdClass ResourceSaver) AddResourceFormatSaver(format_saver ResourceFormatSaver, at_front bool)  { gdnative.Call(gdnative.Object(gdClass), methodResourceSaver[2], format_saver, at_front) }
@@ -18714,6 +20178,9 @@ func (ResourceUID) class() string { return "ResourceUID\000" }
 func (gdClass ResourceUID) Object() Object { return Object(gdClass) }
 
 var methodResourceUID [8]gdnative.Method
+func (gdClass ResourceUID) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass ResourceUID) IdToText(id int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodResourceUID[0], id) }
 func (gdClass ResourceUID) TextToId(text_id string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodResourceUID[1], text_id) }
 func (gdClass ResourceUID) CreateId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodResourceUID[2]) }
@@ -18736,6 +20203,9 @@ func (RibbonTrailMesh) class() string { return "RibbonTrailMesh\000" }
 func (gdClass RibbonTrailMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodRibbonTrailMesh [12]gdnative.Method
+func (gdClass RibbonTrailMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass RibbonTrailMesh) SetSize(size float64)  { gdnative.Call(gdnative.Object(gdClass), methodRibbonTrailMesh[0], size) }
 func (gdClass RibbonTrailMesh) GetSize() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodRibbonTrailMesh[1]) }
 func (gdClass RibbonTrailMesh) SetSections(sections int64)  { gdnative.Call(gdnative.Object(gdClass), methodRibbonTrailMesh[2], sections) }
@@ -18754,14 +20224,15 @@ func (RichTextEffect) class() string { return "RichTextEffect\000" }
 
 func (gdClass RichTextEffect) Resource() Resource { return Resource(gdClass) }
 
-func (gdClass RichTextEffect) virtual(val any, name string) any {	switch name {
+func (gdClass RichTextEffect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_process_custom_fx":
-		i, ok := val.(interface{ ProcessCustomFx(char_fx CharFXTransform) bool })
-		if ok {
-			return i.ProcessCustomFx
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProcessCustomFx(char_fx CharFXTransform) bool }{}).Elem()) {
+			return rtype.MethodByName(`ProcessCustomFx`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 
 type RichTextLabelListType int64
@@ -18811,6 +20282,9 @@ func (RichTextLabel) class() string { return "RichTextLabel\000" }
 func (gdClass RichTextLabel) Control() Control { return Control(gdClass) }
 
 var methodRichTextLabel [108]gdnative.Method
+func (gdClass RichTextLabel) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass RichTextLabel) GetParsedText() string { return gdnative.Return[string](gdnative.Object(gdClass), methodRichTextLabel[0]) }
 func (gdClass RichTextLabel) AddText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodRichTextLabel[1], text) }
 func (gdClass RichTextLabel) SetText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodRichTextLabel[2], text) }
@@ -18955,14 +20429,15 @@ func (RigidDynamicBody2D) class() string { return "RigidDynamicBody2D\000" }
 func (gdClass RigidDynamicBody2D) PhysicsBody2D() PhysicsBody2D { return PhysicsBody2D(gdClass) }
 
 var methodRigidDynamicBody2D [57]gdnative.Method
-func (gdClass RigidDynamicBody2D) virtual(val any, name string) any {	switch name {
+func (gdClass RigidDynamicBody2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_integrate_forces":
-		i, ok := val.(interface{ IntegrateForces(state PhysicsDirectBodyState2D)  })
-		if ok {
-			return i.IntegrateForces
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntegrateForces(state PhysicsDirectBodyState2D)  }{}).Elem()) {
+			return rtype.MethodByName(`IntegrateForces`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsBody2D().virtual(rtype, name)
 }
 func (gdClass RigidDynamicBody2D) SetMass(mass float64)  { gdnative.Call(gdnative.Object(gdClass), methodRigidDynamicBody2D[0], mass) }
 func (gdClass RigidDynamicBody2D) GetMass() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodRigidDynamicBody2D[1]) }
@@ -19049,14 +20524,15 @@ func (RigidDynamicBody3D) class() string { return "RigidDynamicBody3D\000" }
 func (gdClass RigidDynamicBody3D) PhysicsBody3D() PhysicsBody3D { return PhysicsBody3D(gdClass) }
 
 var methodRigidDynamicBody3D [58]gdnative.Method
-func (gdClass RigidDynamicBody3D) virtual(val any, name string) any {	switch name {
+func (gdClass RigidDynamicBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_integrate_forces":
-		i, ok := val.(interface{ IntegrateForces(state PhysicsDirectBodyState3D)  })
-		if ok {
-			return i.IntegrateForces
+		if rtype.Implements(reflect.TypeOf([0]interface{ IntegrateForces(state PhysicsDirectBodyState3D)  }{}).Elem()) {
+			return rtype.MethodByName(`IntegrateForces`)
 		}
+		return
 	}
-	return nil
+	return gdClass.PhysicsBody3D().virtual(rtype, name)
 }
 func (gdClass RigidDynamicBody3D) SetMass(mass float64)  { gdnative.Call(gdnative.Object(gdClass), methodRigidDynamicBody3D[0], mass) }
 func (gdClass RigidDynamicBody3D) GetMass() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodRigidDynamicBody3D[1]) }
@@ -19123,6 +20599,9 @@ func (RootMotionView) class() string { return "RootMotionView\000" }
 func (gdClass RootMotionView) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodRootMotionView [10]gdnative.Method
+func (gdClass RootMotionView) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass RootMotionView) SetAnimationPath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodRootMotionView[0], path) }
 func (gdClass RootMotionView) GetAnimationPath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodRootMotionView[1]) }
 func (gdClass RootMotionView) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodRootMotionView[2], color) }
@@ -19140,6 +20619,9 @@ func (SceneMultiplayer) class() string { return "SceneMultiplayer\000" }
 func (gdClass SceneMultiplayer) MultiplayerAPI() MultiplayerAPI { return MultiplayerAPI(gdClass) }
 
 var methodSceneMultiplayer [8]gdnative.Method
+func (gdClass SceneMultiplayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MultiplayerAPI().virtual(rtype, name)
+}
 func (gdClass SceneMultiplayer) SetRootPath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSceneMultiplayer[0], path) }
 func (gdClass SceneMultiplayer) GetRootPath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSceneMultiplayer[1]) }
 func (gdClass SceneMultiplayer) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodSceneMultiplayer[2]) }
@@ -19155,6 +20637,9 @@ func (SceneReplicationConfig) class() string { return "SceneReplicationConfig\00
 func (gdClass SceneReplicationConfig) Resource() Resource { return Resource(gdClass) }
 
 var methodSceneReplicationConfig [9]gdnative.Method
+func (gdClass SceneReplicationConfig) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass SceneReplicationConfig) GetProperties() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodSceneReplicationConfig[0]) }
 func (gdClass SceneReplicationConfig) AddProperty(path NodePath, index int64)  { gdnative.Call(gdnative.Object(gdClass), methodSceneReplicationConfig[1], path, index) }
 func (gdClass SceneReplicationConfig) HasProperty(path NodePath) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSceneReplicationConfig[2], path) }
@@ -19180,6 +20665,9 @@ func (SceneState) class() string { return "SceneState\000" }
 func (gdClass SceneState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodSceneState [21]gdnative.Method
+func (gdClass SceneState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass SceneState) GetNodeCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSceneState[0]) }
 func (gdClass SceneState) GetNodeType(idx int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodSceneState[1], idx) }
 func (gdClass SceneState) GetNodeName(idx int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodSceneState[2], idx) }
@@ -19217,6 +20705,9 @@ func (SceneTree) class() string { return "SceneTree\000" }
 func (gdClass SceneTree) MainLoop() MainLoop { return MainLoop(gdClass) }
 
 var methodSceneTree [40]gdnative.Method
+func (gdClass SceneTree) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MainLoop().virtual(rtype, name)
+}
 func (gdClass SceneTree) GetRoot() Window { return gdnative.Return[Window](gdnative.Object(gdClass), methodSceneTree[0]) }
 func (gdClass SceneTree) HasGroup(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSceneTree[1], name) }
 func (gdClass SceneTree) IsAutoAcceptQuit() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSceneTree[2]) }
@@ -19264,6 +20755,9 @@ func (SceneTreeTimer) class() string { return "SceneTreeTimer\000" }
 func (gdClass SceneTreeTimer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodSceneTreeTimer [2]gdnative.Method
+func (gdClass SceneTreeTimer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass SceneTreeTimer) SetTimeLeft(time float64)  { gdnative.Call(gdnative.Object(gdClass), methodSceneTreeTimer[0], time) }
 func (gdClass SceneTreeTimer) GetTimeLeft() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSceneTreeTimer[1]) }
 
@@ -19273,6 +20767,9 @@ func (Script) class() string { return "Script\000" }
 func (gdClass Script) Resource() Resource { return Resource(gdClass) }
 
 var methodScript [15]gdnative.Method
+func (gdClass Script) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Script) CanInstantiate() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScript[0]) }
 func (gdClass Script) InstanceHas(base_object Object) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScript[1], base_object) }
 func (gdClass Script) HasSourceCode() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodScript[2]) }
@@ -19295,6 +20792,9 @@ func (ScriptCreateDialog) class() string { return "ScriptCreateDialog\000" }
 func (gdClass ScriptCreateDialog) ConfirmationDialog() ConfirmationDialog { return ConfirmationDialog(gdClass) }
 
 var methodScriptCreateDialog [1]gdnative.Method
+func (gdClass ScriptCreateDialog) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ConfirmationDialog().virtual(rtype, name)
+}
 func (gdClass ScriptCreateDialog) Config(inherits string, path string, built_in_enabled bool, load_enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodScriptCreateDialog[0], inherits, path, built_in_enabled, load_enabled) }
 
 type ScriptEditor gdnative.Object
@@ -19303,6 +20803,9 @@ func (ScriptEditor) class() string { return "ScriptEditor\000" }
 func (gdClass ScriptEditor) PanelContainer() PanelContainer { return PanelContainer(gdClass) }
 
 var methodScriptEditor [8]gdnative.Method
+func (gdClass ScriptEditor) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PanelContainer().virtual(rtype, name)
+}
 func (gdClass ScriptEditor) GetCurrentEditor() ScriptEditorBase { return gdnative.Return[ScriptEditorBase](gdnative.Object(gdClass), methodScriptEditor[0]) }
 func (gdClass ScriptEditor) GetOpenScriptEditors() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodScriptEditor[1]) }
 func (gdClass ScriptEditor) RegisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter)  { gdnative.Call(gdnative.Object(gdClass), methodScriptEditor[2], syntax_highlighter) }
@@ -19318,6 +20821,9 @@ func (ScriptEditorBase) class() string { return "ScriptEditorBase\000" }
 func (gdClass ScriptEditorBase) VBoxContainer() VBoxContainer { return VBoxContainer(gdClass) }
 
 var methodScriptEditorBase [2]gdnative.Method
+func (gdClass ScriptEditorBase) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VBoxContainer().virtual(rtype, name)
+}
 func (gdClass ScriptEditorBase) GetBaseEditor() Control { return gdnative.Return[Control](gdnative.Object(gdClass), methodScriptEditorBase[0]) }
 func (gdClass ScriptEditorBase) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter)  { gdnative.Call(gdnative.Object(gdClass), methodScriptEditorBase[1], highlighter) }
 
@@ -19326,159 +20832,160 @@ func (ScriptExtension) class() string { return "ScriptExtension\000" }
 
 func (gdClass ScriptExtension) Script() Script { return Script(gdClass) }
 
-func (gdClass ScriptExtension) virtual(val any, name string) any {	switch name {
+func (gdClass ScriptExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_editor_can_reload_from_file":
-		i, ok := val.(interface{ EditorCanReloadFromFile() bool })
-		if ok {
-			return i.EditorCanReloadFromFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ EditorCanReloadFromFile() bool }{}).Elem()) {
+			return rtype.MethodByName(`EditorCanReloadFromFile`)
 		}
+		return
 	case "_placeholder_erased":
-		i, ok := val.(interface{ PlaceholderErased(placeholder []byte)  })
-		if ok {
-			return i.PlaceholderErased
+		if rtype.Implements(reflect.TypeOf([0]interface{ PlaceholderErased(placeholder []byte)  }{}).Elem()) {
+			return rtype.MethodByName(`PlaceholderErased`)
 		}
+		return
 	case "_can_instantiate":
-		i, ok := val.(interface{ CanInstantiate() bool })
-		if ok {
-			return i.CanInstantiate
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanInstantiate() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanInstantiate`)
 		}
+		return
 	case "_get_base_script":
-		i, ok := val.(interface{ GetBaseScript() Script })
-		if ok {
-			return i.GetBaseScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBaseScript() Script }{}).Elem()) {
+			return rtype.MethodByName(`GetBaseScript`)
 		}
+		return
 	case "_inherits_script":
-		i, ok := val.(interface{ InheritsScript(script Script) bool })
-		if ok {
-			return i.InheritsScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ InheritsScript(script Script) bool }{}).Elem()) {
+			return rtype.MethodByName(`InheritsScript`)
 		}
+		return
 	case "_get_instance_base_type":
-		i, ok := val.(interface{ GetInstanceBaseType() string })
-		if ok {
-			return i.GetInstanceBaseType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInstanceBaseType() string }{}).Elem()) {
+			return rtype.MethodByName(`GetInstanceBaseType`)
 		}
+		return
 	case "_instance_create":
-		i, ok := val.(interface{ InstanceCreate(for_object Object) []byte })
-		if ok {
-			return i.InstanceCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ InstanceCreate(for_object Object) []byte }{}).Elem()) {
+			return rtype.MethodByName(`InstanceCreate`)
 		}
+		return
 	case "_placeholder_instance_create":
-		i, ok := val.(interface{ PlaceholderInstanceCreate(for_object Object) []byte })
-		if ok {
-			return i.PlaceholderInstanceCreate
+		if rtype.Implements(reflect.TypeOf([0]interface{ PlaceholderInstanceCreate(for_object Object) []byte }{}).Elem()) {
+			return rtype.MethodByName(`PlaceholderInstanceCreate`)
 		}
+		return
 	case "_instance_has":
-		i, ok := val.(interface{ InstanceHas(object Object) bool })
-		if ok {
-			return i.InstanceHas
+		if rtype.Implements(reflect.TypeOf([0]interface{ InstanceHas(object Object) bool }{}).Elem()) {
+			return rtype.MethodByName(`InstanceHas`)
 		}
+		return
 	case "_has_source_code":
-		i, ok := val.(interface{ HasSourceCode() bool })
-		if ok {
-			return i.HasSourceCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasSourceCode() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasSourceCode`)
 		}
+		return
 	case "_get_source_code":
-		i, ok := val.(interface{ GetSourceCode() string })
-		if ok {
-			return i.GetSourceCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSourceCode() string }{}).Elem()) {
+			return rtype.MethodByName(`GetSourceCode`)
 		}
+		return
 	case "_set_source_code":
-		i, ok := val.(interface{ SetSourceCode(code string)  })
-		if ok {
-			return i.SetSourceCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetSourceCode(code string)  }{}).Elem()) {
+			return rtype.MethodByName(`SetSourceCode`)
 		}
+		return
 	case "_reload":
-		i, ok := val.(interface{ Reload(keep_state bool) error })
-		if ok {
-			return i.Reload
+		if rtype.Implements(reflect.TypeOf([0]interface{ Reload(keep_state bool) error }{}).Elem()) {
+			return rtype.MethodByName(`Reload`)
 		}
+		return
 	case "_get_documentation":
-		i, ok := val.(interface{ GetDocumentation() Array })
-		if ok {
-			return i.GetDocumentation
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDocumentation() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetDocumentation`)
 		}
+		return
 	case "_has_method":
-		i, ok := val.(interface{ HasMethod(method string) bool })
-		if ok {
-			return i.HasMethod
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasMethod(method string) bool }{}).Elem()) {
+			return rtype.MethodByName(`HasMethod`)
 		}
+		return
 	case "_get_method_info":
-		i, ok := val.(interface{ GetMethodInfo(method string) Dictionary })
-		if ok {
-			return i.GetMethodInfo
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMethodInfo(method string) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetMethodInfo`)
 		}
+		return
 	case "_is_tool":
-		i, ok := val.(interface{ IsTool() bool })
-		if ok {
-			return i.IsTool
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsTool() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsTool`)
 		}
+		return
 	case "_is_valid":
-		i, ok := val.(interface{ IsValid() bool })
-		if ok {
-			return i.IsValid
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsValid() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsValid`)
 		}
+		return
 	case "_get_language":
-		i, ok := val.(interface{ GetLanguage() ScriptLanguage })
-		if ok {
-			return i.GetLanguage
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLanguage() ScriptLanguage }{}).Elem()) {
+			return rtype.MethodByName(`GetLanguage`)
 		}
+		return
 	case "_has_script_signal":
-		i, ok := val.(interface{ HasScriptSignal(signal string) bool })
-		if ok {
-			return i.HasScriptSignal
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasScriptSignal(signal string) bool }{}).Elem()) {
+			return rtype.MethodByName(`HasScriptSignal`)
 		}
+		return
 	case "_get_script_signal_list":
-		i, ok := val.(interface{ GetScriptSignalList() Array })
-		if ok {
-			return i.GetScriptSignalList
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetScriptSignalList() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetScriptSignalList`)
 		}
+		return
 	case "_get_property_default_value":
-		i, ok := val.(interface{ GetPropertyDefaultValue(property string) any })
-		if ok {
-			return i.GetPropertyDefaultValue
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPropertyDefaultValue(property string) any }{}).Elem()) {
+			return rtype.MethodByName(`GetPropertyDefaultValue`)
 		}
+		return
 	case "_update_exports":
-		i, ok := val.(interface{ UpdateExports()  })
-		if ok {
-			return i.UpdateExports
+		if rtype.Implements(reflect.TypeOf([0]interface{ UpdateExports()  }{}).Elem()) {
+			return rtype.MethodByName(`UpdateExports`)
 		}
+		return
 	case "_get_script_method_list":
-		i, ok := val.(interface{ GetScriptMethodList() Array })
-		if ok {
-			return i.GetScriptMethodList
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetScriptMethodList() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetScriptMethodList`)
 		}
+		return
 	case "_get_script_property_list":
-		i, ok := val.(interface{ GetScriptPropertyList() Array })
-		if ok {
-			return i.GetScriptPropertyList
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetScriptPropertyList() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetScriptPropertyList`)
 		}
+		return
 	case "_get_member_line":
-		i, ok := val.(interface{ GetMemberLine(member string) int64 })
-		if ok {
-			return i.GetMemberLine
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMemberLine(member string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMemberLine`)
 		}
+		return
 	case "_get_constants":
-		i, ok := val.(interface{ GetConstants() Dictionary })
-		if ok {
-			return i.GetConstants
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConstants() Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetConstants`)
 		}
+		return
 	case "_get_members":
-		i, ok := val.(interface{ GetMembers() Array })
-		if ok {
-			return i.GetMembers
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMembers() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetMembers`)
 		}
+		return
 	case "_is_placeholder_fallback_enabled":
-		i, ok := val.(interface{ IsPlaceholderFallbackEnabled() bool })
-		if ok {
-			return i.IsPlaceholderFallbackEnabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsPlaceholderFallbackEnabled() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsPlaceholderFallbackEnabled`)
 		}
+		return
 	case "_get_rpc_config":
-		i, ok := val.(interface{ GetRpcConfig() any })
-		if ok {
-			return i.GetRpcConfig
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRpcConfig() any }{}).Elem()) {
+			return rtype.MethodByName(`GetRpcConfig`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Script().virtual(rtype, name)
 }
 
 type ScriptLanguage gdnative.Object
@@ -19486,6 +20993,9 @@ func (ScriptLanguage) class() string { return "ScriptLanguage\000" }
 
 func (gdClass ScriptLanguage) Object() Object { return Object(gdClass) }
 
+func (gdClass ScriptLanguage) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 
 type ScriptLanguageExtensionLookupResultType int64
 
@@ -19532,304 +21042,305 @@ func (ScriptLanguageExtension) class() string { return "ScriptLanguageExtension\
 
 func (gdClass ScriptLanguageExtension) ScriptLanguage() ScriptLanguage { return ScriptLanguage(gdClass) }
 
-func (gdClass ScriptLanguageExtension) virtual(val any, name string) any {	switch name {
+func (gdClass ScriptLanguageExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_name":
-		i, ok := val.(interface{ GetName() string })
-		if ok {
-			return i.GetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetName`)
 		}
+		return
 	case "_init":
-		i, ok := val.(interface{ Init()  })
-		if ok {
-			return i.Init
+		if rtype.Implements(reflect.TypeOf([0]interface{ Init()  }{}).Elem()) {
+			return rtype.MethodByName(`Init`)
 		}
+		return
 	case "_get_type":
-		i, ok := val.(interface{ GetType() string })
-		if ok {
-			return i.GetType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetType() string }{}).Elem()) {
+			return rtype.MethodByName(`GetType`)
 		}
+		return
 	case "_get_extension":
-		i, ok := val.(interface{ GetExtension() string })
-		if ok {
-			return i.GetExtension
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetExtension() string }{}).Elem()) {
+			return rtype.MethodByName(`GetExtension`)
 		}
+		return
 	case "_execute_file":
-		i, ok := val.(interface{ ExecuteFile(path string) error })
-		if ok {
-			return i.ExecuteFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ ExecuteFile(path string) error }{}).Elem()) {
+			return rtype.MethodByName(`ExecuteFile`)
 		}
+		return
 	case "_finish":
-		i, ok := val.(interface{ Finish()  })
-		if ok {
-			return i.Finish
+		if rtype.Implements(reflect.TypeOf([0]interface{ Finish()  }{}).Elem()) {
+			return rtype.MethodByName(`Finish`)
 		}
+		return
 	case "_get_reserved_words":
-		i, ok := val.(interface{ GetReservedWords() []string })
-		if ok {
-			return i.GetReservedWords
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetReservedWords() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetReservedWords`)
 		}
+		return
 	case "_is_control_flow_keyword":
-		i, ok := val.(interface{ IsControlFlowKeyword(keyword string) bool })
-		if ok {
-			return i.IsControlFlowKeyword
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsControlFlowKeyword(keyword string) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsControlFlowKeyword`)
 		}
+		return
 	case "_get_comment_delimiters":
-		i, ok := val.(interface{ GetCommentDelimiters() []string })
-		if ok {
-			return i.GetCommentDelimiters
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCommentDelimiters() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetCommentDelimiters`)
 		}
+		return
 	case "_get_string_delimiters":
-		i, ok := val.(interface{ GetStringDelimiters() []string })
-		if ok {
-			return i.GetStringDelimiters
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetStringDelimiters() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetStringDelimiters`)
 		}
+		return
 	case "_make_template":
-		i, ok := val.(interface{ MakeTemplate(template string, class_name string, base_class_name string) Script })
-		if ok {
-			return i.MakeTemplate
+		if rtype.Implements(reflect.TypeOf([0]interface{ MakeTemplate(template string, class_name string, base_class_name string) Script }{}).Elem()) {
+			return rtype.MethodByName(`MakeTemplate`)
 		}
+		return
 	case "_get_built_in_templates":
-		i, ok := val.(interface{ GetBuiltInTemplates(object string) Array })
-		if ok {
-			return i.GetBuiltInTemplates
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBuiltInTemplates(object string) Array }{}).Elem()) {
+			return rtype.MethodByName(`GetBuiltInTemplates`)
 		}
+		return
 	case "_is_using_templates":
-		i, ok := val.(interface{ IsUsingTemplates() bool })
-		if ok {
-			return i.IsUsingTemplates
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsUsingTemplates() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsUsingTemplates`)
 		}
+		return
 	case "_validate":
-		i, ok := val.(interface{ Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary })
-		if ok {
-			return i.Validate
+		if rtype.Implements(reflect.TypeOf([0]interface{ Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`Validate`)
 		}
+		return
 	case "_validate_path":
-		i, ok := val.(interface{ ValidatePath(path string) string })
-		if ok {
-			return i.ValidatePath
+		if rtype.Implements(reflect.TypeOf([0]interface{ ValidatePath(path string) string }{}).Elem()) {
+			return rtype.MethodByName(`ValidatePath`)
 		}
+		return
 	case "_create_script":
-		i, ok := val.(interface{ CreateScript() Object })
-		if ok {
-			return i.CreateScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateScript() Object }{}).Elem()) {
+			return rtype.MethodByName(`CreateScript`)
 		}
+		return
 	case "_has_named_classes":
-		i, ok := val.(interface{ HasNamedClasses() bool })
-		if ok {
-			return i.HasNamedClasses
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasNamedClasses() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasNamedClasses`)
 		}
+		return
 	case "_supports_builtin_mode":
-		i, ok := val.(interface{ SupportsBuiltinMode() bool })
-		if ok {
-			return i.SupportsBuiltinMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SupportsBuiltinMode() bool }{}).Elem()) {
+			return rtype.MethodByName(`SupportsBuiltinMode`)
 		}
+		return
 	case "_supports_documentation":
-		i, ok := val.(interface{ SupportsDocumentation() bool })
-		if ok {
-			return i.SupportsDocumentation
+		if rtype.Implements(reflect.TypeOf([0]interface{ SupportsDocumentation() bool }{}).Elem()) {
+			return rtype.MethodByName(`SupportsDocumentation`)
 		}
+		return
 	case "_can_inherit_from_file":
-		i, ok := val.(interface{ CanInheritFromFile() bool })
-		if ok {
-			return i.CanInheritFromFile
+		if rtype.Implements(reflect.TypeOf([0]interface{ CanInheritFromFile() bool }{}).Elem()) {
+			return rtype.MethodByName(`CanInheritFromFile`)
 		}
+		return
 	case "_find_function":
-		i, ok := val.(interface{ FindFunction(class_name string, function_name string) int64 })
-		if ok {
-			return i.FindFunction
+		if rtype.Implements(reflect.TypeOf([0]interface{ FindFunction(class_name string, function_name string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FindFunction`)
 		}
+		return
 	case "_make_function":
-		i, ok := val.(interface{ MakeFunction(class_name string, function_name string, function_args []string) string })
-		if ok {
-			return i.MakeFunction
+		if rtype.Implements(reflect.TypeOf([0]interface{ MakeFunction(class_name string, function_name string, function_args []string) string }{}).Elem()) {
+			return rtype.MethodByName(`MakeFunction`)
 		}
+		return
 	case "_open_in_external_editor":
-		i, ok := val.(interface{ OpenInExternalEditor(script Script, line int64, column int64) error })
-		if ok {
-			return i.OpenInExternalEditor
+		if rtype.Implements(reflect.TypeOf([0]interface{ OpenInExternalEditor(script Script, line int64, column int64) error }{}).Elem()) {
+			return rtype.MethodByName(`OpenInExternalEditor`)
 		}
+		return
 	case "_overrides_external_editor":
-		i, ok := val.(interface{ OverridesExternalEditor() bool })
-		if ok {
-			return i.OverridesExternalEditor
+		if rtype.Implements(reflect.TypeOf([0]interface{ OverridesExternalEditor() bool }{}).Elem()) {
+			return rtype.MethodByName(`OverridesExternalEditor`)
 		}
+		return
 	case "_complete_code":
-		i, ok := val.(interface{ CompleteCode(code string, path string, owner Object) Dictionary })
-		if ok {
-			return i.CompleteCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ CompleteCode(code string, path string, owner Object) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`CompleteCode`)
 		}
+		return
 	case "_lookup_code":
-		i, ok := val.(interface{ LookupCode(code string, symbol string, path string, owner Object) Dictionary })
-		if ok {
-			return i.LookupCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ LookupCode(code string, symbol string, path string, owner Object) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`LookupCode`)
 		}
+		return
 	case "_auto_indent_code":
-		i, ok := val.(interface{ AutoIndentCode(code string, from_line int64, to_line int64) string })
-		if ok {
-			return i.AutoIndentCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ AutoIndentCode(code string, from_line int64, to_line int64) string }{}).Elem()) {
+			return rtype.MethodByName(`AutoIndentCode`)
 		}
+		return
 	case "_add_global_constant":
-		i, ok := val.(interface{ AddGlobalConstant(name string, value any)  })
-		if ok {
-			return i.AddGlobalConstant
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddGlobalConstant(name string, value any)  }{}).Elem()) {
+			return rtype.MethodByName(`AddGlobalConstant`)
 		}
+		return
 	case "_add_named_global_constant":
-		i, ok := val.(interface{ AddNamedGlobalConstant(name string, value any)  })
-		if ok {
-			return i.AddNamedGlobalConstant
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddNamedGlobalConstant(name string, value any)  }{}).Elem()) {
+			return rtype.MethodByName(`AddNamedGlobalConstant`)
 		}
+		return
 	case "_remove_named_global_constant":
-		i, ok := val.(interface{ RemoveNamedGlobalConstant(name string)  })
-		if ok {
-			return i.RemoveNamedGlobalConstant
+		if rtype.Implements(reflect.TypeOf([0]interface{ RemoveNamedGlobalConstant(name string)  }{}).Elem()) {
+			return rtype.MethodByName(`RemoveNamedGlobalConstant`)
 		}
+		return
 	case "_thread_enter":
-		i, ok := val.(interface{ ThreadEnter()  })
-		if ok {
-			return i.ThreadEnter
+		if rtype.Implements(reflect.TypeOf([0]interface{ ThreadEnter()  }{}).Elem()) {
+			return rtype.MethodByName(`ThreadEnter`)
 		}
+		return
 	case "_thread_exit":
-		i, ok := val.(interface{ ThreadExit()  })
-		if ok {
-			return i.ThreadExit
+		if rtype.Implements(reflect.TypeOf([0]interface{ ThreadExit()  }{}).Elem()) {
+			return rtype.MethodByName(`ThreadExit`)
 		}
+		return
 	case "_debug_get_error":
-		i, ok := val.(interface{ DebugGetError() string })
-		if ok {
-			return i.DebugGetError
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetError() string }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetError`)
 		}
+		return
 	case "_debug_get_stack_level_count":
-		i, ok := val.(interface{ DebugGetStackLevelCount() int64 })
-		if ok {
-			return i.DebugGetStackLevelCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelCount`)
 		}
+		return
 	case "_debug_get_stack_level_line":
-		i, ok := val.(interface{ DebugGetStackLevelLine(level int64) int64 })
-		if ok {
-			return i.DebugGetStackLevelLine
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelLine(level int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelLine`)
 		}
+		return
 	case "_debug_get_stack_level_function":
-		i, ok := val.(interface{ DebugGetStackLevelFunction(level int64) string })
-		if ok {
-			return i.DebugGetStackLevelFunction
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelFunction(level int64) string }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelFunction`)
 		}
+		return
 	case "_debug_get_stack_level_locals":
-		i, ok := val.(interface{ DebugGetStackLevelLocals(level int64, max_subitems int64, max_depth int64) Dictionary })
-		if ok {
-			return i.DebugGetStackLevelLocals
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelLocals(level int64, max_subitems int64, max_depth int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelLocals`)
 		}
+		return
 	case "_debug_get_stack_level_members":
-		i, ok := val.(interface{ DebugGetStackLevelMembers(level int64, max_subitems int64, max_depth int64) Dictionary })
-		if ok {
-			return i.DebugGetStackLevelMembers
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelMembers(level int64, max_subitems int64, max_depth int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelMembers`)
 		}
+		return
 	case "_debug_get_stack_level_instance":
-		i, ok := val.(interface{ DebugGetStackLevelInstance(level int64) []byte })
-		if ok {
-			return i.DebugGetStackLevelInstance
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetStackLevelInstance(level int64) []byte }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetStackLevelInstance`)
 		}
+		return
 	case "_debug_get_globals":
-		i, ok := val.(interface{ DebugGetGlobals(max_subitems int64, max_depth int64) Dictionary })
-		if ok {
-			return i.DebugGetGlobals
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetGlobals(max_subitems int64, max_depth int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetGlobals`)
 		}
+		return
 	case "_debug_parse_stack_level_expression":
-		i, ok := val.(interface{ DebugParseStackLevelExpression(level int64, expression string, max_subitems int64, max_depth int64) string })
-		if ok {
-			return i.DebugParseStackLevelExpression
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugParseStackLevelExpression(level int64, expression string, max_subitems int64, max_depth int64) string }{}).Elem()) {
+			return rtype.MethodByName(`DebugParseStackLevelExpression`)
 		}
+		return
 	case "_debug_get_current_stack_info":
-		i, ok := val.(interface{ DebugGetCurrentStackInfo() Array })
-		if ok {
-			return i.DebugGetCurrentStackInfo
+		if rtype.Implements(reflect.TypeOf([0]interface{ DebugGetCurrentStackInfo() Array }{}).Elem()) {
+			return rtype.MethodByName(`DebugGetCurrentStackInfo`)
 		}
+		return
 	case "_reload_all_scripts":
-		i, ok := val.(interface{ ReloadAllScripts()  })
-		if ok {
-			return i.ReloadAllScripts
+		if rtype.Implements(reflect.TypeOf([0]interface{ ReloadAllScripts()  }{}).Elem()) {
+			return rtype.MethodByName(`ReloadAllScripts`)
 		}
+		return
 	case "_reload_tool_script":
-		i, ok := val.(interface{ ReloadToolScript(script Script, soft_reload bool)  })
-		if ok {
-			return i.ReloadToolScript
+		if rtype.Implements(reflect.TypeOf([0]interface{ ReloadToolScript(script Script, soft_reload bool)  }{}).Elem()) {
+			return rtype.MethodByName(`ReloadToolScript`)
 		}
+		return
 	case "_get_recognized_extensions":
-		i, ok := val.(interface{ GetRecognizedExtensions() []string })
-		if ok {
-			return i.GetRecognizedExtensions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRecognizedExtensions() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetRecognizedExtensions`)
 		}
+		return
 	case "_get_public_functions":
-		i, ok := val.(interface{ GetPublicFunctions() Array })
-		if ok {
-			return i.GetPublicFunctions
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPublicFunctions() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetPublicFunctions`)
 		}
+		return
 	case "_get_public_constants":
-		i, ok := val.(interface{ GetPublicConstants() Dictionary })
-		if ok {
-			return i.GetPublicConstants
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPublicConstants() Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetPublicConstants`)
 		}
+		return
 	case "_get_public_annotations":
-		i, ok := val.(interface{ GetPublicAnnotations() Array })
-		if ok {
-			return i.GetPublicAnnotations
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPublicAnnotations() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetPublicAnnotations`)
 		}
+		return
 	case "_profiling_start":
-		i, ok := val.(interface{ ProfilingStart()  })
-		if ok {
-			return i.ProfilingStart
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProfilingStart()  }{}).Elem()) {
+			return rtype.MethodByName(`ProfilingStart`)
 		}
+		return
 	case "_profiling_stop":
-		i, ok := val.(interface{ ProfilingStop()  })
-		if ok {
-			return i.ProfilingStop
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProfilingStop()  }{}).Elem()) {
+			return rtype.MethodByName(`ProfilingStop`)
 		}
+		return
 	case "_profiling_get_accumulated_data":
-		i, ok := val.(interface{ ProfilingGetAccumulatedData(info_array *ScriptLanguageExtensionProfilingInfo, info_max int64) int64 })
-		if ok {
-			return i.ProfilingGetAccumulatedData
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProfilingGetAccumulatedData(info_array *ScriptLanguageExtensionProfilingInfo, info_max int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ProfilingGetAccumulatedData`)
 		}
+		return
 	case "_profiling_get_frame_data":
-		i, ok := val.(interface{ ProfilingGetFrameData(info_array *ScriptLanguageExtensionProfilingInfo, info_max int64) int64 })
-		if ok {
-			return i.ProfilingGetFrameData
+		if rtype.Implements(reflect.TypeOf([0]interface{ ProfilingGetFrameData(info_array *ScriptLanguageExtensionProfilingInfo, info_max int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ProfilingGetFrameData`)
 		}
+		return
 	case "_alloc_instance_binding_data":
-		i, ok := val.(interface{ AllocInstanceBindingData(object Object) []byte })
-		if ok {
-			return i.AllocInstanceBindingData
+		if rtype.Implements(reflect.TypeOf([0]interface{ AllocInstanceBindingData(object Object) []byte }{}).Elem()) {
+			return rtype.MethodByName(`AllocInstanceBindingData`)
 		}
+		return
 	case "_free_instance_binding_data":
-		i, ok := val.(interface{ FreeInstanceBindingData(data []byte)  })
-		if ok {
-			return i.FreeInstanceBindingData
+		if rtype.Implements(reflect.TypeOf([0]interface{ FreeInstanceBindingData(data []byte)  }{}).Elem()) {
+			return rtype.MethodByName(`FreeInstanceBindingData`)
 		}
+		return
 	case "_refcount_incremented_instance_binding":
-		i, ok := val.(interface{ RefcountIncrementedInstanceBinding(object Object)  })
-		if ok {
-			return i.RefcountIncrementedInstanceBinding
+		if rtype.Implements(reflect.TypeOf([0]interface{ RefcountIncrementedInstanceBinding(object Object)  }{}).Elem()) {
+			return rtype.MethodByName(`RefcountIncrementedInstanceBinding`)
 		}
+		return
 	case "_refcount_decremented_instance_binding":
-		i, ok := val.(interface{ RefcountDecrementedInstanceBinding(object Object) bool })
-		if ok {
-			return i.RefcountDecrementedInstanceBinding
+		if rtype.Implements(reflect.TypeOf([0]interface{ RefcountDecrementedInstanceBinding(object Object) bool }{}).Elem()) {
+			return rtype.MethodByName(`RefcountDecrementedInstanceBinding`)
 		}
+		return
 	case "_frame":
-		i, ok := val.(interface{ Frame()  })
-		if ok {
-			return i.Frame
+		if rtype.Implements(reflect.TypeOf([0]interface{ Frame()  }{}).Elem()) {
+			return rtype.MethodByName(`Frame`)
 		}
+		return
 	case "_handles_global_class_type":
-		i, ok := val.(interface{ HandlesGlobalClassType(atype string) bool })
-		if ok {
-			return i.HandlesGlobalClassType
+		if rtype.Implements(reflect.TypeOf([0]interface{ HandlesGlobalClassType(atype string) bool }{}).Elem()) {
+			return rtype.MethodByName(`HandlesGlobalClassType`)
 		}
+		return
 	case "_get_global_class_name":
-		i, ok := val.(interface{ GetGlobalClassName(path string) Dictionary })
-		if ok {
-			return i.GetGlobalClassName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetGlobalClassName(path string) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetGlobalClassName`)
 		}
+		return
 	}
-	return nil
+	return gdClass.ScriptLanguage().virtual(rtype, name)
 }
 
 type ScrollBar gdnative.Object
@@ -19838,6 +21349,9 @@ func (ScrollBar) class() string { return "ScrollBar\000" }
 func (gdClass ScrollBar) Range() Range { return Range(gdClass) }
 
 var methodScrollBar [2]gdnative.Method
+func (gdClass ScrollBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass ScrollBar) SetCustomStep(step float64)  { gdnative.Call(gdnative.Object(gdClass), methodScrollBar[0], step) }
 func (gdClass ScrollBar) GetCustomStep() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodScrollBar[1]) }
 
@@ -19856,6 +21370,9 @@ func (ScrollContainer) class() string { return "ScrollContainer\000" }
 func (gdClass ScrollContainer) Container() Container { return Container(gdClass) }
 
 var methodScrollContainer [15]gdnative.Method
+func (gdClass ScrollContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass ScrollContainer) SetHScroll(value int64)  { gdnative.Call(gdnative.Object(gdClass), methodScrollContainer[0], value) }
 func (gdClass ScrollContainer) GetHScroll() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodScrollContainer[1]) }
 func (gdClass ScrollContainer) SetVScroll(value int64)  { gdnative.Call(gdnative.Object(gdClass), methodScrollContainer[2], value) }
@@ -19878,6 +21395,9 @@ func (SegmentShape2D) class() string { return "SegmentShape2D\000" }
 func (gdClass SegmentShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodSegmentShape2D [4]gdnative.Method
+func (gdClass SegmentShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass SegmentShape2D) SetA(a Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodSegmentShape2D[0], a) }
 func (gdClass SegmentShape2D) GetA() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodSegmentShape2D[1]) }
 func (gdClass SegmentShape2D) SetB(b Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodSegmentShape2D[2], b) }
@@ -19889,6 +21409,9 @@ func (Semaphore) class() string { return "Semaphore\000" }
 func (gdClass Semaphore) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodSemaphore [3]gdnative.Method
+func (gdClass Semaphore) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Semaphore) Wait()  { gdnative.Call(gdnative.Object(gdClass), methodSemaphore[0]) }
 func (gdClass Semaphore) TryWait() error { return gdnative.Return[error](gdnative.Object(gdClass), methodSemaphore[1]) }
 func (gdClass Semaphore) Post()  { gdnative.Call(gdnative.Object(gdClass), methodSemaphore[2]) }
@@ -19899,6 +21422,9 @@ func (SeparationRayShape2D) class() string { return "SeparationRayShape2D\000" }
 func (gdClass SeparationRayShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodSeparationRayShape2D [4]gdnative.Method
+func (gdClass SeparationRayShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass SeparationRayShape2D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape2D[0], length) }
 func (gdClass SeparationRayShape2D) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSeparationRayShape2D[1]) }
 func (gdClass SeparationRayShape2D) SetSlideOnSlope(active bool)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape2D[2], active) }
@@ -19910,6 +21436,9 @@ func (SeparationRayShape3D) class() string { return "SeparationRayShape3D\000" }
 func (gdClass SeparationRayShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodSeparationRayShape3D [4]gdnative.Method
+func (gdClass SeparationRayShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass SeparationRayShape3D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape3D[0], length) }
 func (gdClass SeparationRayShape3D) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSeparationRayShape3D[1]) }
 func (gdClass SeparationRayShape3D) SetSlideOnSlope(active bool)  { gdnative.Call(gdnative.Object(gdClass), methodSeparationRayShape3D[2], active) }
@@ -19920,6 +21449,9 @@ func (Separator) class() string { return "Separator\000" }
 
 func (gdClass Separator) Control() Control { return Control(gdClass) }
 
+func (gdClass Separator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 
 type ShaderMode int64
 
@@ -19937,6 +21469,9 @@ func (Shader) class() string { return "Shader\000" }
 func (gdClass Shader) Resource() Resource { return Resource(gdClass) }
 
 var methodShader [6]gdnative.Method
+func (gdClass Shader) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Shader) GetMode() ShaderMode { return gdnative.Return[ShaderMode](gdnative.Object(gdClass), methodShader[0]) }
 func (gdClass Shader) SetCode(code string)  { gdnative.Call(gdnative.Object(gdClass), methodShader[1], code) }
 func (gdClass Shader) GetCode() string { return gdnative.Return[string](gdnative.Object(gdClass), methodShader[2]) }
@@ -19949,6 +21484,9 @@ func (ShaderGlobalsOverride) class() string { return "ShaderGlobalsOverride\000"
 
 func (gdClass ShaderGlobalsOverride) Node() Node { return Node(gdClass) }
 
+func (gdClass ShaderGlobalsOverride) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 
 type ShaderInclude gdnative.Object
 func (ShaderInclude) class() string { return "ShaderInclude\000" }
@@ -19956,6 +21494,9 @@ func (ShaderInclude) class() string { return "ShaderInclude\000" }
 func (gdClass ShaderInclude) Resource() Resource { return Resource(gdClass) }
 
 var methodShaderInclude [2]gdnative.Method
+func (gdClass ShaderInclude) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass ShaderInclude) SetCode(code string)  { gdnative.Call(gdnative.Object(gdClass), methodShaderInclude[0], code) }
 func (gdClass ShaderInclude) GetCode() string { return gdnative.Return[string](gdnative.Object(gdClass), methodShaderInclude[1]) }
 
@@ -19965,6 +21506,9 @@ func (ShaderMaterial) class() string { return "ShaderMaterial\000" }
 func (gdClass ShaderMaterial) Material() Material { return Material(gdClass) }
 
 var methodShaderMaterial [4]gdnative.Method
+func (gdClass ShaderMaterial) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Material().virtual(rtype, name)
+}
 func (gdClass ShaderMaterial) SetShader(shader Shader)  { gdnative.Call(gdnative.Object(gdClass), methodShaderMaterial[0], shader) }
 func (gdClass ShaderMaterial) GetShader() Shader { return gdnative.Return[Shader](gdnative.Object(gdClass), methodShaderMaterial[1]) }
 func (gdClass ShaderMaterial) SetShaderUniform(param string, value any)  { gdnative.Call(gdnative.Object(gdClass), methodShaderMaterial[2], param, value) }
@@ -19976,6 +21520,9 @@ func (Shape2D) class() string { return "Shape2D\000" }
 func (gdClass Shape2D) Resource() Resource { return Resource(gdClass) }
 
 var methodShape2D [7]gdnative.Method
+func (gdClass Shape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Shape2D) SetCustomSolverBias(bias float64)  { gdnative.Call(gdnative.Object(gdClass), methodShape2D[0], bias) }
 func (gdClass Shape2D) GetCustomSolverBias() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodShape2D[1]) }
 func (gdClass Shape2D) Collide(local_xform Transform2D, with_shape Shape2D, shape_xform Transform2D) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShape2D[2], local_xform, with_shape, shape_xform) }
@@ -19990,6 +21537,9 @@ func (Shape3D) class() string { return "Shape3D\000" }
 func (gdClass Shape3D) Resource() Resource { return Resource(gdClass) }
 
 var methodShape3D [5]gdnative.Method
+func (gdClass Shape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Shape3D) SetCustomSolverBias(bias float64)  { gdnative.Call(gdnative.Object(gdClass), methodShape3D[0], bias) }
 func (gdClass Shape3D) GetCustomSolverBias() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodShape3D[1]) }
 func (gdClass Shape3D) SetMargin(margin float64)  { gdnative.Call(gdnative.Object(gdClass), methodShape3D[2], margin) }
@@ -20002,6 +21552,9 @@ func (ShapeCast2D) class() string { return "ShapeCast2D\000" }
 func (gdClass ShapeCast2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodShapeCast2D [34]gdnative.Method
+func (gdClass ShapeCast2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass ShapeCast2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast2D[0], enabled) }
 func (gdClass ShapeCast2D) IsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShapeCast2D[1]) }
 func (gdClass ShapeCast2D) SetShape(shape Shape2D)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast2D[2], shape) }
@@ -20043,6 +21596,9 @@ func (ShapeCast3D) class() string { return "ShapeCast3D\000" }
 func (gdClass ShapeCast3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodShapeCast3D [37]gdnative.Method
+func (gdClass ShapeCast3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass ShapeCast3D) ResourceChanged(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast3D[0], resource) }
 func (gdClass ShapeCast3D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodShapeCast3D[1], enabled) }
 func (gdClass ShapeCast3D) IsEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShapeCast3D[2]) }
@@ -20087,6 +21643,9 @@ func (Shortcut) class() string { return "Shortcut\000" }
 func (gdClass Shortcut) Resource() Resource { return Resource(gdClass) }
 
 var methodShortcut [5]gdnative.Method
+func (gdClass Shortcut) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Shortcut) SetEvents(events Array)  { gdnative.Call(gdnative.Object(gdClass), methodShortcut[0], events) }
 func (gdClass Shortcut) GetEvents() Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodShortcut[1]) }
 func (gdClass Shortcut) HasValidEvent() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodShortcut[2]) }
@@ -20099,6 +21658,9 @@ func (Skeleton2D) class() string { return "Skeleton2D\000" }
 func (gdClass Skeleton2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodSkeleton2D [8]gdnative.Method
+func (gdClass Skeleton2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Skeleton2D) GetBoneCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeleton2D[0]) }
 func (gdClass Skeleton2D) GetBone(idx int64) Bone2D { return gdnative.Return[Bone2D](gdnative.Object(gdClass), methodSkeleton2D[1], idx) }
 func (gdClass Skeleton2D) GetSkeleton() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodSkeleton2D[2]) }
@@ -20114,6 +21676,9 @@ func (Skeleton3D) class() string { return "Skeleton3D\000" }
 func (gdClass Skeleton3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodSkeleton3D [57]gdnative.Method
+func (gdClass Skeleton3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass Skeleton3D) AddBone(name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeleton3D[0], name) }
 func (gdClass Skeleton3D) FindBone(name string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeleton3D[1], name) }
 func (gdClass Skeleton3D) GetBoneName(bone_idx int64) string { return gdnative.Return[string](gdnative.Object(gdClass), methodSkeleton3D[2], bone_idx) }
@@ -20178,6 +21743,9 @@ func (SkeletonIK3D) class() string { return "SkeletonIK3D\000" }
 func (gdClass SkeletonIK3D) Node() Node { return Node(gdClass) }
 
 var methodSkeletonIK3D [24]gdnative.Method
+func (gdClass SkeletonIK3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass SkeletonIK3D) SetRootBone(root_bone string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonIK3D[0], root_bone) }
 func (gdClass SkeletonIK3D) GetRootBone() string { return gdnative.Return[string](gdnative.Object(gdClass), methodSkeletonIK3D[1]) }
 func (gdClass SkeletonIK3D) SetTipBone(tip_bone string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonIK3D[2], tip_bone) }
@@ -20209,24 +21777,25 @@ func (SkeletonModification2D) class() string { return "SkeletonModification2D\00
 func (gdClass SkeletonModification2D) Resource() Resource { return Resource(gdClass) }
 
 var methodSkeletonModification2D [10]gdnative.Method
-func (gdClass SkeletonModification2D) virtual(val any, name string) any {	switch name {
+func (gdClass SkeletonModification2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_execute":
-		i, ok := val.(interface{ Execute(delta float64)  })
-		if ok {
-			return i.Execute
+		if rtype.Implements(reflect.TypeOf([0]interface{ Execute(delta float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Execute`)
 		}
+		return
 	case "_setup_modification":
-		i, ok := val.(interface{ SetupModification(modification_stack SkeletonModificationStack2D)  })
-		if ok {
-			return i.SetupModification
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetupModification(modification_stack SkeletonModificationStack2D)  }{}).Elem()) {
+			return rtype.MethodByName(`SetupModification`)
 		}
+		return
 	case "_draw_editor_gizmo":
-		i, ok := val.(interface{ DrawEditorGizmo()  })
-		if ok {
-			return i.DrawEditorGizmo
+		if rtype.Implements(reflect.TypeOf([0]interface{ DrawEditorGizmo()  }{}).Elem()) {
+			return rtype.MethodByName(`DrawEditorGizmo`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass SkeletonModification2D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2D[0], enabled) }
 func (gdClass SkeletonModification2D) GetEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification2D[1]) }
@@ -20245,6 +21814,9 @@ func (SkeletonModification2DCCDIK) class() string { return "SkeletonModification
 func (gdClass SkeletonModification2DCCDIK) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DCCDIK [20]gdnative.Method
+func (gdClass SkeletonModification2DCCDIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DCCDIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DCCDIK[0], target_nodepath) }
 func (gdClass SkeletonModification2DCCDIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification2DCCDIK[1]) }
 func (gdClass SkeletonModification2DCCDIK) SetTipNode(tip_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DCCDIK[2], tip_nodepath) }
@@ -20272,6 +21844,9 @@ func (SkeletonModification2DFABRIK) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification2DFABRIK) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DFABRIK [12]gdnative.Method
+func (gdClass SkeletonModification2DFABRIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DFABRIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DFABRIK[0], target_nodepath) }
 func (gdClass SkeletonModification2DFABRIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification2DFABRIK[1]) }
 func (gdClass SkeletonModification2DFABRIK) SetFabrikDataChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DFABRIK[2], length) }
@@ -20291,6 +21866,9 @@ func (SkeletonModification2DJiggle) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification2DJiggle) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DJiggle [34]gdnative.Method
+func (gdClass SkeletonModification2DJiggle) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DJiggle) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DJiggle[0], target_nodepath) }
 func (gdClass SkeletonModification2DJiggle) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification2DJiggle[1]) }
 func (gdClass SkeletonModification2DJiggle) SetJiggleDataChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DJiggle[2], length) }
@@ -20332,6 +21910,9 @@ func (SkeletonModification2DLookAt) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification2DLookAt) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DLookAt [16]gdnative.Method
+func (gdClass SkeletonModification2DLookAt) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DLookAt) SetBone2dNode(bone2d_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DLookAt[0], bone2d_nodepath) }
 func (gdClass SkeletonModification2DLookAt) GetBone2dNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification2DLookAt[1]) }
 func (gdClass SkeletonModification2DLookAt) SetBoneIndex(bone_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DLookAt[2], bone_idx) }
@@ -20355,6 +21936,9 @@ func (SkeletonModification2DPhysicalBones) class() string { return "SkeletonModi
 func (gdClass SkeletonModification2DPhysicalBones) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DPhysicalBones [7]gdnative.Method
+func (gdClass SkeletonModification2DPhysicalBones) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DPhysicalBones) SetPhysicalBoneChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DPhysicalBones[0], length) }
 func (gdClass SkeletonModification2DPhysicalBones) GetPhysicalBoneChainLength() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkeletonModification2DPhysicalBones[1]) }
 func (gdClass SkeletonModification2DPhysicalBones) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DPhysicalBones[2], joint_idx, physicalbone2d_node) }
@@ -20369,6 +21953,9 @@ func (SkeletonModification2DStackHolder) class() string { return "SkeletonModifi
 func (gdClass SkeletonModification2DStackHolder) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DStackHolder [2]gdnative.Method
+func (gdClass SkeletonModification2DStackHolder) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DStackHolder) SetHeldModificationStack(held_modification_stack SkeletonModificationStack2D)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DStackHolder[0], held_modification_stack) }
 func (gdClass SkeletonModification2DStackHolder) GetHeldModificationStack() SkeletonModificationStack2D { return gdnative.Return[SkeletonModificationStack2D](gdnative.Object(gdClass), methodSkeletonModification2DStackHolder[1]) }
 
@@ -20378,6 +21965,9 @@ func (SkeletonModification2DTwoBoneIK) class() string { return "SkeletonModifica
 func (gdClass SkeletonModification2DTwoBoneIK) SkeletonModification2D() SkeletonModification2D { return SkeletonModification2D(gdClass) }
 
 var methodSkeletonModification2DTwoBoneIK [16]gdnative.Method
+func (gdClass SkeletonModification2DTwoBoneIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification2D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification2DTwoBoneIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DTwoBoneIK[0], target_nodepath) }
 func (gdClass SkeletonModification2DTwoBoneIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification2DTwoBoneIK[1]) }
 func (gdClass SkeletonModification2DTwoBoneIK) SetTargetMinimumDistance(minimum_distance float64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification2DTwoBoneIK[2], minimum_distance) }
@@ -20401,19 +21991,20 @@ func (SkeletonModification3D) class() string { return "SkeletonModification3D\00
 func (gdClass SkeletonModification3D) Resource() Resource { return Resource(gdClass) }
 
 var methodSkeletonModification3D [8]gdnative.Method
-func (gdClass SkeletonModification3D) virtual(val any, name string) any {	switch name {
+func (gdClass SkeletonModification3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_execute":
-		i, ok := val.(interface{ Execute(delta float64)  })
-		if ok {
-			return i.Execute
+		if rtype.Implements(reflect.TypeOf([0]interface{ Execute(delta float64)  }{}).Elem()) {
+			return rtype.MethodByName(`Execute`)
 		}
+		return
 	case "_setup_modification":
-		i, ok := val.(interface{ SetupModification(modification_stack SkeletonModificationStack3D)  })
-		if ok {
-			return i.SetupModification
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetupModification(modification_stack SkeletonModificationStack3D)  }{}).Elem()) {
+			return rtype.MethodByName(`SetupModification`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass SkeletonModification3D) SetEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3D[0], enabled) }
 func (gdClass SkeletonModification3D) GetEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSkeletonModification3D[1]) }
@@ -20430,6 +22021,9 @@ func (SkeletonModification3DCCDIK) class() string { return "SkeletonModification
 func (gdClass SkeletonModification3DCCDIK) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DCCDIK [22]gdnative.Method
+func (gdClass SkeletonModification3DCCDIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DCCDIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DCCDIK[0], target_nodepath) }
 func (gdClass SkeletonModification3DCCDIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification3DCCDIK[1]) }
 func (gdClass SkeletonModification3DCCDIK) SetTipNode(tip_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DCCDIK[2], tip_nodepath) }
@@ -20459,6 +22053,9 @@ func (SkeletonModification3DFABRIK) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification3DFABRIK) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DFABRIK [25]gdnative.Method
+func (gdClass SkeletonModification3DFABRIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DFABRIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DFABRIK[0], target_nodepath) }
 func (gdClass SkeletonModification3DFABRIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification3DFABRIK[1]) }
 func (gdClass SkeletonModification3DFABRIK) SetFabrikDataChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DFABRIK[2], length) }
@@ -20491,6 +22088,9 @@ func (SkeletonModification3DJiggle) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification3DJiggle) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DJiggle [36]gdnative.Method
+func (gdClass SkeletonModification3DJiggle) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DJiggle) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DJiggle[0], target_nodepath) }
 func (gdClass SkeletonModification3DJiggle) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification3DJiggle[1]) }
 func (gdClass SkeletonModification3DJiggle) SetJiggleDataChainLength(length int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DJiggle[2], length) }
@@ -20534,6 +22134,9 @@ func (SkeletonModification3DLookAt) class() string { return "SkeletonModificatio
 func (gdClass SkeletonModification3DLookAt) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DLookAt [12]gdnative.Method
+func (gdClass SkeletonModification3DLookAt) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DLookAt) SetBoneName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DLookAt[0], name) }
 func (gdClass SkeletonModification3DLookAt) GetBoneName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodSkeletonModification3DLookAt[1]) }
 func (gdClass SkeletonModification3DLookAt) SetBoneIndex(bone_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DLookAt[2], bone_idx) }
@@ -20553,6 +22156,9 @@ func (SkeletonModification3DStackHolder) class() string { return "SkeletonModifi
 func (gdClass SkeletonModification3DStackHolder) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DStackHolder [2]gdnative.Method
+func (gdClass SkeletonModification3DStackHolder) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DStackHolder) SetHeldModificationStack(held_modification_stack SkeletonModificationStack3D)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DStackHolder[0], held_modification_stack) }
 func (gdClass SkeletonModification3DStackHolder) GetHeldModificationStack() SkeletonModificationStack3D { return gdnative.Return[SkeletonModificationStack3D](gdnative.Object(gdClass), methodSkeletonModification3DStackHolder[1]) }
 
@@ -20562,6 +22168,9 @@ func (SkeletonModification3DTwoBoneIK) class() string { return "SkeletonModifica
 func (gdClass SkeletonModification3DTwoBoneIK) SkeletonModification3D() SkeletonModification3D { return SkeletonModification3D(gdClass) }
 
 var methodSkeletonModification3DTwoBoneIK [28]gdnative.Method
+func (gdClass SkeletonModification3DTwoBoneIK) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonModification3D().virtual(rtype, name)
+}
 func (gdClass SkeletonModification3DTwoBoneIK) SetTargetNode(target_nodepath NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DTwoBoneIK[0], target_nodepath) }
 func (gdClass SkeletonModification3DTwoBoneIK) GetTargetNode() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodSkeletonModification3DTwoBoneIK[1]) }
 func (gdClass SkeletonModification3DTwoBoneIK) SetUsePoleNode(use_pole_node bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModification3DTwoBoneIK[2], use_pole_node) }
@@ -20597,6 +22206,9 @@ func (SkeletonModificationStack2D) class() string { return "SkeletonModification
 func (gdClass SkeletonModificationStack2D) Resource() Resource { return Resource(gdClass) }
 
 var methodSkeletonModificationStack2D [15]gdnative.Method
+func (gdClass SkeletonModificationStack2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass SkeletonModificationStack2D) Setup()  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack2D[0]) }
 func (gdClass SkeletonModificationStack2D) Execute(delta float64, execution_mode int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack2D[1], delta, execution_mode) }
 func (gdClass SkeletonModificationStack2D) EnableAllModifications(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack2D[2], enabled) }
@@ -20619,6 +22231,9 @@ func (SkeletonModificationStack3D) class() string { return "SkeletonModification
 func (gdClass SkeletonModificationStack3D) Resource() Resource { return Resource(gdClass) }
 
 var methodSkeletonModificationStack3D [15]gdnative.Method
+func (gdClass SkeletonModificationStack3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass SkeletonModificationStack3D) Setup()  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack3D[0]) }
 func (gdClass SkeletonModificationStack3D) Execute(delta float64, execution_mode int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack3D[1], delta, execution_mode) }
 func (gdClass SkeletonModificationStack3D) EnableAllModifications(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonModificationStack3D[2], enabled) }
@@ -20649,6 +22264,9 @@ func (SkeletonProfile) class() string { return "SkeletonProfile\000" }
 func (gdClass SkeletonProfile) Resource() Resource { return Resource(gdClass) }
 
 var methodSkeletonProfile [27]gdnative.Method
+func (gdClass SkeletonProfile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass SkeletonProfile) SetRootBone(bone_name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonProfile[0], bone_name) }
 func (gdClass SkeletonProfile) GetRootBone() string { return gdnative.Return[string](gdnative.Object(gdClass), methodSkeletonProfile[1]) }
 func (gdClass SkeletonProfile) SetScaleBaseBone(bone_name string)  { gdnative.Call(gdnative.Object(gdClass), methodSkeletonProfile[2], bone_name) }
@@ -20682,6 +22300,9 @@ func (SkeletonProfileHumanoid) class() string { return "SkeletonProfileHumanoid\
 
 func (gdClass SkeletonProfileHumanoid) SkeletonProfile() SkeletonProfile { return SkeletonProfile(gdClass) }
 
+func (gdClass SkeletonProfileHumanoid) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SkeletonProfile().virtual(rtype, name)
+}
 
 type Skin gdnative.Object
 func (Skin) class() string { return "Skin\000" }
@@ -20689,6 +22310,9 @@ func (Skin) class() string { return "Skin\000" }
 func (gdClass Skin) Resource() Resource { return Resource(gdClass) }
 
 var methodSkin [11]gdnative.Method
+func (gdClass Skin) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Skin) SetBindCount(bind_count int64)  { gdnative.Call(gdnative.Object(gdClass), methodSkin[0], bind_count) }
 func (gdClass Skin) GetBindCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSkin[1]) }
 func (gdClass Skin) AddBind(bone int64, pose Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodSkin[2], bone, pose) }
@@ -20707,6 +22331,9 @@ func (SkinReference) class() string { return "SkinReference\000" }
 func (gdClass SkinReference) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodSkinReference [2]gdnative.Method
+func (gdClass SkinReference) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass SkinReference) GetSkeleton() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodSkinReference[0]) }
 func (gdClass SkinReference) GetSkin() Skin { return gdnative.Return[Skin](gdnative.Object(gdClass), methodSkinReference[1]) }
 
@@ -20738,6 +22365,9 @@ func (Sky) class() string { return "Sky\000" }
 func (gdClass Sky) Resource() Resource { return Resource(gdClass) }
 
 var methodSky [6]gdnative.Method
+func (gdClass Sky) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Sky) SetRadianceSize(size SkyRadianceSize)  { gdnative.Call(gdnative.Object(gdClass), methodSky[0], size) }
 func (gdClass Sky) GetRadianceSize() SkyRadianceSize { return gdnative.Return[SkyRadianceSize](gdnative.Object(gdClass), methodSky[1]) }
 func (gdClass Sky) SetProcessMode(mode SkyProcessMode)  { gdnative.Call(gdnative.Object(gdClass), methodSky[2], mode) }
@@ -20751,6 +22381,9 @@ func (Slider) class() string { return "Slider\000" }
 func (gdClass Slider) Range() Range { return Range(gdClass) }
 
 var methodSlider [8]gdnative.Method
+func (gdClass Slider) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass Slider) SetTicks(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodSlider[0], count) }
 func (gdClass Slider) GetTicks() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSlider[1]) }
 func (gdClass Slider) GetTicksOnBorders() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSlider[2]) }
@@ -20794,6 +22427,9 @@ func (SliderJoint3D) class() string { return "SliderJoint3D\000" }
 func (gdClass SliderJoint3D) Joint3D() Joint3D { return Joint3D(gdClass) }
 
 var methodSliderJoint3D [2]gdnative.Method
+func (gdClass SliderJoint3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Joint3D().virtual(rtype, name)
+}
 func (gdClass SliderJoint3D) SetParam(param SliderJoint3DParam, value float64)  { gdnative.Call(gdnative.Object(gdClass), methodSliderJoint3D[0], param, value) }
 func (gdClass SliderJoint3D) GetParam(param SliderJoint3DParam) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSliderJoint3D[1], param) }
 
@@ -20810,6 +22446,9 @@ func (SoftDynamicBody3D) class() string { return "SoftDynamicBody3D\000" }
 func (gdClass SoftDynamicBody3D) MeshInstance3D() MeshInstance3D { return MeshInstance3D(gdClass) }
 
 var methodSoftDynamicBody3D [33]gdnative.Method
+func (gdClass SoftDynamicBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MeshInstance3D().virtual(rtype, name)
+}
 func (gdClass SoftDynamicBody3D) GetPhysicsRid() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodSoftDynamicBody3D[0]) }
 func (gdClass SoftDynamicBody3D) SetCollisionMask(collision_mask int64)  { gdnative.Call(gdnative.Object(gdClass), methodSoftDynamicBody3D[1], collision_mask) }
 func (gdClass SoftDynamicBody3D) GetCollisionMask() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSoftDynamicBody3D[2]) }
@@ -20850,6 +22489,9 @@ func (SphereMesh) class() string { return "SphereMesh\000" }
 func (gdClass SphereMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodSphereMesh [10]gdnative.Method
+func (gdClass SphereMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass SphereMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereMesh[0], radius) }
 func (gdClass SphereMesh) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSphereMesh[1]) }
 func (gdClass SphereMesh) SetHeight(height float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereMesh[2], height) }
@@ -20867,6 +22509,9 @@ func (SphereOccluder3D) class() string { return "SphereOccluder3D\000" }
 func (gdClass SphereOccluder3D) Occluder3D() Occluder3D { return Occluder3D(gdClass) }
 
 var methodSphereOccluder3D [2]gdnative.Method
+func (gdClass SphereOccluder3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Occluder3D().virtual(rtype, name)
+}
 func (gdClass SphereOccluder3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereOccluder3D[0], radius) }
 func (gdClass SphereOccluder3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSphereOccluder3D[1]) }
 
@@ -20876,6 +22521,9 @@ func (SphereShape3D) class() string { return "SphereShape3D\000" }
 func (gdClass SphereShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodSphereShape3D [2]gdnative.Method
+func (gdClass SphereShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass SphereShape3D) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodSphereShape3D[0], radius) }
 func (gdClass SphereShape3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSphereShape3D[1]) }
 
@@ -20885,6 +22533,9 @@ func (SpinBox) class() string { return "SpinBox\000" }
 func (gdClass SpinBox) Range() Range { return Range(gdClass) }
 
 var methodSpinBox [14]gdnative.Method
+func (gdClass SpinBox) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass SpinBox) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodSpinBox[0], alignment) }
 func (gdClass SpinBox) GetHorizontalAlignment() HorizontalAlignment { return gdnative.Return[HorizontalAlignment](gdnative.Object(gdClass), methodSpinBox[1]) }
 func (gdClass SpinBox) SetSuffix(suffix string)  { gdnative.Call(gdnative.Object(gdClass), methodSpinBox[2], suffix) }
@@ -20914,6 +22565,9 @@ func (SplitContainer) class() string { return "SplitContainer\000" }
 func (gdClass SplitContainer) Container() Container { return Container(gdClass) }
 
 var methodSplitContainer [7]gdnative.Method
+func (gdClass SplitContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass SplitContainer) SetSplitOffset(offset int64)  { gdnative.Call(gdnative.Object(gdClass), methodSplitContainer[0], offset) }
 func (gdClass SplitContainer) GetSplitOffset() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodSplitContainer[1]) }
 func (gdClass SplitContainer) ClampSplitOffset()  { gdnative.Call(gdnative.Object(gdClass), methodSplitContainer[2]) }
@@ -20927,6 +22581,9 @@ func (SpotLight3D) class() string { return "SpotLight3D\000" }
 
 func (gdClass SpotLight3D) Light3D() Light3D { return Light3D(gdClass) }
 
+func (gdClass SpotLight3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Light3D().virtual(rtype, name)
+}
 
 type SpringArm3D gdnative.Object
 func (SpringArm3D) class() string { return "SpringArm3D\000" }
@@ -20934,6 +22591,9 @@ func (SpringArm3D) class() string { return "SpringArm3D\000" }
 func (gdClass SpringArm3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodSpringArm3D [12]gdnative.Method
+func (gdClass SpringArm3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass SpringArm3D) GetHitLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSpringArm3D[0]) }
 func (gdClass SpringArm3D) SetLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodSpringArm3D[1], length) }
 func (gdClass SpringArm3D) GetLength() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodSpringArm3D[2]) }
@@ -20953,6 +22613,9 @@ func (Sprite2D) class() string { return "Sprite2D\000" }
 func (gdClass Sprite2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodSprite2D [26]gdnative.Method
+func (gdClass Sprite2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass Sprite2D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodSprite2D[0], texture) }
 func (gdClass Sprite2D) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodSprite2D[1]) }
 func (gdClass Sprite2D) SetCentered(centered bool)  { gdnative.Call(gdnative.Object(gdClass), methodSprite2D[2], centered) }
@@ -20986,6 +22649,9 @@ func (Sprite3D) class() string { return "Sprite3D\000" }
 func (gdClass Sprite3D) SpriteBase3D() SpriteBase3D { return SpriteBase3D(gdClass) }
 
 var methodSprite3D [14]gdnative.Method
+func (gdClass Sprite3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SpriteBase3D().virtual(rtype, name)
+}
 func (gdClass Sprite3D) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodSprite3D[0], texture) }
 func (gdClass Sprite3D) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodSprite3D[1]) }
 func (gdClass Sprite3D) SetRegionEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodSprite3D[2], enabled) }
@@ -21026,6 +22692,9 @@ func (SpriteBase3D) class() string { return "SpriteBase3D\000" }
 func (gdClass SpriteBase3D) GeometryInstance3D() GeometryInstance3D { return GeometryInstance3D(gdClass) }
 
 var methodSpriteBase3D [26]gdnative.Method
+func (gdClass SpriteBase3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.GeometryInstance3D().virtual(rtype, name)
+}
 func (gdClass SpriteBase3D) SetCentered(centered bool)  { gdnative.Call(gdnative.Object(gdClass), methodSpriteBase3D[0], centered) }
 func (gdClass SpriteBase3D) IsCentered() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSpriteBase3D[1]) }
 func (gdClass SpriteBase3D) SetOffset(offset Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodSpriteBase3D[2], offset) }
@@ -21059,6 +22728,9 @@ func (SpriteFrames) class() string { return "SpriteFrames\000" }
 func (gdClass SpriteFrames) Resource() Resource { return Resource(gdClass) }
 
 var methodSpriteFrames [16]gdnative.Method
+func (gdClass SpriteFrames) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass SpriteFrames) AddAnimation(anim string)  { gdnative.Call(gdnative.Object(gdClass), methodSpriteFrames[0], anim) }
 func (gdClass SpriteFrames) HasAnimation(anim string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSpriteFrames[1], anim) }
 func (gdClass SpriteFrames) RemoveAnimation(anim string)  { gdnative.Call(gdnative.Object(gdClass), methodSpriteFrames[2], anim) }
@@ -21081,6 +22753,9 @@ func (StandardMaterial3D) class() string { return "StandardMaterial3D\000" }
 
 func (gdClass StandardMaterial3D) BaseMaterial3D() BaseMaterial3D { return BaseMaterial3D(gdClass) }
 
+func (gdClass StandardMaterial3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BaseMaterial3D().virtual(rtype, name)
+}
 
 type StaticBody2D gdnative.Object
 func (StaticBody2D) class() string { return "StaticBody2D\000" }
@@ -21088,6 +22763,9 @@ func (StaticBody2D) class() string { return "StaticBody2D\000" }
 func (gdClass StaticBody2D) PhysicsBody2D() PhysicsBody2D { return PhysicsBody2D(gdClass) }
 
 var methodStaticBody2D [6]gdnative.Method
+func (gdClass StaticBody2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsBody2D().virtual(rtype, name)
+}
 func (gdClass StaticBody2D) SetConstantLinearVelocity(vel Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody2D[0], vel) }
 func (gdClass StaticBody2D) SetConstantAngularVelocity(vel float64)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody2D[1], vel) }
 func (gdClass StaticBody2D) GetConstantLinearVelocity() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodStaticBody2D[2]) }
@@ -21101,6 +22779,9 @@ func (StaticBody3D) class() string { return "StaticBody3D\000" }
 func (gdClass StaticBody3D) PhysicsBody3D() PhysicsBody3D { return PhysicsBody3D(gdClass) }
 
 var methodStaticBody3D [6]gdnative.Method
+func (gdClass StaticBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PhysicsBody3D().virtual(rtype, name)
+}
 func (gdClass StaticBody3D) SetConstantLinearVelocity(vel Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody3D[0], vel) }
 func (gdClass StaticBody3D) SetConstantAngularVelocity(vel Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodStaticBody3D[1], vel) }
 func (gdClass StaticBody3D) GetConstantLinearVelocity() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodStaticBody3D[2]) }
@@ -21114,6 +22795,9 @@ func (StreamPeer) class() string { return "StreamPeer\000" }
 func (gdClass StreamPeer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodStreamPeer [33]gdnative.Method
+func (gdClass StreamPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass StreamPeer) PutData(data []byte) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeer[0], data) }
 func (gdClass StreamPeer) PutPartialData(data []byte) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodStreamPeer[1], data) }
 func (gdClass StreamPeer) GetData(bytes int64) Array { return gdnative.Return[Array](gdnative.Object(gdClass), methodStreamPeer[2], bytes) }
@@ -21154,6 +22838,9 @@ func (StreamPeerBuffer) class() string { return "StreamPeerBuffer\000" }
 func (gdClass StreamPeerBuffer) StreamPeer() StreamPeer { return StreamPeer(gdClass) }
 
 var methodStreamPeerBuffer [8]gdnative.Method
+func (gdClass StreamPeerBuffer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StreamPeer().virtual(rtype, name)
+}
 func (gdClass StreamPeerBuffer) Seek(position int64)  { gdnative.Call(gdnative.Object(gdClass), methodStreamPeerBuffer[0], position) }
 func (gdClass StreamPeerBuffer) GetSize() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodStreamPeerBuffer[1]) }
 func (gdClass StreamPeerBuffer) GetPosition() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodStreamPeerBuffer[2]) }
@@ -21168,34 +22855,35 @@ func (StreamPeerExtension) class() string { return "StreamPeerExtension\000" }
 
 func (gdClass StreamPeerExtension) StreamPeer() StreamPeer { return StreamPeer(gdClass) }
 
-func (gdClass StreamPeerExtension) virtual(val any, name string) any {	switch name {
+func (gdClass StreamPeerExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_data":
-		i, ok := val.(interface{ GetData(r_buffer []byte, r_bytes int64, r_received *int32) int64 })
-		if ok {
-			return i.GetData
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetData(r_buffer []byte, r_bytes int64, r_received *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetData`)
 		}
+		return
 	case "_get_partial_data":
-		i, ok := val.(interface{ GetPartialData(r_buffer []byte, r_bytes int64, r_received *int32) int64 })
-		if ok {
-			return i.GetPartialData
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPartialData(r_buffer []byte, r_bytes int64, r_received *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPartialData`)
 		}
+		return
 	case "_put_data":
-		i, ok := val.(interface{ PutData(p_data []byte, p_bytes int64, r_sent *int32) int64 })
-		if ok {
-			return i.PutData
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutData(p_data []byte, p_bytes int64, r_sent *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutData`)
 		}
+		return
 	case "_put_partial_data":
-		i, ok := val.(interface{ PutPartialData(p_data []byte, p_bytes int64, r_sent *int32) int64 })
-		if ok {
-			return i.PutPartialData
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutPartialData(p_data []byte, p_bytes int64, r_sent *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutPartialData`)
 		}
+		return
 	case "_get_available_bytes":
-		i, ok := val.(interface{ GetAvailableBytes() int64 })
-		if ok {
-			return i.GetAvailableBytes
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAvailableBytes() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetAvailableBytes`)
 		}
+		return
 	}
-	return nil
+	return gdClass.StreamPeer().virtual(rtype, name)
 }
 
 type StreamPeerSSLStatus int64
@@ -21214,6 +22902,9 @@ func (StreamPeerSSL) class() string { return "StreamPeerSSL\000" }
 func (gdClass StreamPeerSSL) StreamPeer() StreamPeer { return StreamPeer(gdClass) }
 
 var methodStreamPeerSSL [8]gdnative.Method
+func (gdClass StreamPeerSSL) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StreamPeer().virtual(rtype, name)
+}
 func (gdClass StreamPeerSSL) Poll()  { gdnative.Call(gdnative.Object(gdClass), methodStreamPeerSSL[0]) }
 func (gdClass StreamPeerSSL) AcceptStream(stream StreamPeer, private_key CryptoKey, certificate X509Certificate, chain X509Certificate) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeerSSL[1], stream, private_key, certificate, chain) }
 func (gdClass StreamPeerSSL) ConnectToStream(stream StreamPeer, validate_certs bool, for_hostname string, valid_certificate X509Certificate) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeerSSL[2], stream, validate_certs, for_hostname, valid_certificate) }
@@ -21238,6 +22929,9 @@ func (StreamPeerTCP) class() string { return "StreamPeerTCP\000" }
 func (gdClass StreamPeerTCP) StreamPeer() StreamPeer { return StreamPeer(gdClass) }
 
 var methodStreamPeerTCP [9]gdnative.Method
+func (gdClass StreamPeerTCP) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StreamPeer().virtual(rtype, name)
+}
 func (gdClass StreamPeerTCP) Bind(port int64, host string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeerTCP[0], port, host) }
 func (gdClass StreamPeerTCP) ConnectToHost(host string, port int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeerTCP[1], host, port) }
 func (gdClass StreamPeerTCP) Poll() error { return gdnative.Return[error](gdnative.Object(gdClass), methodStreamPeerTCP[2]) }
@@ -21254,34 +22948,35 @@ func (StyleBox) class() string { return "StyleBox\000" }
 func (gdClass StyleBox) Resource() Resource { return Resource(gdClass) }
 
 var methodStyleBox [9]gdnative.Method
-func (gdClass StyleBox) virtual(val any, name string) any {	switch name {
+func (gdClass StyleBox) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_style_margin":
-		i, ok := val.(interface{ GetStyleMargin(side Side) float64 })
-		if ok {
-			return i.GetStyleMargin
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetStyleMargin(side Side) float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetStyleMargin`)
 		}
+		return
 	case "_test_mask":
-		i, ok := val.(interface{ TestMask(point Vector2, rect Rect2) bool })
-		if ok {
-			return i.TestMask
+		if rtype.Implements(reflect.TypeOf([0]interface{ TestMask(point Vector2, rect Rect2) bool }{}).Elem()) {
+			return rtype.MethodByName(`TestMask`)
 		}
+		return
 	case "_get_center_size":
-		i, ok := val.(interface{ GetCenterSize() Vector2 })
-		if ok {
-			return i.GetCenterSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCenterSize() Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`GetCenterSize`)
 		}
+		return
 	case "_get_draw_rect":
-		i, ok := val.(interface{ GetDrawRect(rect Rect2) Rect2 })
-		if ok {
-			return i.GetDrawRect
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDrawRect(rect Rect2) Rect2 }{}).Elem()) {
+			return rtype.MethodByName(`GetDrawRect`)
 		}
+		return
 	case "_draw":
-		i, ok := val.(interface{ Draw(to_canvas_item RID, rect Rect2)  })
-		if ok {
-			return i.Draw
+		if rtype.Implements(reflect.TypeOf([0]interface{ Draw(to_canvas_item RID, rect Rect2)  }{}).Elem()) {
+			return rtype.MethodByName(`Draw`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass StyleBox) TestMask(point Vector2, rect Rect2) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodStyleBox[0], point, rect) }
 func (gdClass StyleBox) SetDefaultMargin(margin Side, offset float64)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBox[1], margin, offset) }
@@ -21298,6 +22993,9 @@ func (StyleBoxEmpty) class() string { return "StyleBoxEmpty\000" }
 
 func (gdClass StyleBoxEmpty) StyleBox() StyleBox { return StyleBox(gdClass) }
 
+func (gdClass StyleBoxEmpty) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StyleBox().virtual(rtype, name)
+}
 
 type StyleBoxFlat gdnative.Object
 func (StyleBoxFlat) class() string { return "StyleBoxFlat\000" }
@@ -21305,6 +23003,9 @@ func (StyleBoxFlat) class() string { return "StyleBoxFlat\000" }
 func (gdClass StyleBoxFlat) StyleBox() StyleBox { return StyleBox(gdClass) }
 
 var methodStyleBoxFlat [34]gdnative.Method
+func (gdClass StyleBoxFlat) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StyleBox().virtual(rtype, name)
+}
 func (gdClass StyleBoxFlat) SetBgColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxFlat[0], color) }
 func (gdClass StyleBoxFlat) GetBgColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodStyleBoxFlat[1]) }
 func (gdClass StyleBoxFlat) SetBorderColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxFlat[2], color) }
@@ -21346,6 +23047,9 @@ func (StyleBoxLine) class() string { return "StyleBoxLine\000" }
 func (gdClass StyleBoxLine) StyleBox() StyleBox { return StyleBox(gdClass) }
 
 var methodStyleBoxLine [10]gdnative.Method
+func (gdClass StyleBoxLine) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StyleBox().virtual(rtype, name)
+}
 func (gdClass StyleBoxLine) SetColor(color Color)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxLine[0], color) }
 func (gdClass StyleBoxLine) GetColor() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodStyleBoxLine[1]) }
 func (gdClass StyleBoxLine) SetThickness(thickness int64)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxLine[2], thickness) }
@@ -21371,6 +23075,9 @@ func (StyleBoxTexture) class() string { return "StyleBoxTexture\000" }
 func (gdClass StyleBoxTexture) StyleBox() StyleBox { return StyleBox(gdClass) }
 
 var methodStyleBoxTexture [18]gdnative.Method
+func (gdClass StyleBoxTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.StyleBox().virtual(rtype, name)
+}
 func (gdClass StyleBoxTexture) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxTexture[0], texture) }
 func (gdClass StyleBoxTexture) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodStyleBoxTexture[1]) }
 func (gdClass StyleBoxTexture) SetMarginSize(margin Side, size float64)  { gdnative.Call(gdnative.Object(gdClass), methodStyleBoxTexture[2], margin, size) }
@@ -21414,6 +23121,9 @@ func (SubViewport) class() string { return "SubViewport\000" }
 func (gdClass SubViewport) Viewport() Viewport { return Viewport(gdClass) }
 
 var methodSubViewport [10]gdnative.Method
+func (gdClass SubViewport) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Viewport().virtual(rtype, name)
+}
 func (gdClass SubViewport) SetSize(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodSubViewport[0], size) }
 func (gdClass SubViewport) GetSize() Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodSubViewport[1]) }
 func (gdClass SubViewport) SetSize2dOverride(size Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodSubViewport[2], size) }
@@ -21431,6 +23141,9 @@ func (SubViewportContainer) class() string { return "SubViewportContainer\000" }
 func (gdClass SubViewportContainer) Container() Container { return Container(gdClass) }
 
 var methodSubViewportContainer [4]gdnative.Method
+func (gdClass SubViewportContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass SubViewportContainer) SetStretch(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodSubViewportContainer[0], enable) }
 func (gdClass SubViewportContainer) IsStretchEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSubViewportContainer[1]) }
 func (gdClass SubViewportContainer) SetStretchShrink(amount int64)  { gdnative.Call(gdnative.Object(gdClass), methodSubViewportContainer[2], amount) }
@@ -21463,6 +23176,9 @@ func (SurfaceTool) class() string { return "SurfaceTool\000" }
 func (gdClass SurfaceTool) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodSurfaceTool [32]gdnative.Method
+func (gdClass SurfaceTool) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass SurfaceTool) SetSkinWeightCount(count SurfaceToolSkinWeightCount)  { gdnative.Call(gdnative.Object(gdClass), methodSurfaceTool[0], count) }
 func (gdClass SurfaceTool) GetSkinWeightCount() SurfaceToolSkinWeightCount { return gdnative.Return[SurfaceToolSkinWeightCount](gdnative.Object(gdClass), methodSurfaceTool[1]) }
 func (gdClass SurfaceTool) SetCustomFormat(channel_index int64, format SurfaceToolCustomFormat)  { gdnative.Call(gdnative.Object(gdClass), methodSurfaceTool[2], channel_index, format) }
@@ -21502,24 +23218,25 @@ func (SyntaxHighlighter) class() string { return "SyntaxHighlighter\000" }
 func (gdClass SyntaxHighlighter) Resource() Resource { return Resource(gdClass) }
 
 var methodSyntaxHighlighter [4]gdnative.Method
-func (gdClass SyntaxHighlighter) virtual(val any, name string) any {	switch name {
+func (gdClass SyntaxHighlighter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_line_syntax_highlighting":
-		i, ok := val.(interface{ GetLineSyntaxHighlighting(line int64) Dictionary })
-		if ok {
-			return i.GetLineSyntaxHighlighting
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLineSyntaxHighlighting(line int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`GetLineSyntaxHighlighting`)
 		}
+		return
 	case "_clear_highlighting_cache":
-		i, ok := val.(interface{ ClearHighlightingCache()  })
-		if ok {
-			return i.ClearHighlightingCache
+		if rtype.Implements(reflect.TypeOf([0]interface{ ClearHighlightingCache()  }{}).Elem()) {
+			return rtype.MethodByName(`ClearHighlightingCache`)
 		}
+		return
 	case "_update_cache":
-		i, ok := val.(interface{ UpdateCache()  })
-		if ok {
-			return i.UpdateCache
+		if rtype.Implements(reflect.TypeOf([0]interface{ UpdateCache()  }{}).Elem()) {
+			return rtype.MethodByName(`UpdateCache`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass SyntaxHighlighter) GetLineSyntaxHighlighting(line int64) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodSyntaxHighlighter[0], line) }
 func (gdClass SyntaxHighlighter) UpdateCache()  { gdnative.Call(gdnative.Object(gdClass), methodSyntaxHighlighter[1]) }
@@ -21532,6 +23249,9 @@ func (SystemFont) class() string { return "SystemFont\000" }
 func (gdClass SystemFont) Font() Font { return Font(gdClass) }
 
 var methodSystemFont [17]gdnative.Method
+func (gdClass SystemFont) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Font().virtual(rtype, name)
+}
 func (gdClass SystemFont) SetAntialiased(antialiased bool)  { gdnative.Call(gdnative.Object(gdClass), methodSystemFont[0], antialiased) }
 func (gdClass SystemFont) IsAntialiased() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodSystemFont[1]) }
 func (gdClass SystemFont) SetGenerateMipmaps(generate_mipmaps bool)  { gdnative.Call(gdnative.Object(gdClass), methodSystemFont[2], generate_mipmaps) }
@@ -21556,6 +23276,9 @@ func (TCPServer) class() string { return "TCPServer\000" }
 func (gdClass TCPServer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodTCPServer [6]gdnative.Method
+func (gdClass TCPServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass TCPServer) Listen(port int64, bind_address string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodTCPServer[0], port, bind_address) }
 func (gdClass TCPServer) IsConnectionAvailable() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTCPServer[1]) }
 func (gdClass TCPServer) IsListening() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTCPServer[2]) }
@@ -21587,6 +23310,9 @@ func (TabBar) class() string { return "TabBar\000" }
 func (gdClass TabBar) Control() Control { return Control(gdClass) }
 
 var methodTabBar [45]gdnative.Method
+func (gdClass TabBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass TabBar) SetTabCount(count int64)  { gdnative.Call(gdnative.Object(gdClass), methodTabBar[0], count) }
 func (gdClass TabBar) GetTabCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTabBar[1]) }
 func (gdClass TabBar) SetCurrentTab(tab_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodTabBar[2], tab_idx) }
@@ -21639,6 +23365,9 @@ func (TabContainer) class() string { return "TabContainer\000" }
 func (gdClass TabContainer) Container() Container { return Container(gdClass) }
 
 var methodTabContainer [34]gdnative.Method
+func (gdClass TabContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Container().virtual(rtype, name)
+}
 func (gdClass TabContainer) GetTabCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTabContainer[0]) }
 func (gdClass TabContainer) SetCurrentTab(tab_idx int64)  { gdnative.Call(gdnative.Object(gdClass), methodTabContainer[1], tab_idx) }
 func (gdClass TabContainer) GetCurrentTab() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTabContainer[2]) }
@@ -21754,39 +23483,40 @@ func (TextEdit) class() string { return "TextEdit\000" }
 func (gdClass TextEdit) Control() Control { return Control(gdClass) }
 
 var methodTextEdit [189]gdnative.Method
-func (gdClass TextEdit) virtual(val any, name string) any {	switch name {
+func (gdClass TextEdit) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_handle_unicode_input":
-		i, ok := val.(interface{ HandleUnicodeInput(unicode_char int64)  })
-		if ok {
-			return i.HandleUnicodeInput
+		if rtype.Implements(reflect.TypeOf([0]interface{ HandleUnicodeInput(unicode_char int64)  }{}).Elem()) {
+			return rtype.MethodByName(`HandleUnicodeInput`)
 		}
+		return
 	case "_backspace":
-		i, ok := val.(interface{ Backspace()  })
-		if ok {
-			return i.Backspace
+		if rtype.Implements(reflect.TypeOf([0]interface{ Backspace()  }{}).Elem()) {
+			return rtype.MethodByName(`Backspace`)
 		}
+		return
 	case "_cut":
-		i, ok := val.(interface{ Cut()  })
-		if ok {
-			return i.Cut
+		if rtype.Implements(reflect.TypeOf([0]interface{ Cut()  }{}).Elem()) {
+			return rtype.MethodByName(`Cut`)
 		}
+		return
 	case "_copy":
-		i, ok := val.(interface{ Copy()  })
-		if ok {
-			return i.Copy
+		if rtype.Implements(reflect.TypeOf([0]interface{ Copy()  }{}).Elem()) {
+			return rtype.MethodByName(`Copy`)
 		}
+		return
 	case "_paste":
-		i, ok := val.(interface{ Paste()  })
-		if ok {
-			return i.Paste
+		if rtype.Implements(reflect.TypeOf([0]interface{ Paste()  }{}).Elem()) {
+			return rtype.MethodByName(`Paste`)
 		}
+		return
 	case "_paste_primary_clipboard":
-		i, ok := val.(interface{ PastePrimaryClipboard()  })
-		if ok {
-			return i.PastePrimaryClipboard
+		if rtype.Implements(reflect.TypeOf([0]interface{ PastePrimaryClipboard()  }{}).Elem()) {
+			return rtype.MethodByName(`PastePrimaryClipboard`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Control().virtual(rtype, name)
 }
 func (gdClass TextEdit) HasImeText() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTextEdit[0]) }
 func (gdClass TextEdit) SetEditable(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodTextEdit[1], enabled) }
@@ -21984,6 +23714,9 @@ func (TextLine) class() string { return "TextLine\000" }
 func (gdClass TextLine) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodTextLine [34]gdnative.Method
+func (gdClass TextLine) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass TextLine) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTextLine[0]) }
 func (gdClass TextLine) SetDirection(direction TextServerDirection)  { gdnative.Call(gdnative.Object(gdClass), methodTextLine[1], direction) }
 func (gdClass TextLine) GetDirection() TextServerDirection { return gdnative.Return[TextServerDirection](gdnative.Object(gdClass), methodTextLine[2]) }
@@ -22025,6 +23758,9 @@ func (TextMesh) class() string { return "TextMesh\000" }
 func (gdClass TextMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodTextMesh [26]gdnative.Method
+func (gdClass TextMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass TextMesh) SetHorizontalAlignment(alignment HorizontalAlignment)  { gdnative.Call(gdnative.Object(gdClass), methodTextMesh[0], alignment) }
 func (gdClass TextMesh) GetHorizontalAlignment() HorizontalAlignment { return gdnative.Return[HorizontalAlignment](gdnative.Object(gdClass), methodTextMesh[1]) }
 func (gdClass TextMesh) SetText(text string)  { gdnative.Call(gdnative.Object(gdClass), methodTextMesh[2], text) }
@@ -22058,6 +23794,9 @@ func (TextParagraph) class() string { return "TextParagraph\000" }
 func (gdClass TextParagraph) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodTextParagraph [54]gdnative.Method
+func (gdClass TextParagraph) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass TextParagraph) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTextParagraph[0]) }
 func (gdClass TextParagraph) SetDirection(direction TextServerDirection)  { gdnative.Call(gdnative.Object(gdClass), methodTextParagraph[1], direction) }
 func (gdClass TextParagraph) GetDirection() TextServerDirection { return gdnative.Return[TextServerDirection](gdnative.Object(gdClass), methodTextParagraph[2]) }
@@ -22289,6 +24028,9 @@ func (TextServer) class() string { return "TextServer\000" }
 func (gdClass TextServer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodTextServer [184]gdnative.Method
+func (gdClass TextServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass TextServer) HasFeature(feature TextServerFeature) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTextServer[0], feature) }
 func (gdClass TextServer) GetName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodTextServer[1]) }
 func (gdClass TextServer) GetFeatures() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTextServer[2]) }
@@ -22479,956 +24221,963 @@ func (TextServerAdvanced) class() string { return "TextServerAdvanced\000" }
 
 func (gdClass TextServerAdvanced) TextServerExtension() TextServerExtension { return TextServerExtension(gdClass) }
 
+func (gdClass TextServerAdvanced) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TextServerExtension().virtual(rtype, name)
+}
 
 type TextServerDummy gdnative.Object
 func (TextServerDummy) class() string { return "TextServerDummy\000" }
 
 func (gdClass TextServerDummy) TextServerExtension() TextServerExtension { return TextServerExtension(gdClass) }
 
+func (gdClass TextServerDummy) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TextServerExtension().virtual(rtype, name)
+}
 
 type TextServerExtension gdnative.Object
 func (TextServerExtension) class() string { return "TextServerExtension\000" }
 
 func (gdClass TextServerExtension) TextServer() TextServer { return TextServer(gdClass) }
 
-func (gdClass TextServerExtension) virtual(val any, name string) any {	switch name {
+func (gdClass TextServerExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "has_feature":
-		i, ok := val.(interface{ HasFeature(feature TextServerFeature) bool })
-		if ok {
-			return i.HasFeature
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasFeature(feature TextServerFeature) bool }{}).Elem()) {
+			return rtype.MethodByName(`HasFeature`)
 		}
+		return
 	case "get_name":
-		i, ok := val.(interface{ GetName() string })
-		if ok {
-			return i.GetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetName`)
 		}
+		return
 	case "get_features":
-		i, ok := val.(interface{ GetFeatures() int64 })
-		if ok {
-			return i.GetFeatures
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetFeatures() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetFeatures`)
 		}
+		return
 	case "free_rid":
-		i, ok := val.(interface{ FreeRid(rid RID)  })
-		if ok {
-			return i.FreeRid
+		if rtype.Implements(reflect.TypeOf([0]interface{ FreeRid(rid RID)  }{}).Elem()) {
+			return rtype.MethodByName(`FreeRid`)
 		}
+		return
 	case "has":
-		i, ok := val.(interface{ Has(rid RID) bool })
-		if ok {
-			return i.Has
+		if rtype.Implements(reflect.TypeOf([0]interface{ Has(rid RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`Has`)
 		}
+		return
 	case "load_support_data":
-		i, ok := val.(interface{ LoadSupportData(filename string) bool })
-		if ok {
-			return i.LoadSupportData
+		if rtype.Implements(reflect.TypeOf([0]interface{ LoadSupportData(filename string) bool }{}).Elem()) {
+			return rtype.MethodByName(`LoadSupportData`)
 		}
+		return
 	case "get_support_data_filename":
-		i, ok := val.(interface{ GetSupportDataFilename() string })
-		if ok {
-			return i.GetSupportDataFilename
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSupportDataFilename() string }{}).Elem()) {
+			return rtype.MethodByName(`GetSupportDataFilename`)
 		}
+		return
 	case "get_support_data_info":
-		i, ok := val.(interface{ GetSupportDataInfo() string })
-		if ok {
-			return i.GetSupportDataInfo
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSupportDataInfo() string }{}).Elem()) {
+			return rtype.MethodByName(`GetSupportDataInfo`)
 		}
+		return
 	case "save_support_data":
-		i, ok := val.(interface{ SaveSupportData(filename string) bool })
-		if ok {
-			return i.SaveSupportData
+		if rtype.Implements(reflect.TypeOf([0]interface{ SaveSupportData(filename string) bool }{}).Elem()) {
+			return rtype.MethodByName(`SaveSupportData`)
 		}
+		return
 	case "is_locale_right_to_left":
-		i, ok := val.(interface{ IsLocaleRightToLeft(locale string) bool })
-		if ok {
-			return i.IsLocaleRightToLeft
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsLocaleRightToLeft(locale string) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsLocaleRightToLeft`)
 		}
+		return
 	case "name_to_tag":
-		i, ok := val.(interface{ NameToTag(name string) int64 })
-		if ok {
-			return i.NameToTag
+		if rtype.Implements(reflect.TypeOf([0]interface{ NameToTag(name string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`NameToTag`)
 		}
+		return
 	case "tag_to_name":
-		i, ok := val.(interface{ TagToName(tag int64) string })
-		if ok {
-			return i.TagToName
+		if rtype.Implements(reflect.TypeOf([0]interface{ TagToName(tag int64) string }{}).Elem()) {
+			return rtype.MethodByName(`TagToName`)
 		}
+		return
 	case "create_font":
-		i, ok := val.(interface{ CreateFont() RID })
-		if ok {
-			return i.CreateFont
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateFont() RID }{}).Elem()) {
+			return rtype.MethodByName(`CreateFont`)
 		}
+		return
 	case "font_set_data":
-		i, ok := val.(interface{ FontSetData(font_rid RID, data []byte)  })
-		if ok {
-			return i.FontSetData
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetData(font_rid RID, data []byte)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetData`)
 		}
+		return
 	case "font_set_data_ptr":
-		i, ok := val.(interface{ FontSetDataPtr(font_rid RID, data_ptr []byte, data_size int64)  })
-		if ok {
-			return i.FontSetDataPtr
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetDataPtr(font_rid RID, data_ptr []byte, data_size int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetDataPtr`)
 		}
+		return
 	case "font_set_face_index":
-		i, ok := val.(interface{ FontSetFaceIndex(font_rid RID, face_index int64)  })
-		if ok {
-			return i.FontSetFaceIndex
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetFaceIndex(font_rid RID, face_index int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetFaceIndex`)
 		}
+		return
 	case "font_get_face_index":
-		i, ok := val.(interface{ FontGetFaceIndex(font_rid RID) int64 })
-		if ok {
-			return i.FontGetFaceIndex
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetFaceIndex(font_rid RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetFaceIndex`)
 		}
+		return
 	case "font_get_face_count":
-		i, ok := val.(interface{ FontGetFaceCount(font_rid RID) int64 })
-		if ok {
-			return i.FontGetFaceCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetFaceCount(font_rid RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetFaceCount`)
 		}
+		return
 	case "font_set_style":
-		i, ok := val.(interface{ FontSetStyle(font_rid RID, style TextServerFontStyle)  })
-		if ok {
-			return i.FontSetStyle
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetStyle(font_rid RID, style TextServerFontStyle)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetStyle`)
 		}
+		return
 	case "font_get_style":
-		i, ok := val.(interface{ FontGetStyle(font_rid RID) TextServerFontStyle })
-		if ok {
-			return i.FontGetStyle
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetStyle(font_rid RID) TextServerFontStyle }{}).Elem()) {
+			return rtype.MethodByName(`FontGetStyle`)
 		}
+		return
 	case "font_set_name":
-		i, ok := val.(interface{ FontSetName(font_rid RID, name string)  })
-		if ok {
-			return i.FontSetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetName(font_rid RID, name string)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetName`)
 		}
+		return
 	case "font_get_name":
-		i, ok := val.(interface{ FontGetName(font_rid RID) string })
-		if ok {
-			return i.FontGetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetName(font_rid RID) string }{}).Elem()) {
+			return rtype.MethodByName(`FontGetName`)
 		}
+		return
 	case "font_set_style_name":
-		i, ok := val.(interface{ FontSetStyleName(font_rid RID, name_style string)  })
-		if ok {
-			return i.FontSetStyleName
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetStyleName(font_rid RID, name_style string)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetStyleName`)
 		}
+		return
 	case "font_get_style_name":
-		i, ok := val.(interface{ FontGetStyleName(font_rid RID) string })
-		if ok {
-			return i.FontGetStyleName
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetStyleName(font_rid RID) string }{}).Elem()) {
+			return rtype.MethodByName(`FontGetStyleName`)
 		}
+		return
 	case "font_set_antialiased":
-		i, ok := val.(interface{ FontSetAntialiased(font_rid RID, antialiased bool)  })
-		if ok {
-			return i.FontSetAntialiased
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetAntialiased(font_rid RID, antialiased bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetAntialiased`)
 		}
+		return
 	case "font_is_antialiased":
-		i, ok := val.(interface{ FontIsAntialiased(font_rid RID) bool })
-		if ok {
-			return i.FontIsAntialiased
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontIsAntialiased(font_rid RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontIsAntialiased`)
 		}
+		return
 	case "font_set_generate_mipmaps":
-		i, ok := val.(interface{ FontSetGenerateMipmaps(font_rid RID, generate_mipmaps bool)  })
-		if ok {
-			return i.FontSetGenerateMipmaps
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGenerateMipmaps(font_rid RID, generate_mipmaps bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGenerateMipmaps`)
 		}
+		return
 	case "font_get_generate_mipmaps":
-		i, ok := val.(interface{ FontGetGenerateMipmaps(font_rid RID) bool })
-		if ok {
-			return i.FontGetGenerateMipmaps
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGenerateMipmaps(font_rid RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGenerateMipmaps`)
 		}
+		return
 	case "font_set_multichannel_signed_distance_field":
-		i, ok := val.(interface{ FontSetMultichannelSignedDistanceField(font_rid RID, msdf bool)  })
-		if ok {
-			return i.FontSetMultichannelSignedDistanceField
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetMultichannelSignedDistanceField(font_rid RID, msdf bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetMultichannelSignedDistanceField`)
 		}
+		return
 	case "font_is_multichannel_signed_distance_field":
-		i, ok := val.(interface{ FontIsMultichannelSignedDistanceField(font_rid RID) bool })
-		if ok {
-			return i.FontIsMultichannelSignedDistanceField
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontIsMultichannelSignedDistanceField(font_rid RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontIsMultichannelSignedDistanceField`)
 		}
+		return
 	case "font_set_msdf_pixel_range":
-		i, ok := val.(interface{ FontSetMsdfPixelRange(font_rid RID, msdf_pixel_range int64)  })
-		if ok {
-			return i.FontSetMsdfPixelRange
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetMsdfPixelRange(font_rid RID, msdf_pixel_range int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetMsdfPixelRange`)
 		}
+		return
 	case "font_get_msdf_pixel_range":
-		i, ok := val.(interface{ FontGetMsdfPixelRange(font_rid RID) int64 })
-		if ok {
-			return i.FontGetMsdfPixelRange
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetMsdfPixelRange(font_rid RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetMsdfPixelRange`)
 		}
+		return
 	case "font_set_msdf_size":
-		i, ok := val.(interface{ FontSetMsdfSize(font_rid RID, msdf_size int64)  })
-		if ok {
-			return i.FontSetMsdfSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetMsdfSize(font_rid RID, msdf_size int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetMsdfSize`)
 		}
+		return
 	case "font_get_msdf_size":
-		i, ok := val.(interface{ FontGetMsdfSize(font_rid RID) int64 })
-		if ok {
-			return i.FontGetMsdfSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetMsdfSize(font_rid RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetMsdfSize`)
 		}
+		return
 	case "font_set_fixed_size":
-		i, ok := val.(interface{ FontSetFixedSize(font_rid RID, fixed_size int64)  })
-		if ok {
-			return i.FontSetFixedSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetFixedSize(font_rid RID, fixed_size int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetFixedSize`)
 		}
+		return
 	case "font_get_fixed_size":
-		i, ok := val.(interface{ FontGetFixedSize(font_rid RID) int64 })
-		if ok {
-			return i.FontGetFixedSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetFixedSize(font_rid RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetFixedSize`)
 		}
+		return
 	case "font_set_force_autohinter":
-		i, ok := val.(interface{ FontSetForceAutohinter(font_rid RID, force_autohinter bool)  })
-		if ok {
-			return i.FontSetForceAutohinter
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetForceAutohinter(font_rid RID, force_autohinter bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetForceAutohinter`)
 		}
+		return
 	case "font_is_force_autohinter":
-		i, ok := val.(interface{ FontIsForceAutohinter(font_rid RID) bool })
-		if ok {
-			return i.FontIsForceAutohinter
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontIsForceAutohinter(font_rid RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontIsForceAutohinter`)
 		}
+		return
 	case "font_set_hinting":
-		i, ok := val.(interface{ FontSetHinting(font_rid RID, hinting TextServerHinting)  })
-		if ok {
-			return i.FontSetHinting
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetHinting(font_rid RID, hinting TextServerHinting)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetHinting`)
 		}
+		return
 	case "font_get_hinting":
-		i, ok := val.(interface{ FontGetHinting(font_rid RID) TextServerHinting })
-		if ok {
-			return i.FontGetHinting
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetHinting(font_rid RID) TextServerHinting }{}).Elem()) {
+			return rtype.MethodByName(`FontGetHinting`)
 		}
+		return
 	case "font_set_subpixel_positioning":
-		i, ok := val.(interface{ FontSetSubpixelPositioning(font_rid RID, subpixel_positioning TextServerSubpixelPositioning)  })
-		if ok {
-			return i.FontSetSubpixelPositioning
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetSubpixelPositioning(font_rid RID, subpixel_positioning TextServerSubpixelPositioning)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetSubpixelPositioning`)
 		}
+		return
 	case "font_get_subpixel_positioning":
-		i, ok := val.(interface{ FontGetSubpixelPositioning(font_rid RID) TextServerSubpixelPositioning })
-		if ok {
-			return i.FontGetSubpixelPositioning
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetSubpixelPositioning(font_rid RID) TextServerSubpixelPositioning }{}).Elem()) {
+			return rtype.MethodByName(`FontGetSubpixelPositioning`)
 		}
+		return
 	case "font_set_embolden":
-		i, ok := val.(interface{ FontSetEmbolden(font_rid RID, strength float64)  })
-		if ok {
-			return i.FontSetEmbolden
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetEmbolden(font_rid RID, strength float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetEmbolden`)
 		}
+		return
 	case "font_get_embolden":
-		i, ok := val.(interface{ FontGetEmbolden(font_rid RID) float64 })
-		if ok {
-			return i.FontGetEmbolden
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetEmbolden(font_rid RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetEmbolden`)
 		}
+		return
 	case "font_set_transform":
-		i, ok := val.(interface{ FontSetTransform(font_rid RID, transform Transform2D)  })
-		if ok {
-			return i.FontSetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetTransform(font_rid RID, transform Transform2D)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetTransform`)
 		}
+		return
 	case "font_get_transform":
-		i, ok := val.(interface{ FontGetTransform(font_rid RID) Transform2D })
-		if ok {
-			return i.FontGetTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetTransform(font_rid RID) Transform2D }{}).Elem()) {
+			return rtype.MethodByName(`FontGetTransform`)
 		}
+		return
 	case "font_set_variation_coordinates":
-		i, ok := val.(interface{ FontSetVariationCoordinates(font_rid RID, variation_coordinates Dictionary)  })
-		if ok {
-			return i.FontSetVariationCoordinates
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetVariationCoordinates(font_rid RID, variation_coordinates Dictionary)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetVariationCoordinates`)
 		}
+		return
 	case "font_get_variation_coordinates":
-		i, ok := val.(interface{ FontGetVariationCoordinates(font_rid RID) Dictionary })
-		if ok {
-			return i.FontGetVariationCoordinates
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetVariationCoordinates(font_rid RID) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`FontGetVariationCoordinates`)
 		}
+		return
 	case "font_set_oversampling":
-		i, ok := val.(interface{ FontSetOversampling(font_rid RID, oversampling float64)  })
-		if ok {
-			return i.FontSetOversampling
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetOversampling(font_rid RID, oversampling float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetOversampling`)
 		}
+		return
 	case "font_get_oversampling":
-		i, ok := val.(interface{ FontGetOversampling(font_rid RID) float64 })
-		if ok {
-			return i.FontGetOversampling
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetOversampling(font_rid RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetOversampling`)
 		}
+		return
 	case "font_get_size_cache_list":
-		i, ok := val.(interface{ FontGetSizeCacheList(font_rid RID) Array })
-		if ok {
-			return i.FontGetSizeCacheList
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetSizeCacheList(font_rid RID) Array }{}).Elem()) {
+			return rtype.MethodByName(`FontGetSizeCacheList`)
 		}
+		return
 	case "font_clear_size_cache":
-		i, ok := val.(interface{ FontClearSizeCache(font_rid RID)  })
-		if ok {
-			return i.FontClearSizeCache
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontClearSizeCache(font_rid RID)  }{}).Elem()) {
+			return rtype.MethodByName(`FontClearSizeCache`)
 		}
+		return
 	case "font_remove_size_cache":
-		i, ok := val.(interface{ FontRemoveSizeCache(font_rid RID, size Vector2i)  })
-		if ok {
-			return i.FontRemoveSizeCache
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveSizeCache(font_rid RID, size Vector2i)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveSizeCache`)
 		}
+		return
 	case "font_set_ascent":
-		i, ok := val.(interface{ FontSetAscent(font_rid RID, size int64, ascent float64)  })
-		if ok {
-			return i.FontSetAscent
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetAscent(font_rid RID, size int64, ascent float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetAscent`)
 		}
+		return
 	case "font_get_ascent":
-		i, ok := val.(interface{ FontGetAscent(font_rid RID, size int64) float64 })
-		if ok {
-			return i.FontGetAscent
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetAscent(font_rid RID, size int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetAscent`)
 		}
+		return
 	case "font_set_descent":
-		i, ok := val.(interface{ FontSetDescent(font_rid RID, size int64, descent float64)  })
-		if ok {
-			return i.FontSetDescent
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetDescent(font_rid RID, size int64, descent float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetDescent`)
 		}
+		return
 	case "font_get_descent":
-		i, ok := val.(interface{ FontGetDescent(font_rid RID, size int64) float64 })
-		if ok {
-			return i.FontGetDescent
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetDescent(font_rid RID, size int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetDescent`)
 		}
+		return
 	case "font_set_underline_position":
-		i, ok := val.(interface{ FontSetUnderlinePosition(font_rid RID, size int64, underline_position float64)  })
-		if ok {
-			return i.FontSetUnderlinePosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetUnderlinePosition(font_rid RID, size int64, underline_position float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetUnderlinePosition`)
 		}
+		return
 	case "font_get_underline_position":
-		i, ok := val.(interface{ FontGetUnderlinePosition(font_rid RID, size int64) float64 })
-		if ok {
-			return i.FontGetUnderlinePosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetUnderlinePosition(font_rid RID, size int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetUnderlinePosition`)
 		}
+		return
 	case "font_set_underline_thickness":
-		i, ok := val.(interface{ FontSetUnderlineThickness(font_rid RID, size int64, underline_thickness float64)  })
-		if ok {
-			return i.FontSetUnderlineThickness
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetUnderlineThickness(font_rid RID, size int64, underline_thickness float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetUnderlineThickness`)
 		}
+		return
 	case "font_get_underline_thickness":
-		i, ok := val.(interface{ FontGetUnderlineThickness(font_rid RID, size int64) float64 })
-		if ok {
-			return i.FontGetUnderlineThickness
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetUnderlineThickness(font_rid RID, size int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetUnderlineThickness`)
 		}
+		return
 	case "font_set_scale":
-		i, ok := val.(interface{ FontSetScale(font_rid RID, size int64, scale float64)  })
-		if ok {
-			return i.FontSetScale
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetScale(font_rid RID, size int64, scale float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetScale`)
 		}
+		return
 	case "font_get_scale":
-		i, ok := val.(interface{ FontGetScale(font_rid RID, size int64) float64 })
-		if ok {
-			return i.FontGetScale
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetScale(font_rid RID, size int64) float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetScale`)
 		}
+		return
 	case "font_get_texture_count":
-		i, ok := val.(interface{ FontGetTextureCount(font_rid RID, size Vector2i) int64 })
-		if ok {
-			return i.FontGetTextureCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetTextureCount(font_rid RID, size Vector2i) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetTextureCount`)
 		}
+		return
 	case "font_clear_textures":
-		i, ok := val.(interface{ FontClearTextures(font_rid RID, size Vector2i)  })
-		if ok {
-			return i.FontClearTextures
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontClearTextures(font_rid RID, size Vector2i)  }{}).Elem()) {
+			return rtype.MethodByName(`FontClearTextures`)
 		}
+		return
 	case "font_remove_texture":
-		i, ok := val.(interface{ FontRemoveTexture(font_rid RID, size Vector2i, texture_index int64)  })
-		if ok {
-			return i.FontRemoveTexture
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveTexture(font_rid RID, size Vector2i, texture_index int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveTexture`)
 		}
+		return
 	case "font_set_texture_image":
-		i, ok := val.(interface{ FontSetTextureImage(font_rid RID, size Vector2i, texture_index int64, image Image)  })
-		if ok {
-			return i.FontSetTextureImage
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetTextureImage(font_rid RID, size Vector2i, texture_index int64, image Image)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetTextureImage`)
 		}
+		return
 	case "font_get_texture_image":
-		i, ok := val.(interface{ FontGetTextureImage(font_rid RID, size Vector2i, texture_index int64) Image })
-		if ok {
-			return i.FontGetTextureImage
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetTextureImage(font_rid RID, size Vector2i, texture_index int64) Image }{}).Elem()) {
+			return rtype.MethodByName(`FontGetTextureImage`)
 		}
+		return
 	case "font_set_texture_offsets":
-		i, ok := val.(interface{ FontSetTextureOffsets(font_rid RID, size Vector2i, texture_index int64, offset []int32)  })
-		if ok {
-			return i.FontSetTextureOffsets
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetTextureOffsets(font_rid RID, size Vector2i, texture_index int64, offset []int32)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetTextureOffsets`)
 		}
+		return
 	case "font_get_texture_offsets":
-		i, ok := val.(interface{ FontGetTextureOffsets(font_rid RID, size Vector2i, texture_index int64) []int32 })
-		if ok {
-			return i.FontGetTextureOffsets
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetTextureOffsets(font_rid RID, size Vector2i, texture_index int64) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetTextureOffsets`)
 		}
+		return
 	case "font_get_glyph_list":
-		i, ok := val.(interface{ FontGetGlyphList(font_rid RID, size Vector2i) Array })
-		if ok {
-			return i.FontGetGlyphList
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphList(font_rid RID, size Vector2i) Array }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphList`)
 		}
+		return
 	case "font_clear_glyphs":
-		i, ok := val.(interface{ FontClearGlyphs(font_rid RID, size Vector2i)  })
-		if ok {
-			return i.FontClearGlyphs
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontClearGlyphs(font_rid RID, size Vector2i)  }{}).Elem()) {
+			return rtype.MethodByName(`FontClearGlyphs`)
 		}
+		return
 	case "font_remove_glyph":
-		i, ok := val.(interface{ FontRemoveGlyph(font_rid RID, size Vector2i, glyph int64)  })
-		if ok {
-			return i.FontRemoveGlyph
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveGlyph(font_rid RID, size Vector2i, glyph int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveGlyph`)
 		}
+		return
 	case "font_get_glyph_advance":
-		i, ok := val.(interface{ FontGetGlyphAdvance(font_rid RID, size int64, glyph int64) Vector2 })
-		if ok {
-			return i.FontGetGlyphAdvance
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphAdvance(font_rid RID, size int64, glyph int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphAdvance`)
 		}
+		return
 	case "font_set_glyph_advance":
-		i, ok := val.(interface{ FontSetGlyphAdvance(font_rid RID, size int64, glyph int64, advance Vector2)  })
-		if ok {
-			return i.FontSetGlyphAdvance
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlyphAdvance(font_rid RID, size int64, glyph int64, advance Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlyphAdvance`)
 		}
+		return
 	case "font_get_glyph_offset":
-		i, ok := val.(interface{ FontGetGlyphOffset(font_rid RID, size Vector2i, glyph int64) Vector2 })
-		if ok {
-			return i.FontGetGlyphOffset
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphOffset(font_rid RID, size Vector2i, glyph int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphOffset`)
 		}
+		return
 	case "font_set_glyph_offset":
-		i, ok := val.(interface{ FontSetGlyphOffset(font_rid RID, size Vector2i, glyph int64, offset Vector2)  })
-		if ok {
-			return i.FontSetGlyphOffset
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlyphOffset(font_rid RID, size Vector2i, glyph int64, offset Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlyphOffset`)
 		}
+		return
 	case "font_get_glyph_size":
-		i, ok := val.(interface{ FontGetGlyphSize(font_rid RID, size Vector2i, glyph int64) Vector2 })
-		if ok {
-			return i.FontGetGlyphSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphSize(font_rid RID, size Vector2i, glyph int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphSize`)
 		}
+		return
 	case "font_set_glyph_size":
-		i, ok := val.(interface{ FontSetGlyphSize(font_rid RID, size Vector2i, glyph int64, gl_size Vector2)  })
-		if ok {
-			return i.FontSetGlyphSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlyphSize(font_rid RID, size Vector2i, glyph int64, gl_size Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlyphSize`)
 		}
+		return
 	case "font_get_glyph_uv_rect":
-		i, ok := val.(interface{ FontGetGlyphUvRect(font_rid RID, size Vector2i, glyph int64) Rect2 })
-		if ok {
-			return i.FontGetGlyphUvRect
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphUvRect(font_rid RID, size Vector2i, glyph int64) Rect2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphUvRect`)
 		}
+		return
 	case "font_set_glyph_uv_rect":
-		i, ok := val.(interface{ FontSetGlyphUvRect(font_rid RID, size Vector2i, glyph int64, uv_rect Rect2)  })
-		if ok {
-			return i.FontSetGlyphUvRect
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlyphUvRect(font_rid RID, size Vector2i, glyph int64, uv_rect Rect2)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlyphUvRect`)
 		}
+		return
 	case "font_get_glyph_texture_idx":
-		i, ok := val.(interface{ FontGetGlyphTextureIdx(font_rid RID, size Vector2i, glyph int64) int64 })
-		if ok {
-			return i.FontGetGlyphTextureIdx
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphTextureIdx(font_rid RID, size Vector2i, glyph int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphTextureIdx`)
 		}
+		return
 	case "font_set_glyph_texture_idx":
-		i, ok := val.(interface{ FontSetGlyphTextureIdx(font_rid RID, size Vector2i, glyph int64, texture_idx int64)  })
-		if ok {
-			return i.FontSetGlyphTextureIdx
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlyphTextureIdx(font_rid RID, size Vector2i, glyph int64, texture_idx int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlyphTextureIdx`)
 		}
+		return
 	case "font_get_glyph_texture_rid":
-		i, ok := val.(interface{ FontGetGlyphTextureRid(font_rid RID, size Vector2i, glyph int64) RID })
-		if ok {
-			return i.FontGetGlyphTextureRid
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphTextureRid(font_rid RID, size Vector2i, glyph int64) RID }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphTextureRid`)
 		}
+		return
 	case "font_get_glyph_texture_size":
-		i, ok := val.(interface{ FontGetGlyphTextureSize(font_rid RID, size Vector2i, glyph int64) Vector2 })
-		if ok {
-			return i.FontGetGlyphTextureSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphTextureSize(font_rid RID, size Vector2i, glyph int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphTextureSize`)
 		}
+		return
 	case "font_get_glyph_contours":
-		i, ok := val.(interface{ FontGetGlyphContours(font_rid RID, size int64, index int64) Dictionary })
-		if ok {
-			return i.FontGetGlyphContours
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphContours(font_rid RID, size int64, index int64) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphContours`)
 		}
+		return
 	case "font_get_kerning_list":
-		i, ok := val.(interface{ FontGetKerningList(font_rid RID, size int64) Array })
-		if ok {
-			return i.FontGetKerningList
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetKerningList(font_rid RID, size int64) Array }{}).Elem()) {
+			return rtype.MethodByName(`FontGetKerningList`)
 		}
+		return
 	case "font_clear_kerning_map":
-		i, ok := val.(interface{ FontClearKerningMap(font_rid RID, size int64)  })
-		if ok {
-			return i.FontClearKerningMap
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontClearKerningMap(font_rid RID, size int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontClearKerningMap`)
 		}
+		return
 	case "font_remove_kerning":
-		i, ok := val.(interface{ FontRemoveKerning(font_rid RID, size int64, glyph_pair Vector2i)  })
-		if ok {
-			return i.FontRemoveKerning
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveKerning(font_rid RID, size int64, glyph_pair Vector2i)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveKerning`)
 		}
+		return
 	case "font_set_kerning":
-		i, ok := val.(interface{ FontSetKerning(font_rid RID, size int64, glyph_pair Vector2i, kerning Vector2)  })
-		if ok {
-			return i.FontSetKerning
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetKerning(font_rid RID, size int64, glyph_pair Vector2i, kerning Vector2)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetKerning`)
 		}
+		return
 	case "font_get_kerning":
-		i, ok := val.(interface{ FontGetKerning(font_rid RID, size int64, glyph_pair Vector2i) Vector2 })
-		if ok {
-			return i.FontGetKerning
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetKerning(font_rid RID, size int64, glyph_pair Vector2i) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetKerning`)
 		}
+		return
 	case "font_get_glyph_index":
-		i, ok := val.(interface{ FontGetGlyphIndex(font_rid RID, size int64, char int64, variation_selector int64) int64 })
-		if ok {
-			return i.FontGetGlyphIndex
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlyphIndex(font_rid RID, size int64, char int64, variation_selector int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlyphIndex`)
 		}
+		return
 	case "font_has_char":
-		i, ok := val.(interface{ FontHasChar(font_rid RID, char int64) bool })
-		if ok {
-			return i.FontHasChar
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontHasChar(font_rid RID, char int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontHasChar`)
 		}
+		return
 	case "font_get_supported_chars":
-		i, ok := val.(interface{ FontGetSupportedChars(font_rid RID) string })
-		if ok {
-			return i.FontGetSupportedChars
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetSupportedChars(font_rid RID) string }{}).Elem()) {
+			return rtype.MethodByName(`FontGetSupportedChars`)
 		}
+		return
 	case "font_render_range":
-		i, ok := val.(interface{ FontRenderRange(font_rid RID, size Vector2i, start int64, end int64)  })
-		if ok {
-			return i.FontRenderRange
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRenderRange(font_rid RID, size Vector2i, start int64, end int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRenderRange`)
 		}
+		return
 	case "font_render_glyph":
-		i, ok := val.(interface{ FontRenderGlyph(font_rid RID, size Vector2i, index int64)  })
-		if ok {
-			return i.FontRenderGlyph
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRenderGlyph(font_rid RID, size Vector2i, index int64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRenderGlyph`)
 		}
+		return
 	case "font_draw_glyph":
-		i, ok := val.(interface{ FontDrawGlyph(font_rid RID, canvas RID, size int64, pos Vector2, index int64, color Color)  })
-		if ok {
-			return i.FontDrawGlyph
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontDrawGlyph(font_rid RID, canvas RID, size int64, pos Vector2, index int64, color Color)  }{}).Elem()) {
+			return rtype.MethodByName(`FontDrawGlyph`)
 		}
+		return
 	case "font_draw_glyph_outline":
-		i, ok := val.(interface{ FontDrawGlyphOutline(font_rid RID, canvas RID, size int64, outline_size int64, pos Vector2, index int64, color Color)  })
-		if ok {
-			return i.FontDrawGlyphOutline
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontDrawGlyphOutline(font_rid RID, canvas RID, size int64, outline_size int64, pos Vector2, index int64, color Color)  }{}).Elem()) {
+			return rtype.MethodByName(`FontDrawGlyphOutline`)
 		}
+		return
 	case "font_is_language_supported":
-		i, ok := val.(interface{ FontIsLanguageSupported(font_rid RID, language string) bool })
-		if ok {
-			return i.FontIsLanguageSupported
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontIsLanguageSupported(font_rid RID, language string) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontIsLanguageSupported`)
 		}
+		return
 	case "font_set_language_support_override":
-		i, ok := val.(interface{ FontSetLanguageSupportOverride(font_rid RID, language string, supported bool)  })
-		if ok {
-			return i.FontSetLanguageSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetLanguageSupportOverride(font_rid RID, language string, supported bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetLanguageSupportOverride`)
 		}
+		return
 	case "font_get_language_support_override":
-		i, ok := val.(interface{ FontGetLanguageSupportOverride(font_rid RID, language string) bool })
-		if ok {
-			return i.FontGetLanguageSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetLanguageSupportOverride(font_rid RID, language string) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontGetLanguageSupportOverride`)
 		}
+		return
 	case "font_remove_language_support_override":
-		i, ok := val.(interface{ FontRemoveLanguageSupportOverride(font_rid RID, language string)  })
-		if ok {
-			return i.FontRemoveLanguageSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveLanguageSupportOverride(font_rid RID, language string)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveLanguageSupportOverride`)
 		}
+		return
 	case "font_get_language_support_overrides":
-		i, ok := val.(interface{ FontGetLanguageSupportOverrides(font_rid RID) []string })
-		if ok {
-			return i.FontGetLanguageSupportOverrides
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetLanguageSupportOverrides(font_rid RID) []string }{}).Elem()) {
+			return rtype.MethodByName(`FontGetLanguageSupportOverrides`)
 		}
+		return
 	case "font_is_script_supported":
-		i, ok := val.(interface{ FontIsScriptSupported(font_rid RID, script string) bool })
-		if ok {
-			return i.FontIsScriptSupported
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontIsScriptSupported(font_rid RID, script string) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontIsScriptSupported`)
 		}
+		return
 	case "font_set_script_support_override":
-		i, ok := val.(interface{ FontSetScriptSupportOverride(font_rid RID, script string, supported bool)  })
-		if ok {
-			return i.FontSetScriptSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetScriptSupportOverride(font_rid RID, script string, supported bool)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetScriptSupportOverride`)
 		}
+		return
 	case "font_get_script_support_override":
-		i, ok := val.(interface{ FontGetScriptSupportOverride(font_rid RID, script string) bool })
-		if ok {
-			return i.FontGetScriptSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetScriptSupportOverride(font_rid RID, script string) bool }{}).Elem()) {
+			return rtype.MethodByName(`FontGetScriptSupportOverride`)
 		}
+		return
 	case "font_remove_script_support_override":
-		i, ok := val.(interface{ FontRemoveScriptSupportOverride(font_rid RID, script string)  })
-		if ok {
-			return i.FontRemoveScriptSupportOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontRemoveScriptSupportOverride(font_rid RID, script string)  }{}).Elem()) {
+			return rtype.MethodByName(`FontRemoveScriptSupportOverride`)
 		}
+		return
 	case "font_get_script_support_overrides":
-		i, ok := val.(interface{ FontGetScriptSupportOverrides(font_rid RID) []string })
-		if ok {
-			return i.FontGetScriptSupportOverrides
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetScriptSupportOverrides(font_rid RID) []string }{}).Elem()) {
+			return rtype.MethodByName(`FontGetScriptSupportOverrides`)
 		}
+		return
 	case "font_set_opentype_feature_overrides":
-		i, ok := val.(interface{ FontSetOpentypeFeatureOverrides(font_rid RID, overrides Dictionary)  })
-		if ok {
-			return i.FontSetOpentypeFeatureOverrides
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetOpentypeFeatureOverrides(font_rid RID, overrides Dictionary)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetOpentypeFeatureOverrides`)
 		}
+		return
 	case "font_get_opentype_feature_overrides":
-		i, ok := val.(interface{ FontGetOpentypeFeatureOverrides(font_rid RID) Dictionary })
-		if ok {
-			return i.FontGetOpentypeFeatureOverrides
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetOpentypeFeatureOverrides(font_rid RID) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`FontGetOpentypeFeatureOverrides`)
 		}
+		return
 	case "font_supported_feature_list":
-		i, ok := val.(interface{ FontSupportedFeatureList(font_rid RID) Dictionary })
-		if ok {
-			return i.FontSupportedFeatureList
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSupportedFeatureList(font_rid RID) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`FontSupportedFeatureList`)
 		}
+		return
 	case "font_supported_variation_list":
-		i, ok := val.(interface{ FontSupportedVariationList(font_rid RID) Dictionary })
-		if ok {
-			return i.FontSupportedVariationList
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSupportedVariationList(font_rid RID) Dictionary }{}).Elem()) {
+			return rtype.MethodByName(`FontSupportedVariationList`)
 		}
+		return
 	case "font_get_global_oversampling":
-		i, ok := val.(interface{ FontGetGlobalOversampling() float64 })
-		if ok {
-			return i.FontGetGlobalOversampling
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontGetGlobalOversampling() float64 }{}).Elem()) {
+			return rtype.MethodByName(`FontGetGlobalOversampling`)
 		}
+		return
 	case "font_set_global_oversampling":
-		i, ok := val.(interface{ FontSetGlobalOversampling(oversampling float64)  })
-		if ok {
-			return i.FontSetGlobalOversampling
+		if rtype.Implements(reflect.TypeOf([0]interface{ FontSetGlobalOversampling(oversampling float64)  }{}).Elem()) {
+			return rtype.MethodByName(`FontSetGlobalOversampling`)
 		}
+		return
 	case "get_hex_code_box_size":
-		i, ok := val.(interface{ GetHexCodeBoxSize(size int64, index int64) Vector2 })
-		if ok {
-			return i.GetHexCodeBoxSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHexCodeBoxSize(size int64, index int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`GetHexCodeBoxSize`)
 		}
+		return
 	case "draw_hex_code_box":
-		i, ok := val.(interface{ DrawHexCodeBox(canvas RID, size int64, pos Vector2, index int64, color Color)  })
-		if ok {
-			return i.DrawHexCodeBox
+		if rtype.Implements(reflect.TypeOf([0]interface{ DrawHexCodeBox(canvas RID, size int64, pos Vector2, index int64, color Color)  }{}).Elem()) {
+			return rtype.MethodByName(`DrawHexCodeBox`)
 		}
+		return
 	case "create_shaped_text":
-		i, ok := val.(interface{ CreateShapedText(direction TextServerDirection, orientation TextServerOrientation) RID })
-		if ok {
-			return i.CreateShapedText
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateShapedText(direction TextServerDirection, orientation TextServerOrientation) RID }{}).Elem()) {
+			return rtype.MethodByName(`CreateShapedText`)
 		}
+		return
 	case "shaped_text_clear":
-		i, ok := val.(interface{ ShapedTextClear(shaped RID)  })
-		if ok {
-			return i.ShapedTextClear
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextClear(shaped RID)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextClear`)
 		}
+		return
 	case "shaped_text_set_direction":
-		i, ok := val.(interface{ ShapedTextSetDirection(shaped RID, direction TextServerDirection)  })
-		if ok {
-			return i.ShapedTextSetDirection
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetDirection(shaped RID, direction TextServerDirection)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetDirection`)
 		}
+		return
 	case "shaped_text_get_direction":
-		i, ok := val.(interface{ ShapedTextGetDirection(shaped RID) TextServerDirection })
-		if ok {
-			return i.ShapedTextGetDirection
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetDirection(shaped RID) TextServerDirection }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetDirection`)
 		}
+		return
 	case "shaped_text_get_inferred_direction":
-		i, ok := val.(interface{ ShapedTextGetInferredDirection(shaped RID) TextServerDirection })
-		if ok {
-			return i.ShapedTextGetInferredDirection
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetInferredDirection(shaped RID) TextServerDirection }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetInferredDirection`)
 		}
+		return
 	case "shaped_text_set_bidi_override":
-		i, ok := val.(interface{ ShapedTextSetBidiOverride(shaped RID, override Array)  })
-		if ok {
-			return i.ShapedTextSetBidiOverride
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetBidiOverride(shaped RID, override Array)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetBidiOverride`)
 		}
+		return
 	case "shaped_text_set_custom_punctuation":
-		i, ok := val.(interface{ ShapedTextSetCustomPunctuation(shaped RID, punct string)  })
-		if ok {
-			return i.ShapedTextSetCustomPunctuation
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetCustomPunctuation(shaped RID, punct string)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetCustomPunctuation`)
 		}
+		return
 	case "shaped_text_get_custom_punctuation":
-		i, ok := val.(interface{ ShapedTextGetCustomPunctuation(shaped RID) string })
-		if ok {
-			return i.ShapedTextGetCustomPunctuation
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetCustomPunctuation(shaped RID) string }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetCustomPunctuation`)
 		}
+		return
 	case "shaped_text_set_orientation":
-		i, ok := val.(interface{ ShapedTextSetOrientation(shaped RID, orientation TextServerOrientation)  })
-		if ok {
-			return i.ShapedTextSetOrientation
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetOrientation(shaped RID, orientation TextServerOrientation)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetOrientation`)
 		}
+		return
 	case "shaped_text_get_orientation":
-		i, ok := val.(interface{ ShapedTextGetOrientation(shaped RID) TextServerOrientation })
-		if ok {
-			return i.ShapedTextGetOrientation
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetOrientation(shaped RID) TextServerOrientation }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetOrientation`)
 		}
+		return
 	case "shaped_text_set_preserve_invalid":
-		i, ok := val.(interface{ ShapedTextSetPreserveInvalid(shaped RID, enabled bool)  })
-		if ok {
-			return i.ShapedTextSetPreserveInvalid
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetPreserveInvalid(shaped RID, enabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetPreserveInvalid`)
 		}
+		return
 	case "shaped_text_get_preserve_invalid":
-		i, ok := val.(interface{ ShapedTextGetPreserveInvalid(shaped RID) bool })
-		if ok {
-			return i.ShapedTextGetPreserveInvalid
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetPreserveInvalid(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetPreserveInvalid`)
 		}
+		return
 	case "shaped_text_set_preserve_control":
-		i, ok := val.(interface{ ShapedTextSetPreserveControl(shaped RID, enabled bool)  })
-		if ok {
-			return i.ShapedTextSetPreserveControl
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetPreserveControl(shaped RID, enabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetPreserveControl`)
 		}
+		return
 	case "shaped_text_get_preserve_control":
-		i, ok := val.(interface{ ShapedTextGetPreserveControl(shaped RID) bool })
-		if ok {
-			return i.ShapedTextGetPreserveControl
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetPreserveControl(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetPreserveControl`)
 		}
+		return
 	case "shaped_text_set_spacing":
-		i, ok := val.(interface{ ShapedTextSetSpacing(shaped RID, spacing TextServerSpacingType, value int64)  })
-		if ok {
-			return i.ShapedTextSetSpacing
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSetSpacing(shaped RID, spacing TextServerSpacingType, value int64)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSetSpacing`)
 		}
+		return
 	case "shaped_text_get_spacing":
-		i, ok := val.(interface{ ShapedTextGetSpacing(shaped RID, spacing TextServerSpacingType) int64 })
-		if ok {
-			return i.ShapedTextGetSpacing
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetSpacing(shaped RID, spacing TextServerSpacingType) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetSpacing`)
 		}
+		return
 	case "shaped_text_add_string":
-		i, ok := val.(interface{ ShapedTextAddString(shaped RID, text string, fonts Array, size int64, opentype_features Dictionary, language string, meta any) bool })
-		if ok {
-			return i.ShapedTextAddString
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextAddString(shaped RID, text string, fonts Array, size int64, opentype_features Dictionary, language string, meta any) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextAddString`)
 		}
+		return
 	case "shaped_text_add_object":
-		i, ok := val.(interface{ ShapedTextAddObject(shaped RID, key any, size Vector2, inline_align InlineAlignment, length int64) bool })
-		if ok {
-			return i.ShapedTextAddObject
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextAddObject(shaped RID, key any, size Vector2, inline_align InlineAlignment, length int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextAddObject`)
 		}
+		return
 	case "shaped_text_resize_object":
-		i, ok := val.(interface{ ShapedTextResizeObject(shaped RID, key any, size Vector2, inline_align InlineAlignment) bool })
-		if ok {
-			return i.ShapedTextResizeObject
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextResizeObject(shaped RID, key any, size Vector2, inline_align InlineAlignment) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextResizeObject`)
 		}
+		return
 	case "shaped_get_span_count":
-		i, ok := val.(interface{ ShapedGetSpanCount(shaped RID) int64 })
-		if ok {
-			return i.ShapedGetSpanCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedGetSpanCount(shaped RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedGetSpanCount`)
 		}
+		return
 	case "shaped_get_span_meta":
-		i, ok := val.(interface{ ShapedGetSpanMeta(shaped RID, index int64) any })
-		if ok {
-			return i.ShapedGetSpanMeta
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedGetSpanMeta(shaped RID, index int64) any }{}).Elem()) {
+			return rtype.MethodByName(`ShapedGetSpanMeta`)
 		}
+		return
 	case "shaped_set_span_update_font":
-		i, ok := val.(interface{ ShapedSetSpanUpdateFont(shaped RID, index int64, fonts Array, size int64, opentype_features Dictionary)  })
-		if ok {
-			return i.ShapedSetSpanUpdateFont
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedSetSpanUpdateFont(shaped RID, index int64, fonts Array, size int64, opentype_features Dictionary)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedSetSpanUpdateFont`)
 		}
+		return
 	case "shaped_text_substr":
-		i, ok := val.(interface{ ShapedTextSubstr(shaped RID, start int64, length int64) RID })
-		if ok {
-			return i.ShapedTextSubstr
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSubstr(shaped RID, start int64, length int64) RID }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSubstr`)
 		}
+		return
 	case "shaped_text_get_parent":
-		i, ok := val.(interface{ ShapedTextGetParent(shaped RID) RID })
-		if ok {
-			return i.ShapedTextGetParent
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetParent(shaped RID) RID }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetParent`)
 		}
+		return
 	case "shaped_text_fit_to_width":
-		i, ok := val.(interface{ ShapedTextFitToWidth(shaped RID, width float64, jst_flags TextServerJustificationFlag) float64 })
-		if ok {
-			return i.ShapedTextFitToWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextFitToWidth(shaped RID, width float64, jst_flags TextServerJustificationFlag) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextFitToWidth`)
 		}
+		return
 	case "shaped_text_tab_align":
-		i, ok := val.(interface{ ShapedTextTabAlign(shaped RID, tab_stops []float32) float64 })
-		if ok {
-			return i.ShapedTextTabAlign
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextTabAlign(shaped RID, tab_stops []float32) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextTabAlign`)
 		}
+		return
 	case "shaped_text_shape":
-		i, ok := val.(interface{ ShapedTextShape(shaped RID) bool })
-		if ok {
-			return i.ShapedTextShape
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextShape(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextShape`)
 		}
+		return
 	case "shaped_text_update_breaks":
-		i, ok := val.(interface{ ShapedTextUpdateBreaks(shaped RID) bool })
-		if ok {
-			return i.ShapedTextUpdateBreaks
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextUpdateBreaks(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextUpdateBreaks`)
 		}
+		return
 	case "shaped_text_update_justification_ops":
-		i, ok := val.(interface{ ShapedTextUpdateJustificationOps(shaped RID) bool })
-		if ok {
-			return i.ShapedTextUpdateJustificationOps
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextUpdateJustificationOps(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextUpdateJustificationOps`)
 		}
+		return
 	case "shaped_text_is_ready":
-		i, ok := val.(interface{ ShapedTextIsReady(shaped RID) bool })
-		if ok {
-			return i.ShapedTextIsReady
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextIsReady(shaped RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextIsReady`)
 		}
+		return
 	case "shaped_text_get_glyphs":
-		i, ok := val.(interface{ ShapedTextGetGlyphs(shaped RID) * Glyph })
-		if ok {
-			return i.ShapedTextGetGlyphs
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetGlyphs(shaped RID) * Glyph }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetGlyphs`)
 		}
+		return
 	case "shaped_text_sort_logical":
-		i, ok := val.(interface{ ShapedTextSortLogical(shaped RID) * Glyph })
-		if ok {
-			return i.ShapedTextSortLogical
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextSortLogical(shaped RID) * Glyph }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextSortLogical`)
 		}
+		return
 	case "shaped_text_get_glyph_count":
-		i, ok := val.(interface{ ShapedTextGetGlyphCount(shaped RID) int64 })
-		if ok {
-			return i.ShapedTextGetGlyphCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetGlyphCount(shaped RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetGlyphCount`)
 		}
+		return
 	case "shaped_text_get_range":
-		i, ok := val.(interface{ ShapedTextGetRange(shaped RID) Vector2i })
-		if ok {
-			return i.ShapedTextGetRange
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetRange(shaped RID) Vector2i }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetRange`)
 		}
+		return
 	case "shaped_text_get_line_breaks_adv":
-		i, ok := val.(interface{ ShapedTextGetLineBreaksAdv(shaped RID, width []float32, start int64, once bool, break_flags TextServerLineBreakFlag) []int32 })
-		if ok {
-			return i.ShapedTextGetLineBreaksAdv
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetLineBreaksAdv(shaped RID, width []float32, start int64, once bool, break_flags TextServerLineBreakFlag) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetLineBreaksAdv`)
 		}
+		return
 	case "shaped_text_get_line_breaks":
-		i, ok := val.(interface{ ShapedTextGetLineBreaks(shaped RID, width float64, start int64, break_flags TextServerLineBreakFlag) []int32 })
-		if ok {
-			return i.ShapedTextGetLineBreaks
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetLineBreaks(shaped RID, width float64, start int64, break_flags TextServerLineBreakFlag) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetLineBreaks`)
 		}
+		return
 	case "shaped_text_get_word_breaks":
-		i, ok := val.(interface{ ShapedTextGetWordBreaks(shaped RID, grapheme_flags TextServerGraphemeFlag) []int32 })
-		if ok {
-			return i.ShapedTextGetWordBreaks
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetWordBreaks(shaped RID, grapheme_flags TextServerGraphemeFlag) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetWordBreaks`)
 		}
+		return
 	case "shaped_text_get_trim_pos":
-		i, ok := val.(interface{ ShapedTextGetTrimPos(shaped RID) int64 })
-		if ok {
-			return i.ShapedTextGetTrimPos
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetTrimPos(shaped RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetTrimPos`)
 		}
+		return
 	case "shaped_text_get_ellipsis_pos":
-		i, ok := val.(interface{ ShapedTextGetEllipsisPos(shaped RID) int64 })
-		if ok {
-			return i.ShapedTextGetEllipsisPos
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetEllipsisPos(shaped RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetEllipsisPos`)
 		}
+		return
 	case "shaped_text_get_ellipsis_glyph_count":
-		i, ok := val.(interface{ ShapedTextGetEllipsisGlyphCount(shaped RID) int64 })
-		if ok {
-			return i.ShapedTextGetEllipsisGlyphCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetEllipsisGlyphCount(shaped RID) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetEllipsisGlyphCount`)
 		}
+		return
 	case "shaped_text_get_ellipsis_glyphs":
-		i, ok := val.(interface{ ShapedTextGetEllipsisGlyphs(shaped RID) * Glyph })
-		if ok {
-			return i.ShapedTextGetEllipsisGlyphs
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetEllipsisGlyphs(shaped RID) * Glyph }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetEllipsisGlyphs`)
 		}
+		return
 	case "shaped_text_overrun_trim_to_width":
-		i, ok := val.(interface{ ShapedTextOverrunTrimToWidth(shaped RID, width float64, trim_flags TextServerTextOverrunFlag)  })
-		if ok {
-			return i.ShapedTextOverrunTrimToWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextOverrunTrimToWidth(shaped RID, width float64, trim_flags TextServerTextOverrunFlag)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextOverrunTrimToWidth`)
 		}
+		return
 	case "shaped_text_get_objects":
-		i, ok := val.(interface{ ShapedTextGetObjects(shaped RID) Array })
-		if ok {
-			return i.ShapedTextGetObjects
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetObjects(shaped RID) Array }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetObjects`)
 		}
+		return
 	case "shaped_text_get_object_rect":
-		i, ok := val.(interface{ ShapedTextGetObjectRect(shaped RID, key any) Rect2 })
-		if ok {
-			return i.ShapedTextGetObjectRect
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetObjectRect(shaped RID, key any) Rect2 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetObjectRect`)
 		}
+		return
 	case "shaped_text_get_size":
-		i, ok := val.(interface{ ShapedTextGetSize(shaped RID) Vector2 })
-		if ok {
-			return i.ShapedTextGetSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetSize(shaped RID) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetSize`)
 		}
+		return
 	case "shaped_text_get_ascent":
-		i, ok := val.(interface{ ShapedTextGetAscent(shaped RID) float64 })
-		if ok {
-			return i.ShapedTextGetAscent
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetAscent(shaped RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetAscent`)
 		}
+		return
 	case "shaped_text_get_descent":
-		i, ok := val.(interface{ ShapedTextGetDescent(shaped RID) float64 })
-		if ok {
-			return i.ShapedTextGetDescent
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetDescent(shaped RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetDescent`)
 		}
+		return
 	case "shaped_text_get_width":
-		i, ok := val.(interface{ ShapedTextGetWidth(shaped RID) float64 })
-		if ok {
-			return i.ShapedTextGetWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetWidth(shaped RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetWidth`)
 		}
+		return
 	case "shaped_text_get_underline_position":
-		i, ok := val.(interface{ ShapedTextGetUnderlinePosition(shaped RID) float64 })
-		if ok {
-			return i.ShapedTextGetUnderlinePosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetUnderlinePosition(shaped RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetUnderlinePosition`)
 		}
+		return
 	case "shaped_text_get_underline_thickness":
-		i, ok := val.(interface{ ShapedTextGetUnderlineThickness(shaped RID) float64 })
-		if ok {
-			return i.ShapedTextGetUnderlineThickness
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetUnderlineThickness(shaped RID) float64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetUnderlineThickness`)
 		}
+		return
 	case "shaped_text_get_dominant_direction_in_range":
-		i, ok := val.(interface{ ShapedTextGetDominantDirectionInRange(shaped RID, start int64, end int64) int64 })
-		if ok {
-			return i.ShapedTextGetDominantDirectionInRange
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetDominantDirectionInRange(shaped RID, start int64, end int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetDominantDirectionInRange`)
 		}
+		return
 	case "shaped_text_get_carets":
-		i, ok := val.(interface{ ShapedTextGetCarets(shaped RID, position int64, caret *CaretInfo)  })
-		if ok {
-			return i.ShapedTextGetCarets
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetCarets(shaped RID, position int64, caret *CaretInfo)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetCarets`)
 		}
+		return
 	case "shaped_text_get_selection":
-		i, ok := val.(interface{ ShapedTextGetSelection(shaped RID, start int64, end int64) []Vector2 })
-		if ok {
-			return i.ShapedTextGetSelection
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetSelection(shaped RID, start int64, end int64) []Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetSelection`)
 		}
+		return
 	case "shaped_text_hit_test_grapheme":
-		i, ok := val.(interface{ ShapedTextHitTestGrapheme(shaped RID, coord float64) int64 })
-		if ok {
-			return i.ShapedTextHitTestGrapheme
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextHitTestGrapheme(shaped RID, coord float64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextHitTestGrapheme`)
 		}
+		return
 	case "shaped_text_hit_test_position":
-		i, ok := val.(interface{ ShapedTextHitTestPosition(shaped RID, coord float64) int64 })
-		if ok {
-			return i.ShapedTextHitTestPosition
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextHitTestPosition(shaped RID, coord float64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextHitTestPosition`)
 		}
+		return
 	case "shaped_text_draw":
-		i, ok := val.(interface{ ShapedTextDraw(shaped RID, canvas RID, pos Vector2, clip_l float64, clip_r float64, color Color)  })
-		if ok {
-			return i.ShapedTextDraw
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextDraw(shaped RID, canvas RID, pos Vector2, clip_l float64, clip_r float64, color Color)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextDraw`)
 		}
+		return
 	case "shaped_text_draw_outline":
-		i, ok := val.(interface{ ShapedTextDrawOutline(shaped RID, canvas RID, pos Vector2, clip_l float64, clip_r float64, outline_size int64, color Color)  })
-		if ok {
-			return i.ShapedTextDrawOutline
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextDrawOutline(shaped RID, canvas RID, pos Vector2, clip_l float64, clip_r float64, outline_size int64, color Color)  }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextDrawOutline`)
 		}
+		return
 	case "shaped_text_get_grapheme_bounds":
-		i, ok := val.(interface{ ShapedTextGetGraphemeBounds(shaped RID, pos int64) Vector2 })
-		if ok {
-			return i.ShapedTextGetGraphemeBounds
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextGetGraphemeBounds(shaped RID, pos int64) Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextGetGraphemeBounds`)
 		}
+		return
 	case "shaped_text_next_grapheme_pos":
-		i, ok := val.(interface{ ShapedTextNextGraphemePos(shaped RID, pos int64) int64 })
-		if ok {
-			return i.ShapedTextNextGraphemePos
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextNextGraphemePos(shaped RID, pos int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextNextGraphemePos`)
 		}
+		return
 	case "shaped_text_prev_grapheme_pos":
-		i, ok := val.(interface{ ShapedTextPrevGraphemePos(shaped RID, pos int64) int64 })
-		if ok {
-			return i.ShapedTextPrevGraphemePos
+		if rtype.Implements(reflect.TypeOf([0]interface{ ShapedTextPrevGraphemePos(shaped RID, pos int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`ShapedTextPrevGraphemePos`)
 		}
+		return
 	case "format_number":
-		i, ok := val.(interface{ FormatNumber(s string, language string) string })
-		if ok {
-			return i.FormatNumber
+		if rtype.Implements(reflect.TypeOf([0]interface{ FormatNumber(s string, language string) string }{}).Elem()) {
+			return rtype.MethodByName(`FormatNumber`)
 		}
+		return
 	case "parse_number":
-		i, ok := val.(interface{ ParseNumber(s string, language string) string })
-		if ok {
-			return i.ParseNumber
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseNumber(s string, language string) string }{}).Elem()) {
+			return rtype.MethodByName(`ParseNumber`)
 		}
+		return
 	case "percent_sign":
-		i, ok := val.(interface{ PercentSign(language string) string })
-		if ok {
-			return i.PercentSign
+		if rtype.Implements(reflect.TypeOf([0]interface{ PercentSign(language string) string }{}).Elem()) {
+			return rtype.MethodByName(`PercentSign`)
 		}
+		return
 	case "strip_diacritics":
-		i, ok := val.(interface{ StripDiacritics(s string) string })
-		if ok {
-			return i.StripDiacritics
+		if rtype.Implements(reflect.TypeOf([0]interface{ StripDiacritics(s string) string }{}).Elem()) {
+			return rtype.MethodByName(`StripDiacritics`)
 		}
+		return
 	case "is_valid_identifier":
-		i, ok := val.(interface{ IsValidIdentifier(s string) bool })
-		if ok {
-			return i.IsValidIdentifier
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsValidIdentifier(s string) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsValidIdentifier`)
 		}
+		return
 	case "string_get_word_breaks":
-		i, ok := val.(interface{ StringGetWordBreaks(s string, language string) []int32 })
-		if ok {
-			return i.StringGetWordBreaks
+		if rtype.Implements(reflect.TypeOf([0]interface{ StringGetWordBreaks(s string, language string) []int32 }{}).Elem()) {
+			return rtype.MethodByName(`StringGetWordBreaks`)
 		}
+		return
 	case "is_confusable":
-		i, ok := val.(interface{ IsConfusable(s string, dict []string) int64 })
-		if ok {
-			return i.IsConfusable
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsConfusable(s string, dict []string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`IsConfusable`)
 		}
+		return
 	case "spoof_check":
-		i, ok := val.(interface{ SpoofCheck(s string) bool })
-		if ok {
-			return i.SpoofCheck
+		if rtype.Implements(reflect.TypeOf([0]interface{ SpoofCheck(s string) bool }{}).Elem()) {
+			return rtype.MethodByName(`SpoofCheck`)
 		}
+		return
 	case "string_to_upper":
-		i, ok := val.(interface{ StringToUpper(s string, language string) string })
-		if ok {
-			return i.StringToUpper
+		if rtype.Implements(reflect.TypeOf([0]interface{ StringToUpper(s string, language string) string }{}).Elem()) {
+			return rtype.MethodByName(`StringToUpper`)
 		}
+		return
 	case "string_to_lower":
-		i, ok := val.(interface{ StringToLower(s string, language string) string })
-		if ok {
-			return i.StringToLower
+		if rtype.Implements(reflect.TypeOf([0]interface{ StringToLower(s string, language string) string }{}).Elem()) {
+			return rtype.MethodByName(`StringToLower`)
 		}
+		return
 	case "parse_structured_text":
-		i, ok := val.(interface{ ParseStructuredText(parser_type TextServerStructuredTextParser, args Array, text string) Array })
-		if ok {
-			return i.ParseStructuredText
+		if rtype.Implements(reflect.TypeOf([0]interface{ ParseStructuredText(parser_type TextServerStructuredTextParser, args Array, text string) Array }{}).Elem()) {
+			return rtype.MethodByName(`ParseStructuredText`)
 		}
+		return
 	}
-	return nil
+	return gdClass.TextServer().virtual(rtype, name)
 }
 
 type TextServerManager gdnative.Object
@@ -23437,6 +25186,9 @@ func (TextServerManager) class() string { return "TextServerManager\000" }
 func (gdClass TextServerManager) Object() Object { return Object(gdClass) }
 
 var methodTextServerManager [8]gdnative.Method
+func (gdClass TextServerManager) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass TextServerManager) AddInterface(intf TextServer)  { gdnative.Call(gdnative.Object(gdClass), methodTextServerManager[0], intf) }
 func (gdClass TextServerManager) GetInterfaceCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTextServerManager[1]) }
 func (gdClass TextServerManager) RemoveInterface(intf TextServer)  { gdnative.Call(gdnative.Object(gdClass), methodTextServerManager[2], intf) }
@@ -23451,6 +25203,9 @@ func (Texture) class() string { return "Texture\000" }
 
 func (gdClass Texture) Resource() Resource { return Resource(gdClass) }
 
+func (gdClass Texture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 
 type Texture2D gdnative.Object
 func (Texture2D) class() string { return "Texture2D\000" }
@@ -23458,44 +25213,45 @@ func (Texture2D) class() string { return "Texture2D\000" }
 func (gdClass Texture2D) Texture() Texture { return Texture(gdClass) }
 
 var methodTexture2D [8]gdnative.Method
-func (gdClass Texture2D) virtual(val any, name string) any {	switch name {
+func (gdClass Texture2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_width":
-		i, ok := val.(interface{ GetWidth() int64 })
-		if ok {
-			return i.GetWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWidth() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetWidth`)
 		}
+		return
 	case "_get_height":
-		i, ok := val.(interface{ GetHeight() int64 })
-		if ok {
-			return i.GetHeight
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHeight() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetHeight`)
 		}
+		return
 	case "_is_pixel_opaque":
-		i, ok := val.(interface{ IsPixelOpaque(x int64, y int64) bool })
-		if ok {
-			return i.IsPixelOpaque
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsPixelOpaque(x int64, y int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsPixelOpaque`)
 		}
+		return
 	case "_has_alpha":
-		i, ok := val.(interface{ HasAlpha() bool })
-		if ok {
-			return i.HasAlpha
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasAlpha() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasAlpha`)
 		}
+		return
 	case "_draw":
-		i, ok := val.(interface{ Draw(to_canvas_item RID, pos Vector2, modulate Color, transpose bool)  })
-		if ok {
-			return i.Draw
+		if rtype.Implements(reflect.TypeOf([0]interface{ Draw(to_canvas_item RID, pos Vector2, modulate Color, transpose bool)  }{}).Elem()) {
+			return rtype.MethodByName(`Draw`)
 		}
+		return
 	case "_draw_rect":
-		i, ok := val.(interface{ DrawRect(to_canvas_item RID, rect Rect2, tile bool, modulate Color, transpose bool)  })
-		if ok {
-			return i.DrawRect
+		if rtype.Implements(reflect.TypeOf([0]interface{ DrawRect(to_canvas_item RID, rect Rect2, tile bool, modulate Color, transpose bool)  }{}).Elem()) {
+			return rtype.MethodByName(`DrawRect`)
 		}
+		return
 	case "_draw_rect_region":
-		i, ok := val.(interface{ DrawRectRegion(tp_canvas_item RID, rect Rect2, src_rect Rect2, modulate Color, transpose bool, clip_uv bool)  })
-		if ok {
-			return i.DrawRectRegion
+		if rtype.Implements(reflect.TypeOf([0]interface{ DrawRectRegion(tp_canvas_item RID, rect Rect2, src_rect Rect2, modulate Color, transpose bool, clip_uv bool)  }{}).Elem()) {
+			return rtype.MethodByName(`DrawRectRegion`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Texture().virtual(rtype, name)
 }
 func (gdClass Texture2D) GetWidth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTexture2D[0]) }
 func (gdClass Texture2D) GetHeight() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTexture2D[1]) }
@@ -23511,6 +25267,9 @@ func (Texture2DArray) class() string { return "Texture2DArray\000" }
 
 func (gdClass Texture2DArray) ImageTextureLayered() ImageTextureLayered { return ImageTextureLayered(gdClass) }
 
+func (gdClass Texture2DArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ImageTextureLayered().virtual(rtype, name)
+}
 
 type Texture3D gdnative.Object
 func (Texture3D) class() string { return "Texture3D\000" }
@@ -23518,39 +25277,40 @@ func (Texture3D) class() string { return "Texture3D\000" }
 func (gdClass Texture3D) Texture() Texture { return Texture(gdClass) }
 
 var methodTexture3D [6]gdnative.Method
-func (gdClass Texture3D) virtual(val any, name string) any {	switch name {
+func (gdClass Texture3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_format":
-		i, ok := val.(interface{ GetFormat() ImageFormat })
-		if ok {
-			return i.GetFormat
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetFormat() ImageFormat }{}).Elem()) {
+			return rtype.MethodByName(`GetFormat`)
 		}
+		return
 	case "_get_width":
-		i, ok := val.(interface{ GetWidth() int64 })
-		if ok {
-			return i.GetWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWidth() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetWidth`)
 		}
+		return
 	case "_get_height":
-		i, ok := val.(interface{ GetHeight() int64 })
-		if ok {
-			return i.GetHeight
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHeight() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetHeight`)
 		}
+		return
 	case "_get_depth":
-		i, ok := val.(interface{ GetDepth() int64 })
-		if ok {
-			return i.GetDepth
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDepth() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetDepth`)
 		}
+		return
 	case "_has_mipmaps":
-		i, ok := val.(interface{ HasMipmaps() bool })
-		if ok {
-			return i.HasMipmaps
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasMipmaps() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasMipmaps`)
 		}
+		return
 	case "_get_data":
-		i, ok := val.(interface{ GetData() Array })
-		if ok {
-			return i.GetData
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetData() Array }{}).Elem()) {
+			return rtype.MethodByName(`GetData`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Texture().virtual(rtype, name)
 }
 func (gdClass Texture3D) GetFormat() ImageFormat { return gdnative.Return[ImageFormat](gdnative.Object(gdClass), methodTexture3D[0]) }
 func (gdClass Texture3D) GetWidth() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTexture3D[1]) }
@@ -23577,6 +25337,9 @@ func (TextureButton) class() string { return "TextureButton\000" }
 func (gdClass TextureButton) BaseButton() BaseButton { return BaseButton(gdClass) }
 
 var methodTextureButton [20]gdnative.Method
+func (gdClass TextureButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BaseButton().virtual(rtype, name)
+}
 func (gdClass TextureButton) SetNormalTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureButton[0], texture) }
 func (gdClass TextureButton) SetPressedTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureButton[1], texture) }
 func (gdClass TextureButton) SetHoverTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureButton[2], texture) }
@@ -23612,44 +25375,45 @@ func (TextureLayered) class() string { return "TextureLayered\000" }
 func (gdClass TextureLayered) Texture() Texture { return Texture(gdClass) }
 
 var methodTextureLayered [7]gdnative.Method
-func (gdClass TextureLayered) virtual(val any, name string) any {	switch name {
+func (gdClass TextureLayered) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_format":
-		i, ok := val.(interface{ GetFormat() ImageFormat })
-		if ok {
-			return i.GetFormat
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetFormat() ImageFormat }{}).Elem()) {
+			return rtype.MethodByName(`GetFormat`)
 		}
+		return
 	case "_get_layered_type":
-		i, ok := val.(interface{ GetLayeredType() int64 })
-		if ok {
-			return i.GetLayeredType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLayeredType() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetLayeredType`)
 		}
+		return
 	case "_get_width":
-		i, ok := val.(interface{ GetWidth() int64 })
-		if ok {
-			return i.GetWidth
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWidth() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetWidth`)
 		}
+		return
 	case "_get_height":
-		i, ok := val.(interface{ GetHeight() int64 })
-		if ok {
-			return i.GetHeight
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetHeight() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetHeight`)
 		}
+		return
 	case "_get_layers":
-		i, ok := val.(interface{ GetLayers() int64 })
-		if ok {
-			return i.GetLayers
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLayers() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetLayers`)
 		}
+		return
 	case "_has_mipmaps":
-		i, ok := val.(interface{ HasMipmaps() bool })
-		if ok {
-			return i.HasMipmaps
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasMipmaps() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasMipmaps`)
 		}
+		return
 	case "_get_layer_data":
-		i, ok := val.(interface{ GetLayerData(layer_index int64) Image })
-		if ok {
-			return i.GetLayerData
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLayerData(layer_index int64) Image }{}).Elem()) {
+			return rtype.MethodByName(`GetLayerData`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Texture().virtual(rtype, name)
 }
 func (gdClass TextureLayered) GetFormat() ImageFormat { return gdnative.Return[ImageFormat](gdnative.Object(gdClass), methodTextureLayered[0]) }
 func (gdClass TextureLayered) GetLayeredType() TextureLayeredLayeredType { return gdnative.Return[TextureLayeredLayeredType](gdnative.Object(gdClass), methodTextureLayered[1]) }
@@ -23679,6 +25443,9 @@ func (TextureProgressBar) class() string { return "TextureProgressBar\000" }
 func (gdClass TextureProgressBar) Range() Range { return Range(gdClass) }
 
 var methodTextureProgressBar [26]gdnative.Method
+func (gdClass TextureProgressBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Range().virtual(rtype, name)
+}
 func (gdClass TextureProgressBar) SetUnderTexture(tex Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureProgressBar[0], tex) }
 func (gdClass TextureProgressBar) GetUnderTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodTextureProgressBar[1]) }
 func (gdClass TextureProgressBar) SetProgressTexture(tex Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureProgressBar[2], tex) }
@@ -23724,6 +25491,9 @@ func (TextureRect) class() string { return "TextureRect\000" }
 func (gdClass TextureRect) Control() Control { return Control(gdClass) }
 
 var methodTextureRect [10]gdnative.Method
+func (gdClass TextureRect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass TextureRect) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTextureRect[0], texture) }
 func (gdClass TextureRect) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodTextureRect[1]) }
 func (gdClass TextureRect) SetIgnoreTextureSize(ignore bool)  { gdnative.Call(gdnative.Object(gdClass), methodTextureRect[2], ignore) }
@@ -23753,6 +25523,9 @@ func (Theme) class() string { return "Theme\000" }
 func (gdClass Theme) Resource() Resource { return Resource(gdClass) }
 
 var methodTheme [68]gdnative.Method
+func (gdClass Theme) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass Theme) SetIcon(name string, theme_type string, texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTheme[0], name, theme_type, texture) }
 func (gdClass Theme) GetIcon(name string, theme_type string) Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodTheme[1], name, theme_type) }
 func (gdClass Theme) HasIcon(name string, theme_type string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTheme[2], name, theme_type) }
@@ -23836,6 +25609,9 @@ func (Thread) class() string { return "Thread\000" }
 func (gdClass Thread) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodThread [5]gdnative.Method
+func (gdClass Thread) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Thread) Start(callable Callable, priority ThreadPriority) error { return gdnative.Return[error](gdnative.Object(gdClass), methodThread[0], callable, priority) }
 func (gdClass Thread) GetId() string { return gdnative.Return[string](gdnative.Object(gdClass), methodThread[1]) }
 func (gdClass Thread) IsStarted() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodThread[2]) }
@@ -23848,6 +25624,9 @@ func (TileData) class() string { return "TileData\000" }
 func (gdClass TileData) Object() Object { return Object(gdClass) }
 
 var methodTileData [46]gdnative.Method
+func (gdClass TileData) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass TileData) SetFlipH(flip_h bool)  { gdnative.Call(gdnative.Object(gdClass), methodTileData[0], flip_h) }
 func (gdClass TileData) GetFlipH() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileData[1]) }
 func (gdClass TileData) SetFlipV(flip_v bool)  { gdnative.Call(gdnative.Object(gdClass), methodTileData[2], flip_v) }
@@ -23909,19 +25688,20 @@ func (TileMap) class() string { return "TileMap\000" }
 func (gdClass TileMap) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodTileMap [47]gdnative.Method
-func (gdClass TileMap) virtual(val any, name string) any {	switch name {
+func (gdClass TileMap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_use_tile_data_runtime_update":
-		i, ok := val.(interface{ UseTileDataRuntimeUpdate(layer int64, coords Vector2i) bool })
-		if ok {
-			return i.UseTileDataRuntimeUpdate
+		if rtype.Implements(reflect.TypeOf([0]interface{ UseTileDataRuntimeUpdate(layer int64, coords Vector2i) bool }{}).Elem()) {
+			return rtype.MethodByName(`UseTileDataRuntimeUpdate`)
 		}
+		return
 	case "_tile_data_runtime_update":
-		i, ok := val.(interface{ TileDataRuntimeUpdate(layer int64, coords Vector2i, tile_data TileData)  })
-		if ok {
-			return i.TileDataRuntimeUpdate
+		if rtype.Implements(reflect.TypeOf([0]interface{ TileDataRuntimeUpdate(layer int64, coords Vector2i, tile_data TileData)  }{}).Elem()) {
+			return rtype.MethodByName(`TileDataRuntimeUpdate`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node2D().virtual(rtype, name)
 }
 func (gdClass TileMap) SetTileset(tileset TileSet)  { gdnative.Call(gdnative.Object(gdClass), methodTileMap[0], tileset) }
 func (gdClass TileMap) GetTileset() TileSet { return gdnative.Return[TileSet](gdnative.Object(gdClass), methodTileMap[1]) }
@@ -23977,6 +25757,9 @@ func (TileMapPattern) class() string { return "TileMapPattern\000" }
 func (gdClass TileMapPattern) Resource() Resource { return Resource(gdClass) }
 
 var methodTileMapPattern [10]gdnative.Method
+func (gdClass TileMapPattern) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass TileMapPattern) SetCell(coords Vector2i, source_id int64, atlas_coords Vector2i, alternative_tile int64)  { gdnative.Call(gdnative.Object(gdClass), methodTileMapPattern[0], coords, source_id, atlas_coords, alternative_tile) }
 func (gdClass TileMapPattern) HasCell(coords Vector2i) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileMapPattern[1], coords) }
 func (gdClass TileMapPattern) RemoveCell(coords Vector2i, update_size bool)  { gdnative.Call(gdnative.Object(gdClass), methodTileMapPattern[2], coords, update_size) }
@@ -24050,6 +25833,9 @@ func (TileSet) class() string { return "TileSet\000" }
 func (gdClass TileSet) Resource() Resource { return Resource(gdClass) }
 
 var methodTileSet [84]gdnative.Method
+func (gdClass TileSet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass TileSet) GetNextSourceId() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSet[0]) }
 func (gdClass TileSet) AddSource(source TileSetSource, atlas_source_id_override int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSet[1], source, atlas_source_id_override) }
 func (gdClass TileSet) RemoveSource(source_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodTileSet[2], source_id) }
@@ -24141,6 +25927,9 @@ func (TileSetAtlasSource) class() string { return "TileSetAtlasSource\000" }
 func (gdClass TileSetAtlasSource) TileSetSource() TileSetSource { return TileSetSource(gdClass) }
 
 var methodTileSetAtlasSource [37]gdnative.Method
+func (gdClass TileSetAtlasSource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TileSetSource().virtual(rtype, name)
+}
 func (gdClass TileSetAtlasSource) SetTexture(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTileSetAtlasSource[0], texture) }
 func (gdClass TileSetAtlasSource) GetTexture() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodTileSetAtlasSource[1]) }
 func (gdClass TileSetAtlasSource) SetMargins(margins Vector2i)  { gdnative.Call(gdnative.Object(gdClass), methodTileSetAtlasSource[2], margins) }
@@ -24185,6 +25974,9 @@ func (TileSetScenesCollectionSource) class() string { return "TileSetScenesColle
 func (gdClass TileSetScenesCollectionSource) TileSetSource() TileSetSource { return TileSetSource(gdClass) }
 
 var methodTileSetScenesCollectionSource [11]gdnative.Method
+func (gdClass TileSetScenesCollectionSource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.TileSetSource().virtual(rtype, name)
+}
 func (gdClass TileSetScenesCollectionSource) GetSceneTilesCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetScenesCollectionSource[0]) }
 func (gdClass TileSetScenesCollectionSource) GetSceneTileId(index int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetScenesCollectionSource[1], index) }
 func (gdClass TileSetScenesCollectionSource) HasSceneTileId(id int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileSetScenesCollectionSource[2], id) }
@@ -24203,6 +25995,9 @@ func (TileSetSource) class() string { return "TileSetSource\000" }
 func (gdClass TileSetSource) Resource() Resource { return Resource(gdClass) }
 
 var methodTileSetSource [6]gdnative.Method
+func (gdClass TileSetSource) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass TileSetSource) GetTilesCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodTileSetSource[0]) }
 func (gdClass TileSetSource) GetTileId(index int64) Vector2i { return gdnative.Return[Vector2i](gdnative.Object(gdClass), methodTileSetSource[1], index) }
 func (gdClass TileSetSource) HasTile(atlas_coords Vector2i) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodTileSetSource[2], atlas_coords) }
@@ -24245,6 +26040,9 @@ func (Time) class() string { return "Time\000" }
 func (gdClass Time) Object() Object { return Object(gdClass) }
 
 var methodTime [21]gdnative.Method
+func (gdClass Time) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass Time) GetDatetimeDictFromUnixTime(unix_time_val int64) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodTime[0], unix_time_val) }
 func (gdClass Time) GetDateDictFromUnixTime(unix_time_val int64) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodTime[1], unix_time_val) }
 func (gdClass Time) GetTimeDictFromUnixTime(unix_time_val int64) Dictionary { return gdnative.Return[Dictionary](gdnative.Object(gdClass), methodTime[2], unix_time_val) }
@@ -24280,6 +26078,9 @@ func (Timer) class() string { return "Timer\000" }
 func (gdClass Timer) Node() Node { return Node(gdClass) }
 
 var methodTimer [14]gdnative.Method
+func (gdClass Timer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass Timer) SetWaitTime(time_sec float64)  { gdnative.Call(gdnative.Object(gdClass), methodTimer[0], time_sec) }
 func (gdClass Timer) GetWaitTime() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodTimer[1]) }
 func (gdClass Timer) SetOneShot(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodTimer[2], enable) }
@@ -24301,6 +26102,9 @@ func (TorusMesh) class() string { return "TorusMesh\000" }
 func (gdClass TorusMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodTorusMesh [8]gdnative.Method
+func (gdClass TorusMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass TorusMesh) SetInnerRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodTorusMesh[0], radius) }
 func (gdClass TorusMesh) GetInnerRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodTorusMesh[1]) }
 func (gdClass TorusMesh) SetOuterRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodTorusMesh[2], radius) }
@@ -24323,6 +26127,9 @@ func (TouchScreenButton) class() string { return "TouchScreenButton\000" }
 func (gdClass TouchScreenButton) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodTouchScreenButton [19]gdnative.Method
+func (gdClass TouchScreenButton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass TouchScreenButton) SetTextureNormal(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTouchScreenButton[0], texture) }
 func (gdClass TouchScreenButton) GetTextureNormal() Texture2D { return gdnative.Return[Texture2D](gdnative.Object(gdClass), methodTouchScreenButton[1]) }
 func (gdClass TouchScreenButton) SetTexturePressed(texture Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodTouchScreenButton[2], texture) }
@@ -24349,19 +26156,20 @@ func (Translation) class() string { return "Translation\000" }
 func (gdClass Translation) Resource() Resource { return Resource(gdClass) }
 
 var methodTranslation [9]gdnative.Method
-func (gdClass Translation) virtual(val any, name string) any {	switch name {
+func (gdClass Translation) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_plural_message":
-		i, ok := val.(interface{ GetPluralMessage(src_message string, src_plural_message string, n int64, context string) string })
-		if ok {
-			return i.GetPluralMessage
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPluralMessage(src_message string, src_plural_message string, n int64, context string) string }{}).Elem()) {
+			return rtype.MethodByName(`GetPluralMessage`)
 		}
+		return
 	case "_get_message":
-		i, ok := val.(interface{ GetMessage(src_message string, context string) string })
-		if ok {
-			return i.GetMessage
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMessage(src_message string, context string) string }{}).Elem()) {
+			return rtype.MethodByName(`GetMessage`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Resource().virtual(rtype, name)
 }
 func (gdClass Translation) SetLocale(locale string)  { gdnative.Call(gdnative.Object(gdClass), methodTranslation[0], locale) }
 func (gdClass Translation) GetLocale() string { return gdnative.Return[string](gdnative.Object(gdClass), methodTranslation[1]) }
@@ -24379,6 +26187,9 @@ func (TranslationServer) class() string { return "TranslationServer\000" }
 func (gdClass TranslationServer) Object() Object { return Object(gdClass) }
 
 var methodTranslationServer [23]gdnative.Method
+func (gdClass TranslationServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass TranslationServer) SetLocale(locale string)  { gdnative.Call(gdnative.Object(gdClass), methodTranslationServer[0], locale) }
 func (gdClass TranslationServer) GetLocale() string { return gdnative.Return[string](gdnative.Object(gdClass), methodTranslationServer[1]) }
 func (gdClass TranslationServer) GetToolLocale() string { return gdnative.Return[string](gdnative.Object(gdClass), methodTranslationServer[2]) }
@@ -24425,6 +26236,9 @@ func (Tree) class() string { return "Tree\000" }
 func (gdClass Tree) Control() Control { return Control(gdClass) }
 
 var methodTree [53]gdnative.Method
+func (gdClass Tree) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass Tree) Clear()  { gdnative.Call(gdnative.Object(gdClass), methodTree[0]) }
 func (gdClass Tree) CreateItem(parent TreeItem, idx int64) TreeItem { return gdnative.Return[TreeItem](gdnative.Object(gdClass), methodTree[1], parent, idx) }
 func (gdClass Tree) GetRoot() TreeItem { return gdnative.Return[TreeItem](gdnative.Object(gdClass), methodTree[2]) }
@@ -24495,6 +26309,9 @@ func (TreeItem) class() string { return "TreeItem\000" }
 func (gdClass TreeItem) Object() Object { return Object(gdClass) }
 
 var methodTreeItem [94]gdnative.Method
+func (gdClass TreeItem) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass TreeItem) SetCellMode(column int64, mode TreeItemTreeCellMode)  { gdnative.Call(gdnative.Object(gdClass), methodTreeItem[0], column, mode) }
 func (gdClass TreeItem) GetCellMode(column int64) TreeItemTreeCellMode { return gdnative.Return[TreeItemTreeCellMode](gdnative.Object(gdClass), methodTreeItem[1], column) }
 func (gdClass TreeItem) SetChecked(column int64, checked bool)  { gdnative.Call(gdnative.Object(gdClass), methodTreeItem[2], column, checked) }
@@ -24595,6 +26412,9 @@ func (TriangleMesh) class() string { return "TriangleMesh\000" }
 
 func (gdClass TriangleMesh) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass TriangleMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type TubeTrailMesh gdnative.Object
 func (TubeTrailMesh) class() string { return "TubeTrailMesh\000" }
@@ -24602,6 +26422,9 @@ func (TubeTrailMesh) class() string { return "TubeTrailMesh\000" }
 func (gdClass TubeTrailMesh) PrimitiveMesh() PrimitiveMesh { return PrimitiveMesh(gdClass) }
 
 var methodTubeTrailMesh [12]gdnative.Method
+func (gdClass TubeTrailMesh) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PrimitiveMesh().virtual(rtype, name)
+}
 func (gdClass TubeTrailMesh) SetRadius(radius float64)  { gdnative.Call(gdnative.Object(gdClass), methodTubeTrailMesh[0], radius) }
 func (gdClass TubeTrailMesh) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodTubeTrailMesh[1]) }
 func (gdClass TubeTrailMesh) SetRadialSteps(radial_steps int64)  { gdnative.Call(gdnative.Object(gdClass), methodTubeTrailMesh[2], radial_steps) }
@@ -24661,6 +26484,9 @@ func (Tween) class() string { return "Tween\000" }
 func (gdClass Tween) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodTween [23]gdnative.Method
+func (gdClass Tween) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass Tween) TweenProperty(object Object, property NodePath, final_val any, duration float64) PropertyTweener { return gdnative.Return[PropertyTweener](gdnative.Object(gdClass), methodTween[0], object, property, final_val, duration) }
 func (gdClass Tween) TweenInterval(time float64) IntervalTweener { return gdnative.Return[IntervalTweener](gdnative.Object(gdClass), methodTween[1], time) }
 func (gdClass Tween) TweenCallback(callback Callable) CallbackTweener { return gdnative.Return[CallbackTweener](gdnative.Object(gdClass), methodTween[2], callback) }
@@ -24690,6 +26516,9 @@ func (Tweener) class() string { return "Tweener\000" }
 
 func (gdClass Tweener) RefCounted() RefCounted { return RefCounted(gdClass) }
 
+func (gdClass Tweener) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 
 type UDPServer gdnative.Object
 func (UDPServer) class() string { return "UDPServer\000" }
@@ -24697,6 +26526,9 @@ func (UDPServer) class() string { return "UDPServer\000" }
 func (gdClass UDPServer) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodUDPServer [9]gdnative.Method
+func (gdClass UDPServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass UDPServer) Listen(port int64, bind_address string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodUDPServer[0], port, bind_address) }
 func (gdClass UDPServer) Poll() error { return gdnative.Return[error](gdnative.Object(gdClass), methodUDPServer[1]) }
 func (gdClass UDPServer) IsConnectionAvailable() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodUDPServer[2]) }
@@ -24747,6 +26579,9 @@ func (UPNP) class() string { return "UPNP\000" }
 func (gdClass UPNP) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodUPNP [17]gdnative.Method
+func (gdClass UPNP) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass UPNP) GetDeviceCount() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodUPNP[0]) }
 func (gdClass UPNP) GetDevice(index int64) UPNPDevice { return gdnative.Return[UPNPDevice](gdnative.Object(gdClass), methodUPNP[1], index) }
 func (gdClass UPNP) AddDevice(device UPNPDevice)  { gdnative.Call(gdnative.Object(gdClass), methodUPNP[2], device) }
@@ -24786,6 +26621,9 @@ func (UPNPDevice) class() string { return "UPNPDevice\000" }
 func (gdClass UPNPDevice) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodUPNPDevice [16]gdnative.Method
+func (gdClass UPNPDevice) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass UPNPDevice) IsValidGateway() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodUPNPDevice[0]) }
 func (gdClass UPNPDevice) QueryExternalAddress() string { return gdnative.Return[string](gdnative.Object(gdClass), methodUPNPDevice[1]) }
 func (gdClass UPNPDevice) AddPortMapping(port int64, port_internal int64, desc string, proto string, duration int64) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodUPNPDevice[2], port, port_internal, desc, proto, duration) }
@@ -24817,6 +26655,9 @@ func (UndoRedo) class() string { return "UndoRedo\000" }
 func (gdClass UndoRedo) Object() Object { return Object(gdClass) }
 
 var methodUndoRedo [21]gdnative.Method
+func (gdClass UndoRedo) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass UndoRedo) CreateAction(name string, merge_mode UndoRedoMergeMode)  { gdnative.Call(gdnative.Object(gdClass), methodUndoRedo[0], name, merge_mode) }
 func (gdClass UndoRedo) CommitAction(execute bool)  { gdnative.Call(gdnative.Object(gdClass), methodUndoRedo[1], execute) }
 func (gdClass UndoRedo) IsCommittingAction() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodUndoRedo[2]) }
@@ -24844,42 +26685,63 @@ func (UniformSetCacheRD) class() string { return "UniformSetCacheRD\000" }
 
 func (gdClass UniformSetCacheRD) Object() Object { return Object(gdClass) }
 
+func (gdClass UniformSetCacheRD) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 
 type VBoxContainer gdnative.Object
 func (VBoxContainer) class() string { return "VBoxContainer\000" }
 
 func (gdClass VBoxContainer) BoxContainer() BoxContainer { return BoxContainer(gdClass) }
 
+func (gdClass VBoxContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.BoxContainer().virtual(rtype, name)
+}
 
 type VFlowContainer gdnative.Object
 func (VFlowContainer) class() string { return "VFlowContainer\000" }
 
 func (gdClass VFlowContainer) FlowContainer() FlowContainer { return FlowContainer(gdClass) }
 
+func (gdClass VFlowContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.FlowContainer().virtual(rtype, name)
+}
 
 type VScrollBar gdnative.Object
 func (VScrollBar) class() string { return "VScrollBar\000" }
 
 func (gdClass VScrollBar) ScrollBar() ScrollBar { return ScrollBar(gdClass) }
 
+func (gdClass VScrollBar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.ScrollBar().virtual(rtype, name)
+}
 
 type VSeparator gdnative.Object
 func (VSeparator) class() string { return "VSeparator\000" }
 
 func (gdClass VSeparator) Separator() Separator { return Separator(gdClass) }
 
+func (gdClass VSeparator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Separator().virtual(rtype, name)
+}
 
 type VSlider gdnative.Object
 func (VSlider) class() string { return "VSlider\000" }
 
 func (gdClass VSlider) Slider() Slider { return Slider(gdClass) }
 
+func (gdClass VSlider) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Slider().virtual(rtype, name)
+}
 
 type VSplitContainer gdnative.Object
 func (VSplitContainer) class() string { return "VSplitContainer\000" }
 
 func (gdClass VSplitContainer) SplitContainer() SplitContainer { return SplitContainer(gdClass) }
 
+func (gdClass VSplitContainer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.SplitContainer().virtual(rtype, name)
+}
 
 type VehicleBody3D gdnative.Object
 func (VehicleBody3D) class() string { return "VehicleBody3D\000" }
@@ -24887,6 +26749,9 @@ func (VehicleBody3D) class() string { return "VehicleBody3D\000" }
 func (gdClass VehicleBody3D) RigidDynamicBody3D() RigidDynamicBody3D { return RigidDynamicBody3D(gdClass) }
 
 var methodVehicleBody3D [6]gdnative.Method
+func (gdClass VehicleBody3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RigidDynamicBody3D().virtual(rtype, name)
+}
 func (gdClass VehicleBody3D) SetEngineForce(engine_force float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleBody3D[0], engine_force) }
 func (gdClass VehicleBody3D) GetEngineForce() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVehicleBody3D[1]) }
 func (gdClass VehicleBody3D) SetBrake(brake float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleBody3D[2], brake) }
@@ -24900,6 +26765,9 @@ func (VehicleWheel3D) class() string { return "VehicleWheel3D\000" }
 func (gdClass VehicleWheel3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodVehicleWheel3D [32]gdnative.Method
+func (gdClass VehicleWheel3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass VehicleWheel3D) SetRadius(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleWheel3D[0], length) }
 func (gdClass VehicleWheel3D) GetRadius() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVehicleWheel3D[1]) }
 func (gdClass VehicleWheel3D) SetSuspensionRestLength(length float64)  { gdnative.Call(gdnative.Object(gdClass), methodVehicleWheel3D[2], length) }
@@ -24938,6 +26806,9 @@ func (VideoStream) class() string { return "VideoStream\000" }
 
 func (gdClass VideoStream) Resource() Resource { return Resource(gdClass) }
 
+func (gdClass VideoStream) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 
 type VideoStreamPlayer gdnative.Object
 func (VideoStreamPlayer) class() string { return "VideoStreamPlayer\000" }
@@ -24945,6 +26816,9 @@ func (VideoStreamPlayer) class() string { return "VideoStreamPlayer\000" }
 func (gdClass VideoStreamPlayer) Control() Control { return Control(gdClass) }
 
 var methodVideoStreamPlayer [25]gdnative.Method
+func (gdClass VideoStreamPlayer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Control().virtual(rtype, name)
+}
 func (gdClass VideoStreamPlayer) SetStream(stream VideoStream)  { gdnative.Call(gdnative.Object(gdClass), methodVideoStreamPlayer[0], stream) }
 func (gdClass VideoStreamPlayer) GetStream() VideoStream { return gdnative.Return[VideoStream](gdnative.Object(gdClass), methodVideoStreamPlayer[1]) }
 func (gdClass VideoStreamPlayer) Play()  { gdnative.Call(gdnative.Object(gdClass), methodVideoStreamPlayer[2]) }
@@ -24977,6 +26851,9 @@ func (VideoStreamTheora) class() string { return "VideoStreamTheora\000" }
 func (gdClass VideoStreamTheora) VideoStream() VideoStream { return VideoStream(gdClass) }
 
 var methodVideoStreamTheora [2]gdnative.Method
+func (gdClass VideoStreamTheora) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VideoStream().virtual(rtype, name)
+}
 func (gdClass VideoStreamTheora) SetFile(file string)  { gdnative.Call(gdnative.Object(gdClass), methodVideoStreamTheora[0], file) }
 func (gdClass VideoStreamTheora) GetFile() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVideoStreamTheora[1]) }
 
@@ -25120,6 +26997,9 @@ func (Viewport) class() string { return "Viewport\000" }
 func (gdClass Viewport) Node() Node { return Node(gdClass) }
 
 var methodViewport [95]gdnative.Method
+func (gdClass Viewport) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass Viewport) SetWorld2d(world_2d World2D)  { gdnative.Call(gdnative.Object(gdClass), methodViewport[0], world_2d) }
 func (gdClass Viewport) GetWorld2d() World2D { return gdnative.Return[World2D](gdnative.Object(gdClass), methodViewport[1]) }
 func (gdClass Viewport) FindWorld2d() World2D { return gdnative.Return[World2D](gdnative.Object(gdClass), methodViewport[2]) }
@@ -25222,6 +27102,9 @@ func (ViewportTexture) class() string { return "ViewportTexture\000" }
 func (gdClass ViewportTexture) Texture2D() Texture2D { return Texture2D(gdClass) }
 
 var methodViewportTexture [2]gdnative.Method
+func (gdClass ViewportTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Texture2D().virtual(rtype, name)
+}
 func (gdClass ViewportTexture) SetViewportPathInScene(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodViewportTexture[0], path) }
 func (gdClass ViewportTexture) GetViewportPathInScene() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodViewportTexture[1]) }
 
@@ -25239,6 +27122,9 @@ func (VisibleOnScreenEnabler2D) class() string { return "VisibleOnScreenEnabler2
 func (gdClass VisibleOnScreenEnabler2D) VisibleOnScreenNotifier2D() VisibleOnScreenNotifier2D { return VisibleOnScreenNotifier2D(gdClass) }
 
 var methodVisibleOnScreenEnabler2D [4]gdnative.Method
+func (gdClass VisibleOnScreenEnabler2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisibleOnScreenNotifier2D().virtual(rtype, name)
+}
 func (gdClass VisibleOnScreenEnabler2D) SetEnableMode(mode VisibleOnScreenEnabler2DEnableMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenEnabler2D[0], mode) }
 func (gdClass VisibleOnScreenEnabler2D) GetEnableMode() VisibleOnScreenEnabler2DEnableMode { return gdnative.Return[VisibleOnScreenEnabler2DEnableMode](gdnative.Object(gdClass), methodVisibleOnScreenEnabler2D[1]) }
 func (gdClass VisibleOnScreenEnabler2D) SetEnableNodePath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenEnabler2D[2], path) }
@@ -25258,6 +27144,9 @@ func (VisibleOnScreenEnabler3D) class() string { return "VisibleOnScreenEnabler3
 func (gdClass VisibleOnScreenEnabler3D) VisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D { return VisibleOnScreenNotifier3D(gdClass) }
 
 var methodVisibleOnScreenEnabler3D [4]gdnative.Method
+func (gdClass VisibleOnScreenEnabler3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisibleOnScreenNotifier3D().virtual(rtype, name)
+}
 func (gdClass VisibleOnScreenEnabler3D) SetEnableMode(mode VisibleOnScreenEnabler3DEnableMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenEnabler3D[0], mode) }
 func (gdClass VisibleOnScreenEnabler3D) GetEnableMode() VisibleOnScreenEnabler3DEnableMode { return gdnative.Return[VisibleOnScreenEnabler3DEnableMode](gdnative.Object(gdClass), methodVisibleOnScreenEnabler3D[1]) }
 func (gdClass VisibleOnScreenEnabler3D) SetEnableNodePath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenEnabler3D[2], path) }
@@ -25269,6 +27158,9 @@ func (VisibleOnScreenNotifier2D) class() string { return "VisibleOnScreenNotifie
 func (gdClass VisibleOnScreenNotifier2D) Node2D() Node2D { return Node2D(gdClass) }
 
 var methodVisibleOnScreenNotifier2D [3]gdnative.Method
+func (gdClass VisibleOnScreenNotifier2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node2D().virtual(rtype, name)
+}
 func (gdClass VisibleOnScreenNotifier2D) SetRect(rect Rect2)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenNotifier2D[0], rect) }
 func (gdClass VisibleOnScreenNotifier2D) GetRect() Rect2 { return gdnative.Return[Rect2](gdnative.Object(gdClass), methodVisibleOnScreenNotifier2D[1]) }
 func (gdClass VisibleOnScreenNotifier2D) IsOnScreen() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisibleOnScreenNotifier2D[2]) }
@@ -25279,6 +27171,9 @@ func (VisibleOnScreenNotifier3D) class() string { return "VisibleOnScreenNotifie
 func (gdClass VisibleOnScreenNotifier3D) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodVisibleOnScreenNotifier3D [2]gdnative.Method
+func (gdClass VisibleOnScreenNotifier3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass VisibleOnScreenNotifier3D) SetAabb(rect AABB)  { gdnative.Call(gdnative.Object(gdClass), methodVisibleOnScreenNotifier3D[0], rect) }
 func (gdClass VisibleOnScreenNotifier3D) IsOnScreen() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisibleOnScreenNotifier3D[1]) }
 
@@ -25288,14 +27183,15 @@ func (VisualInstance3D) class() string { return "VisualInstance3D\000" }
 func (gdClass VisualInstance3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodVisualInstance3D [9]gdnative.Method
-func (gdClass VisualInstance3D) virtual(val any, name string) any {	switch name {
+func (gdClass VisualInstance3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_aabb":
-		i, ok := val.(interface{ GetAabb() AABB })
-		if ok {
-			return i.GetAabb
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAabb() AABB }{}).Elem()) {
+			return rtype.MethodByName(`GetAabb`)
 		}
+		return
 	}
-	return nil
+	return gdClass.Node3D().virtual(rtype, name)
 }
 func (gdClass VisualInstance3D) SetBase(base RID)  { gdnative.Call(gdnative.Object(gdClass), methodVisualInstance3D[0], base) }
 func (gdClass VisualInstance3D) GetBase() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodVisualInstance3D[1]) }
@@ -25313,6 +27209,9 @@ func (VisualScript) class() string { return "VisualScript\000" }
 func (gdClass VisualScript) Script() Script { return Script(gdClass) }
 
 var methodVisualScript [42]gdnative.Method
+func (gdClass VisualScript) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Script().virtual(rtype, name)
+}
 func (gdClass VisualScript) AddFunction(name string, func_node_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScript[0], name, func_node_id) }
 func (gdClass VisualScript) HasFunction(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualScript[1], name) }
 func (gdClass VisualScript) RemoveFunction(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScript[2], name) }
@@ -25362,6 +27261,9 @@ func (VisualScriptBasicTypeConstant) class() string { return "VisualScriptBasicT
 func (gdClass VisualScriptBasicTypeConstant) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptBasicTypeConstant [4]gdnative.Method
+func (gdClass VisualScriptBasicTypeConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptBasicTypeConstant) SetBasicType(name VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptBasicTypeConstant[0], name) }
 func (gdClass VisualScriptBasicTypeConstant) GetBasicType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptBasicTypeConstant[1]) }
 func (gdClass VisualScriptBasicTypeConstant) SetBasicTypeConstant(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptBasicTypeConstant[2], name) }
@@ -25447,6 +27349,9 @@ func (VisualScriptBuiltinFunc) class() string { return "VisualScriptBuiltinFunc\
 func (gdClass VisualScriptBuiltinFunc) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptBuiltinFunc [2]gdnative.Method
+func (gdClass VisualScriptBuiltinFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptBuiltinFunc) SetFunc(which VisualScriptBuiltinFuncBuiltinFunc)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptBuiltinFunc[0], which) }
 func (gdClass VisualScriptBuiltinFunc) GetFunc() VisualScriptBuiltinFuncBuiltinFunc { return gdnative.Return[VisualScriptBuiltinFuncBuiltinFunc](gdnative.Object(gdClass), methodVisualScriptBuiltinFunc[1]) }
 
@@ -25456,6 +27361,9 @@ func (VisualScriptClassConstant) class() string { return "VisualScriptClassConst
 func (gdClass VisualScriptClassConstant) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptClassConstant [4]gdnative.Method
+func (gdClass VisualScriptClassConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptClassConstant) SetClassConstant(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptClassConstant[0], name) }
 func (gdClass VisualScriptClassConstant) GetClassConstant() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptClassConstant[1]) }
 func (gdClass VisualScriptClassConstant) SetBaseType(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptClassConstant[2], name) }
@@ -25467,6 +27375,9 @@ func (VisualScriptComment) class() string { return "VisualScriptComment\000" }
 func (gdClass VisualScriptComment) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptComment [6]gdnative.Method
+func (gdClass VisualScriptComment) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptComment) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptComment[0], title) }
 func (gdClass VisualScriptComment) GetTitle() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptComment[1]) }
 func (gdClass VisualScriptComment) SetDescription(description string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptComment[2], description) }
@@ -25479,12 +27390,18 @@ func (VisualScriptComposeArray) class() string { return "VisualScriptComposeArra
 
 func (gdClass VisualScriptComposeArray) VisualScriptLists() VisualScriptLists { return VisualScriptLists(gdClass) }
 
+func (gdClass VisualScriptComposeArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptLists().virtual(rtype, name)
+}
 
 type VisualScriptCondition gdnative.Object
 func (VisualScriptCondition) class() string { return "VisualScriptCondition\000" }
 
 func (gdClass VisualScriptCondition) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptCondition) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptConstant gdnative.Object
 func (VisualScriptConstant) class() string { return "VisualScriptConstant\000" }
@@ -25492,6 +27409,9 @@ func (VisualScriptConstant) class() string { return "VisualScriptConstant\000" }
 func (gdClass VisualScriptConstant) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptConstant [4]gdnative.Method
+func (gdClass VisualScriptConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptConstant) SetConstantType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstant[0], atype) }
 func (gdClass VisualScriptConstant) GetConstantType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptConstant[1]) }
 func (gdClass VisualScriptConstant) SetConstantValue(value any)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstant[2], value) }
@@ -25503,6 +27423,9 @@ func (VisualScriptConstructor) class() string { return "VisualScriptConstructor\
 func (gdClass VisualScriptConstructor) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptConstructor [4]gdnative.Method
+func (gdClass VisualScriptConstructor) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptConstructor) SetConstructorType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstructor[0], atype) }
 func (gdClass VisualScriptConstructor) GetConstructorType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptConstructor[1]) }
 func (gdClass VisualScriptConstructor) SetConstructor(constructor Dictionary)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptConstructor[2], constructor) }
@@ -25521,99 +27444,100 @@ func (VisualScriptCustomNode) class() string { return "VisualScriptCustomNode\00
 
 func (gdClass VisualScriptCustomNode) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
-func (gdClass VisualScriptCustomNode) virtual(val any, name string) any {	switch name {
+func (gdClass VisualScriptCustomNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_output_sequence_port_count":
-		i, ok := val.(interface{ GetOutputSequencePortCount() int64 })
-		if ok {
-			return i.GetOutputSequencePortCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputSequencePortCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputSequencePortCount`)
 		}
+		return
 	case "_has_input_sequence_port":
-		i, ok := val.(interface{ HasInputSequencePort() bool })
-		if ok {
-			return i.HasInputSequencePort
+		if rtype.Implements(reflect.TypeOf([0]interface{ HasInputSequencePort() bool }{}).Elem()) {
+			return rtype.MethodByName(`HasInputSequencePort`)
 		}
+		return
 	case "_get_output_sequence_port_text":
-		i, ok := val.(interface{ GetOutputSequencePortText(seq_idx int64) string })
-		if ok {
-			return i.GetOutputSequencePortText
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputSequencePortText(seq_idx int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputSequencePortText`)
 		}
+		return
 	case "_get_input_value_port_count":
-		i, ok := val.(interface{ GetInputValuePortCount() int64 })
-		if ok {
-			return i.GetInputValuePortCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputValuePortCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInputValuePortCount`)
 		}
+		return
 	case "_get_input_value_port_type":
-		i, ok := val.(interface{ GetInputValuePortType(input_idx int64) int64 })
-		if ok {
-			return i.GetInputValuePortType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputValuePortType(input_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInputValuePortType`)
 		}
+		return
 	case "_get_input_value_port_name":
-		i, ok := val.(interface{ GetInputValuePortName(input_idx int64) string })
-		if ok {
-			return i.GetInputValuePortName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputValuePortName(input_idx int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetInputValuePortName`)
 		}
+		return
 	case "_get_input_value_port_hint":
-		i, ok := val.(interface{ GetInputValuePortHint(input_idx int64) int64 })
-		if ok {
-			return i.GetInputValuePortHint
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputValuePortHint(input_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInputValuePortHint`)
 		}
+		return
 	case "_get_input_value_port_hint_string":
-		i, ok := val.(interface{ GetInputValuePortHintString(input_idx int64) string })
-		if ok {
-			return i.GetInputValuePortHintString
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputValuePortHintString(input_idx int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetInputValuePortHintString`)
 		}
+		return
 	case "_get_output_value_port_count":
-		i, ok := val.(interface{ GetOutputValuePortCount() int64 })
-		if ok {
-			return i.GetOutputValuePortCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputValuePortCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputValuePortCount`)
 		}
+		return
 	case "_get_output_value_port_type":
-		i, ok := val.(interface{ GetOutputValuePortType(output_idx int64) int64 })
-		if ok {
-			return i.GetOutputValuePortType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputValuePortType(output_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputValuePortType`)
 		}
+		return
 	case "_get_output_value_port_name":
-		i, ok := val.(interface{ GetOutputValuePortName(output_idx int64) string })
-		if ok {
-			return i.GetOutputValuePortName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputValuePortName(output_idx int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputValuePortName`)
 		}
+		return
 	case "_get_output_value_port_hint":
-		i, ok := val.(interface{ GetOutputValuePortHint(output_idx int64) int64 })
-		if ok {
-			return i.GetOutputValuePortHint
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputValuePortHint(output_idx int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputValuePortHint`)
 		}
+		return
 	case "_get_output_value_port_hint_string":
-		i, ok := val.(interface{ GetOutputValuePortHintString(output_idx int64) string })
-		if ok {
-			return i.GetOutputValuePortHintString
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputValuePortHintString(output_idx int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputValuePortHintString`)
 		}
+		return
 	case "_get_caption":
-		i, ok := val.(interface{ GetCaption() string })
-		if ok {
-			return i.GetCaption
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCaption() string }{}).Elem()) {
+			return rtype.MethodByName(`GetCaption`)
 		}
+		return
 	case "_get_text":
-		i, ok := val.(interface{ GetText() string })
-		if ok {
-			return i.GetText
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetText() string }{}).Elem()) {
+			return rtype.MethodByName(`GetText`)
 		}
+		return
 	case "_get_category":
-		i, ok := val.(interface{ GetCategory() string })
-		if ok {
-			return i.GetCategory
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCategory() string }{}).Elem()) {
+			return rtype.MethodByName(`GetCategory`)
 		}
+		return
 	case "_get_working_memory_size":
-		i, ok := val.(interface{ GetWorkingMemorySize() int64 })
-		if ok {
-			return i.GetWorkingMemorySize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWorkingMemorySize() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetWorkingMemorySize`)
 		}
+		return
 	case "_step":
-		i, ok := val.(interface{ Step(inputs Array, outputs Array, start_mode int64, working_mem Array) any })
-		if ok {
-			return i.Step
+		if rtype.Implements(reflect.TypeOf([0]interface{ Step(inputs Array, outputs Array, start_mode int64, working_mem Array) any }{}).Elem()) {
+			return rtype.MethodByName(`Step`)
 		}
+		return
 	}
-	return nil
+	return gdClass.VisualScriptNode().virtual(rtype, name)
 }
 
 type VisualScriptCustomNodes gdnative.Object
@@ -25622,6 +27546,9 @@ func (VisualScriptCustomNodes) class() string { return "VisualScriptCustomNodes\
 func (gdClass VisualScriptCustomNodes) Object() Object { return Object(gdClass) }
 
 var methodVisualScriptCustomNodes [2]gdnative.Method
+func (gdClass VisualScriptCustomNodes) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass VisualScriptCustomNodes) AddCustomNode(name string, category string, script Script)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptCustomNodes[0], name, category, script) }
 func (gdClass VisualScriptCustomNodes) RemoveCustomNode(name string, category string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptCustomNodes[1], name, category) }
 
@@ -25631,6 +27558,9 @@ func (VisualScriptDeconstruct) class() string { return "VisualScriptDeconstruct\
 func (gdClass VisualScriptDeconstruct) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptDeconstruct [2]gdnative.Method
+func (gdClass VisualScriptDeconstruct) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptDeconstruct) SetDeconstructType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptDeconstruct[0], atype) }
 func (gdClass VisualScriptDeconstruct) GetDeconstructType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptDeconstruct[1]) }
 
@@ -25640,6 +27570,9 @@ func (VisualScriptEmitSignal) class() string { return "VisualScriptEmitSignal\00
 func (gdClass VisualScriptEmitSignal) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptEmitSignal [2]gdnative.Method
+func (gdClass VisualScriptEmitSignal) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptEmitSignal) SetSignal(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptEmitSignal[0], name) }
 func (gdClass VisualScriptEmitSignal) GetSignal() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptEmitSignal[1]) }
 
@@ -25649,6 +27582,9 @@ func (VisualScriptEngineSingleton) class() string { return "VisualScriptEngineSi
 func (gdClass VisualScriptEngineSingleton) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptEngineSingleton [2]gdnative.Method
+func (gdClass VisualScriptEngineSingleton) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptEngineSingleton) SetSingleton(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptEngineSingleton[0], name) }
 func (gdClass VisualScriptEngineSingleton) GetSingleton() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptEngineSingleton[1]) }
 
@@ -25657,12 +27593,18 @@ func (VisualScriptExpression) class() string { return "VisualScriptExpression\00
 
 func (gdClass VisualScriptExpression) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptExpression) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptFunction gdnative.Object
 func (VisualScriptFunction) class() string { return "VisualScriptFunction\000" }
 
 func (gdClass VisualScriptFunction) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptFunction) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptFunctionCallCallMode int64
 
@@ -25690,6 +27632,9 @@ func (VisualScriptFunctionCall) class() string { return "VisualScriptFunctionCal
 func (gdClass VisualScriptFunctionCall) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptFunctionCall [20]gdnative.Method
+func (gdClass VisualScriptFunctionCall) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptFunctionCall) SetBaseType(base_type string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptFunctionCall[0], base_type) }
 func (gdClass VisualScriptFunctionCall) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptFunctionCall[1]) }
 func (gdClass VisualScriptFunctionCall) SetBaseScript(base_script string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptFunctionCall[2], base_script) }
@@ -25717,6 +27662,9 @@ func (VisualScriptFunctionState) class() string { return "VisualScriptFunctionSt
 func (gdClass VisualScriptFunctionState) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodVisualScriptFunctionState [3]gdnative.Method
+func (gdClass VisualScriptFunctionState) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass VisualScriptFunctionState) ConnectToSignal(obj Object, signals string, args Array)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptFunctionState[0], obj, signals, args) }
 func (gdClass VisualScriptFunctionState) Resume(args Array) any { return gdnative.Return[any](gdnative.Object(gdClass), methodVisualScriptFunctionState[1], args) }
 func (gdClass VisualScriptFunctionState) IsValid() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualScriptFunctionState[2]) }
@@ -25727,6 +27675,9 @@ func (VisualScriptGlobalConstant) class() string { return "VisualScriptGlobalCon
 func (gdClass VisualScriptGlobalConstant) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptGlobalConstant [2]gdnative.Method
+func (gdClass VisualScriptGlobalConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptGlobalConstant) SetGlobalConstant(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptGlobalConstant[0], index) }
 func (gdClass VisualScriptGlobalConstant) GetGlobalConstant() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualScriptGlobalConstant[1]) }
 
@@ -25735,12 +27686,18 @@ func (VisualScriptIndexGet) class() string { return "VisualScriptIndexGet\000" }
 
 func (gdClass VisualScriptIndexGet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptIndexGet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptIndexSet gdnative.Object
 func (VisualScriptIndexSet) class() string { return "VisualScriptIndexSet\000" }
 
 func (gdClass VisualScriptIndexSet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptIndexSet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptInputActionMode int64
 
@@ -25757,6 +27714,9 @@ func (VisualScriptInputAction) class() string { return "VisualScriptInputAction\
 func (gdClass VisualScriptInputAction) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptInputAction [4]gdnative.Method
+func (gdClass VisualScriptInputAction) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptInputAction) SetActionName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptInputAction[0], name) }
 func (gdClass VisualScriptInputAction) GetActionName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptInputAction[1]) }
 func (gdClass VisualScriptInputAction) SetActionMode(mode VisualScriptInputActionMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptInputAction[2], mode) }
@@ -25767,6 +27727,9 @@ func (VisualScriptIterator) class() string { return "VisualScriptIterator\000" }
 
 func (gdClass VisualScriptIterator) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptIterator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptLists gdnative.Object
 func (VisualScriptLists) class() string { return "VisualScriptLists\000" }
@@ -25774,6 +27737,9 @@ func (VisualScriptLists) class() string { return "VisualScriptLists\000" }
 func (gdClass VisualScriptLists) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptLists [8]gdnative.Method
+func (gdClass VisualScriptLists) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptLists) AddInputDataPort(atype VariantType, name string, index int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLists[0], atype, name, index) }
 func (gdClass VisualScriptLists) SetInputDataPortName(index int64, name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLists[1], index, name) }
 func (gdClass VisualScriptLists) SetInputDataPortType(index int64, atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLists[2], index, atype) }
@@ -25789,6 +27755,9 @@ func (VisualScriptLocalVar) class() string { return "VisualScriptLocalVar\000" }
 func (gdClass VisualScriptLocalVar) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptLocalVar [4]gdnative.Method
+func (gdClass VisualScriptLocalVar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptLocalVar) SetVarName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVar[0], name) }
 func (gdClass VisualScriptLocalVar) GetVarName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptLocalVar[1]) }
 func (gdClass VisualScriptLocalVar) SetVarType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVar[2], atype) }
@@ -25800,6 +27769,9 @@ func (VisualScriptLocalVarSet) class() string { return "VisualScriptLocalVarSet\
 func (gdClass VisualScriptLocalVarSet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptLocalVarSet [4]gdnative.Method
+func (gdClass VisualScriptLocalVarSet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptLocalVarSet) SetVarName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVarSet[0], name) }
 func (gdClass VisualScriptLocalVarSet) GetVarName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptLocalVarSet[1]) }
 func (gdClass VisualScriptLocalVarSet) SetVarType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptLocalVarSet[2], atype) }
@@ -25825,6 +27797,9 @@ func (VisualScriptMathConstant) class() string { return "VisualScriptMathConstan
 func (gdClass VisualScriptMathConstant) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptMathConstant [2]gdnative.Method
+func (gdClass VisualScriptMathConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptMathConstant) SetMathConstant(which VisualScriptMathConstantMathConstant)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptMathConstant[0], which) }
 func (gdClass VisualScriptMathConstant) GetMathConstant() VisualScriptMathConstantMathConstant { return gdnative.Return[VisualScriptMathConstantMathConstant](gdnative.Object(gdClass), methodVisualScriptMathConstant[1]) }
 
@@ -25834,6 +27809,9 @@ func (VisualScriptNode) class() string { return "VisualScriptNode\000" }
 func (gdClass VisualScriptNode) Resource() Resource { return Resource(gdClass) }
 
 var methodVisualScriptNode [4]gdnative.Method
+func (gdClass VisualScriptNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass VisualScriptNode) GetVisualScript() VisualScript { return gdnative.Return[VisualScript](gdnative.Object(gdClass), methodVisualScriptNode[0]) }
 func (gdClass VisualScriptNode) SetDefaultInputValue(port_idx int64, value any)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptNode[1], port_idx, value) }
 func (gdClass VisualScriptNode) GetDefaultInputValue(port_idx int64) any { return gdnative.Return[any](gdnative.Object(gdClass), methodVisualScriptNode[2], port_idx) }
@@ -25845,6 +27823,9 @@ func (VisualScriptOperator) class() string { return "VisualScriptOperator\000" }
 func (gdClass VisualScriptOperator) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptOperator [4]gdnative.Method
+func (gdClass VisualScriptOperator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptOperator) SetOperator(op VariantOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptOperator[0], op) }
 func (gdClass VisualScriptOperator) GetOperator() VariantOperator { return gdnative.Return[VariantOperator](gdnative.Object(gdClass), methodVisualScriptOperator[1]) }
 func (gdClass VisualScriptOperator) SetTyped(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptOperator[2], atype) }
@@ -25856,6 +27837,9 @@ func (VisualScriptPreload) class() string { return "VisualScriptPreload\000" }
 func (gdClass VisualScriptPreload) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptPreload [2]gdnative.Method
+func (gdClass VisualScriptPreload) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptPreload) SetPreload(resource Resource)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPreload[0], resource) }
 func (gdClass VisualScriptPreload) GetPreload() Resource { return gdnative.Return[Resource](gdnative.Object(gdClass), methodVisualScriptPreload[1]) }
 
@@ -25874,6 +27858,9 @@ func (VisualScriptPropertyGet) class() string { return "VisualScriptPropertyGet\
 func (gdClass VisualScriptPropertyGet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptPropertyGet [14]gdnative.Method
+func (gdClass VisualScriptPropertyGet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptPropertyGet) SetBaseType(base_type string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPropertyGet[0], base_type) }
 func (gdClass VisualScriptPropertyGet) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptPropertyGet[1]) }
 func (gdClass VisualScriptPropertyGet) SetBaseScript(base_script string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPropertyGet[2], base_script) }
@@ -25920,6 +27907,9 @@ func (VisualScriptPropertySet) class() string { return "VisualScriptPropertySet\
 func (gdClass VisualScriptPropertySet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptPropertySet [16]gdnative.Method
+func (gdClass VisualScriptPropertySet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptPropertySet) SetBaseType(base_type string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPropertySet[0], base_type) }
 func (gdClass VisualScriptPropertySet) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptPropertySet[1]) }
 func (gdClass VisualScriptPropertySet) SetBaseScript(base_script string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptPropertySet[2], base_script) }
@@ -25943,6 +27933,9 @@ func (VisualScriptResourcePath) class() string { return "VisualScriptResourcePat
 func (gdClass VisualScriptResourcePath) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptResourcePath [2]gdnative.Method
+func (gdClass VisualScriptResourcePath) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptResourcePath) SetResourcePath(path string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptResourcePath[0], path) }
 func (gdClass VisualScriptResourcePath) GetResourcePath() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptResourcePath[1]) }
 
@@ -25952,6 +27945,9 @@ func (VisualScriptReturn) class() string { return "VisualScriptReturn\000" }
 func (gdClass VisualScriptReturn) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptReturn [4]gdnative.Method
+func (gdClass VisualScriptReturn) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptReturn) SetReturnType(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptReturn[0], atype) }
 func (gdClass VisualScriptReturn) GetReturnType() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptReturn[1]) }
 func (gdClass VisualScriptReturn) SetEnableReturnValue(enable bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptReturn[2], enable) }
@@ -25963,6 +27959,9 @@ func (VisualScriptSceneNode) class() string { return "VisualScriptSceneNode\000"
 func (gdClass VisualScriptSceneNode) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptSceneNode [2]gdnative.Method
+func (gdClass VisualScriptSceneNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptSceneNode) SetNodePath(path NodePath)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSceneNode[0], path) }
 func (gdClass VisualScriptSceneNode) GetNodePath() NodePath { return gdnative.Return[NodePath](gdnative.Object(gdClass), methodVisualScriptSceneNode[1]) }
 
@@ -25971,6 +27970,9 @@ func (VisualScriptSceneTree) class() string { return "VisualScriptSceneTree\000"
 
 func (gdClass VisualScriptSceneTree) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptSceneTree) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptSelect gdnative.Object
 func (VisualScriptSelect) class() string { return "VisualScriptSelect\000" }
@@ -25978,6 +27980,9 @@ func (VisualScriptSelect) class() string { return "VisualScriptSelect\000" }
 func (gdClass VisualScriptSelect) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptSelect [2]gdnative.Method
+func (gdClass VisualScriptSelect) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptSelect) SetTyped(atype VariantType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSelect[0], atype) }
 func (gdClass VisualScriptSelect) GetTyped() VariantType { return gdnative.Return[VariantType](gdnative.Object(gdClass), methodVisualScriptSelect[1]) }
 
@@ -25986,6 +27991,9 @@ func (VisualScriptSelf) class() string { return "VisualScriptSelf\000" }
 
 func (gdClass VisualScriptSelf) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptSelf) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptSequence gdnative.Object
 func (VisualScriptSequence) class() string { return "VisualScriptSequence\000" }
@@ -25993,6 +28001,9 @@ func (VisualScriptSequence) class() string { return "VisualScriptSequence\000" }
 func (gdClass VisualScriptSequence) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptSequence [2]gdnative.Method
+func (gdClass VisualScriptSequence) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptSequence) SetSteps(steps int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptSequence[0], steps) }
 func (gdClass VisualScriptSequence) GetSteps() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualScriptSequence[1]) }
 
@@ -26001,12 +28012,18 @@ func (VisualScriptSubCall) class() string { return "VisualScriptSubCall\000" }
 
 func (gdClass VisualScriptSubCall) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptSubCall) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptSwitch gdnative.Object
 func (VisualScriptSwitch) class() string { return "VisualScriptSwitch\000" }
 
 func (gdClass VisualScriptSwitch) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptSwitch) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptTypeCast gdnative.Object
 func (VisualScriptTypeCast) class() string { return "VisualScriptTypeCast\000" }
@@ -26014,6 +28031,9 @@ func (VisualScriptTypeCast) class() string { return "VisualScriptTypeCast\000" }
 func (gdClass VisualScriptTypeCast) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptTypeCast [4]gdnative.Method
+func (gdClass VisualScriptTypeCast) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptTypeCast) SetBaseType(atype string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptTypeCast[0], atype) }
 func (gdClass VisualScriptTypeCast) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptTypeCast[1]) }
 func (gdClass VisualScriptTypeCast) SetBaseScript(path string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptTypeCast[2], path) }
@@ -26025,6 +28045,9 @@ func (VisualScriptVariableGet) class() string { return "VisualScriptVariableGet\
 func (gdClass VisualScriptVariableGet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptVariableGet [2]gdnative.Method
+func (gdClass VisualScriptVariableGet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptVariableGet) SetVariable(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptVariableGet[0], name) }
 func (gdClass VisualScriptVariableGet) GetVariable() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptVariableGet[1]) }
 
@@ -26034,6 +28057,9 @@ func (VisualScriptVariableSet) class() string { return "VisualScriptVariableSet\
 func (gdClass VisualScriptVariableSet) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptVariableSet [2]gdnative.Method
+func (gdClass VisualScriptVariableSet) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptVariableSet) SetVariable(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptVariableSet[0], name) }
 func (gdClass VisualScriptVariableSet) GetVariable() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptVariableSet[1]) }
 
@@ -26042,6 +28068,9 @@ func (VisualScriptWhile) class() string { return "VisualScriptWhile\000" }
 
 func (gdClass VisualScriptWhile) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
+func (gdClass VisualScriptWhile) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 
 type VisualScriptYieldYieldMode int64
 
@@ -26057,6 +28086,9 @@ func (VisualScriptYield) class() string { return "VisualScriptYield\000" }
 func (gdClass VisualScriptYield) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptYield [4]gdnative.Method
+func (gdClass VisualScriptYield) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptYield) SetYieldMode(mode VisualScriptYieldYieldMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptYield[0], mode) }
 func (gdClass VisualScriptYield) GetYieldMode() VisualScriptYieldYieldMode { return gdnative.Return[VisualScriptYieldYieldMode](gdnative.Object(gdClass), methodVisualScriptYield[1]) }
 func (gdClass VisualScriptYield) SetWaitTime(sec float64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptYield[2], sec) }
@@ -26076,6 +28108,9 @@ func (VisualScriptYieldSignal) class() string { return "VisualScriptYieldSignal\
 func (gdClass VisualScriptYieldSignal) VisualScriptNode() VisualScriptNode { return VisualScriptNode(gdClass) }
 
 var methodVisualScriptYieldSignal [8]gdnative.Method
+func (gdClass VisualScriptYieldSignal) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualScriptNode().virtual(rtype, name)
+}
 func (gdClass VisualScriptYieldSignal) SetBaseType(base_type string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptYieldSignal[0], base_type) }
 func (gdClass VisualScriptYieldSignal) GetBaseType() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualScriptYieldSignal[1]) }
 func (gdClass VisualScriptYieldSignal) SetSignal(signal string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualScriptYieldSignal[2], signal) }
@@ -26127,6 +28162,9 @@ func (VisualShader) class() string { return "VisualShader\000" }
 func (gdClass VisualShader) Shader() Shader { return Shader(gdClass) }
 
 var methodVisualShader [20]gdnative.Method
+func (gdClass VisualShader) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shader().virtual(rtype, name)
+}
 func (gdClass VisualShader) SetMode(mode ShaderMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShader[0], mode) }
 func (gdClass VisualShader) AddNode(atype VisualShaderType, node VisualShaderNode, position Vector2, id int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShader[1], atype, node, position, id) }
 func (gdClass VisualShader) GetNode(atype VisualShaderType, id int64) VisualShaderNode { return gdnative.Return[VisualShaderNode](gdnative.Object(gdClass), methodVisualShader[2], atype, id) }
@@ -26168,6 +28206,9 @@ func (VisualShaderNode) class() string { return "VisualShaderNode\000" }
 func (gdClass VisualShaderNode) Resource() Resource { return Resource(gdClass) }
 
 var methodVisualShaderNode [8]gdnative.Method
+func (gdClass VisualShaderNode) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass VisualShaderNode) SetOutputPortForPreview(port int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNode[0], port) }
 func (gdClass VisualShaderNode) GetOutputPortForPreview() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNode[1]) }
 func (gdClass VisualShaderNode) SetInputPortDefaultValue(port int64, value any, prev_value any)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNode[2], port, value, prev_value) }
@@ -26193,6 +28234,9 @@ func (VisualShaderNodeBillboard) class() string { return "VisualShaderNodeBillbo
 func (gdClass VisualShaderNodeBillboard) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeBillboard [4]gdnative.Method
+func (gdClass VisualShaderNodeBillboard) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeBillboard) SetBillboardType(billboard_type VisualShaderNodeBillboardBillboardType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBillboard[0], billboard_type) }
 func (gdClass VisualShaderNodeBillboard) GetBillboardType() VisualShaderNodeBillboardBillboardType { return gdnative.Return[VisualShaderNodeBillboardBillboardType](gdnative.Object(gdClass), methodVisualShaderNodeBillboard[1]) }
 func (gdClass VisualShaderNodeBillboard) SetKeepScaleEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBillboard[2], enabled) }
@@ -26204,6 +28248,9 @@ func (VisualShaderNodeBooleanConstant) class() string { return "VisualShaderNode
 func (gdClass VisualShaderNodeBooleanConstant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeBooleanConstant [2]gdnative.Method
+func (gdClass VisualShaderNodeBooleanConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeBooleanConstant) SetConstant(constant bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBooleanConstant[0], constant) }
 func (gdClass VisualShaderNodeBooleanConstant) GetConstant() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeBooleanConstant[1]) }
 
@@ -26213,6 +28260,9 @@ func (VisualShaderNodeBooleanUniform) class() string { return "VisualShaderNodeB
 func (gdClass VisualShaderNodeBooleanUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeBooleanUniform [4]gdnative.Method
+func (gdClass VisualShaderNodeBooleanUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeBooleanUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBooleanUniform[0], enabled) }
 func (gdClass VisualShaderNodeBooleanUniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeBooleanUniform[1]) }
 func (gdClass VisualShaderNodeBooleanUniform) SetDefaultValue(value bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeBooleanUniform[2], value) }
@@ -26235,6 +28285,9 @@ func (VisualShaderNodeClamp) class() string { return "VisualShaderNodeClamp\000"
 func (gdClass VisualShaderNodeClamp) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeClamp [2]gdnative.Method
+func (gdClass VisualShaderNodeClamp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeClamp) SetOpType(op_type VisualShaderNodeClampOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeClamp[0], op_type) }
 func (gdClass VisualShaderNodeClamp) GetOpType() VisualShaderNodeClampOpType { return gdnative.Return[VisualShaderNodeClampOpType](gdnative.Object(gdClass), methodVisualShaderNodeClamp[1]) }
 
@@ -26244,6 +28297,9 @@ func (VisualShaderNodeColorConstant) class() string { return "VisualShaderNodeCo
 func (gdClass VisualShaderNodeColorConstant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeColorConstant [2]gdnative.Method
+func (gdClass VisualShaderNodeColorConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeColorConstant) SetConstant(constant Color)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorConstant[0], constant) }
 func (gdClass VisualShaderNodeColorConstant) GetConstant() Color { return gdnative.Return[Color](gdnative.Object(gdClass), methodVisualShaderNodeColorConstant[1]) }
 
@@ -26263,6 +28319,9 @@ func (VisualShaderNodeColorFunc) class() string { return "VisualShaderNodeColorF
 func (gdClass VisualShaderNodeColorFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeColorFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeColorFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeColorFunc) SetFunction(fn VisualShaderNodeColorFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorFunc[0], fn) }
 func (gdClass VisualShaderNodeColorFunc) GetFunction() VisualShaderNodeColorFuncFunction { return gdnative.Return[VisualShaderNodeColorFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeColorFunc[1]) }
 
@@ -26287,6 +28346,9 @@ func (VisualShaderNodeColorOp) class() string { return "VisualShaderNodeColorOp\
 func (gdClass VisualShaderNodeColorOp) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeColorOp [2]gdnative.Method
+func (gdClass VisualShaderNodeColorOp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeColorOp) SetOperator(op VisualShaderNodeColorOpOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorOp[0], op) }
 func (gdClass VisualShaderNodeColorOp) GetOperator() VisualShaderNodeColorOpOperator { return gdnative.Return[VisualShaderNodeColorOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeColorOp[1]) }
 
@@ -26296,6 +28358,9 @@ func (VisualShaderNodeColorUniform) class() string { return "VisualShaderNodeCol
 func (gdClass VisualShaderNodeColorUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeColorUniform [4]gdnative.Method
+func (gdClass VisualShaderNodeColorUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeColorUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorUniform[0], enabled) }
 func (gdClass VisualShaderNodeColorUniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeColorUniform[1]) }
 func (gdClass VisualShaderNodeColorUniform) SetDefaultValue(value Color)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeColorUniform[2], value) }
@@ -26307,6 +28372,9 @@ func (VisualShaderNodeComment) class() string { return "VisualShaderNodeComment\
 func (gdClass VisualShaderNodeComment) VisualShaderNodeResizableBase() VisualShaderNodeResizableBase { return VisualShaderNodeResizableBase(gdClass) }
 
 var methodVisualShaderNodeComment [4]gdnative.Method
+func (gdClass VisualShaderNodeComment) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeResizableBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeComment) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeComment[0], title) }
 func (gdClass VisualShaderNodeComment) GetTitle() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeComment[1]) }
 func (gdClass VisualShaderNodeComment) SetDescription(description string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeComment[2], description) }
@@ -26351,6 +28419,9 @@ func (VisualShaderNodeCompare) class() string { return "VisualShaderNodeCompare\
 func (gdClass VisualShaderNodeCompare) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeCompare [6]gdnative.Method
+func (gdClass VisualShaderNodeCompare) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeCompare) SetComparisonType(atype VisualShaderNodeCompareComparisonType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCompare[0], atype) }
 func (gdClass VisualShaderNodeCompare) GetComparisonType() VisualShaderNodeCompareComparisonType { return gdnative.Return[VisualShaderNodeCompareComparisonType](gdnative.Object(gdClass), methodVisualShaderNodeCompare[1]) }
 func (gdClass VisualShaderNodeCompare) SetFunction(fn VisualShaderNodeCompareFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCompare[2], fn) }
@@ -26363,6 +28434,9 @@ func (VisualShaderNodeConstant) class() string { return "VisualShaderNodeConstan
 
 func (gdClass VisualShaderNodeConstant) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeCubemapSource int64
 
@@ -26387,6 +28461,9 @@ func (VisualShaderNodeCubemap) class() string { return "VisualShaderNodeCubemap\
 func (gdClass VisualShaderNodeCubemap) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeCubemap [6]gdnative.Method
+func (gdClass VisualShaderNodeCubemap) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeCubemap) SetSource(value VisualShaderNodeCubemapSource)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCubemap[0], value) }
 func (gdClass VisualShaderNodeCubemap) GetSource() VisualShaderNodeCubemapSource { return gdnative.Return[VisualShaderNodeCubemapSource](gdnative.Object(gdClass), methodVisualShaderNodeCubemap[1]) }
 func (gdClass VisualShaderNodeCubemap) SetCubeMap(value Cubemap)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCubemap[2], value) }
@@ -26399,6 +28476,9 @@ func (VisualShaderNodeCubemapUniform) class() string { return "VisualShaderNodeC
 
 func (gdClass VisualShaderNodeCubemapUniform) VisualShaderNodeTextureUniform() VisualShaderNodeTextureUniform { return VisualShaderNodeTextureUniform(gdClass) }
 
+func (gdClass VisualShaderNodeCubemapUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeTextureUniform().virtual(rtype, name)
+}
 
 type VisualShaderNodeCurveTexture gdnative.Object
 func (VisualShaderNodeCurveTexture) class() string { return "VisualShaderNodeCurveTexture\000" }
@@ -26406,6 +28486,9 @@ func (VisualShaderNodeCurveTexture) class() string { return "VisualShaderNodeCur
 func (gdClass VisualShaderNodeCurveTexture) VisualShaderNodeResizableBase() VisualShaderNodeResizableBase { return VisualShaderNodeResizableBase(gdClass) }
 
 var methodVisualShaderNodeCurveTexture [2]gdnative.Method
+func (gdClass VisualShaderNodeCurveTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeResizableBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeCurveTexture) SetTexture(texture CurveTexture)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCurveTexture[0], texture) }
 func (gdClass VisualShaderNodeCurveTexture) GetTexture() CurveTexture { return gdnative.Return[CurveTexture](gdnative.Object(gdClass), methodVisualShaderNodeCurveTexture[1]) }
 
@@ -26415,6 +28498,9 @@ func (VisualShaderNodeCurveXYZTexture) class() string { return "VisualShaderNode
 func (gdClass VisualShaderNodeCurveXYZTexture) VisualShaderNodeResizableBase() VisualShaderNodeResizableBase { return VisualShaderNodeResizableBase(gdClass) }
 
 var methodVisualShaderNodeCurveXYZTexture [2]gdnative.Method
+func (gdClass VisualShaderNodeCurveXYZTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeResizableBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeCurveXYZTexture) SetTexture(texture CurveXYZTexture)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeCurveXYZTexture[0], texture) }
 func (gdClass VisualShaderNodeCurveXYZTexture) GetTexture() CurveXYZTexture { return gdnative.Return[CurveXYZTexture](gdnative.Object(gdClass), methodVisualShaderNodeCurveXYZTexture[1]) }
 
@@ -26423,84 +28509,85 @@ func (VisualShaderNodeCustom) class() string { return "VisualShaderNodeCustom\00
 
 func (gdClass VisualShaderNodeCustom) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
-func (gdClass VisualShaderNodeCustom) virtual(val any, name string) any {	switch name {
+func (gdClass VisualShaderNodeCustom) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_name":
-		i, ok := val.(interface{ GetName() string })
-		if ok {
-			return i.GetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetName`)
 		}
+		return
 	case "_get_description":
-		i, ok := val.(interface{ GetDescription() string })
-		if ok {
-			return i.GetDescription
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetDescription() string }{}).Elem()) {
+			return rtype.MethodByName(`GetDescription`)
 		}
+		return
 	case "_get_category":
-		i, ok := val.(interface{ GetCategory() string })
-		if ok {
-			return i.GetCategory
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCategory() string }{}).Elem()) {
+			return rtype.MethodByName(`GetCategory`)
 		}
+		return
 	case "_get_return_icon_type":
-		i, ok := val.(interface{ GetReturnIconType() int64 })
-		if ok {
-			return i.GetReturnIconType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetReturnIconType() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetReturnIconType`)
 		}
+		return
 	case "_get_input_port_count":
-		i, ok := val.(interface{ GetInputPortCount() int64 })
-		if ok {
-			return i.GetInputPortCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputPortCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInputPortCount`)
 		}
+		return
 	case "_get_input_port_type":
-		i, ok := val.(interface{ GetInputPortType(port int64) int64 })
-		if ok {
-			return i.GetInputPortType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputPortType(port int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetInputPortType`)
 		}
+		return
 	case "_get_input_port_name":
-		i, ok := val.(interface{ GetInputPortName(port int64) string })
-		if ok {
-			return i.GetInputPortName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetInputPortName(port int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetInputPortName`)
 		}
+		return
 	case "_get_output_port_count":
-		i, ok := val.(interface{ GetOutputPortCount() int64 })
-		if ok {
-			return i.GetOutputPortCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputPortCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputPortCount`)
 		}
+		return
 	case "_get_output_port_type":
-		i, ok := val.(interface{ GetOutputPortType(port int64) int64 })
-		if ok {
-			return i.GetOutputPortType
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputPortType(port int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputPortType`)
 		}
+		return
 	case "_get_output_port_name":
-		i, ok := val.(interface{ GetOutputPortName(port int64) string })
-		if ok {
-			return i.GetOutputPortName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetOutputPortName(port int64) string }{}).Elem()) {
+			return rtype.MethodByName(`GetOutputPortName`)
 		}
+		return
 	case "_get_code":
-		i, ok := val.(interface{ GetCode(input_vars Array, output_vars Array, mode ShaderMode, atype VisualShaderType) string })
-		if ok {
-			return i.GetCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCode(input_vars Array, output_vars Array, mode ShaderMode, atype VisualShaderType) string }{}).Elem()) {
+			return rtype.MethodByName(`GetCode`)
 		}
+		return
 	case "_get_func_code":
-		i, ok := val.(interface{ GetFuncCode(mode ShaderMode, atype VisualShaderType) string })
-		if ok {
-			return i.GetFuncCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetFuncCode(mode ShaderMode, atype VisualShaderType) string }{}).Elem()) {
+			return rtype.MethodByName(`GetFuncCode`)
 		}
+		return
 	case "_get_global_code":
-		i, ok := val.(interface{ GetGlobalCode(mode ShaderMode) string })
-		if ok {
-			return i.GetGlobalCode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetGlobalCode(mode ShaderMode) string }{}).Elem()) {
+			return rtype.MethodByName(`GetGlobalCode`)
 		}
+		return
 	case "_is_highend":
-		i, ok := val.(interface{ IsHighend() bool })
-		if ok {
-			return i.IsHighend
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsHighend() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsHighend`)
 		}
+		return
 	case "_is_available":
-		i, ok := val.(interface{ IsAvailable(mode ShaderMode, atype VisualShaderType) bool })
-		if ok {
-			return i.IsAvailable
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsAvailable(mode ShaderMode, atype VisualShaderType) bool }{}).Elem()) {
+			return rtype.MethodByName(`IsAvailable`)
 		}
+		return
 	}
-	return nil
+	return gdClass.VisualShaderNode().virtual(rtype, name)
 }
 
 type VisualShaderNodeDerivativeFuncOpType int64
@@ -26528,6 +28615,9 @@ func (VisualShaderNodeDerivativeFunc) class() string { return "VisualShaderNodeD
 func (gdClass VisualShaderNodeDerivativeFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeDerivativeFunc [4]gdnative.Method
+func (gdClass VisualShaderNodeDerivativeFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeDerivativeFunc) SetOpType(atype VisualShaderNodeDerivativeFuncOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeDerivativeFunc[0], atype) }
 func (gdClass VisualShaderNodeDerivativeFunc) GetOpType() VisualShaderNodeDerivativeFuncOpType { return gdnative.Return[VisualShaderNodeDerivativeFuncOpType](gdnative.Object(gdClass), methodVisualShaderNodeDerivativeFunc[1]) }
 func (gdClass VisualShaderNodeDerivativeFunc) SetFunction(fn VisualShaderNodeDerivativeFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeDerivativeFunc[2], fn) }
@@ -26538,12 +28628,18 @@ func (VisualShaderNodeDeterminant) class() string { return "VisualShaderNodeDete
 
 func (gdClass VisualShaderNodeDeterminant) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeDeterminant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeDotProduct gdnative.Object
 func (VisualShaderNodeDotProduct) class() string { return "VisualShaderNodeDotProduct\000" }
 
 func (gdClass VisualShaderNodeDotProduct) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeDotProduct) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeExpression gdnative.Object
 func (VisualShaderNodeExpression) class() string { return "VisualShaderNodeExpression\000" }
@@ -26551,6 +28647,9 @@ func (VisualShaderNodeExpression) class() string { return "VisualShaderNodeExpre
 func (gdClass VisualShaderNodeExpression) VisualShaderNodeGroupBase() VisualShaderNodeGroupBase { return VisualShaderNodeGroupBase(gdClass) }
 
 var methodVisualShaderNodeExpression [2]gdnative.Method
+func (gdClass VisualShaderNodeExpression) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeGroupBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeExpression) SetExpression(expression string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeExpression[0], expression) }
 func (gdClass VisualShaderNodeExpression) GetExpression() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeExpression[1]) }
 
@@ -26559,6 +28658,9 @@ func (VisualShaderNodeFaceForward) class() string { return "VisualShaderNodeFace
 
 func (gdClass VisualShaderNodeFaceForward) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeFaceForward) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VisualShaderNodeFloatConstant gdnative.Object
 func (VisualShaderNodeFloatConstant) class() string { return "VisualShaderNodeFloatConstant\000" }
@@ -26566,6 +28668,9 @@ func (VisualShaderNodeFloatConstant) class() string { return "VisualShaderNodeFl
 func (gdClass VisualShaderNodeFloatConstant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeFloatConstant [2]gdnative.Method
+func (gdClass VisualShaderNodeFloatConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeFloatConstant) SetConstant(constant float64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatConstant[0], constant) }
 func (gdClass VisualShaderNodeFloatConstant) GetConstant() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodVisualShaderNodeFloatConstant[1]) }
 
@@ -26613,6 +28718,9 @@ func (VisualShaderNodeFloatFunc) class() string { return "VisualShaderNodeFloatF
 func (gdClass VisualShaderNodeFloatFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeFloatFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeFloatFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeFloatFunc) SetFunction(fn VisualShaderNodeFloatFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatFunc[0], fn) }
 func (gdClass VisualShaderNodeFloatFunc) GetFunction() VisualShaderNodeFloatFuncFunction { return gdnative.Return[VisualShaderNodeFloatFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeFloatFunc[1]) }
 
@@ -26638,6 +28746,9 @@ func (VisualShaderNodeFloatOp) class() string { return "VisualShaderNodeFloatOp\
 func (gdClass VisualShaderNodeFloatOp) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeFloatOp [2]gdnative.Method
+func (gdClass VisualShaderNodeFloatOp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeFloatOp) SetOperator(op VisualShaderNodeFloatOpOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatOp[0], op) }
 func (gdClass VisualShaderNodeFloatOp) GetOperator() VisualShaderNodeFloatOpOperator { return gdnative.Return[VisualShaderNodeFloatOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeFloatOp[1]) }
 
@@ -26656,6 +28767,9 @@ func (VisualShaderNodeFloatUniform) class() string { return "VisualShaderNodeFlo
 func (gdClass VisualShaderNodeFloatUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeFloatUniform [12]gdnative.Method
+func (gdClass VisualShaderNodeFloatUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeFloatUniform) SetHint(hint VisualShaderNodeFloatUniformHint)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatUniform[0], hint) }
 func (gdClass VisualShaderNodeFloatUniform) GetHint() VisualShaderNodeFloatUniformHint { return gdnative.Return[VisualShaderNodeFloatUniformHint](gdnative.Object(gdClass), methodVisualShaderNodeFloatUniform[1]) }
 func (gdClass VisualShaderNodeFloatUniform) SetMin(value float64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeFloatUniform[2], value) }
@@ -26674,12 +28788,18 @@ func (VisualShaderNodeFresnel) class() string { return "VisualShaderNodeFresnel\
 
 func (gdClass VisualShaderNodeFresnel) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeFresnel) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeGlobalExpression gdnative.Object
 func (VisualShaderNodeGlobalExpression) class() string { return "VisualShaderNodeGlobalExpression\000" }
 
 func (gdClass VisualShaderNodeGlobalExpression) VisualShaderNodeExpression() VisualShaderNodeExpression { return VisualShaderNodeExpression(gdClass) }
 
+func (gdClass VisualShaderNodeGlobalExpression) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeExpression().virtual(rtype, name)
+}
 
 type VisualShaderNodeGroupBase gdnative.Object
 func (VisualShaderNodeGroupBase) class() string { return "VisualShaderNodeGroupBase\000" }
@@ -26687,6 +28807,9 @@ func (VisualShaderNodeGroupBase) class() string { return "VisualShaderNodeGroupB
 func (gdClass VisualShaderNodeGroupBase) VisualShaderNodeResizableBase() VisualShaderNodeResizableBase { return VisualShaderNodeResizableBase(gdClass) }
 
 var methodVisualShaderNodeGroupBase [21]gdnative.Method
+func (gdClass VisualShaderNodeGroupBase) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeResizableBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeGroupBase) SetInputs(inputs string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeGroupBase[0], inputs) }
 func (gdClass VisualShaderNodeGroupBase) GetInputs() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeGroupBase[1]) }
 func (gdClass VisualShaderNodeGroupBase) SetOutputs(outputs string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeGroupBase[2], outputs) }
@@ -26714,6 +28837,9 @@ func (VisualShaderNodeIf) class() string { return "VisualShaderNodeIf\000" }
 
 func (gdClass VisualShaderNodeIf) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeIf) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeInput gdnative.Object
 func (VisualShaderNodeInput) class() string { return "VisualShaderNodeInput\000" }
@@ -26721,6 +28847,9 @@ func (VisualShaderNodeInput) class() string { return "VisualShaderNodeInput\000"
 func (gdClass VisualShaderNodeInput) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeInput [3]gdnative.Method
+func (gdClass VisualShaderNodeInput) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeInput) SetInputName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeInput[0], name) }
 func (gdClass VisualShaderNodeInput) GetInputName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeInput[1]) }
 func (gdClass VisualShaderNodeInput) GetInputRealName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeInput[2]) }
@@ -26731,6 +28860,9 @@ func (VisualShaderNodeIntConstant) class() string { return "VisualShaderNodeIntC
 func (gdClass VisualShaderNodeIntConstant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeIntConstant [2]gdnative.Method
+func (gdClass VisualShaderNodeIntConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeIntConstant) SetConstant(constant int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntConstant[0], constant) }
 func (gdClass VisualShaderNodeIntConstant) GetConstant() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodVisualShaderNodeIntConstant[1]) }
 
@@ -26750,6 +28882,9 @@ func (VisualShaderNodeIntFunc) class() string { return "VisualShaderNodeIntFunc\
 func (gdClass VisualShaderNodeIntFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeIntFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeIntFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeIntFunc) SetFunction(fn VisualShaderNodeIntFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntFunc[0], fn) }
 func (gdClass VisualShaderNodeIntFunc) GetFunction() VisualShaderNodeIntFuncFunction { return gdnative.Return[VisualShaderNodeIntFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeIntFunc[1]) }
 
@@ -26777,6 +28912,9 @@ func (VisualShaderNodeIntOp) class() string { return "VisualShaderNodeIntOp\000"
 func (gdClass VisualShaderNodeIntOp) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeIntOp [2]gdnative.Method
+func (gdClass VisualShaderNodeIntOp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeIntOp) SetOperator(op VisualShaderNodeIntOpOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntOp[0], op) }
 func (gdClass VisualShaderNodeIntOp) GetOperator() VisualShaderNodeIntOpOperator { return gdnative.Return[VisualShaderNodeIntOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeIntOp[1]) }
 
@@ -26795,6 +28933,9 @@ func (VisualShaderNodeIntUniform) class() string { return "VisualShaderNodeIntUn
 func (gdClass VisualShaderNodeIntUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeIntUniform [12]gdnative.Method
+func (gdClass VisualShaderNodeIntUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeIntUniform) SetHint(hint VisualShaderNodeIntUniformHint)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntUniform[0], hint) }
 func (gdClass VisualShaderNodeIntUniform) GetHint() VisualShaderNodeIntUniformHint { return gdnative.Return[VisualShaderNodeIntUniformHint](gdnative.Object(gdClass), methodVisualShaderNodeIntUniform[1]) }
 func (gdClass VisualShaderNodeIntUniform) SetMin(value int64)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIntUniform[2], value) }
@@ -26822,6 +28963,9 @@ func (VisualShaderNodeIs) class() string { return "VisualShaderNodeIs\000" }
 func (gdClass VisualShaderNodeIs) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeIs [2]gdnative.Method
+func (gdClass VisualShaderNodeIs) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeIs) SetFunction(fn VisualShaderNodeIsFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeIs[0], fn) }
 func (gdClass VisualShaderNodeIs) GetFunction() VisualShaderNodeIsFunction { return gdnative.Return[VisualShaderNodeIsFunction](gdnative.Object(gdClass), methodVisualShaderNodeIs[1]) }
 
@@ -26844,6 +28988,9 @@ func (VisualShaderNodeMix) class() string { return "VisualShaderNodeMix\000" }
 func (gdClass VisualShaderNodeMix) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeMix [2]gdnative.Method
+func (gdClass VisualShaderNodeMix) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeMix) SetOpType(op_type VisualShaderNodeMixOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeMix[0], op_type) }
 func (gdClass VisualShaderNodeMix) GetOpType() VisualShaderNodeMixOpType { return gdnative.Return[VisualShaderNodeMixOpType](gdnative.Object(gdClass), methodVisualShaderNodeMix[1]) }
 
@@ -26863,6 +29010,9 @@ func (VisualShaderNodeMultiplyAdd) class() string { return "VisualShaderNodeMult
 func (gdClass VisualShaderNodeMultiplyAdd) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeMultiplyAdd [2]gdnative.Method
+func (gdClass VisualShaderNodeMultiplyAdd) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeMultiplyAdd) SetOpType(atype VisualShaderNodeMultiplyAddOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeMultiplyAdd[0], atype) }
 func (gdClass VisualShaderNodeMultiplyAdd) GetOpType() VisualShaderNodeMultiplyAddOpType { return gdnative.Return[VisualShaderNodeMultiplyAddOpType](gdnative.Object(gdClass), methodVisualShaderNodeMultiplyAdd[1]) }
 
@@ -26871,12 +29021,18 @@ func (VisualShaderNodeOuterProduct) class() string { return "VisualShaderNodeOut
 
 func (gdClass VisualShaderNodeOuterProduct) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeOuterProduct) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeOutput gdnative.Object
 func (VisualShaderNodeOutput) class() string { return "VisualShaderNodeOutput\000" }
 
 func (gdClass VisualShaderNodeOutput) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeOutput) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeParticleAcceleratorMode int64
 
@@ -26893,6 +29049,9 @@ func (VisualShaderNodeParticleAccelerator) class() string { return "VisualShader
 func (gdClass VisualShaderNodeParticleAccelerator) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeParticleAccelerator [2]gdnative.Method
+func (gdClass VisualShaderNodeParticleAccelerator) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleAccelerator) SetMode(mode VisualShaderNodeParticleAcceleratorMode)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleAccelerator[0], mode) }
 func (gdClass VisualShaderNodeParticleAccelerator) GetMode() VisualShaderNodeParticleAcceleratorMode { return gdnative.Return[VisualShaderNodeParticleAcceleratorMode](gdnative.Object(gdClass), methodVisualShaderNodeParticleAccelerator[1]) }
 
@@ -26901,12 +29060,18 @@ func (VisualShaderNodeParticleBoxEmitter) class() string { return "VisualShaderN
 
 func (gdClass VisualShaderNodeParticleBoxEmitter) VisualShaderNodeParticleEmitter() VisualShaderNodeParticleEmitter { return VisualShaderNodeParticleEmitter(gdClass) }
 
+func (gdClass VisualShaderNodeParticleBoxEmitter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeParticleEmitter().virtual(rtype, name)
+}
 
 type VisualShaderNodeParticleConeVelocity gdnative.Object
 func (VisualShaderNodeParticleConeVelocity) class() string { return "VisualShaderNodeParticleConeVelocity\000" }
 
 func (gdClass VisualShaderNodeParticleConeVelocity) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeParticleConeVelocity) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeParticleEmitEmitFlags int64
 
@@ -26924,6 +29089,9 @@ func (VisualShaderNodeParticleEmit) class() string { return "VisualShaderNodePar
 func (gdClass VisualShaderNodeParticleEmit) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeParticleEmit [2]gdnative.Method
+func (gdClass VisualShaderNodeParticleEmit) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleEmit) SetFlags(flags VisualShaderNodeParticleEmitEmitFlags)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleEmit[0], flags) }
 func (gdClass VisualShaderNodeParticleEmit) GetFlags() VisualShaderNodeParticleEmitEmitFlags { return gdnative.Return[VisualShaderNodeParticleEmitEmitFlags](gdnative.Object(gdClass), methodVisualShaderNodeParticleEmit[1]) }
 
@@ -26933,6 +29101,9 @@ func (VisualShaderNodeParticleEmitter) class() string { return "VisualShaderNode
 func (gdClass VisualShaderNodeParticleEmitter) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeParticleEmitter [2]gdnative.Method
+func (gdClass VisualShaderNodeParticleEmitter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleEmitter) SetMode2d(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleEmitter[0], enabled) }
 func (gdClass VisualShaderNodeParticleEmitter) IsMode2d() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeParticleEmitter[1]) }
 
@@ -26942,6 +29113,9 @@ func (VisualShaderNodeParticleMeshEmitter) class() string { return "VisualShader
 func (gdClass VisualShaderNodeParticleMeshEmitter) VisualShaderNodeParticleEmitter() VisualShaderNodeParticleEmitter { return VisualShaderNodeParticleEmitter(gdClass) }
 
 var methodVisualShaderNodeParticleMeshEmitter [6]gdnative.Method
+func (gdClass VisualShaderNodeParticleMeshEmitter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeParticleEmitter().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleMeshEmitter) SetMesh(mesh Mesh)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleMeshEmitter[0], mesh) }
 func (gdClass VisualShaderNodeParticleMeshEmitter) GetMesh() Mesh { return gdnative.Return[Mesh](gdnative.Object(gdClass), methodVisualShaderNodeParticleMeshEmitter[1]) }
 func (gdClass VisualShaderNodeParticleMeshEmitter) SetUseAllSurfaces(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleMeshEmitter[2], enabled) }
@@ -26955,6 +29129,9 @@ func (VisualShaderNodeParticleMultiplyByAxisAngle) class() string { return "Visu
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeParticleMultiplyByAxisAngle [2]gdnative.Method
+func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) SetDegreesMode(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleMultiplyByAxisAngle[0], enabled) }
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) IsDegreesMode() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeParticleMultiplyByAxisAngle[1]) }
 
@@ -26963,6 +29140,9 @@ func (VisualShaderNodeParticleOutput) class() string { return "VisualShaderNodeP
 
 func (gdClass VisualShaderNodeParticleOutput) VisualShaderNodeOutput() VisualShaderNodeOutput { return VisualShaderNodeOutput(gdClass) }
 
+func (gdClass VisualShaderNodeParticleOutput) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeOutput().virtual(rtype, name)
+}
 
 type VisualShaderNodeParticleRandomnessOpType int64
 
@@ -26979,6 +29159,9 @@ func (VisualShaderNodeParticleRandomness) class() string { return "VisualShaderN
 func (gdClass VisualShaderNodeParticleRandomness) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeParticleRandomness [2]gdnative.Method
+func (gdClass VisualShaderNodeParticleRandomness) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeParticleRandomness) SetOpType(atype VisualShaderNodeParticleRandomnessOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeParticleRandomness[0], atype) }
 func (gdClass VisualShaderNodeParticleRandomness) GetOpType() VisualShaderNodeParticleRandomnessOpType { return gdnative.Return[VisualShaderNodeParticleRandomnessOpType](gdnative.Object(gdClass), methodVisualShaderNodeParticleRandomness[1]) }
 
@@ -26987,12 +29170,18 @@ func (VisualShaderNodeParticleRingEmitter) class() string { return "VisualShader
 
 func (gdClass VisualShaderNodeParticleRingEmitter) VisualShaderNodeParticleEmitter() VisualShaderNodeParticleEmitter { return VisualShaderNodeParticleEmitter(gdClass) }
 
+func (gdClass VisualShaderNodeParticleRingEmitter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeParticleEmitter().virtual(rtype, name)
+}
 
 type VisualShaderNodeParticleSphereEmitter gdnative.Object
 func (VisualShaderNodeParticleSphereEmitter) class() string { return "VisualShaderNodeParticleSphereEmitter\000" }
 
 func (gdClass VisualShaderNodeParticleSphereEmitter) VisualShaderNodeParticleEmitter() VisualShaderNodeParticleEmitter { return VisualShaderNodeParticleEmitter(gdClass) }
 
+func (gdClass VisualShaderNodeParticleSphereEmitter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeParticleEmitter().virtual(rtype, name)
+}
 
 type VisualShaderNodeResizableBase gdnative.Object
 func (VisualShaderNodeResizableBase) class() string { return "VisualShaderNodeResizableBase\000" }
@@ -27000,6 +29189,9 @@ func (VisualShaderNodeResizableBase) class() string { return "VisualShaderNodeRe
 func (gdClass VisualShaderNodeResizableBase) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeResizableBase [2]gdnative.Method
+func (gdClass VisualShaderNodeResizableBase) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeResizableBase) SetSize(size Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeResizableBase[0], size) }
 func (gdClass VisualShaderNodeResizableBase) GetSize() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualShaderNodeResizableBase[1]) }
 
@@ -27008,12 +29200,18 @@ func (VisualShaderNodeSDFRaymarch) class() string { return "VisualShaderNodeSDFR
 
 func (gdClass VisualShaderNodeSDFRaymarch) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeSDFRaymarch) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeSDFToScreenUV gdnative.Object
 func (VisualShaderNodeSDFToScreenUV) class() string { return "VisualShaderNodeSDFToScreenUV\000" }
 
 func (gdClass VisualShaderNodeSDFToScreenUV) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeSDFToScreenUV) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeSample3DSource int64
 
@@ -27029,6 +29227,9 @@ func (VisualShaderNodeSample3D) class() string { return "VisualShaderNodeSample3
 func (gdClass VisualShaderNodeSample3D) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeSample3D [2]gdnative.Method
+func (gdClass VisualShaderNodeSample3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeSample3D) SetSource(value VisualShaderNodeSample3DSource)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeSample3D[0], value) }
 func (gdClass VisualShaderNodeSample3D) GetSource() VisualShaderNodeSample3DSource { return gdnative.Return[VisualShaderNodeSample3DSource](gdnative.Object(gdClass), methodVisualShaderNodeSample3D[1]) }
 
@@ -27037,6 +29238,9 @@ func (VisualShaderNodeScreenUVToSDF) class() string { return "VisualShaderNodeSc
 
 func (gdClass VisualShaderNodeScreenUVToSDF) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeScreenUVToSDF) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeSmoothStepOpType int64
 
@@ -27057,6 +29261,9 @@ func (VisualShaderNodeSmoothStep) class() string { return "VisualShaderNodeSmoot
 func (gdClass VisualShaderNodeSmoothStep) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeSmoothStep [2]gdnative.Method
+func (gdClass VisualShaderNodeSmoothStep) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeSmoothStep) SetOpType(op_type VisualShaderNodeSmoothStepOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeSmoothStep[0], op_type) }
 func (gdClass VisualShaderNodeSmoothStep) GetOpType() VisualShaderNodeSmoothStepOpType { return gdnative.Return[VisualShaderNodeSmoothStepOpType](gdnative.Object(gdClass), methodVisualShaderNodeSmoothStep[1]) }
 
@@ -27079,6 +29286,9 @@ func (VisualShaderNodeStep) class() string { return "VisualShaderNodeStep\000" }
 func (gdClass VisualShaderNodeStep) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeStep [2]gdnative.Method
+func (gdClass VisualShaderNodeStep) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeStep) SetOpType(op_type VisualShaderNodeStepOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeStep[0], op_type) }
 func (gdClass VisualShaderNodeStep) GetOpType() VisualShaderNodeStepOpType { return gdnative.Return[VisualShaderNodeStepOpType](gdnative.Object(gdClass), methodVisualShaderNodeStep[1]) }
 
@@ -27101,6 +29311,9 @@ func (VisualShaderNodeSwitch) class() string { return "VisualShaderNodeSwitch\00
 func (gdClass VisualShaderNodeSwitch) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeSwitch [2]gdnative.Method
+func (gdClass VisualShaderNodeSwitch) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeSwitch) SetOpType(atype VisualShaderNodeSwitchOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeSwitch[0], atype) }
 func (gdClass VisualShaderNodeSwitch) GetOpType() VisualShaderNodeSwitchOpType { return gdnative.Return[VisualShaderNodeSwitchOpType](gdnative.Object(gdClass), methodVisualShaderNodeSwitch[1]) }
 
@@ -27131,6 +29344,9 @@ func (VisualShaderNodeTexture) class() string { return "VisualShaderNodeTexture\
 func (gdClass VisualShaderNodeTexture) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeTexture [6]gdnative.Method
+func (gdClass VisualShaderNodeTexture) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTexture) SetSource(value VisualShaderNodeTextureSource)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture[0], value) }
 func (gdClass VisualShaderNodeTexture) GetSource() VisualShaderNodeTextureSource { return gdnative.Return[VisualShaderNodeTextureSource](gdnative.Object(gdClass), methodVisualShaderNodeTexture[1]) }
 func (gdClass VisualShaderNodeTexture) SetTexture(value Texture2D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture[2], value) }
@@ -27144,6 +29360,9 @@ func (VisualShaderNodeTexture2DArray) class() string { return "VisualShaderNodeT
 func (gdClass VisualShaderNodeTexture2DArray) VisualShaderNodeSample3D() VisualShaderNodeSample3D { return VisualShaderNodeSample3D(gdClass) }
 
 var methodVisualShaderNodeTexture2DArray [2]gdnative.Method
+func (gdClass VisualShaderNodeTexture2DArray) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeSample3D().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTexture2DArray) SetTextureArray(value Texture2DArray)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture2DArray[0], value) }
 func (gdClass VisualShaderNodeTexture2DArray) GetTextureArray() Texture2DArray { return gdnative.Return[Texture2DArray](gdnative.Object(gdClass), methodVisualShaderNodeTexture2DArray[1]) }
 
@@ -27152,6 +29371,9 @@ func (VisualShaderNodeTexture2DArrayUniform) class() string { return "VisualShad
 
 func (gdClass VisualShaderNodeTexture2DArrayUniform) VisualShaderNodeTextureUniform() VisualShaderNodeTextureUniform { return VisualShaderNodeTextureUniform(gdClass) }
 
+func (gdClass VisualShaderNodeTexture2DArrayUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeTextureUniform().virtual(rtype, name)
+}
 
 type VisualShaderNodeTexture3D gdnative.Object
 func (VisualShaderNodeTexture3D) class() string { return "VisualShaderNodeTexture3D\000" }
@@ -27159,6 +29381,9 @@ func (VisualShaderNodeTexture3D) class() string { return "VisualShaderNodeTextur
 func (gdClass VisualShaderNodeTexture3D) VisualShaderNodeSample3D() VisualShaderNodeSample3D { return VisualShaderNodeSample3D(gdClass) }
 
 var methodVisualShaderNodeTexture3D [2]gdnative.Method
+func (gdClass VisualShaderNodeTexture3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeSample3D().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTexture3D) SetTexture(value Texture3D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTexture3D[0], value) }
 func (gdClass VisualShaderNodeTexture3D) GetTexture() Texture3D { return gdnative.Return[Texture3D](gdnative.Object(gdClass), methodVisualShaderNodeTexture3D[1]) }
 
@@ -27167,18 +29392,27 @@ func (VisualShaderNodeTexture3DUniform) class() string { return "VisualShaderNod
 
 func (gdClass VisualShaderNodeTexture3DUniform) VisualShaderNodeTextureUniform() VisualShaderNodeTextureUniform { return VisualShaderNodeTextureUniform(gdClass) }
 
+func (gdClass VisualShaderNodeTexture3DUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeTextureUniform().virtual(rtype, name)
+}
 
 type VisualShaderNodeTextureSDF gdnative.Object
 func (VisualShaderNodeTextureSDF) class() string { return "VisualShaderNodeTextureSDF\000" }
 
 func (gdClass VisualShaderNodeTextureSDF) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeTextureSDF) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeTextureSDFNormal gdnative.Object
 func (VisualShaderNodeTextureSDFNormal) class() string { return "VisualShaderNodeTextureSDFNormal\000" }
 
 func (gdClass VisualShaderNodeTextureSDFNormal) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeTextureSDFNormal) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeTextureUniformTextureType int64
 
@@ -27227,6 +29461,9 @@ func (VisualShaderNodeTextureUniform) class() string { return "VisualShaderNodeT
 func (gdClass VisualShaderNodeTextureUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeTextureUniform [8]gdnative.Method
+func (gdClass VisualShaderNodeTextureUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTextureUniform) SetTextureType(atype VisualShaderNodeTextureUniformTextureType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTextureUniform[0], atype) }
 func (gdClass VisualShaderNodeTextureUniform) GetTextureType() VisualShaderNodeTextureUniformTextureType { return gdnative.Return[VisualShaderNodeTextureUniformTextureType](gdnative.Object(gdClass), methodVisualShaderNodeTextureUniform[1]) }
 func (gdClass VisualShaderNodeTextureUniform) SetColorDefault(atype VisualShaderNodeTextureUniformColorDefault)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTextureUniform[2], atype) }
@@ -27241,12 +29478,18 @@ func (VisualShaderNodeTextureUniformTriplanar) class() string { return "VisualSh
 
 func (gdClass VisualShaderNodeTextureUniformTriplanar) VisualShaderNodeTextureUniform() VisualShaderNodeTextureUniform { return VisualShaderNodeTextureUniform(gdClass) }
 
+func (gdClass VisualShaderNodeTextureUniformTriplanar) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeTextureUniform().virtual(rtype, name)
+}
 
 type VisualShaderNodeTransformCompose gdnative.Object
 func (VisualShaderNodeTransformCompose) class() string { return "VisualShaderNodeTransformCompose\000" }
 
 func (gdClass VisualShaderNodeTransformCompose) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeTransformCompose) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeTransformConstant gdnative.Object
 func (VisualShaderNodeTransformConstant) class() string { return "VisualShaderNodeTransformConstant\000" }
@@ -27254,6 +29497,9 @@ func (VisualShaderNodeTransformConstant) class() string { return "VisualShaderNo
 func (gdClass VisualShaderNodeTransformConstant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeTransformConstant [2]gdnative.Method
+func (gdClass VisualShaderNodeTransformConstant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTransformConstant) SetConstant(constant Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformConstant[0], constant) }
 func (gdClass VisualShaderNodeTransformConstant) GetConstant() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodVisualShaderNodeTransformConstant[1]) }
 
@@ -27262,6 +29508,9 @@ func (VisualShaderNodeTransformDecompose) class() string { return "VisualShaderN
 
 func (gdClass VisualShaderNodeTransformDecompose) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
+func (gdClass VisualShaderNodeTransformDecompose) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 
 type VisualShaderNodeTransformFuncFunction int64
 
@@ -27277,6 +29526,9 @@ func (VisualShaderNodeTransformFunc) class() string { return "VisualShaderNodeTr
 func (gdClass VisualShaderNodeTransformFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeTransformFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeTransformFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTransformFunc) SetFunction(fn VisualShaderNodeTransformFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformFunc[0], fn) }
 func (gdClass VisualShaderNodeTransformFunc) GetFunction() VisualShaderNodeTransformFuncFunction { return gdnative.Return[VisualShaderNodeTransformFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeTransformFunc[1]) }
 
@@ -27301,6 +29553,9 @@ func (VisualShaderNodeTransformOp) class() string { return "VisualShaderNodeTran
 func (gdClass VisualShaderNodeTransformOp) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeTransformOp [2]gdnative.Method
+func (gdClass VisualShaderNodeTransformOp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTransformOp) SetOperator(op VisualShaderNodeTransformOpOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformOp[0], op) }
 func (gdClass VisualShaderNodeTransformOp) GetOperator() VisualShaderNodeTransformOpOperator { return gdnative.Return[VisualShaderNodeTransformOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeTransformOp[1]) }
 
@@ -27310,6 +29565,9 @@ func (VisualShaderNodeTransformUniform) class() string { return "VisualShaderNod
 func (gdClass VisualShaderNodeTransformUniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeTransformUniform [4]gdnative.Method
+func (gdClass VisualShaderNodeTransformUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTransformUniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformUniform[0], enabled) }
 func (gdClass VisualShaderNodeTransformUniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeTransformUniform[1]) }
 func (gdClass VisualShaderNodeTransformUniform) SetDefaultValue(value Transform3D)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformUniform[2], value) }
@@ -27331,6 +29589,9 @@ func (VisualShaderNodeTransformVecMult) class() string { return "VisualShaderNod
 func (gdClass VisualShaderNodeTransformVecMult) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeTransformVecMult [2]gdnative.Method
+func (gdClass VisualShaderNodeTransformVecMult) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeTransformVecMult) SetOperator(op VisualShaderNodeTransformVecMultOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeTransformVecMult[0], op) }
 func (gdClass VisualShaderNodeTransformVecMult) GetOperator() VisualShaderNodeTransformVecMultOperator { return gdnative.Return[VisualShaderNodeTransformVecMultOperator](gdnative.Object(gdClass), methodVisualShaderNodeTransformVecMult[1]) }
 
@@ -27348,6 +29609,9 @@ func (VisualShaderNodeUVFunc) class() string { return "VisualShaderNodeUVFunc\00
 func (gdClass VisualShaderNodeUVFunc) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeUVFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeUVFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeUVFunc) SetFunction(fn VisualShaderNodeUVFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeUVFunc[0], fn) }
 func (gdClass VisualShaderNodeUVFunc) GetFunction() VisualShaderNodeUVFuncFunction { return gdnative.Return[VisualShaderNodeUVFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeUVFunc[1]) }
 
@@ -27366,6 +29630,9 @@ func (VisualShaderNodeUniform) class() string { return "VisualShaderNodeUniform\
 func (gdClass VisualShaderNodeUniform) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeUniform [4]gdnative.Method
+func (gdClass VisualShaderNodeUniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeUniform) SetUniformName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeUniform[0], name) }
 func (gdClass VisualShaderNodeUniform) GetUniformName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeUniform[1]) }
 func (gdClass VisualShaderNodeUniform) SetQualifier(qualifier VisualShaderNodeUniformQualifier)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeUniform[2], qualifier) }
@@ -27377,6 +29644,9 @@ func (VisualShaderNodeUniformRef) class() string { return "VisualShaderNodeUnifo
 func (gdClass VisualShaderNodeUniformRef) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeUniformRef [2]gdnative.Method
+func (gdClass VisualShaderNodeUniformRef) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeUniformRef) SetUniformName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeUniformRef[0], name) }
 func (gdClass VisualShaderNodeUniformRef) GetUniformName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeUniformRef[1]) }
 
@@ -27386,6 +29656,9 @@ func (VisualShaderNodeVarying) class() string { return "VisualShaderNodeVarying\
 func (gdClass VisualShaderNodeVarying) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeVarying [4]gdnative.Method
+func (gdClass VisualShaderNodeVarying) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVarying) SetVaryingName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVarying[0], name) }
 func (gdClass VisualShaderNodeVarying) GetVaryingName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodVisualShaderNodeVarying[1]) }
 func (gdClass VisualShaderNodeVarying) SetVaryingType(atype VisualShaderVaryingType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVarying[2], atype) }
@@ -27396,12 +29669,18 @@ func (VisualShaderNodeVaryingGetter) class() string { return "VisualShaderNodeVa
 
 func (gdClass VisualShaderNodeVaryingGetter) VisualShaderNodeVarying() VisualShaderNodeVarying { return VisualShaderNodeVarying(gdClass) }
 
+func (gdClass VisualShaderNodeVaryingGetter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVarying().virtual(rtype, name)
+}
 
 type VisualShaderNodeVaryingSetter gdnative.Object
 func (VisualShaderNodeVaryingSetter) class() string { return "VisualShaderNodeVaryingSetter\000" }
 
 func (gdClass VisualShaderNodeVaryingSetter) VisualShaderNodeVarying() VisualShaderNodeVarying { return VisualShaderNodeVarying(gdClass) }
 
+func (gdClass VisualShaderNodeVaryingSetter) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVarying().virtual(rtype, name)
+}
 
 type VisualShaderNodeVec2Constant gdnative.Object
 func (VisualShaderNodeVec2Constant) class() string { return "VisualShaderNodeVec2Constant\000" }
@@ -27409,6 +29688,9 @@ func (VisualShaderNodeVec2Constant) class() string { return "VisualShaderNodeVec
 func (gdClass VisualShaderNodeVec2Constant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeVec2Constant [2]gdnative.Method
+func (gdClass VisualShaderNodeVec2Constant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec2Constant) SetConstant(constant Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec2Constant[0], constant) }
 func (gdClass VisualShaderNodeVec2Constant) GetConstant() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodVisualShaderNodeVec2Constant[1]) }
 
@@ -27418,6 +29700,9 @@ func (VisualShaderNodeVec2Uniform) class() string { return "VisualShaderNodeVec2
 func (gdClass VisualShaderNodeVec2Uniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeVec2Uniform [4]gdnative.Method
+func (gdClass VisualShaderNodeVec2Uniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec2Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec2Uniform[0], enabled) }
 func (gdClass VisualShaderNodeVec2Uniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeVec2Uniform[1]) }
 func (gdClass VisualShaderNodeVec2Uniform) SetDefaultValue(value Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec2Uniform[2], value) }
@@ -27429,6 +29714,9 @@ func (VisualShaderNodeVec3Constant) class() string { return "VisualShaderNodeVec
 func (gdClass VisualShaderNodeVec3Constant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeVec3Constant [2]gdnative.Method
+func (gdClass VisualShaderNodeVec3Constant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec3Constant) SetConstant(constant Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec3Constant[0], constant) }
 func (gdClass VisualShaderNodeVec3Constant) GetConstant() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodVisualShaderNodeVec3Constant[1]) }
 
@@ -27438,6 +29726,9 @@ func (VisualShaderNodeVec3Uniform) class() string { return "VisualShaderNodeVec3
 func (gdClass VisualShaderNodeVec3Uniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeVec3Uniform [4]gdnative.Method
+func (gdClass VisualShaderNodeVec3Uniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec3Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec3Uniform[0], enabled) }
 func (gdClass VisualShaderNodeVec3Uniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeVec3Uniform[1]) }
 func (gdClass VisualShaderNodeVec3Uniform) SetDefaultValue(value Vector3)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec3Uniform[2], value) }
@@ -27449,6 +29740,9 @@ func (VisualShaderNodeVec4Constant) class() string { return "VisualShaderNodeVec
 func (gdClass VisualShaderNodeVec4Constant) VisualShaderNodeConstant() VisualShaderNodeConstant { return VisualShaderNodeConstant(gdClass) }
 
 var methodVisualShaderNodeVec4Constant [2]gdnative.Method
+func (gdClass VisualShaderNodeVec4Constant) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeConstant().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec4Constant) SetConstant(constant Quaternion)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec4Constant[0], constant) }
 func (gdClass VisualShaderNodeVec4Constant) GetConstant() Quaternion { return gdnative.Return[Quaternion](gdnative.Object(gdClass), methodVisualShaderNodeVec4Constant[1]) }
 
@@ -27458,6 +29752,9 @@ func (VisualShaderNodeVec4Uniform) class() string { return "VisualShaderNodeVec4
 func (gdClass VisualShaderNodeVec4Uniform) VisualShaderNodeUniform() VisualShaderNodeUniform { return VisualShaderNodeUniform(gdClass) }
 
 var methodVisualShaderNodeVec4Uniform [4]gdnative.Method
+func (gdClass VisualShaderNodeVec4Uniform) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeUniform().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVec4Uniform) SetDefaultValueEnabled(enabled bool)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec4Uniform[0], enabled) }
 func (gdClass VisualShaderNodeVec4Uniform) IsDefaultValueEnabled() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodVisualShaderNodeVec4Uniform[1]) }
 func (gdClass VisualShaderNodeVec4Uniform) SetDefaultValue(value Quaternion)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVec4Uniform[2], value) }
@@ -27478,6 +29775,9 @@ func (VisualShaderNodeVectorBase) class() string { return "VisualShaderNodeVecto
 func (gdClass VisualShaderNodeVectorBase) VisualShaderNode() VisualShaderNode { return VisualShaderNode(gdClass) }
 
 var methodVisualShaderNodeVectorBase [2]gdnative.Method
+func (gdClass VisualShaderNodeVectorBase) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNode().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVectorBase) SetOpType(atype VisualShaderNodeVectorBaseOpType)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVectorBase[0], atype) }
 func (gdClass VisualShaderNodeVectorBase) GetOpType() VisualShaderNodeVectorBaseOpType { return gdnative.Return[VisualShaderNodeVectorBaseOpType](gdnative.Object(gdClass), methodVisualShaderNodeVectorBase[1]) }
 
@@ -27486,18 +29786,27 @@ func (VisualShaderNodeVectorCompose) class() string { return "VisualShaderNodeVe
 
 func (gdClass VisualShaderNodeVectorCompose) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeVectorCompose) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VisualShaderNodeVectorDecompose gdnative.Object
 func (VisualShaderNodeVectorDecompose) class() string { return "VisualShaderNodeVectorDecompose\000" }
 
 func (gdClass VisualShaderNodeVectorDecompose) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeVectorDecompose) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VisualShaderNodeVectorDistance gdnative.Object
 func (VisualShaderNodeVectorDistance) class() string { return "VisualShaderNodeVectorDistance\000" }
 
 func (gdClass VisualShaderNodeVectorDistance) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeVectorDistance) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VisualShaderNodeVectorFuncFunction int64
 
@@ -27544,6 +29853,9 @@ func (VisualShaderNodeVectorFunc) class() string { return "VisualShaderNodeVecto
 func (gdClass VisualShaderNodeVectorFunc) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
 var methodVisualShaderNodeVectorFunc [2]gdnative.Method
+func (gdClass VisualShaderNodeVectorFunc) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVectorFunc) SetFunction(fn VisualShaderNodeVectorFuncFunction)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVectorFunc[0], fn) }
 func (gdClass VisualShaderNodeVectorFunc) GetFunction() VisualShaderNodeVectorFuncFunction { return gdnative.Return[VisualShaderNodeVectorFuncFunction](gdnative.Object(gdClass), methodVisualShaderNodeVectorFunc[1]) }
 
@@ -27552,6 +29864,9 @@ func (VisualShaderNodeVectorLen) class() string { return "VisualShaderNodeVector
 
 func (gdClass VisualShaderNodeVectorLen) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeVectorLen) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VisualShaderNodeVectorOpOperator int64
 
@@ -27577,6 +29892,9 @@ func (VisualShaderNodeVectorOp) class() string { return "VisualShaderNodeVectorO
 func (gdClass VisualShaderNodeVectorOp) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
 var methodVisualShaderNodeVectorOp [2]gdnative.Method
+func (gdClass VisualShaderNodeVectorOp) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 func (gdClass VisualShaderNodeVectorOp) SetOperator(op VisualShaderNodeVectorOpOperator)  { gdnative.Call(gdnative.Object(gdClass), methodVisualShaderNodeVectorOp[0], op) }
 func (gdClass VisualShaderNodeVectorOp) GetOperator() VisualShaderNodeVectorOpOperator { return gdnative.Return[VisualShaderNodeVectorOpOperator](gdnative.Object(gdClass), methodVisualShaderNodeVectorOp[1]) }
 
@@ -27585,6 +29903,9 @@ func (VisualShaderNodeVectorRefract) class() string { return "VisualShaderNodeVe
 
 func (gdClass VisualShaderNodeVectorRefract) VisualShaderNodeVectorBase() VisualShaderNodeVectorBase { return VisualShaderNodeVectorBase(gdClass) }
 
+func (gdClass VisualShaderNodeVectorRefract) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualShaderNodeVectorBase().virtual(rtype, name)
+}
 
 type VoxelGISubdiv int64
 
@@ -27602,6 +29923,9 @@ func (VoxelGI) class() string { return "VoxelGI\000" }
 func (gdClass VoxelGI) VisualInstance3D() VisualInstance3D { return VisualInstance3D(gdClass) }
 
 var methodVoxelGI [8]gdnative.Method
+func (gdClass VoxelGI) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.VisualInstance3D().virtual(rtype, name)
+}
 func (gdClass VoxelGI) SetProbeData(data VoxelGIData)  { gdnative.Call(gdnative.Object(gdClass), methodVoxelGI[0], data) }
 func (gdClass VoxelGI) GetProbeData() VoxelGIData { return gdnative.Return[VoxelGIData](gdnative.Object(gdClass), methodVoxelGI[1]) }
 func (gdClass VoxelGI) SetSubdiv(subdiv VoxelGISubdiv)  { gdnative.Call(gdnative.Object(gdClass), methodVoxelGI[2], subdiv) }
@@ -27617,6 +29941,9 @@ func (VoxelGIData) class() string { return "VoxelGIData\000" }
 func (gdClass VoxelGIData) Resource() Resource { return Resource(gdClass) }
 
 var methodVoxelGIData [21]gdnative.Method
+func (gdClass VoxelGIData) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass VoxelGIData) Allocate(to_cell_xform Transform3D, aabb AABB, octree_size Vector3, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32)  { gdnative.Call(gdnative.Object(gdClass), methodVoxelGIData[0], to_cell_xform, aabb, octree_size, octree_cells, data_cells, distance_field, level_counts) }
 func (gdClass VoxelGIData) GetBounds() AABB { return gdnative.Return[AABB](gdnative.Object(gdClass), methodVoxelGIData[1]) }
 func (gdClass VoxelGIData) GetOctreeSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodVoxelGIData[2]) }
@@ -27645,6 +29972,9 @@ func (WeakRef) class() string { return "WeakRef\000" }
 func (gdClass WeakRef) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodWeakRef [1]gdnative.Method
+func (gdClass WeakRef) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass WeakRef) GetRef() any { return gdnative.Return[any](gdnative.Object(gdClass), methodWeakRef[0]) }
 
 type WebRTCDataChannelWriteMode int64
@@ -27669,6 +29999,9 @@ func (WebRTCDataChannel) class() string { return "WebRTCDataChannel\000" }
 func (gdClass WebRTCDataChannel) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodWebRTCDataChannel [14]gdnative.Method
+func (gdClass WebRTCDataChannel) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass WebRTCDataChannel) Poll() error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebRTCDataChannel[0]) }
 func (gdClass WebRTCDataChannel) Close()  { gdnative.Call(gdnative.Object(gdClass), methodWebRTCDataChannel[1]) }
 func (gdClass WebRTCDataChannel) WasStringPacket() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodWebRTCDataChannel[2]) }
@@ -27689,99 +30022,100 @@ func (WebRTCDataChannelExtension) class() string { return "WebRTCDataChannelExte
 
 func (gdClass WebRTCDataChannelExtension) WebRTCDataChannel() WebRTCDataChannel { return WebRTCDataChannel(gdClass) }
 
-func (gdClass WebRTCDataChannelExtension) virtual(val any, name string) any {	switch name {
+func (gdClass WebRTCDataChannelExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_packet":
-		i, ok := val.(interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 })
-		if ok {
-			return i.GetPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPacket(r_buffer *[]byte, r_buffer_size *int32) int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPacket`)
 		}
+		return
 	case "_put_packet":
-		i, ok := val.(interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 })
-		if ok {
-			return i.PutPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ PutPacket(p_buffer []byte, p_buffer_size int64) int64 }{}).Elem()) {
+			return rtype.MethodByName(`PutPacket`)
 		}
+		return
 	case "_get_available_packet_count":
-		i, ok := val.(interface{ GetAvailablePacketCount() int64 })
-		if ok {
-			return i.GetAvailablePacketCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAvailablePacketCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetAvailablePacketCount`)
 		}
+		return
 	case "_get_max_packet_size":
-		i, ok := val.(interface{ GetMaxPacketSize() int64 })
-		if ok {
-			return i.GetMaxPacketSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMaxPacketSize() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMaxPacketSize`)
 		}
+		return
 	case "_poll":
-		i, ok := val.(interface{ Poll() int64 })
-		if ok {
-			return i.Poll
+		if rtype.Implements(reflect.TypeOf([0]interface{ Poll() int64 }{}).Elem()) {
+			return rtype.MethodByName(`Poll`)
 		}
+		return
 	case "_close":
-		i, ok := val.(interface{ Close()  })
-		if ok {
-			return i.Close
+		if rtype.Implements(reflect.TypeOf([0]interface{ Close()  }{}).Elem()) {
+			return rtype.MethodByName(`Close`)
 		}
+		return
 	case "_set_write_mode":
-		i, ok := val.(interface{ SetWriteMode(p_write_mode int64)  })
-		if ok {
-			return i.SetWriteMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetWriteMode(p_write_mode int64)  }{}).Elem()) {
+			return rtype.MethodByName(`SetWriteMode`)
 		}
+		return
 	case "_get_write_mode":
-		i, ok := val.(interface{ GetWriteMode() int64 })
-		if ok {
-			return i.GetWriteMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetWriteMode() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetWriteMode`)
 		}
+		return
 	case "_was_string_packet":
-		i, ok := val.(interface{ WasStringPacket() bool })
-		if ok {
-			return i.WasStringPacket
+		if rtype.Implements(reflect.TypeOf([0]interface{ WasStringPacket() bool }{}).Elem()) {
+			return rtype.MethodByName(`WasStringPacket`)
 		}
+		return
 	case "_get_ready_state":
-		i, ok := val.(interface{ GetReadyState() int64 })
-		if ok {
-			return i.GetReadyState
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetReadyState() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetReadyState`)
 		}
+		return
 	case "_get_label":
-		i, ok := val.(interface{ GetLabel() string })
-		if ok {
-			return i.GetLabel
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetLabel() string }{}).Elem()) {
+			return rtype.MethodByName(`GetLabel`)
 		}
+		return
 	case "_is_ordered":
-		i, ok := val.(interface{ IsOrdered() bool })
-		if ok {
-			return i.IsOrdered
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsOrdered() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsOrdered`)
 		}
+		return
 	case "_get_id":
-		i, ok := val.(interface{ GetId() int64 })
-		if ok {
-			return i.GetId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetId() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetId`)
 		}
+		return
 	case "_get_max_packet_life_time":
-		i, ok := val.(interface{ GetMaxPacketLifeTime() int64 })
-		if ok {
-			return i.GetMaxPacketLifeTime
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMaxPacketLifeTime() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMaxPacketLifeTime`)
 		}
+		return
 	case "_get_max_retransmits":
-		i, ok := val.(interface{ GetMaxRetransmits() int64 })
-		if ok {
-			return i.GetMaxRetransmits
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetMaxRetransmits() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetMaxRetransmits`)
 		}
+		return
 	case "_get_protocol":
-		i, ok := val.(interface{ GetProtocol() string })
-		if ok {
-			return i.GetProtocol
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetProtocol() string }{}).Elem()) {
+			return rtype.MethodByName(`GetProtocol`)
 		}
+		return
 	case "_is_negotiated":
-		i, ok := val.(interface{ IsNegotiated() bool })
-		if ok {
-			return i.IsNegotiated
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsNegotiated() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsNegotiated`)
 		}
+		return
 	case "_get_buffered_amount":
-		i, ok := val.(interface{ GetBufferedAmount() int64 })
-		if ok {
-			return i.GetBufferedAmount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetBufferedAmount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetBufferedAmount`)
 		}
+		return
 	}
-	return nil
+	return gdClass.WebRTCDataChannel().virtual(rtype, name)
 }
 
 type WebRTCMultiplayerPeer gdnative.Object
@@ -27790,6 +30124,9 @@ func (WebRTCMultiplayerPeer) class() string { return "WebRTCMultiplayerPeer\000"
 func (gdClass WebRTCMultiplayerPeer) MultiplayerPeer() MultiplayerPeer { return MultiplayerPeer(gdClass) }
 
 var methodWebRTCMultiplayerPeer [7]gdnative.Method
+func (gdClass WebRTCMultiplayerPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MultiplayerPeer().virtual(rtype, name)
+}
 func (gdClass WebRTCMultiplayerPeer) Initialize(peer_id int64, server_compatibility bool, channels_config Array) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebRTCMultiplayerPeer[0], peer_id, server_compatibility, channels_config) }
 func (gdClass WebRTCMultiplayerPeer) AddPeer(peer WebRTCPeerConnection, peer_id int64, unreliable_lifetime int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebRTCMultiplayerPeer[1], peer, peer_id, unreliable_lifetime) }
 func (gdClass WebRTCMultiplayerPeer) RemovePeer(peer_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodWebRTCMultiplayerPeer[2], peer_id) }
@@ -27815,6 +30152,9 @@ func (WebRTCPeerConnection) class() string { return "WebRTCPeerConnection\000" }
 func (gdClass WebRTCPeerConnection) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodWebRTCPeerConnection [10]gdnative.Method
+func (gdClass WebRTCPeerConnection) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass WebRTCPeerConnection) SetDefaultExtension(extension_class string)  { gdnative.Call(gdnative.Object(gdClass), methodWebRTCPeerConnection[0], extension_class) }
 func (gdClass WebRTCPeerConnection) Initialize(configuration Dictionary) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebRTCPeerConnection[1], configuration) }
 func (gdClass WebRTCPeerConnection) CreateDataChannel(label string, options Dictionary) WebRTCDataChannel { return gdnative.Return[WebRTCDataChannel](gdnative.Object(gdClass), methodWebRTCPeerConnection[2], label, options) }
@@ -27831,54 +30171,55 @@ func (WebRTCPeerConnectionExtension) class() string { return "WebRTCPeerConnecti
 
 func (gdClass WebRTCPeerConnectionExtension) WebRTCPeerConnection() WebRTCPeerConnection { return WebRTCPeerConnection(gdClass) }
 
-func (gdClass WebRTCPeerConnectionExtension) virtual(val any, name string) any {	switch name {
+func (gdClass WebRTCPeerConnectionExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_connection_state":
-		i, ok := val.(interface{ GetConnectionState() int64 })
-		if ok {
-			return i.GetConnectionState
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetConnectionState() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetConnectionState`)
 		}
+		return
 	case "_initialize":
-		i, ok := val.(interface{ Initialize(p_config Dictionary) int64 })
-		if ok {
-			return i.Initialize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Initialize(p_config Dictionary) int64 }{}).Elem()) {
+			return rtype.MethodByName(`Initialize`)
 		}
+		return
 	case "_create_data_channel":
-		i, ok := val.(interface{ CreateDataChannel(p_label string, p_config Dictionary) Object })
-		if ok {
-			return i.CreateDataChannel
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateDataChannel(p_label string, p_config Dictionary) Object }{}).Elem()) {
+			return rtype.MethodByName(`CreateDataChannel`)
 		}
+		return
 	case "_create_offer":
-		i, ok := val.(interface{ CreateOffer() int64 })
-		if ok {
-			return i.CreateOffer
+		if rtype.Implements(reflect.TypeOf([0]interface{ CreateOffer() int64 }{}).Elem()) {
+			return rtype.MethodByName(`CreateOffer`)
 		}
+		return
 	case "_set_remote_description":
-		i, ok := val.(interface{ SetRemoteDescription(p_type string, p_sdp string) int64 })
-		if ok {
-			return i.SetRemoteDescription
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetRemoteDescription(p_type string, p_sdp string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SetRemoteDescription`)
 		}
+		return
 	case "_set_local_description":
-		i, ok := val.(interface{ SetLocalDescription(p_type string, p_sdp string) int64 })
-		if ok {
-			return i.SetLocalDescription
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetLocalDescription(p_type string, p_sdp string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`SetLocalDescription`)
 		}
+		return
 	case "_add_ice_candidate":
-		i, ok := val.(interface{ AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int64, p_sdp_name string) int64 })
-		if ok {
-			return i.AddIceCandidate
+		if rtype.Implements(reflect.TypeOf([0]interface{ AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_index int64, p_sdp_name string) int64 }{}).Elem()) {
+			return rtype.MethodByName(`AddIceCandidate`)
 		}
+		return
 	case "_poll":
-		i, ok := val.(interface{ Poll() int64 })
-		if ok {
-			return i.Poll
+		if rtype.Implements(reflect.TypeOf([0]interface{ Poll() int64 }{}).Elem()) {
+			return rtype.MethodByName(`Poll`)
 		}
+		return
 	case "_close":
-		i, ok := val.(interface{ Close()  })
-		if ok {
-			return i.Close
+		if rtype.Implements(reflect.TypeOf([0]interface{ Close()  }{}).Elem()) {
+			return rtype.MethodByName(`Close`)
 		}
+		return
 	}
-	return nil
+	return gdClass.WebRTCPeerConnection().virtual(rtype, name)
 }
 
 type WebSocketClient gdnative.Object
@@ -27887,6 +30228,9 @@ func (WebSocketClient) class() string { return "WebSocketClient\000" }
 func (gdClass WebSocketClient) WebSocketMultiplayerPeer() WebSocketMultiplayerPeer { return WebSocketMultiplayerPeer(gdClass) }
 
 var methodWebSocketClient [8]gdnative.Method
+func (gdClass WebSocketClient) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.WebSocketMultiplayerPeer().virtual(rtype, name)
+}
 func (gdClass WebSocketClient) ConnectToUrl(url string, protocols []string, gd_mp_api bool, custom_headers []string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebSocketClient[0], url, protocols, gd_mp_api, custom_headers) }
 func (gdClass WebSocketClient) DisconnectFromHost(code int64, reason string)  { gdnative.Call(gdnative.Object(gdClass), methodWebSocketClient[1], code, reason) }
 func (gdClass WebSocketClient) GetConnectedHost() string { return gdnative.Return[string](gdnative.Object(gdClass), methodWebSocketClient[2]) }
@@ -27902,6 +30246,9 @@ func (WebSocketMultiplayerPeer) class() string { return "WebSocketMultiplayerPee
 func (gdClass WebSocketMultiplayerPeer) MultiplayerPeer() MultiplayerPeer { return MultiplayerPeer(gdClass) }
 
 var methodWebSocketMultiplayerPeer [2]gdnative.Method
+func (gdClass WebSocketMultiplayerPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.MultiplayerPeer().virtual(rtype, name)
+}
 func (gdClass WebSocketMultiplayerPeer) SetBuffers(input_buffer_size_kb int64, input_max_packets int64, output_buffer_size_kb int64, output_max_packets int64) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebSocketMultiplayerPeer[0], input_buffer_size_kb, input_max_packets, output_buffer_size_kb, output_max_packets) }
 func (gdClass WebSocketMultiplayerPeer) GetPeer(peer_id int64) WebSocketPeer { return gdnative.Return[WebSocketPeer](gdnative.Object(gdClass), methodWebSocketMultiplayerPeer[1], peer_id) }
 
@@ -27918,6 +30265,9 @@ func (WebSocketPeer) class() string { return "WebSocketPeer\000" }
 func (gdClass WebSocketPeer) PacketPeer() PacketPeer { return PacketPeer(gdClass) }
 
 var methodWebSocketPeer [9]gdnative.Method
+func (gdClass WebSocketPeer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.PacketPeer().virtual(rtype, name)
+}
 func (gdClass WebSocketPeer) GetWriteMode() WebSocketPeerWriteMode { return gdnative.Return[WebSocketPeerWriteMode](gdnative.Object(gdClass), methodWebSocketPeer[0]) }
 func (gdClass WebSocketPeer) SetWriteMode(mode WebSocketPeerWriteMode)  { gdnative.Call(gdnative.Object(gdClass), methodWebSocketPeer[1], mode) }
 func (gdClass WebSocketPeer) IsConnectedToHost() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodWebSocketPeer[2]) }
@@ -27934,6 +30284,9 @@ func (WebSocketServer) class() string { return "WebSocketServer\000" }
 func (gdClass WebSocketServer) WebSocketMultiplayerPeer() WebSocketMultiplayerPeer { return WebSocketMultiplayerPeer(gdClass) }
 
 var methodWebSocketServer [18]gdnative.Method
+func (gdClass WebSocketServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.WebSocketMultiplayerPeer().virtual(rtype, name)
+}
 func (gdClass WebSocketServer) IsListening() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodWebSocketServer[0]) }
 func (gdClass WebSocketServer) SetExtraHeaders(headers []string)  { gdnative.Call(gdnative.Object(gdClass), methodWebSocketServer[1], headers) }
 func (gdClass WebSocketServer) Listen(port int64, protocols []string, gd_mp_api bool) error { return gdnative.Return[error](gdnative.Object(gdClass), methodWebSocketServer[2], port, protocols, gd_mp_api) }
@@ -27959,6 +30312,9 @@ func (WebXRInterface) class() string { return "WebXRInterface\000" }
 func (gdClass WebXRInterface) XRInterface() XRInterface { return XRInterface(gdClass) }
 
 var methodWebXRInterface [13]gdnative.Method
+func (gdClass WebXRInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.XRInterface().virtual(rtype, name)
+}
 func (gdClass WebXRInterface) IsSessionSupported(session_mode string)  { gdnative.Call(gdnative.Object(gdClass), methodWebXRInterface[0], session_mode) }
 func (gdClass WebXRInterface) SetSessionMode(session_mode string)  { gdnative.Call(gdnative.Object(gdClass), methodWebXRInterface[1], session_mode) }
 func (gdClass WebXRInterface) GetSessionMode() string { return gdnative.Return[string](gdnative.Object(gdClass), methodWebXRInterface[2]) }
@@ -28028,6 +30384,9 @@ func (Window) class() string { return "Window\000" }
 func (gdClass Window) Viewport() Viewport { return Viewport(gdClass) }
 
 var methodWindow [78]gdnative.Method
+func (gdClass Window) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Viewport().virtual(rtype, name)
+}
 func (gdClass Window) SetTitle(title string)  { gdnative.Call(gdnative.Object(gdClass), methodWindow[0], title) }
 func (gdClass Window) GetTitle() string { return gdnative.Return[string](gdnative.Object(gdClass), methodWindow[1]) }
 func (gdClass Window) SetCurrentScreen(index int64)  { gdnative.Call(gdnative.Object(gdClass), methodWindow[2], index) }
@@ -28113,6 +30472,9 @@ func (WorkerThreadPool) class() string { return "WorkerThreadPool\000" }
 func (gdClass WorkerThreadPool) Object() Object { return Object(gdClass) }
 
 var methodWorkerThreadPool [7]gdnative.Method
+func (gdClass WorkerThreadPool) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass WorkerThreadPool) AddTask(action Callable, high_priority bool, description string) int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodWorkerThreadPool[0], action, high_priority, description) }
 func (gdClass WorkerThreadPool) IsTaskCompleted(task_id int64) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodWorkerThreadPool[1], task_id) }
 func (gdClass WorkerThreadPool) WaitForTaskCompletion(task_id int64)  { gdnative.Call(gdnative.Object(gdClass), methodWorkerThreadPool[2], task_id) }
@@ -28127,6 +30489,9 @@ func (World2D) class() string { return "World2D\000" }
 func (gdClass World2D) Resource() Resource { return Resource(gdClass) }
 
 var methodWorld2D [4]gdnative.Method
+func (gdClass World2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass World2D) GetCanvas() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld2D[0]) }
 func (gdClass World2D) GetSpace() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld2D[1]) }
 func (gdClass World2D) GetNavigationMap() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld2D[2]) }
@@ -28138,6 +30503,9 @@ func (World3D) class() string { return "World3D\000" }
 func (gdClass World3D) Resource() Resource { return Resource(gdClass) }
 
 var methodWorld3D [10]gdnative.Method
+func (gdClass World3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass World3D) GetSpace() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld3D[0]) }
 func (gdClass World3D) GetNavigationMap() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld3D[1]) }
 func (gdClass World3D) GetScenario() RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodWorld3D[2]) }
@@ -28155,6 +30523,9 @@ func (WorldBoundaryShape2D) class() string { return "WorldBoundaryShape2D\000" }
 func (gdClass WorldBoundaryShape2D) Shape2D() Shape2D { return Shape2D(gdClass) }
 
 var methodWorldBoundaryShape2D [4]gdnative.Method
+func (gdClass WorldBoundaryShape2D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape2D().virtual(rtype, name)
+}
 func (gdClass WorldBoundaryShape2D) SetNormal(normal Vector2)  { gdnative.Call(gdnative.Object(gdClass), methodWorldBoundaryShape2D[0], normal) }
 func (gdClass WorldBoundaryShape2D) GetNormal() Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodWorldBoundaryShape2D[1]) }
 func (gdClass WorldBoundaryShape2D) SetDistance(distance float64)  { gdnative.Call(gdnative.Object(gdClass), methodWorldBoundaryShape2D[2], distance) }
@@ -28166,6 +30537,9 @@ func (WorldBoundaryShape3D) class() string { return "WorldBoundaryShape3D\000" }
 func (gdClass WorldBoundaryShape3D) Shape3D() Shape3D { return Shape3D(gdClass) }
 
 var methodWorldBoundaryShape3D [2]gdnative.Method
+func (gdClass WorldBoundaryShape3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Shape3D().virtual(rtype, name)
+}
 func (gdClass WorldBoundaryShape3D) SetPlane(plane Plane)  { gdnative.Call(gdnative.Object(gdClass), methodWorldBoundaryShape3D[0], plane) }
 func (gdClass WorldBoundaryShape3D) GetPlane() Plane { return gdnative.Return[Plane](gdnative.Object(gdClass), methodWorldBoundaryShape3D[1]) }
 
@@ -28175,6 +30549,9 @@ func (WorldEnvironment) class() string { return "WorldEnvironment\000" }
 func (gdClass WorldEnvironment) Node() Node { return Node(gdClass) }
 
 var methodWorldEnvironment [4]gdnative.Method
+func (gdClass WorldEnvironment) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node().virtual(rtype, name)
+}
 func (gdClass WorldEnvironment) SetEnvironment(env Environment)  { gdnative.Call(gdnative.Object(gdClass), methodWorldEnvironment[0], env) }
 func (gdClass WorldEnvironment) GetEnvironment() Environment { return gdnative.Return[Environment](gdnative.Object(gdClass), methodWorldEnvironment[1]) }
 func (gdClass WorldEnvironment) SetCameraEffects(env CameraEffects)  { gdnative.Call(gdnative.Object(gdClass), methodWorldEnvironment[2], env) }
@@ -28186,6 +30563,9 @@ func (X509Certificate) class() string { return "X509Certificate\000" }
 func (gdClass X509Certificate) Resource() Resource { return Resource(gdClass) }
 
 var methodX509Certificate [2]gdnative.Method
+func (gdClass X509Certificate) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Resource().virtual(rtype, name)
+}
 func (gdClass X509Certificate) Save(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodX509Certificate[0], path) }
 func (gdClass X509Certificate) Load(path string) error { return gdnative.Return[error](gdnative.Object(gdClass), methodX509Certificate[1], path) }
 
@@ -28207,6 +30587,9 @@ func (XMLParser) class() string { return "XMLParser\000" }
 func (gdClass XMLParser) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodXMLParser [17]gdnative.Method
+func (gdClass XMLParser) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass XMLParser) Read() error { return gdnative.Return[error](gdnative.Object(gdClass), methodXMLParser[0]) }
 func (gdClass XMLParser) GetNodeType() XMLParserNodeType { return gdnative.Return[XMLParserNodeType](gdnative.Object(gdClass), methodXMLParser[1]) }
 func (gdClass XMLParser) GetNodeName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodXMLParser[2]) }
@@ -28231,6 +30614,9 @@ func (XRAnchor3D) class() string { return "XRAnchor3D\000" }
 func (gdClass XRAnchor3D) XRNode3D() XRNode3D { return XRNode3D(gdClass) }
 
 var methodXRAnchor3D [2]gdnative.Method
+func (gdClass XRAnchor3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.XRNode3D().virtual(rtype, name)
+}
 func (gdClass XRAnchor3D) GetSize() Vector3 { return gdnative.Return[Vector3](gdnative.Object(gdClass), methodXRAnchor3D[0]) }
 func (gdClass XRAnchor3D) GetPlane() Plane { return gdnative.Return[Plane](gdnative.Object(gdClass), methodXRAnchor3D[1]) }
 
@@ -28239,6 +30625,9 @@ func (XRCamera3D) class() string { return "XRCamera3D\000" }
 
 func (gdClass XRCamera3D) Camera3D() Camera3D { return Camera3D(gdClass) }
 
+func (gdClass XRCamera3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Camera3D().virtual(rtype, name)
+}
 
 type XRController3D gdnative.Object
 func (XRController3D) class() string { return "XRController3D\000" }
@@ -28246,6 +30635,9 @@ func (XRController3D) class() string { return "XRController3D\000" }
 func (gdClass XRController3D) XRNode3D() XRNode3D { return XRNode3D(gdClass) }
 
 var methodXRController3D [4]gdnative.Method
+func (gdClass XRController3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.XRNode3D().virtual(rtype, name)
+}
 func (gdClass XRController3D) IsButtonPressed(name string) bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodXRController3D[0], name) }
 func (gdClass XRController3D) GetValue(name string) float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodXRController3D[1], name) }
 func (gdClass XRController3D) GetAxis(name string) Vector2 { return gdnative.Return[Vector2](gdnative.Object(gdClass), methodXRController3D[2], name) }
@@ -28289,6 +30681,9 @@ func (XRInterface) class() string { return "XRInterface\000" }
 func (gdClass XRInterface) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodXRInterface [18]gdnative.Method
+func (gdClass XRInterface) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass XRInterface) GetName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodXRInterface[0]) }
 func (gdClass XRInterface) GetCapabilities() int64 { return gdnative.Return[int64](gdnative.Object(gdClass), methodXRInterface[1]) }
 func (gdClass XRInterface) IsPrimary() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodXRInterface[2]) }
@@ -28314,149 +30709,150 @@ func (XRInterfaceExtension) class() string { return "XRInterfaceExtension\000" }
 func (gdClass XRInterfaceExtension) XRInterface() XRInterface { return XRInterface(gdClass) }
 
 var methodXRInterfaceExtension [2]gdnative.Method
-func (gdClass XRInterfaceExtension) virtual(val any, name string) any {	switch name {
+func (gdClass XRInterfaceExtension) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	switch name {
 	case "_get_name":
-		i, ok := val.(interface{ GetName() string })
-		if ok {
-			return i.GetName
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetName() string }{}).Elem()) {
+			return rtype.MethodByName(`GetName`)
 		}
+		return
 	case "_get_capabilities":
-		i, ok := val.(interface{ GetCapabilities() int64 })
-		if ok {
-			return i.GetCapabilities
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCapabilities() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetCapabilities`)
 		}
+		return
 	case "_is_initialized":
-		i, ok := val.(interface{ IsInitialized() bool })
-		if ok {
-			return i.IsInitialized
+		if rtype.Implements(reflect.TypeOf([0]interface{ IsInitialized() bool }{}).Elem()) {
+			return rtype.MethodByName(`IsInitialized`)
 		}
+		return
 	case "_initialize":
-		i, ok := val.(interface{ Initialize() bool })
-		if ok {
-			return i.Initialize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Initialize() bool }{}).Elem()) {
+			return rtype.MethodByName(`Initialize`)
 		}
+		return
 	case "_uninitialize":
-		i, ok := val.(interface{ Uninitialize()  })
-		if ok {
-			return i.Uninitialize
+		if rtype.Implements(reflect.TypeOf([0]interface{ Uninitialize()  }{}).Elem()) {
+			return rtype.MethodByName(`Uninitialize`)
 		}
+		return
 	case "_supports_play_area_mode":
-		i, ok := val.(interface{ SupportsPlayAreaMode(mode XRInterfacePlayAreaMode) bool })
-		if ok {
-			return i.SupportsPlayAreaMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SupportsPlayAreaMode(mode XRInterfacePlayAreaMode) bool }{}).Elem()) {
+			return rtype.MethodByName(`SupportsPlayAreaMode`)
 		}
+		return
 	case "_get_play_area_mode":
-		i, ok := val.(interface{ GetPlayAreaMode() int64 })
-		if ok {
-			return i.GetPlayAreaMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPlayAreaMode() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetPlayAreaMode`)
 		}
+		return
 	case "_set_play_area_mode":
-		i, ok := val.(interface{ SetPlayAreaMode(mode int64) bool })
-		if ok {
-			return i.SetPlayAreaMode
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetPlayAreaMode(mode int64) bool }{}).Elem()) {
+			return rtype.MethodByName(`SetPlayAreaMode`)
 		}
+		return
 	case "_get_play_area":
-		i, ok := val.(interface{ GetPlayArea() []Vector3 })
-		if ok {
-			return i.GetPlayArea
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetPlayArea() []Vector3 }{}).Elem()) {
+			return rtype.MethodByName(`GetPlayArea`)
 		}
+		return
 	case "_get_render_target_size":
-		i, ok := val.(interface{ GetRenderTargetSize() Vector2 })
-		if ok {
-			return i.GetRenderTargetSize
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetRenderTargetSize() Vector2 }{}).Elem()) {
+			return rtype.MethodByName(`GetRenderTargetSize`)
 		}
+		return
 	case "_get_view_count":
-		i, ok := val.(interface{ GetViewCount() int64 })
-		if ok {
-			return i.GetViewCount
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetViewCount() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetViewCount`)
 		}
+		return
 	case "_get_camera_transform":
-		i, ok := val.(interface{ GetCameraTransform() Transform3D })
-		if ok {
-			return i.GetCameraTransform
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCameraTransform() Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`GetCameraTransform`)
 		}
+		return
 	case "_get_transform_for_view":
-		i, ok := val.(interface{ GetTransformForView(view int64, cam_transform Transform3D) Transform3D })
-		if ok {
-			return i.GetTransformForView
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTransformForView(view int64, cam_transform Transform3D) Transform3D }{}).Elem()) {
+			return rtype.MethodByName(`GetTransformForView`)
 		}
+		return
 	case "_get_projection_for_view":
-		i, ok := val.(interface{ GetProjectionForView(view int64, aspect float64, z_near float64, z_far float64) []float64 })
-		if ok {
-			return i.GetProjectionForView
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetProjectionForView(view int64, aspect float64, z_near float64, z_far float64) []float64 }{}).Elem()) {
+			return rtype.MethodByName(`GetProjectionForView`)
 		}
+		return
 	case "_get_vrs_texture":
-		i, ok := val.(interface{ GetVrsTexture() RID })
-		if ok {
-			return i.GetVrsTexture
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetVrsTexture() RID }{}).Elem()) {
+			return rtype.MethodByName(`GetVrsTexture`)
 		}
+		return
 	case "_process":
-		i, ok := val.(interface{ Process()  })
-		if ok {
-			return i.Process
+		if rtype.Implements(reflect.TypeOf([0]interface{ Process()  }{}).Elem()) {
+			return rtype.MethodByName(`Process`)
 		}
+		return
 	case "_pre_render":
-		i, ok := val.(interface{ PreRender()  })
-		if ok {
-			return i.PreRender
+		if rtype.Implements(reflect.TypeOf([0]interface{ PreRender()  }{}).Elem()) {
+			return rtype.MethodByName(`PreRender`)
 		}
+		return
 	case "_pre_draw_viewport":
-		i, ok := val.(interface{ PreDrawViewport(render_target RID) bool })
-		if ok {
-			return i.PreDrawViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ PreDrawViewport(render_target RID) bool }{}).Elem()) {
+			return rtype.MethodByName(`PreDrawViewport`)
 		}
+		return
 	case "_post_draw_viewport":
-		i, ok := val.(interface{ PostDrawViewport(render_target RID, screen_rect Rect2)  })
-		if ok {
-			return i.PostDrawViewport
+		if rtype.Implements(reflect.TypeOf([0]interface{ PostDrawViewport(render_target RID, screen_rect Rect2)  }{}).Elem()) {
+			return rtype.MethodByName(`PostDrawViewport`)
 		}
+		return
 	case "_end_frame":
-		i, ok := val.(interface{ EndFrame()  })
-		if ok {
-			return i.EndFrame
+		if rtype.Implements(reflect.TypeOf([0]interface{ EndFrame()  }{}).Elem()) {
+			return rtype.MethodByName(`EndFrame`)
 		}
+		return
 	case "_notification":
-		i, ok := val.(interface{ Notification(what int64)  })
-		if ok {
-			return i.Notification
+		if rtype.Implements(reflect.TypeOf([0]interface{ Notification(what int64)  }{}).Elem()) {
+			return rtype.MethodByName(`Notification`)
 		}
+		return
 	case "_get_suggested_tracker_names":
-		i, ok := val.(interface{ GetSuggestedTrackerNames() []string })
-		if ok {
-			return i.GetSuggestedTrackerNames
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSuggestedTrackerNames() []string }{}).Elem()) {
+			return rtype.MethodByName(`GetSuggestedTrackerNames`)
 		}
+		return
 	case "_get_suggested_pose_names":
-		i, ok := val.(interface{ GetSuggestedPoseNames(tracker_name string) []string })
-		if ok {
-			return i.GetSuggestedPoseNames
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetSuggestedPoseNames(tracker_name string) []string }{}).Elem()) {
+			return rtype.MethodByName(`GetSuggestedPoseNames`)
 		}
+		return
 	case "_get_tracking_status":
-		i, ok := val.(interface{ GetTrackingStatus() int64 })
-		if ok {
-			return i.GetTrackingStatus
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetTrackingStatus() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetTrackingStatus`)
 		}
+		return
 	case "_trigger_haptic_pulse":
-		i, ok := val.(interface{ TriggerHapticPulse(action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)  })
-		if ok {
-			return i.TriggerHapticPulse
+		if rtype.Implements(reflect.TypeOf([0]interface{ TriggerHapticPulse(action_name string, tracker_name string, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)  }{}).Elem()) {
+			return rtype.MethodByName(`TriggerHapticPulse`)
 		}
+		return
 	case "_get_anchor_detection_is_enabled":
-		i, ok := val.(interface{ GetAnchorDetectionIsEnabled() bool })
-		if ok {
-			return i.GetAnchorDetectionIsEnabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetAnchorDetectionIsEnabled() bool }{}).Elem()) {
+			return rtype.MethodByName(`GetAnchorDetectionIsEnabled`)
 		}
+		return
 	case "_set_anchor_detection_is_enabled":
-		i, ok := val.(interface{ SetAnchorDetectionIsEnabled(enabled bool)  })
-		if ok {
-			return i.SetAnchorDetectionIsEnabled
+		if rtype.Implements(reflect.TypeOf([0]interface{ SetAnchorDetectionIsEnabled(enabled bool)  }{}).Elem()) {
+			return rtype.MethodByName(`SetAnchorDetectionIsEnabled`)
 		}
+		return
 	case "_get_camera_feed_id":
-		i, ok := val.(interface{ GetCameraFeedId() int64 })
-		if ok {
-			return i.GetCameraFeedId
+		if rtype.Implements(reflect.TypeOf([0]interface{ GetCameraFeedId() int64 }{}).Elem()) {
+			return rtype.MethodByName(`GetCameraFeedId`)
 		}
+		return
 	}
-	return nil
+	return gdClass.XRInterface().virtual(rtype, name)
 }
 func (gdClass XRInterfaceExtension) AddBlit(render_target RID, src_rect Rect2, dst_rect Rect2i, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2, k1 float64, k2 float64, upscale float64, aspect_ratio float64)  { gdnative.Call(gdnative.Object(gdClass), methodXRInterfaceExtension[0], render_target, src_rect, dst_rect, use_layer, layer, apply_lens_distortion, eye_center, k1, k2, upscale, aspect_ratio) }
 func (gdClass XRInterfaceExtension) GetRenderTargetTexture(render_target RID) RID { return gdnative.Return[RID](gdnative.Object(gdClass), methodXRInterfaceExtension[1], render_target) }
@@ -28467,6 +30863,9 @@ func (XRNode3D) class() string { return "XRNode3D\000" }
 func (gdClass XRNode3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodXRNode3D [8]gdnative.Method
+func (gdClass XRNode3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass XRNode3D) SetTracker(tracker_name string)  { gdnative.Call(gdnative.Object(gdClass), methodXRNode3D[0], tracker_name) }
 func (gdClass XRNode3D) GetTracker() string { return gdnative.Return[string](gdnative.Object(gdClass), methodXRNode3D[1]) }
 func (gdClass XRNode3D) SetPoseName(pose string)  { gdnative.Call(gdnative.Object(gdClass), methodXRNode3D[2], pose) }
@@ -28482,6 +30881,9 @@ func (XROrigin3D) class() string { return "XROrigin3D\000" }
 func (gdClass XROrigin3D) Node3D() Node3D { return Node3D(gdClass) }
 
 var methodXROrigin3D [2]gdnative.Method
+func (gdClass XROrigin3D) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Node3D().virtual(rtype, name)
+}
 func (gdClass XROrigin3D) SetWorldScale(world_scale float64)  { gdnative.Call(gdnative.Object(gdClass), methodXROrigin3D[0], world_scale) }
 func (gdClass XROrigin3D) GetWorldScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodXROrigin3D[1]) }
 
@@ -28499,6 +30901,9 @@ func (XRPose) class() string { return "XRPose\000" }
 func (gdClass XRPose) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodXRPose [13]gdnative.Method
+func (gdClass XRPose) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass XRPose) SetHasTrackingData(has_tracking_data bool)  { gdnative.Call(gdnative.Object(gdClass), methodXRPose[0], has_tracking_data) }
 func (gdClass XRPose) GetHasTrackingData() bool { return gdnative.Return[bool](gdnative.Object(gdClass), methodXRPose[1]) }
 func (gdClass XRPose) SetName(name string)  { gdnative.Call(gdnative.Object(gdClass), methodXRPose[2], name) }
@@ -28527,6 +30932,9 @@ func (XRPositionalTracker) class() string { return "XRPositionalTracker\000" }
 func (gdClass XRPositionalTracker) RefCounted() RefCounted { return RefCounted(gdClass) }
 
 var methodXRPositionalTracker [16]gdnative.Method
+func (gdClass XRPositionalTracker) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.RefCounted().virtual(rtype, name)
+}
 func (gdClass XRPositionalTracker) GetTrackerType() XRServerTrackerType { return gdnative.Return[XRServerTrackerType](gdnative.Object(gdClass), methodXRPositionalTracker[0]) }
 func (gdClass XRPositionalTracker) SetTrackerType(atype XRServerTrackerType)  { gdnative.Call(gdnative.Object(gdClass), methodXRPositionalTracker[1], atype) }
 func (gdClass XRPositionalTracker) GetTrackerName() string { return gdnative.Return[string](gdnative.Object(gdClass), methodXRPositionalTracker[2]) }
@@ -28570,6 +30978,9 @@ func (XRServer) class() string { return "XRServer\000" }
 func (gdClass XRServer) Object() Object { return Object(gdClass) }
 
 var methodXRServer [17]gdnative.Method
+func (gdClass XRServer) virtual(rtype reflect.Type, name string) (method reflect.Method, ok bool) {
+	return gdClass.Object().virtual(rtype, name)
+}
 func (gdClass XRServer) GetWorldScale() float64 { return gdnative.Return[float64](gdnative.Object(gdClass), methodXRServer[0]) }
 func (gdClass XRServer) SetWorldScale(scale float64)  { gdnative.Call(gdnative.Object(gdClass), methodXRServer[1], scale) }
 func (gdClass XRServer) GetReferenceFrame() Transform3D { return gdnative.Return[Transform3D](gdnative.Object(gdClass), methodXRServer[2]) }
@@ -39730,3 +42141,4 @@ func init() {	gdnative.OnLoad(func() {		methodAESContext[0] = gdnative.MethodOf(
 		methodXRServer[16] = gdnative.MethodOf("XRServer\000", "set_primary_interface\000", 1898711491)
 	})
 }
+
