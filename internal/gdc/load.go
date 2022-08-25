@@ -1,4 +1,4 @@
-package gdnative
+package gdc
 
 // #include <gdnative_interface.h>
 import "C"

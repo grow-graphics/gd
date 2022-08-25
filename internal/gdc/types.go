@@ -1,4 +1,4 @@
-package gdnative
+package gdc
 
 /*
 	#include <gdnative_interface.h>
@@ -21,7 +21,6 @@ package gdnative
 */
 import "C"
 import (
-	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -146,7 +145,9 @@ type (
 		raw [16]byte
 	}
 	PackedStringArray struct {
-		raw [16]byte
+		ref uint32
+		len uint32
+		ptr unsafe.Pointer
 	}
 	PackedVector2Array struct {
 		raw [16]byte
@@ -414,15 +415,6 @@ func registerMethod(class Class, id ClassID, method reflect.Method) {
 	}
 
 	C.classdb_register_extension_class_method(api, db, s, &info, C.uintptr_t(ptr.Data()))
-}
-
-// MethodOf arguments must be null-terminated.
-func MethodOf(class, method string, hash int64) Method {
-	result := Method(C.classdb_get_method_bind(api, C.ConstChar(class), C.ConstChar(method), C.GDNativeInt(hash)))
-	if result == 0 {
-		fmt.Println("Method not found:", class, method)
-	}
-	return result
 }
 
 func cString(s string) (*C.char, bool) {

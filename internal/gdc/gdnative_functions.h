@@ -1,5 +1,9 @@
 #include <gdnative_virtuals.h>
 
+#include <assert.h>
+static_assert(sizeof(void*) == 8, "Pointers are assumed to be exactly 4 bytes");
+static_assert(sizeof(uintptr_t) == 8, "Pointers are assumed to be exactly 4 bytes");
+
 extern void goInitialise(void *userdata, GDNativeInitializationLevel level);
 extern void goDeinitialize(void *userdata, GDNativeInitializationLevel level);
 
@@ -96,16 +100,6 @@ static void free_instance_func(void *p_userdata, GDExtensionClassInstancePtr p_i
 static void object_destroy(GDNativeInterface *api, uintptr_t p_o) {
     api->object_destroy((GDNativeObjectPtr)p_o);
 }
-
-static uintptr_t classdb_get_method_bind(
-    GDNativeInterface *api,
-    const char *p_classname, 
-    const char *p_methodname, 
-    GDNativeInt p_hash
-) {
-    return (uintptr_t)(api->classdb_get_method_bind(p_classname, p_methodname, p_hash));
-}
-
 
 static void classdb_register_extension_class(
     GDNativeInterface *api,

@@ -1,6 +1,7 @@
-package gdnative
+package gdc
 
 import (
+	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -80,6 +81,30 @@ func loadArgFromNativeType(as reflect.Type, ptr C.GDNativeTypePtr) reflect.Value
 			C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), (*C.char)(unsafe.Pointer(&buffer[0])), length)
 		}
 		return reflect.ValueOf(string(buffer)) // FIXME avoid copy?
+
+	case reflect.Slice:
+		switch as.Elem().Kind() {
+		case reflect.String:
+			var result []string
+			var packed = *(*PackedStringArray)(unsafe.Pointer(uintptr(ptr) - 1))
+			fmt.Println(*(*[2]uintptr)(unsafe.Pointer(&packed)))
+			fmt.Println(packed)
+			packed.len = 1
+			var slice = unsafe.Slice((*String)(packed.ptr), packed.len)
+
+			for i := range slice {
+				length := C.string_to_utf8_chars(api, C.GDNativeStringPtr(&slice[i].raw), nil, 0)
+				buffer := make([]byte, length)
+				if length > 0 {
+					C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), (*C.char)(unsafe.Pointer(&buffer[0])), length)
+				}
+				result = append(result, string(buffer)) // FIXME avoid copy?
+			}
+			return reflect.ValueOf(result)
+
+		default:
+			panic("loadArgFromNativeType: unsupported slice " + as.String())
+		}
 	default:
 		panic("loadArgFromNativeType: unsupported type " + as.String())
 	}
@@ -102,50 +127,23 @@ func loadResultFor(dst any) (C.GDNativeTypePtr, bool) {
 		return C.GDNativeTypePtr(v), true
 	case *float64:
 		return C.GDNativeTypePtr(v), true
+	case *float32:
+		return C.GDNativeTypePtr(v), true
 	case *bool:
 		return C.GDNativeTypePtr(v), true
 	case *string:
 		var native String
 		return C.GDNativeTypePtr(&native.raw), false
+	case *[]string:
+		var native PackedStringArray
+		return C.GDNativeTypePtr(&native), false
+	case *struct{}:
+		return nil, true
 	default:
-		panic("loadResultFor: unsupported type " + reflect.TypeOf(dst).String())
-	}
-}
+		if reflect.TypeOf(dst).Elem().Kind() == reflect.Uintptr {
+			return C.GDNativeTypePtr(reflect.ValueOf(dst).UnsafePointer()), true
+		}
 
-func sendArg(arg any) C.GDNativeTypePtr {
-	switch v := arg.(type) {
-	case bool:
-		return C.GDNativeTypePtr(&v)
-	case int:
-		return C.GDNativeTypePtr(&v)
-	case int8:
-		return C.GDNativeTypePtr(&v)
-	case int16:
-		return C.GDNativeTypePtr(&v)
-	case int32:
-		return C.GDNativeTypePtr(&v)
-	case int64:
-		return C.GDNativeTypePtr(&v)
-	case uint:
-		return C.GDNativeTypePtr(&v)
-	case uint8:
-		return C.GDNativeTypePtr(&v)
-	case uint16:
-		return C.GDNativeTypePtr(&v)
-	case uint32:
-		return C.GDNativeTypePtr(&v)
-	case uint64:
-		return C.GDNativeTypePtr(&v)
-	case float32:
-		return C.GDNativeTypePtr(&v)
-	case float64:
-		return C.GDNativeTypePtr(&v)
-	case complex64:
-		return C.GDNativeTypePtr(&v)
-	case string:
-		var native = NewString(v)
-		return C.GDNativeTypePtr(&native.raw)
-	default:
-		panic("sendArg: unsupported type " + reflect.TypeOf(arg).String())
+		panic("loadResultFor: unsupported type " + reflect.TypeOf(dst).String())
 	}
 }

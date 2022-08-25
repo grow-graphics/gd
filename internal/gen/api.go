@@ -17,10 +17,12 @@ type Method struct {
 	Hash        int64  `json:"hash"`
 	ReturnValue struct {
 		Type string `json:"type"`
+		Meta string `json:"meta"`
 	} `json:"return_value,omitempty"`
 	Arguments []struct {
 		Name         string `json:"name"`
 		Type         string `json:"type"`
+		Meta         string `json:"meta"`
 		DefaultValue string `json:"default_value,omitempty"`
 	} `json:"arguments,omitempty"`
 }
@@ -66,6 +68,7 @@ type Specification struct {
 		Arguments  []struct {
 			Name string `json:"name"`
 			Type string `json:"type"`
+			Meta string `json:"meta"`
 		} `json:"arguments,omitempty"`
 	} `json:"utility_functions"`
 	BuiltinClasses []struct {
@@ -81,6 +84,7 @@ type Specification struct {
 			Arguments []struct {
 				Name string `json:"name"`
 				Type string `json:"type"`
+				Meta string `json:"meta"`
 			} `json:"arguments,omitempty"`
 		} `json:"constructors"`
 		HasDestructor      bool   `json:"has_destructor"`
@@ -95,6 +99,7 @@ type Specification struct {
 			Arguments  []struct {
 				Name string `json:"name"`
 				Type string `json:"type"`
+				Meta string `json:"meta"`
 			} `json:"arguments,omitempty"`
 		} `json:"methods,omitempty"`
 		Members []struct {
@@ -121,6 +126,7 @@ type Specification struct {
 			Arguments []struct {
 				Name string `json:"name"`
 				Type string `json:"type"`
+				Meta string `json:"meta"`
 			} `json:"arguments,omitempty"`
 		} `json:"signals,omitempty"`
 		Properties []struct {
