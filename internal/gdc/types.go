@@ -23,6 +23,8 @@ import "C"
 import (
 	"reflect"
 	"unsafe"
+
+	"github.com/readykit/gd/internal/gdunsafe"
 )
 
 type InitializationLevel C.GDNativeInitializationLevel
@@ -41,92 +43,100 @@ func Init(bridge *C.GDNativeInterface) {
 
 type Method uintptr
 
+type cleanupType uint64
+
+const (
+	cleanupIgnore = iota
+	cleanupObject
+	cleanupDirect
+)
+
+type Pointer struct {
+	self    *Pointer // we use this to stop badly behaved copies.
+	address uintptr
+	cleanup cleanupType // does this pointer need to be freed?
+}
+
+func (p Pointer) Free() {
+	switch p.cleanup {
+	case cleanupIgnore:
+		return
+	case cleanupObject:
+		C.object_destroy(api, C.uintptr_t(p.address))
+	case cleanupDirect:
+		C.mem_free(api, C.uintptr_t(p.address))
+	default:
+		panic("unknown cleanup type")
+	}
+}
+
 type (
 	Nil struct {
 		raw [0]byte
 	}
-	Bool struct {
-		raw [1]byte
-	}
-	Int struct {
-		raw [8]byte
-	}
-	Float struct {
-		raw [8]byte
-	}
-	String struct {
-		raw [8]byte
-	}
+	Bool    bool
+	Int     int64
+	Float   float64
+	String  uintptr
 	Vector2 struct {
-		raw [8]byte
+		X, Y float32
 	}
 	Vector2i struct {
-		raw [8]byte
+		X, Y int32
 	}
 	Rect2 struct {
-		raw [16]byte
+		Position, Size Vector2
 	}
 	Rect2i struct {
-		raw [16]byte
+		Position, Size Vector2i
 	}
 	Vector3 struct {
-		raw [12]byte
+		X, Y, Z float32
 	}
 	Vector3i struct {
-		raw [12]byte
+		X, Y, Z int32
 	}
 	Transform2D struct {
-		raw [24]byte
+		X, Y, Origin Vector2
 	}
 	Vector4 struct {
-		raw [16]byte
+		X, Y, Z, W float32
 	}
 	Vector4i struct {
-		raw [16]byte
+		X, Y, Z, W int32
 	}
 	Plane struct {
-		raw [16]byte
+		Matrix Vector4
 	}
 	Quaternion struct {
-		raw [16]byte
+		X, Y, Z, W float32
 	}
 	AABB struct {
-		raw [24]byte
+		Position, Size Vector3
 	}
 	Basis struct {
-		raw [36]byte
+		Rows [3]Vector3
 	}
 	Transform3D struct {
-		raw [48]byte
+		Basis  Basis
+		Origin Vector3
 	}
 	Projection struct {
-		raw [64]byte
+		X, Y, Z, W Vector4
 	}
 	Color struct {
+		R, G, B, A float32
+	}
+	StringName Pointer
+	NodePath   Pointer
+	RID        uint64
+	Object     Pointer
+	Callable   [3]uintptr
+	Signal     struct {
 		raw [16]byte
 	}
-	StringName struct {
-		raw [8]byte
-	}
-	NodePath struct {
-		raw [8]byte
-	}
-	RID struct {
-		raw [8]byte
-	}
-	/*Object struct {
-		raw [8]byte
-	}*/
-	Callable struct {
-		raw [16]byte
-	}
-	Signal struct {
-		raw [16]byte
-	}
-	Dictionary struct {
-		raw [8]byte
-	}
-	Array struct {
+	Dictionary Pointer
+	Array      struct {
 		raw [8]byte
 	}
 	PackedByteArray struct {
@@ -164,7 +174,7 @@ type (
 func NewString(s string) String {
 	var result String
 
-	C.string_new_with_utf8_chars_and_len(api, C.GDNativeStringPtr(&result.raw), C.ConstChar(s), C.GDNativeInt(len(s)))
+	C.string_new_with_utf8_chars_and_len(api, C.GDNativeStringPtr(&result), C.ConstChar(s), C.GDNativeInt(len(s)))
 
 	return result
 }
@@ -173,7 +183,7 @@ func NewStringName(name string) StringName {
 	var result StringName
 	var s = NewString(name)
 
-	C.constructor(newStringName, C.GDNativeTypePtr(&result.raw), (*C.GDNativeTypePtr)(unsafe.Pointer(&s)))
+	C.constructor(newStringName, C.GDNativeTypePtr(&result.address), (*C.GDNativeTypePtr)(unsafe.Pointer(&s)))
 
 	return result
 }
@@ -234,6 +244,10 @@ func load(intf, library, init unsafe.Pointer) {
 	api = (*C.GDNativeInterface)(intf)
 	ini := (*C.GDNativeInitialization)(init)
 	db = (C.GDNativeExtensionClassLibraryPtr)(library)
+
+	*(**C.GDNativeInterface)(unsafe.Pointer(&gdunsafe.API)) = api
+	*(*C.GDNativeExtensionClassLibraryPtr)(unsafe.Pointer(&gdunsafe.ClassDB)) = db
+
 	println(db)
 	C.setInitialise(ini)
 	C.setDeinitialize(ini)
@@ -245,9 +259,10 @@ func load(intf, library, init unsafe.Pointer) {
 func New(class string) Object {
 	s, ok := cString(class)
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(s))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(s))))
 	}
-	return Object(C.classdb_construct_object(api, s))
+	obj := Object{address: uintptr(C.classdb_construct_object(api, s))}
+	return obj
 }
 
 // InstancePointer points to both the extension class ID
@@ -318,17 +333,15 @@ func (obj Object) SetInstance(class ClassID, instance InstanceID) {
 
 	s, ok := cString(classes[class-1].Name())
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(s))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(s))))
 	}
 
-	C.object_set_instance(api, C.uintptr_t(obj), s, C.uintptr_t(ptr.Data()))
+	C.object_set_instance(api, C.uintptr_t(obj.address), s, C.uintptr_t(ptr.Data()))
 }
 
 func (obj Object) Destroy() {
-	C.object_destroy(api, C.uintptr_t(obj))
+	C.object_destroy(api, C.uintptr_t(obj.address))
 }
-
-type Object uintptr
 
 type Class interface {
 	// Name should return the name of the class. As a null
@@ -373,11 +386,11 @@ func RegisterClass(class Class) {
 
 	a, ok := cString(class.Name())
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(a))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(a))))
 	}
 	b, ok := cString(class.Godot())
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(b))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(b))))
 	}
 
 	C.classdb_register_extension_class(api, db, a, b, C.uintptr_t(id))
@@ -394,7 +407,7 @@ func registerMethod(class Class, id ClassID, method reflect.Method) {
 
 	name, ok := cString(method.Name)
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(name))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(name))))
 	}
 
 	var ptr = MethodPointer{
@@ -411,7 +424,7 @@ func registerMethod(class Class, id ClassID, method reflect.Method) {
 
 	s, ok := cString(class.Name())
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(s))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(unsafe.Pointer(s)))))
 	}
 
 	C.classdb_register_extension_class_method(api, db, s, &info, C.uintptr_t(ptr.Data()))
@@ -441,8 +454,8 @@ func GetSingleton(name string) Object {
 
 	s, ok := cString(name)
 	if !ok {
-		defer C.mem_free(api, unsafe.Pointer(s))
+		defer C.mem_free(api, C.uintptr_t(uintptr(unsafe.Pointer(unsafe.Pointer(s)))))
 	}
 
-	return Object(C.global_get_singleton(api, s))
+	return Object{address: uintptr(C.global_get_singleton(api, s))}
 }

@@ -190,7 +190,7 @@ func sendArg(arg any) C.GDNativeTypePtr {
 		return C.GDNativeTypePtr(&v)
 	case string:
 		var native = NewString(v)
-		return C.GDNativeTypePtr(&native.raw)
+		return C.GDNativeTypePtr(&native)
 	default:
 		panic("sendArg: unsupported type " + reflect.TypeOf(arg).String())
 	}
@@ -199,7 +199,7 @@ func sendArg(arg any) C.GDNativeTypePtr {
 func Return0[Result any](object Object, method Method) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call0(api, C.uintptr_t(method), C.uintptr_t(object), ret)
+	C.call0(api, C.uintptr_t(method), C.uintptr_t(object.address), ret)
 	if !ok {
 		result = loadArgFromNativeType(reflect.TypeOf(result), ret).Interface().(Result)
 	}
@@ -209,7 +209,7 @@ func Return0[Result any](object Object, method Method) Result {
 func Return1[Result any](object Object, method Method, a any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call1(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call1(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a),
 	)
 	if !ok {
@@ -221,7 +221,7 @@ func Return1[Result any](object Object, method Method, a any) Result {
 func Return2[Result any](object Object, method Method, a, b any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call2(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call2(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b),
 	)
 	if !ok {
@@ -233,7 +233,7 @@ func Return2[Result any](object Object, method Method, a, b any) Result {
 func Return3[Result any](object Object, method Method, a, b, c any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call3(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call3(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c),
 	)
 	if !ok {
@@ -245,7 +245,7 @@ func Return3[Result any](object Object, method Method, a, b, c any) Result {
 func Return4[Result any](object Object, method Method, a, b, c, d any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call4(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call4(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d),
 	)
 	if !ok {
@@ -257,7 +257,7 @@ func Return4[Result any](object Object, method Method, a, b, c, d any) Result {
 func Return5[Result any](object Object, method Method, a, b, c, d, e any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call5(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call5(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e),
 	)
 	if !ok {
@@ -269,7 +269,7 @@ func Return5[Result any](object Object, method Method, a, b, c, d, e any) Result
 func Return6[Result any](object Object, method Method, a, b, c, d, e, f any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call6(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call6(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f),
 	)
 	if !ok {
@@ -281,7 +281,7 @@ func Return6[Result any](object Object, method Method, a, b, c, d, e, f any) Res
 func Return7[Result any](object Object, method Method, a, b, c, d, e, f, g any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call7(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call7(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g),
 	)
 	if !ok {
@@ -293,7 +293,7 @@ func Return7[Result any](object Object, method Method, a, b, c, d, e, f, g any) 
 func Return8[Result any](object Object, method Method, a, b, c, d, e, f, g, h any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call8(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call8(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h),
 	)
 	if !ok {
@@ -305,7 +305,7 @@ func Return8[Result any](object Object, method Method, a, b, c, d, e, f, g, h an
 func Return9[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call9(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call9(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h), sendArg(i),
 	)
 	if !ok {
@@ -317,7 +317,7 @@ func Return9[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i
 func Return10[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i, j any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call10(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call10(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h), sendArg(i), sendArg(j),
 	)
 	if !ok {
@@ -329,7 +329,7 @@ func Return10[Result any](object Object, method Method, a, b, c, d, e, f, g, h, 
 func Return11[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i, j, k any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call11(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call11(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h), sendArg(i), sendArg(j), sendArg(k),
 	)
 	if !ok {
@@ -341,7 +341,7 @@ func Return11[Result any](object Object, method Method, a, b, c, d, e, f, g, h, 
 func Return12[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i, j, k, l any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call12(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call12(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h), sendArg(i), sendArg(j), sendArg(k), sendArg(l),
 	)
 	if !ok {
@@ -353,7 +353,7 @@ func Return12[Result any](object Object, method Method, a, b, c, d, e, f, g, h, 
 func Return13[Result any](object Object, method Method, a, b, c, d, e, f, g, h, i, j, k, l, m any) Result {
 	var result Result
 	ret, ok := loadResultFor(&result)
-	C.call13(api, C.uintptr_t(method), C.uintptr_t(object), ret,
+	C.call13(api, C.uintptr_t(method), C.uintptr_t(object.address), ret,
 		sendArg(a), sendArg(b), sendArg(c), sendArg(d), sendArg(e), sendArg(f), sendArg(g), sendArg(h), sendArg(i), sendArg(j), sendArg(k), sendArg(l), sendArg(m),
 	)
 	if !ok {

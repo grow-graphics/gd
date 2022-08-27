@@ -54,8 +54,8 @@ static void *mem_alloc(GDNativeInterface *api, size_t p_bytes) {
     return api->mem_alloc(p_bytes);
 }
 
-static void *mem_free(GDNativeInterface *api, void *ptr) {
-    api->mem_free(ptr);
+static void *mem_free(GDNativeInterface *api, uintptr_t ptr) {
+    api->mem_free((void*)ptr);
 }
 
 static GDNativePtrConstructor variant_get_ptr_constructor(

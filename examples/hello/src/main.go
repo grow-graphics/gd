@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/readykit/gd"
-	"github.com/readykit/gd/godot"
 )
 
 func main() {}
@@ -13,8 +12,8 @@ type HelloWorld struct {
 	Object gd.Object
 }
 
-func NewHelloWorld(obj gd.Object) HelloWorld {
-	return HelloWorld{obj}
+func HelloWorldLoader(hello *HelloWorld) *gd.Object {
+	return gd.Load(&hello.Object)
 }
 
 // not implemented yet, exists here as a design for how docs
@@ -39,19 +38,19 @@ func (h HelloWorld) Echo(s string) {
 	fmt.Println(s + " from Go!")
 }
 
-var gdHelloWorld = godot.Register(NewHelloWorld)
+var gdHelloWorld = gd.Register(HelloWorldLoader)
 
 type ExtendedNode struct {
 	Node2D gd.Node2D
 }
 
-func NewExtendedNode(obj gd.Node2D) ExtendedNode {
-	return ExtendedNode{Node2D: obj}
+func ExtendedNodeLoader(node *ExtendedNode) *gd.Node2D {
+	return gd.Load(&node.Node2D)
 }
 
 func (e ExtendedNode) Ready() {
-	if godot.Engine.IsEditorHint() {
-		fmt.Println(godot.Engine.GetLicenseText())
+	if gd.Engine.IsEditorHint() {
+		fmt.Println(gd.Engine.GetLicenseText())
 		return
 	}
 
@@ -63,9 +62,13 @@ func (e ExtendedNode) Ready() {
 	e.Node2D.SetRotation(3.14)
 	fmt.Println("rotation=", e.Node2D.GetRotation())
 
+	pos := e.Node2D.GetPosition()
+
+	fmt.Println("position=", pos)
+
 	//fmt.Println(godot.Engine.GetSingletonList())
 
 	//godot.DisplayServer.WindowSetCurrentScreen(1, 0)
 }
 
-var gdExtendedNode = godot.Register(NewExtendedNode)
+var gdExtendedNode = gd.Register(ExtendedNodeLoader)

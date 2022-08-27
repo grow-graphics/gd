@@ -32,7 +32,7 @@ func goDeinitialize(userdata unsafe.Pointer, level InitializationLevel) {}
 
 //export goClassCreateInstance
 func goClassCreateInstance(classID uintptr) uintptr {
-	return uintptr(classes[classID-1].Create(ClassID(classID)))
+	return uintptr(classes[classID-1].Create(ClassID(classID)).address)
 }
 
 //export goClassGetVirtual
@@ -78,8 +78,8 @@ var (
 	typeColor              = reflect.TypeOf(Color{})
 	typeStringName         = reflect.TypeOf(StringName{})
 	typeNodePath           = reflect.TypeOf(NodePath{})
-	typeRID                = reflect.TypeOf(RID{})
-	typeObject             = reflect.TypeOf(Object(0))
+	typeRID                = reflect.TypeOf(RID(0))
+	typeObject             = reflect.TypeOf(Object{})
 	typeCallable           = reflect.TypeOf(Callable{})
 	typeSignal             = reflect.TypeOf(Signal{})
 	typeDictionary         = reflect.TypeOf(Dictionary{})

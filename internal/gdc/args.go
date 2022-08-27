@@ -93,7 +93,7 @@ func loadArgFromNativeType(as reflect.Type, ptr C.GDNativeTypePtr) reflect.Value
 			var slice = unsafe.Slice((*String)(packed.ptr), packed.len)
 
 			for i := range slice {
-				length := C.string_to_utf8_chars(api, C.GDNativeStringPtr(&slice[i].raw), nil, 0)
+				length := C.string_to_utf8_chars(api, C.GDNativeStringPtr(&slice[i]), nil, 0)
 				buffer := make([]byte, length)
 				if length > 0 {
 					C.string_to_utf8_chars(api, C.GDNativeStringPtr(ptr), (*C.char)(unsafe.Pointer(&buffer[0])), length)
@@ -114,8 +114,8 @@ func loadArgFromVariant(as reflect.Type, ptr C.GDNativeVariantPtr) reflect.Value
 	switch as.Kind() {
 	case reflect.String:
 		var native String
-		C.variant_to_type_constructor(api, C.GDNATIVE_VARIANT_TYPE_STRING, C.GDNativeTypePtr(&native.raw), ptr)
-		return loadArgFromNativeType(as, C.GDNativeTypePtr(&native.raw))
+		C.variant_to_type_constructor(api, C.GDNATIVE_VARIANT_TYPE_STRING, C.GDNativeTypePtr(&native), ptr)
+		return loadArgFromNativeType(as, C.GDNativeTypePtr(&native))
 	default:
 		panic("loadArgFromVariant: unsupported type " + as.String())
 	}
@@ -133,12 +133,14 @@ func loadResultFor(dst any) (C.GDNativeTypePtr, bool) {
 		return C.GDNativeTypePtr(v), true
 	case *string:
 		var native String
-		return C.GDNativeTypePtr(&native.raw), false
+		return C.GDNativeTypePtr(&native), false
 	case *[]string:
 		var native PackedStringArray
 		return C.GDNativeTypePtr(&native), false
 	case *struct{}:
 		return nil, true
+	case *Vector2:
+		return C.GDNativeTypePtr(v), true
 	default:
 		if reflect.TypeOf(dst).Elem().Kind() == reflect.Uintptr {
 			return C.GDNativeTypePtr(reflect.ValueOf(dst).UnsafePointer()), true
