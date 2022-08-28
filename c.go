@@ -1,3 +1,5 @@
+//go:build !generate
+
 package gd
 
 /*
@@ -401,6 +403,7 @@ package gd
 	}
 
 	void init(GDNativeInitialization *p_init) {
+		p_init->minimum_initialization_level = GDNATIVE_INITIALIZATION_EDITOR;
 		p_init->initialize = initialize;
 		p_init->deinitialize = deinitialize;
 	}

@@ -1,10 +1,6 @@
 /api.json
-/generate/generate
-/Godot_v4.0-alpha14_linux.64
-/examples/hello/.godot/
-/examples/hello/bin/hello.so
-/examples/hello/bin/hello.h
-/godot.linuxbsd.tools.64
-/internal/gen/generate
+/example/.godot/
+/example/bin/hello.so
+/example/bin/hello.h
 /.vscode/settings.json
-/examples/hello/src/src
+/example/src/src
