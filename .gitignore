@@ -7,3 +7,4 @@
 /godot.linuxbsd.tools.64
 /internal/gen/generate
 /.vscode/settings.json
+/examples/hello/src/src

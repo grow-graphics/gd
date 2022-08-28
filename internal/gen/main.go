@@ -225,12 +225,6 @@ func generate() error {
 		genEnum(code, "", enum)
 	}
 
-	for _, class := range spec.BuiltinClasses {
-		for _, enum := range class.Enums {
-			genEnum(code, class.Name, enum)
-		}
-	}
-
 	if len(spec.UtilityFunctions) > 0 {
 		fmt.Fprintf(code, "var utilities [%d]cUtilityFunction\n", len(spec.UtilityFunctions))
 	}
@@ -257,12 +251,20 @@ func generate() error {
 		fmt.Fprintf(code, "utilityCall[%v](utilities[%d]", result, i)
 		for _, arg := range utility.Arguments {
 			fmt.Fprint(code, ", ")
-			fmt.Fprintf(code, "%v", fixReserved(arg.Name))
+			fmt.Fprintf(code, "&%v", fixReserved(arg.Name))
 		}
 		fmt.Fprintf(code, ") }\n")
 	}
 
 	for _, class := range spec.BuiltinClasses {
+		for _, enum := range class.Enums {
+			genEnum(code, class.Name, enum)
+		}
+
+		for _, constructor := range class.Constructors {
+			fmt.Println(class.Name, constructor.Arguments)
+		}
+
 		switch class.Name {
 		case "bool", "int", "float", "Nil", "String":
 			continue
@@ -270,6 +272,33 @@ func generate() error {
 			class.Name = "Name"
 		}
 		fmt.Fprintf(code, "type %v = c%v\n", class.Name, class.Name)
+
+		fmt.Fprintf(code, "var method%v [%d]cBuiltInMethod\n", class.Name, len(class.Methods))
+
+		for i, method := range class.Methods {
+			result := convertType("", method.ReturnType)
+
+			fmt.Fprintf(code, "func (gdClass %v) %v(", class.Name, convertName(method.Name))
+			for i, arg := range method.Arguments {
+				fmt.Fprintf(code, "%v %v", fixReserved(arg.Name), convertType(arg.Meta, arg.Type))
+				if i < len(method.Arguments)-1 {
+					fmt.Fprint(code, ", ")
+				}
+			}
+
+			fmt.Fprintf(code, ") %v { ", result)
+			if result == "" {
+				result = "struct{}"
+			} else {
+				fmt.Fprintf(code, "return ")
+			}
+			fmt.Fprintf(code, "builtinCall[%v](&gdClass, method%v[%d]", result, class.Name, i)
+			for _, arg := range method.Arguments {
+				fmt.Fprint(code, ", ")
+				fmt.Fprintf(code, "&%v", fixReserved(arg.Name))
+			}
+			fmt.Fprintf(code, ") }\n")
+		}
 	}
 
 	for _, class := range spec.Classes {
@@ -285,8 +314,8 @@ func generate() error {
 
 		fmt.Fprintln(code)
 		fmt.Fprintf(code, "type %v struct{_%v struct{}; obj cObject }\n", class.Name, class.Name)
-		fmt.Fprintf(code, `func (gdClass *%v) load() { gdClass.obj = classDB.construct_object(gdClass.class()) }`+"\n", class.Name)
-		fmt.Fprintf(code, `func (gdClass *%v) owner() cObject { return gdClass.obj }`+"\n", class.Name)
+		fmt.Fprintf(code, `func New%v() (gdClass %v) { gdClass.obj = classDB.construct_object(gdClass.class()); return }`+"\n", class.Name, class.Name)
+		fmt.Fprintf(code, `func (gdClass %v) owner() cObject { return gdClass.obj }`+"\n", class.Name)
 		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
 		fmt.Fprintln(code)
 		if class.Inherits != "" {
@@ -367,7 +396,7 @@ func generate() error {
 			fmt.Fprintf(code, "methodCall[%v](gdClass.obj, method%v[%d]", result, class.Name, i)
 			for _, arg := range method.Arguments {
 				fmt.Fprint(code, ", ")
-				fmt.Fprintf(code, "%v", fixReserved(arg.Name))
+				fmt.Fprintf(code, "&%v", fixReserved(arg.Name))
 			}
 			fmt.Fprintf(code, ") }\n")
 
@@ -384,9 +413,20 @@ func generate() error {
 	for i, utility := range spec.UtilityFunctions {
 		fmt.Fprintf(code, "\t\t"+`utilities[%d] = get_utility_function("%v\000", %v)`+"\n", i, utility.Name, utility.Hash)
 	}
-	for _, class := range spec.Classes {
-		class.Name = convertClass(class.Name)
+	for _, class := range spec.BuiltinClasses {
+		var name = class.Name
+		switch class.Name {
+		case "bool", "int", "float", "Nil", "String":
+			continue
+		case "StringName":
+			name = "Name"
+		}
 
+		for i, method := range class.Methods {
+			fmt.Fprintf(code, "\t\t"+`method%v[%d] = cVariantType%v.get_builtin_method("%v\000", %v)`+"\n", name, i, class.Name, method.Name, method.Hash)
+		}
+	}
+	for _, class := range spec.Classes {
 		var i int
 		for _, method := range class.Methods {
 			if _, ok := exceptions[class.Name]; ok {
@@ -396,7 +436,7 @@ func generate() error {
 			if method.IsVirtual {
 				continue
 			}
-			fmt.Fprintf(code, "\t\t"+`method%v[%d] = classDB.get_method_bind("%v\000", "%v\000", %v)`+"\n", class.Name, i, class.Name, method.Name, method.Hash)
+			fmt.Fprintf(code, "\t\t"+`method%v[%d] = classDB.get_method_bind("%v\000", "%v\000", %v)`+"\n", convertClass(class.Name), i, class.Name, method.Name, method.Hash)
 			i++
 		}
 	}

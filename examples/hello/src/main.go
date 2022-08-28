@@ -12,8 +12,9 @@ type HelloWorld struct {
 	Object gd.Object
 }
 
-func HelloWorldLoader(hello *HelloWorld) *gd.Object {
-	return gd.Load(&hello.Object)
+func HelloWorldLoader(hello *HelloWorld) gd.Object {
+	hello.Object = gd.NewObject()
+	return hello.Object
 }
 
 // not implemented yet, exists here as a design for how docs
@@ -44,8 +45,9 @@ type ExtendedNode struct {
 	Node2D gd.Node2D
 }
 
-func ExtendedNodeLoader(node *ExtendedNode) *gd.Node2D {
-	return gd.Load(&node.Node2D)
+func ExtendedNodeLoader(node *ExtendedNode) gd.Node2D {
+	node.Node2D = gd.NewNode2D()
+	return node.Node2D
 }
 
 func (e ExtendedNode) Ready() {
@@ -53,6 +55,10 @@ func (e ExtendedNode) Ready() {
 		fmt.Println(gd.Engine.GetLicenseText())
 		return
 	}
+
+	//gd.LoadSingletons()
+
+	fmt.Println(gd.Engine.GetSingletonList())
 
 	fmt.Println("Scene is ready!")
 

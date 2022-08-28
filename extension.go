@@ -7,32 +7,62 @@ import (
 	"unsafe"
 )
 
+var cOnLoad func() = func() {}
+
+var deferred []func()
+
+//export loadExtension
+func loadExtension(p_interface, p_library, p_init unsafe.Pointer) uint8 {
+	api = (*cInterface)(p_interface)
+	classDB = cClassLibrary(p_library)
+
+	ini := (*cInitialization)(p_init)
+	ini.cInit()
+
+	return 1
+}
+
+//export initialize
+func initialize(userdata unsafe.Pointer, level int64) {
+	if level == 3 {
+		cOnLoad()
+
+		for _, fn := range deferred {
+			fn()
+		}
+	}
+}
+
+//export deinitialize
+func deinitialize(userdata unsafe.Pointer, level int64) {}
+
 //export create_instance_func
 func create_instance_func(userdata uintptr) uintptr {
-	return uintptr(extensions[extensionID(userdata)].create())
+	return uintptr(extensions[extensionID(userdata)-1].create())
 }
 
 //export free_instance_func
 func free_instance_func(userdata, instance uintptr) {
-	extensions[extensionID(userdata)].delete(loadInstanceID(instance))
+	extensions[extensionID(userdata)-1].delete(loadInstanceID(instance))
 }
 
 //export get_virtual_index
-func get_virtual_index(userdata uintptr, name *C.char) uint8 {
-	method, ok := extensions[extensionID(userdata)].lookup(C.GoString(name))
+func get_virtual_index(userdata uintptr, p_name *C.char) uint8 {
+	name := C.GoString(p_name)
+	method, ok := extensions[extensionID(userdata)-1].lookup(name)
 	if !ok {
 		return 0
 	}
 	if method.Index > 255 {
 		panic("too many exported methods")
 	}
-	return uint8(method.Index)
+	return uint8(method.Index + 1)
 }
 
 //export call_virtual_index
 func call_virtual_index(index uint8, instance uintptr, args *unsafe.Pointer, result unsafe.Pointer) {
 	id := loadInstanceID(instance)
-	extensions[id.class].call(id.index, index, args, result)
+	extensions[id.class-1].call(id.index, index, args, result)
 }
 
 type Class interface {
@@ -95,11 +125,9 @@ func Register[Type any, Extends Class](fn ExtensionLoader[Type, Extends]) *Exten
 	extensions = append(extensions, &extension)
 	extension.id = extensionID(len(extensions))
 
-	// defer on load..
-
-	classDB.register_extension_class(extension.class, extension.owner, uintptr(extension.id))
-
-	// register methods.
+	deferred = append(deferred, func() {
+		classDB.register_extension_class(extension.class, extension.owner, uintptr(extension.id))
+	})
 
 	return &extension
 }
@@ -151,6 +179,7 @@ func (ext *Extension[Type, Extends]) create() cObject {
 	}
 
 	if id.index == 0 {
+		ext.slice = append(ext.slice, instanceOf[Type]{})
 		id.index = uint32(len(ext.slice))
 	}
 
@@ -168,21 +197,17 @@ func (ext *Extension[Type, Extends]) delete(id instanceID) {
 }
 
 func (ext *Extension[Type, Extends]) call(instance uint32, index uint8, args *unsafe.Pointer, result unsafe.Pointer) {
-	rvalue := reflect.ValueOf(&ext.slice[instance-1])
-	method := rvalue.Method(int(index))
+	rvalue := reflect.ValueOf(&ext.slice[instance-1].value)
+	method := rvalue.Method(int(index) - 1)
 	rtype := method.Type()
-
-	//fmt.Println(method.Name, " METHOD CALLED DIRECTLY")
 
 	buffer := make([]reflect.Value, rtype.NumIn())
 
-	buffer[0] = rvalue
 	if rtype.NumIn() > 1 {
-		slice := unsafe.Slice(args, rtype.NumIn()-1)
-		value := buffer[1:]
-		for i := range value {
-			value[i] = reflect.New(rtype.In(i + 1)).Elem()
-			into(value[i].Interface(), slice[i])
+		slice := unsafe.Slice(args, rtype.NumIn())
+		for i := range slice {
+			buffer[i] = reflect.New(rtype.In(i + 1)).Elem()
+			into(buffer[i].Interface(), slice[i])
 		}
 	}
 
@@ -197,4 +222,39 @@ func (ext *Extension[Type, Extends]) methods() []reflect.Method {
 		methods = append(methods, ext.ptype.Method(i))
 	}
 	return methods
+}
+
+func LoadSingletons() {
+	Performance.obj = global_get_singleton(`Performance`)
+	TextServerManager.obj = global_get_singleton(`TextServerManager`)
+	NavigationMeshGenerator.obj = global_get_singleton(`NavigationMeshGenerator`)
+	ProjectSettings.obj = global_get_singleton(`ProjectSettings`)
+	IP.obj = global_get_singleton(`IP`)
+	Geometry2D.obj = global_get_singleton(`Geometry2D`)
+	Geometry3D.obj = global_get_singleton(`Geometry3D`)
+	ResourceLoader.obj = global_get_singleton(`ResourceLoader`)
+	ResourceSaver.obj = global_get_singleton(`ResourceSaver`)
+	OS.obj = global_get_singleton(`OS`)
+	Engine.obj = global_get_singleton(`Engine`)
+	ClassDB.obj = global_get_singleton(`ClassDB`)
+	Marshalls.obj = global_get_singleton(`Marshalls`)
+	TranslationServer.obj = global_get_singleton(`TranslationServer`)
+	Input.obj = global_get_singleton(`Input`)
+	InputMap.obj = global_get_singleton(`InputMap`)
+	EngineDebugger.obj = global_get_singleton(`EngineDebugger`)
+	Time.obj = global_get_singleton(`Time`)
+	NativeExtensionManager.obj = global_get_singleton(`NativeExtensionManager`)
+	ResourceUID.obj = global_get_singleton(`ResourceUID`)
+	WorkerThreadPool.obj = global_get_singleton(`WorkerThreadPool`)
+	JavaClassWrapper.obj = global_get_singleton(`JavaClassWrapper`)
+	JavaScript.obj = global_get_singleton(`JavaScript`)
+	DisplayServer.obj = global_get_singleton(`DisplayServer`)
+	RenderingServer.obj = global_get_singleton(`RenderingServer`)
+	AudioServer.obj = global_get_singleton(`AudioServer`)
+	PhysicsServer2D.obj = global_get_singleton(`PhysicsServer2D`)
+	PhysicsServer3D.obj = global_get_singleton(`PhysicsServer3D`)
+	NavigationServer2D.obj = global_get_singleton(`NavigationServer2D`)
+	NavigationServer3D.obj = global_get_singleton(`NavigationServer3D`)
+	XRServer.obj = global_get_singleton(`XRServer`)
+	CameraServer.obj = global_get_singleton(`CameraServer`)
 }
