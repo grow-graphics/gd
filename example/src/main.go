@@ -12,10 +12,10 @@ type HelloWorld struct {
 	Object gd.Object
 }
 
-func HelloWorldLoader(hello *HelloWorld) gd.Object {
+var NewHelloWorld = gd.Register(func(hello *HelloWorld) gd.Object {
 	hello.Object = gd.NewObject()
 	return hello.Object
-}
+})
 
 // not implemented yet, exists here as a design for how docs
 // can be created for methods and script export can be
@@ -39,16 +39,14 @@ func (h HelloWorld) Echo(s string) {
 	fmt.Println(s + " from Go!")
 }
 
-var gdHelloWorld = gd.Register(HelloWorldLoader)
-
 type ExtendedNode struct {
 	Node2D gd.Node2D
 }
 
-func ExtendedNodeLoader(node *ExtendedNode) gd.Node2D {
+var NewExtendedNode = gd.Register(func(node *ExtendedNode) gd.Node2D {
 	node.Node2D = gd.NewNode2D()
 	return node.Node2D
-}
+})
 
 func (e ExtendedNode) Ready() {
 	if gd.Engine.IsEditorHint() {
@@ -76,5 +74,3 @@ func (e ExtendedNode) Ready() {
 
 	//godot.DisplayServer.WindowSetCurrentScreen(1, 0)
 }
-
-var gdExtendedNode = gd.Register(ExtendedNodeLoader)
