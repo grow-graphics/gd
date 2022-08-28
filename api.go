@@ -1298,6 +1298,7 @@ const (
 
 type AESContext struct{_AESContext struct{}; obj cObject }
 func NewAESContext() (gdClass AESContext) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AESContext) Free() { gdClass.obj.destroy() }
 func (gdClass AESContext) owner() cObject { return gdClass.obj }
 func (AESContext) class() string { return "AESContext\000" }
 
@@ -1314,6 +1315,7 @@ func (gdClass AESContext) Finish()  { methodCall[struct{}](gdClass.obj, methodAE
 
 type AStar2D struct{_AStar2D struct{}; obj cObject }
 func NewAStar2D() (gdClass AStar2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AStar2D) Free() { gdClass.obj.destroy() }
 func (gdClass AStar2D) owner() cObject { return gdClass.obj }
 func (AStar2D) class() string { return "AStar2D\000" }
 
@@ -1361,6 +1363,7 @@ func (gdClass AStar2D) GetIdPath(from_id int64, to_id int64) []int64 { return me
 
 type AStar3D struct{_AStar3D struct{}; obj cObject }
 func NewAStar3D() (gdClass AStar3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AStar3D) Free() { gdClass.obj.destroy() }
 func (gdClass AStar3D) owner() cObject { return gdClass.obj }
 func (AStar3D) class() string { return "AStar3D\000" }
 
@@ -1408,6 +1411,7 @@ func (gdClass AStar3D) GetIdPath(from_id int64, to_id int64) []int64 { return me
 
 type AcceptDialog struct{_AcceptDialog struct{}; obj cObject }
 func NewAcceptDialog() (gdClass AcceptDialog) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AcceptDialog) Free() { gdClass.obj.destroy() }
 func (gdClass AcceptDialog) owner() cObject { return gdClass.obj }
 func (AcceptDialog) class() string { return "AcceptDialog\000" }
 
@@ -1436,6 +1440,7 @@ func (gdClass AcceptDialog) GetOkButtonText() string { return methodCall[string]
 
 type AnimatableBody2D struct{_AnimatableBody2D struct{}; obj cObject }
 func NewAnimatableBody2D() (gdClass AnimatableBody2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimatableBody2D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimatableBody2D) owner() cObject { return gdClass.obj }
 func (AnimatableBody2D) class() string { return "AnimatableBody2D\000" }
 
@@ -1450,6 +1455,7 @@ func (gdClass AnimatableBody2D) IsSyncToPhysicsEnabled() bool { return methodCal
 
 type AnimatableBody3D struct{_AnimatableBody3D struct{}; obj cObject }
 func NewAnimatableBody3D() (gdClass AnimatableBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimatableBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimatableBody3D) owner() cObject { return gdClass.obj }
 func (AnimatableBody3D) class() string { return "AnimatableBody3D\000" }
 
@@ -1464,6 +1470,7 @@ func (gdClass AnimatableBody3D) IsSyncToPhysicsEnabled() bool { return methodCal
 
 type AnimatedSprite2D struct{_AnimatedSprite2D struct{}; obj cObject }
 func NewAnimatedSprite2D() (gdClass AnimatedSprite2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimatedSprite2D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimatedSprite2D) owner() cObject { return gdClass.obj }
 func (AnimatedSprite2D) class() string { return "AnimatedSprite2D\000" }
 
@@ -1496,6 +1503,7 @@ func (gdClass AnimatedSprite2D) GetSpeedScale() float64 { return methodCall[floa
 
 type AnimatedSprite3D struct{_AnimatedSprite3D struct{}; obj cObject }
 func NewAnimatedSprite3D() (gdClass AnimatedSprite3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimatedSprite3D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimatedSprite3D) owner() cObject { return gdClass.obj }
 func (AnimatedSprite3D) class() string { return "AnimatedSprite3D\000" }
 
@@ -1517,6 +1525,7 @@ func (gdClass AnimatedSprite3D) GetFrame() int64 { return methodCall[int64](gdCl
 
 type AnimatedTexture struct{_AnimatedTexture struct{}; obj cObject }
 func NewAnimatedTexture() (gdClass AnimatedTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimatedTexture) Free() { gdClass.obj.destroy() }
 func (gdClass AnimatedTexture) owner() cObject { return gdClass.obj }
 func (AnimatedTexture) class() string { return "AnimatedTexture\000" }
 
@@ -1584,6 +1593,7 @@ const (
 
 type Animation struct{_Animation struct{}; obj cObject }
 func NewAnimation() (gdClass Animation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Animation) Free() { gdClass.obj.destroy() }
 func (gdClass Animation) owner() cObject { return gdClass.obj }
 func (Animation) class() string { return "Animation\000" }
 
@@ -1665,6 +1675,7 @@ func (gdClass Animation) Compress(page_size int64, fps int64, split_tolerance fl
 
 type AnimationLibrary struct{_AnimationLibrary struct{}; obj cObject }
 func NewAnimationLibrary() (gdClass AnimationLibrary) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationLibrary) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationLibrary) owner() cObject { return gdClass.obj }
 func (AnimationLibrary) class() string { return "AnimationLibrary\000" }
 
@@ -1692,6 +1703,7 @@ const (
 
 type AnimationNode struct{_AnimationNode struct{}; obj cObject }
 func NewAnimationNode() (gdClass AnimationNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNode) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNode) owner() cObject { return gdClass.obj }
 func (AnimationNode) class() string { return "AnimationNode\000" }
 
@@ -1754,6 +1766,7 @@ func (gdClass AnimationNode) GetParameter(name Name) any { return methodCall[any
 
 type AnimationNodeAdd2 struct{_AnimationNodeAdd2 struct{}; obj cObject }
 func NewAnimationNodeAdd2() (gdClass AnimationNodeAdd2) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeAdd2) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeAdd2) owner() cObject { return gdClass.obj }
 func (AnimationNodeAdd2) class() string { return "AnimationNodeAdd2\000" }
 
@@ -1765,6 +1778,7 @@ func (gdClass AnimationNodeAdd2) virtual(rtype reflect.Type, name string) (metho
 
 type AnimationNodeAdd3 struct{_AnimationNodeAdd3 struct{}; obj cObject }
 func NewAnimationNodeAdd3() (gdClass AnimationNodeAdd3) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeAdd3) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeAdd3) owner() cObject { return gdClass.obj }
 func (AnimationNodeAdd3) class() string { return "AnimationNodeAdd3\000" }
 
@@ -1783,6 +1797,7 @@ const (
 
 type AnimationNodeAnimation struct{_AnimationNodeAnimation struct{}; obj cObject }
 func NewAnimationNodeAnimation() (gdClass AnimationNodeAnimation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeAnimation) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeAnimation) owner() cObject { return gdClass.obj }
 func (AnimationNodeAnimation) class() string { return "AnimationNodeAnimation\000" }
 
@@ -1799,6 +1814,7 @@ func (gdClass AnimationNodeAnimation) GetPlayMode() AnimationNodeAnimationPlayMo
 
 type AnimationNodeBlend2 struct{_AnimationNodeBlend2 struct{}; obj cObject }
 func NewAnimationNodeBlend2() (gdClass AnimationNodeBlend2) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeBlend2) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeBlend2) owner() cObject { return gdClass.obj }
 func (AnimationNodeBlend2) class() string { return "AnimationNodeBlend2\000" }
 
@@ -1810,6 +1826,7 @@ func (gdClass AnimationNodeBlend2) virtual(rtype reflect.Type, name string) (met
 
 type AnimationNodeBlend3 struct{_AnimationNodeBlend3 struct{}; obj cObject }
 func NewAnimationNodeBlend3() (gdClass AnimationNodeBlend3) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeBlend3) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeBlend3) owner() cObject { return gdClass.obj }
 func (AnimationNodeBlend3) class() string { return "AnimationNodeBlend3\000" }
 
@@ -1821,6 +1838,7 @@ func (gdClass AnimationNodeBlend3) virtual(rtype reflect.Type, name string) (met
 
 type AnimationNodeBlendSpace1D struct{_AnimationNodeBlendSpace1D struct{}; obj cObject }
 func NewAnimationNodeBlendSpace1D() (gdClass AnimationNodeBlendSpace1D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeBlendSpace1D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeBlendSpace1D) owner() cObject { return gdClass.obj }
 func (AnimationNodeBlendSpace1D) class() string { return "AnimationNodeBlendSpace1D\000" }
 
@@ -1858,6 +1876,7 @@ const (
 
 type AnimationNodeBlendSpace2D struct{_AnimationNodeBlendSpace2D struct{}; obj cObject }
 func NewAnimationNodeBlendSpace2D() (gdClass AnimationNodeBlendSpace2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeBlendSpace2D) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeBlendSpace2D) owner() cObject { return gdClass.obj }
 func (AnimationNodeBlendSpace2D) class() string { return "AnimationNodeBlendSpace2D\000" }
 
@@ -1897,6 +1916,7 @@ func (gdClass AnimationNodeBlendSpace2D) IsUsingSync() bool { return methodCall[
 
 type AnimationNodeBlendTree struct{_AnimationNodeBlendTree struct{}; obj cObject }
 func NewAnimationNodeBlendTree() (gdClass AnimationNodeBlendTree) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeBlendTree) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeBlendTree) owner() cObject { return gdClass.obj }
 func (AnimationNodeBlendTree) class() string { return "AnimationNodeBlendTree\000" }
 
@@ -1927,6 +1947,7 @@ const (
 
 type AnimationNodeOneShot struct{_AnimationNodeOneShot struct{}; obj cObject }
 func NewAnimationNodeOneShot() (gdClass AnimationNodeOneShot) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeOneShot) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeOneShot) owner() cObject { return gdClass.obj }
 func (AnimationNodeOneShot) class() string { return "AnimationNodeOneShot\000" }
 
@@ -1951,6 +1972,7 @@ func (gdClass AnimationNodeOneShot) GetMixMode() AnimationNodeOneShotMixMode { r
 
 type AnimationNodeOutput struct{_AnimationNodeOutput struct{}; obj cObject }
 func NewAnimationNodeOutput() (gdClass AnimationNodeOutput) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeOutput) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeOutput) owner() cObject { return gdClass.obj }
 func (AnimationNodeOutput) class() string { return "AnimationNodeOutput\000" }
 
@@ -1962,6 +1984,7 @@ func (gdClass AnimationNodeOutput) virtual(rtype reflect.Type, name string) (met
 
 type AnimationNodeStateMachine struct{_AnimationNodeStateMachine struct{}; obj cObject }
 func NewAnimationNodeStateMachine() (gdClass AnimationNodeStateMachine) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeStateMachine) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeStateMachine) owner() cObject { return gdClass.obj }
 func (AnimationNodeStateMachine) class() string { return "AnimationNodeStateMachine\000" }
 
@@ -1993,6 +2016,7 @@ func (gdClass AnimationNodeStateMachine) GetGraphOffset() Vector2 { return metho
 
 type AnimationNodeStateMachinePlayback struct{_AnimationNodeStateMachinePlayback struct{}; obj cObject }
 func NewAnimationNodeStateMachinePlayback() (gdClass AnimationNodeStateMachinePlayback) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeStateMachinePlayback) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeStateMachinePlayback) owner() cObject { return gdClass.obj }
 func (AnimationNodeStateMachinePlayback) class() string { return "AnimationNodeStateMachinePlayback\000" }
 
@@ -2021,6 +2045,7 @@ const (
 
 type AnimationNodeStateMachineTransition struct{_AnimationNodeStateMachineTransition struct{}; obj cObject }
 func NewAnimationNodeStateMachineTransition() (gdClass AnimationNodeStateMachineTransition) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeStateMachineTransition) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeStateMachineTransition) owner() cObject { return gdClass.obj }
 func (AnimationNodeStateMachineTransition) class() string { return "AnimationNodeStateMachineTransition\000" }
 
@@ -2051,6 +2076,7 @@ func (gdClass AnimationNodeStateMachineTransition) GetAdvanceExpressionBaseNode(
 
 type AnimationNodeSync struct{_AnimationNodeSync struct{}; obj cObject }
 func NewAnimationNodeSync() (gdClass AnimationNodeSync) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeSync) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeSync) owner() cObject { return gdClass.obj }
 func (AnimationNodeSync) class() string { return "AnimationNodeSync\000" }
 
@@ -2065,6 +2091,7 @@ func (gdClass AnimationNodeSync) IsUsingSync() bool { return methodCall[bool](gd
 
 type AnimationNodeTimeScale struct{_AnimationNodeTimeScale struct{}; obj cObject }
 func NewAnimationNodeTimeScale() (gdClass AnimationNodeTimeScale) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeTimeScale) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeTimeScale) owner() cObject { return gdClass.obj }
 func (AnimationNodeTimeScale) class() string { return "AnimationNodeTimeScale\000" }
 
@@ -2076,6 +2103,7 @@ func (gdClass AnimationNodeTimeScale) virtual(rtype reflect.Type, name string) (
 
 type AnimationNodeTimeSeek struct{_AnimationNodeTimeSeek struct{}; obj cObject }
 func NewAnimationNodeTimeSeek() (gdClass AnimationNodeTimeSeek) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeTimeSeek) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeTimeSeek) owner() cObject { return gdClass.obj }
 func (AnimationNodeTimeSeek) class() string { return "AnimationNodeTimeSeek\000" }
 
@@ -2087,6 +2115,7 @@ func (gdClass AnimationNodeTimeSeek) virtual(rtype reflect.Type, name string) (m
 
 type AnimationNodeTransition struct{_AnimationNodeTransition struct{}; obj cObject }
 func NewAnimationNodeTransition() (gdClass AnimationNodeTransition) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationNodeTransition) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationNodeTransition) owner() cObject { return gdClass.obj }
 func (AnimationNodeTransition) class() string { return "AnimationNodeTransition\000" }
 
@@ -2126,6 +2155,7 @@ const (
 
 type AnimationPlayer struct{_AnimationPlayer struct{}; obj cObject }
 func NewAnimationPlayer() (gdClass AnimationPlayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationPlayer) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationPlayer) owner() cObject { return gdClass.obj }
 func (AnimationPlayer) class() string { return "AnimationPlayer\000" }
 
@@ -2188,6 +2218,7 @@ func (gdClass AnimationPlayer) Advance(delta float64)  { methodCall[struct{}](gd
 
 type AnimationRootNode struct{_AnimationRootNode struct{}; obj cObject }
 func NewAnimationRootNode() (gdClass AnimationRootNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationRootNode) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationRootNode) owner() cObject { return gdClass.obj }
 func (AnimationRootNode) class() string { return "AnimationRootNode\000" }
 
@@ -2199,6 +2230,7 @@ func (gdClass AnimationRootNode) virtual(rtype reflect.Type, name string) (metho
 
 type AnimationTrackEditPlugin struct{_AnimationTrackEditPlugin struct{}; obj cObject }
 func NewAnimationTrackEditPlugin() (gdClass AnimationTrackEditPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationTrackEditPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationTrackEditPlugin) owner() cObject { return gdClass.obj }
 func (AnimationTrackEditPlugin) class() string { return "AnimationTrackEditPlugin\000" }
 
@@ -2218,6 +2250,7 @@ const (
 
 type AnimationTree struct{_AnimationTree struct{}; obj cObject }
 func NewAnimationTree() (gdClass AnimationTree) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AnimationTree) Free() { gdClass.obj.destroy() }
 func (gdClass AnimationTree) owner() cObject { return gdClass.obj }
 func (AnimationTree) class() string { return "AnimationTree\000" }
 
@@ -2255,6 +2288,7 @@ const (
 
 type Area2D struct{_Area2D struct{}; obj cObject }
 func NewArea2D() (gdClass Area2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Area2D) Free() { gdClass.obj.destroy() }
 func (gdClass Area2D) owner() cObject { return gdClass.obj }
 func (Area2D) class() string { return "Area2D\000" }
 
@@ -2311,6 +2345,7 @@ const (
 
 type Area3D struct{_Area3D struct{}; obj cObject }
 func NewArea3D() (gdClass Area3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Area3D) Free() { gdClass.obj.destroy() }
 func (gdClass Area3D) owner() cObject { return gdClass.obj }
 func (Area3D) class() string { return "Area3D\000" }
 
@@ -2371,6 +2406,7 @@ func (gdClass Area3D) GetReverbUniformity() float64 { return methodCall[float64]
 
 type ArrayMesh struct{_ArrayMesh struct{}; obj cObject }
 func NewArrayMesh() (gdClass ArrayMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ArrayMesh) Free() { gdClass.obj.destroy() }
 func (gdClass ArrayMesh) owner() cObject { return gdClass.obj }
 func (ArrayMesh) class() string { return "ArrayMesh\000" }
 
@@ -2408,6 +2444,7 @@ func (gdClass ArrayMesh) GetShadowMesh() ArrayMesh { return methodCall[ArrayMesh
 
 type ArrayOccluder3D struct{_ArrayOccluder3D struct{}; obj cObject }
 func NewArrayOccluder3D() (gdClass ArrayOccluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ArrayOccluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass ArrayOccluder3D) owner() cObject { return gdClass.obj }
 func (ArrayOccluder3D) class() string { return "ArrayOccluder3D\000" }
 
@@ -2440,6 +2477,7 @@ const (
 
 type AspectRatioContainer struct{_AspectRatioContainer struct{}; obj cObject }
 func NewAspectRatioContainer() (gdClass AspectRatioContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AspectRatioContainer) Free() { gdClass.obj.destroy() }
 func (gdClass AspectRatioContainer) owner() cObject { return gdClass.obj }
 func (AspectRatioContainer) class() string { return "AspectRatioContainer\000" }
 
@@ -2460,6 +2498,7 @@ func (gdClass AspectRatioContainer) GetAlignmentVertical() AspectRatioContainerA
 
 type AtlasTexture struct{_AtlasTexture struct{}; obj cObject }
 func NewAtlasTexture() (gdClass AtlasTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AtlasTexture) Free() { gdClass.obj.destroy() }
 func (gdClass AtlasTexture) owner() cObject { return gdClass.obj }
 func (AtlasTexture) class() string { return "AtlasTexture\000" }
 
@@ -2480,6 +2519,7 @@ func (gdClass AtlasTexture) HasFilterClip() bool { return methodCall[bool](gdCla
 
 type AudioBusLayout struct{_AudioBusLayout struct{}; obj cObject }
 func NewAudioBusLayout() (gdClass AudioBusLayout) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioBusLayout) Free() { gdClass.obj.destroy() }
 func (gdClass AudioBusLayout) owner() cObject { return gdClass.obj }
 func (AudioBusLayout) class() string { return "AudioBusLayout\000" }
 
@@ -2491,6 +2531,7 @@ func (gdClass AudioBusLayout) virtual(rtype reflect.Type, name string) (method r
 
 type AudioEffect struct{_AudioEffect struct{}; obj cObject }
 func NewAudioEffect() (gdClass AudioEffect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffect) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffect) owner() cObject { return gdClass.obj }
 func (AudioEffect) class() string { return "AudioEffect\000" }
 
@@ -2509,6 +2550,7 @@ func (gdClass AudioEffect) virtual(rtype reflect.Type, name string) (method refl
 
 type AudioEffectAmplify struct{_AudioEffectAmplify struct{}; obj cObject }
 func NewAudioEffectAmplify() (gdClass AudioEffectAmplify) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectAmplify) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectAmplify) owner() cObject { return gdClass.obj }
 func (AudioEffectAmplify) class() string { return "AudioEffectAmplify\000" }
 
@@ -2523,6 +2565,7 @@ func (gdClass AudioEffectAmplify) GetVolumeDb() float64 { return methodCall[floa
 
 type AudioEffectBandLimitFilter struct{_AudioEffectBandLimitFilter struct{}; obj cObject }
 func NewAudioEffectBandLimitFilter() (gdClass AudioEffectBandLimitFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectBandLimitFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectBandLimitFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectBandLimitFilter) class() string { return "AudioEffectBandLimitFilter\000" }
 
@@ -2534,6 +2577,7 @@ func (gdClass AudioEffectBandLimitFilter) virtual(rtype reflect.Type, name strin
 
 type AudioEffectBandPassFilter struct{_AudioEffectBandPassFilter struct{}; obj cObject }
 func NewAudioEffectBandPassFilter() (gdClass AudioEffectBandPassFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectBandPassFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectBandPassFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectBandPassFilter) class() string { return "AudioEffectBandPassFilter\000" }
 
@@ -2545,6 +2589,7 @@ func (gdClass AudioEffectBandPassFilter) virtual(rtype reflect.Type, name string
 
 type AudioEffectCapture struct{_AudioEffectCapture struct{}; obj cObject }
 func NewAudioEffectCapture() (gdClass AudioEffectCapture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectCapture) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectCapture) owner() cObject { return gdClass.obj }
 func (AudioEffectCapture) class() string { return "AudioEffectCapture\000" }
 
@@ -2566,6 +2611,7 @@ func (gdClass AudioEffectCapture) GetPushedFrames() int64 { return methodCall[in
 
 type AudioEffectChorus struct{_AudioEffectChorus struct{}; obj cObject }
 func NewAudioEffectChorus() (gdClass AudioEffectChorus) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectChorus) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectChorus) owner() cObject { return gdClass.obj }
 func (AudioEffectChorus) class() string { return "AudioEffectChorus\000" }
 
@@ -2596,6 +2642,7 @@ func (gdClass AudioEffectChorus) GetDry() float64 { return methodCall[float64](g
 
 type AudioEffectCompressor struct{_AudioEffectCompressor struct{}; obj cObject }
 func NewAudioEffectCompressor() (gdClass AudioEffectCompressor) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectCompressor) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectCompressor) owner() cObject { return gdClass.obj }
 func (AudioEffectCompressor) class() string { return "AudioEffectCompressor\000" }
 
@@ -2622,6 +2669,7 @@ func (gdClass AudioEffectCompressor) GetSidechain() Name { return methodCall[Nam
 
 type AudioEffectDelay struct{_AudioEffectDelay struct{}; obj cObject }
 func NewAudioEffectDelay() (gdClass AudioEffectDelay) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectDelay) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectDelay) owner() cObject { return gdClass.obj }
 func (AudioEffectDelay) class() string { return "AudioEffectDelay\000" }
 
@@ -2670,6 +2718,7 @@ const (
 
 type AudioEffectDistortion struct{_AudioEffectDistortion struct{}; obj cObject }
 func NewAudioEffectDistortion() (gdClass AudioEffectDistortion) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectDistortion) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectDistortion) owner() cObject { return gdClass.obj }
 func (AudioEffectDistortion) class() string { return "AudioEffectDistortion\000" }
 
@@ -2692,6 +2741,7 @@ func (gdClass AudioEffectDistortion) GetPostGain() float64 { return methodCall[f
 
 type AudioEffectEQ struct{_AudioEffectEQ struct{}; obj cObject }
 func NewAudioEffectEQ() (gdClass AudioEffectEQ) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectEQ) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectEQ) owner() cObject { return gdClass.obj }
 func (AudioEffectEQ) class() string { return "AudioEffectEQ\000" }
 
@@ -2707,6 +2757,7 @@ func (gdClass AudioEffectEQ) GetBandCount() int64 { return methodCall[int64](gdC
 
 type AudioEffectEQ10 struct{_AudioEffectEQ10 struct{}; obj cObject }
 func NewAudioEffectEQ10() (gdClass AudioEffectEQ10) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectEQ10) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectEQ10) owner() cObject { return gdClass.obj }
 func (AudioEffectEQ10) class() string { return "AudioEffectEQ10\000" }
 
@@ -2718,6 +2769,7 @@ func (gdClass AudioEffectEQ10) virtual(rtype reflect.Type, name string) (method 
 
 type AudioEffectEQ21 struct{_AudioEffectEQ21 struct{}; obj cObject }
 func NewAudioEffectEQ21() (gdClass AudioEffectEQ21) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectEQ21) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectEQ21) owner() cObject { return gdClass.obj }
 func (AudioEffectEQ21) class() string { return "AudioEffectEQ21\000" }
 
@@ -2729,6 +2781,7 @@ func (gdClass AudioEffectEQ21) virtual(rtype reflect.Type, name string) (method 
 
 type AudioEffectEQ6 struct{_AudioEffectEQ6 struct{}; obj cObject }
 func NewAudioEffectEQ6() (gdClass AudioEffectEQ6) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectEQ6) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectEQ6) owner() cObject { return gdClass.obj }
 func (AudioEffectEQ6) class() string { return "AudioEffectEQ6\000" }
 
@@ -2749,6 +2802,7 @@ const (
 
 type AudioEffectFilter struct{_AudioEffectFilter struct{}; obj cObject }
 func NewAudioEffectFilter() (gdClass AudioEffectFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectFilter) class() string { return "AudioEffectFilter\000" }
 
@@ -2769,6 +2823,7 @@ func (gdClass AudioEffectFilter) GetDb() AudioEffectFilterFilterDB { return meth
 
 type AudioEffectHighPassFilter struct{_AudioEffectHighPassFilter struct{}; obj cObject }
 func NewAudioEffectHighPassFilter() (gdClass AudioEffectHighPassFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectHighPassFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectHighPassFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectHighPassFilter) class() string { return "AudioEffectHighPassFilter\000" }
 
@@ -2780,6 +2835,7 @@ func (gdClass AudioEffectHighPassFilter) virtual(rtype reflect.Type, name string
 
 type AudioEffectHighShelfFilter struct{_AudioEffectHighShelfFilter struct{}; obj cObject }
 func NewAudioEffectHighShelfFilter() (gdClass AudioEffectHighShelfFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectHighShelfFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectHighShelfFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectHighShelfFilter) class() string { return "AudioEffectHighShelfFilter\000" }
 
@@ -2791,6 +2847,7 @@ func (gdClass AudioEffectHighShelfFilter) virtual(rtype reflect.Type, name strin
 
 type AudioEffectInstance struct{_AudioEffectInstance struct{}; obj cObject }
 func NewAudioEffectInstance() (gdClass AudioEffectInstance) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectInstance) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectInstance) owner() cObject { return gdClass.obj }
 func (AudioEffectInstance) class() string { return "AudioEffectInstance\000" }
 
@@ -2814,6 +2871,7 @@ func (gdClass AudioEffectInstance) virtual(rtype reflect.Type, name string) (met
 
 type AudioEffectLimiter struct{_AudioEffectLimiter struct{}; obj cObject }
 func NewAudioEffectLimiter() (gdClass AudioEffectLimiter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectLimiter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectLimiter) owner() cObject { return gdClass.obj }
 func (AudioEffectLimiter) class() string { return "AudioEffectLimiter\000" }
 
@@ -2834,6 +2892,7 @@ func (gdClass AudioEffectLimiter) GetSoftClipRatio() float64 { return methodCall
 
 type AudioEffectLowPassFilter struct{_AudioEffectLowPassFilter struct{}; obj cObject }
 func NewAudioEffectLowPassFilter() (gdClass AudioEffectLowPassFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectLowPassFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectLowPassFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectLowPassFilter) class() string { return "AudioEffectLowPassFilter\000" }
 
@@ -2845,6 +2904,7 @@ func (gdClass AudioEffectLowPassFilter) virtual(rtype reflect.Type, name string)
 
 type AudioEffectLowShelfFilter struct{_AudioEffectLowShelfFilter struct{}; obj cObject }
 func NewAudioEffectLowShelfFilter() (gdClass AudioEffectLowShelfFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectLowShelfFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectLowShelfFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectLowShelfFilter) class() string { return "AudioEffectLowShelfFilter\000" }
 
@@ -2856,6 +2916,7 @@ func (gdClass AudioEffectLowShelfFilter) virtual(rtype reflect.Type, name string
 
 type AudioEffectNotchFilter struct{_AudioEffectNotchFilter struct{}; obj cObject }
 func NewAudioEffectNotchFilter() (gdClass AudioEffectNotchFilter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectNotchFilter) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectNotchFilter) owner() cObject { return gdClass.obj }
 func (AudioEffectNotchFilter) class() string { return "AudioEffectNotchFilter\000" }
 
@@ -2867,6 +2928,7 @@ func (gdClass AudioEffectNotchFilter) virtual(rtype reflect.Type, name string) (
 
 type AudioEffectPanner struct{_AudioEffectPanner struct{}; obj cObject }
 func NewAudioEffectPanner() (gdClass AudioEffectPanner) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectPanner) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectPanner) owner() cObject { return gdClass.obj }
 func (AudioEffectPanner) class() string { return "AudioEffectPanner\000" }
 
@@ -2881,6 +2943,7 @@ func (gdClass AudioEffectPanner) GetPan() float64 { return methodCall[float64](g
 
 type AudioEffectPhaser struct{_AudioEffectPhaser struct{}; obj cObject }
 func NewAudioEffectPhaser() (gdClass AudioEffectPhaser) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectPhaser) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectPhaser) owner() cObject { return gdClass.obj }
 func (AudioEffectPhaser) class() string { return "AudioEffectPhaser\000" }
 
@@ -2914,6 +2977,7 @@ const (
 
 type AudioEffectPitchShift struct{_AudioEffectPitchShift struct{}; obj cObject }
 func NewAudioEffectPitchShift() (gdClass AudioEffectPitchShift) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectPitchShift) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectPitchShift) owner() cObject { return gdClass.obj }
 func (AudioEffectPitchShift) class() string { return "AudioEffectPitchShift\000" }
 
@@ -2932,6 +2996,7 @@ func (gdClass AudioEffectPitchShift) GetFftSize() AudioEffectPitchShiftFFTSize {
 
 type AudioEffectRecord struct{_AudioEffectRecord struct{}; obj cObject }
 func NewAudioEffectRecord() (gdClass AudioEffectRecord) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectRecord) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectRecord) owner() cObject { return gdClass.obj }
 func (AudioEffectRecord) class() string { return "AudioEffectRecord\000" }
 
@@ -2949,6 +3014,7 @@ func (gdClass AudioEffectRecord) GetRecording() AudioStreamWAV { return methodCa
 
 type AudioEffectReverb struct{_AudioEffectReverb struct{}; obj cObject }
 func NewAudioEffectReverb() (gdClass AudioEffectReverb) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectReverb) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectReverb) owner() cObject { return gdClass.obj }
 func (AudioEffectReverb) class() string { return "AudioEffectReverb\000" }
 
@@ -2988,6 +3054,7 @@ const (
 
 type AudioEffectSpectrumAnalyzer struct{_AudioEffectSpectrumAnalyzer struct{}; obj cObject }
 func NewAudioEffectSpectrumAnalyzer() (gdClass AudioEffectSpectrumAnalyzer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectSpectrumAnalyzer) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectSpectrumAnalyzer) owner() cObject { return gdClass.obj }
 func (AudioEffectSpectrumAnalyzer) class() string { return "AudioEffectSpectrumAnalyzer\000" }
 
@@ -3013,6 +3080,7 @@ const (
 
 type AudioEffectSpectrumAnalyzerInstance struct{_AudioEffectSpectrumAnalyzerInstance struct{}; obj cObject }
 func NewAudioEffectSpectrumAnalyzerInstance() (gdClass AudioEffectSpectrumAnalyzerInstance) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectSpectrumAnalyzerInstance) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectSpectrumAnalyzerInstance) owner() cObject { return gdClass.obj }
 func (AudioEffectSpectrumAnalyzerInstance) class() string { return "AudioEffectSpectrumAnalyzerInstance\000" }
 
@@ -3026,6 +3094,7 @@ func (gdClass AudioEffectSpectrumAnalyzerInstance) GetMagnitudeForFrequencyRange
 
 type AudioEffectStereoEnhance struct{_AudioEffectStereoEnhance struct{}; obj cObject }
 func NewAudioEffectStereoEnhance() (gdClass AudioEffectStereoEnhance) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioEffectStereoEnhance) Free() { gdClass.obj.destroy() }
 func (gdClass AudioEffectStereoEnhance) owner() cObject { return gdClass.obj }
 func (AudioEffectStereoEnhance) class() string { return "AudioEffectStereoEnhance\000" }
 
@@ -3044,6 +3113,7 @@ func (gdClass AudioEffectStereoEnhance) GetSurround() float64 { return methodCal
 
 type AudioListener2D struct{_AudioListener2D struct{}; obj cObject }
 func NewAudioListener2D() (gdClass AudioListener2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioListener2D) Free() { gdClass.obj.destroy() }
 func (gdClass AudioListener2D) owner() cObject { return gdClass.obj }
 func (AudioListener2D) class() string { return "AudioListener2D\000" }
 
@@ -3059,6 +3129,7 @@ func (gdClass AudioListener2D) IsCurrent() bool { return methodCall[bool](gdClas
 
 type AudioListener3D struct{_AudioListener3D struct{}; obj cObject }
 func NewAudioListener3D() (gdClass AudioListener3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioListener3D) Free() { gdClass.obj.destroy() }
 func (gdClass AudioListener3D) owner() cObject { return gdClass.obj }
 func (AudioListener3D) class() string { return "AudioListener3D\000" }
 
@@ -3085,6 +3156,7 @@ var AudioServer AudioServerSingleton
 
 type AudioServerSingleton struct{_AudioServerSingleton struct{}; obj cObject }
 func NewAudioServerSingleton() (gdClass AudioServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass AudioServerSingleton) owner() cObject { return gdClass.obj }
 func (AudioServerSingleton) class() string { return "AudioServerSingleton\000" }
 
@@ -3144,6 +3216,7 @@ func (gdClass AudioServerSingleton) SetEnableTaggingUsedAudioStreams(enable bool
 
 type AudioStream struct{_AudioStream struct{}; obj cObject }
 func NewAudioStream() (gdClass AudioStream) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStream) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStream) owner() cObject { return gdClass.obj }
 func (AudioStream) class() string { return "AudioStream\000" }
 
@@ -3191,6 +3264,7 @@ func (gdClass AudioStream) InstantiatePlayback() AudioStreamPlayback { return me
 
 type AudioStreamGenerator struct{_AudioStreamGenerator struct{}; obj cObject }
 func NewAudioStreamGenerator() (gdClass AudioStreamGenerator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamGenerator) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamGenerator) owner() cObject { return gdClass.obj }
 func (AudioStreamGenerator) class() string { return "AudioStreamGenerator\000" }
 
@@ -3207,6 +3281,7 @@ func (gdClass AudioStreamGenerator) GetBufferLength() float64 { return methodCal
 
 type AudioStreamGeneratorPlayback struct{_AudioStreamGeneratorPlayback struct{}; obj cObject }
 func NewAudioStreamGeneratorPlayback() (gdClass AudioStreamGeneratorPlayback) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamGeneratorPlayback) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamGeneratorPlayback) owner() cObject { return gdClass.obj }
 func (AudioStreamGeneratorPlayback) class() string { return "AudioStreamGeneratorPlayback\000" }
 
@@ -3225,6 +3300,7 @@ func (gdClass AudioStreamGeneratorPlayback) ClearBuffer()  { methodCall[struct{}
 
 type AudioStreamMP3 struct{_AudioStreamMP3 struct{}; obj cObject }
 func NewAudioStreamMP3() (gdClass AudioStreamMP3) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamMP3) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamMP3) owner() cObject { return gdClass.obj }
 func (AudioStreamMP3) class() string { return "AudioStreamMP3\000" }
 
@@ -3249,6 +3325,7 @@ func (gdClass AudioStreamMP3) GetBarBeats() int64 { return methodCall[int64](gdC
 
 type AudioStreamMicrophone struct{_AudioStreamMicrophone struct{}; obj cObject }
 func NewAudioStreamMicrophone() (gdClass AudioStreamMicrophone) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamMicrophone) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamMicrophone) owner() cObject { return gdClass.obj }
 func (AudioStreamMicrophone) class() string { return "AudioStreamMicrophone\000" }
 
@@ -3260,6 +3337,7 @@ func (gdClass AudioStreamMicrophone) virtual(rtype reflect.Type, name string) (m
 
 type AudioStreamOggVorbis struct{_AudioStreamOggVorbis struct{}; obj cObject }
 func NewAudioStreamOggVorbis() (gdClass AudioStreamOggVorbis) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamOggVorbis) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamOggVorbis) owner() cObject { return gdClass.obj }
 func (AudioStreamOggVorbis) class() string { return "AudioStreamOggVorbis\000" }
 
@@ -3284,6 +3362,7 @@ func (gdClass AudioStreamOggVorbis) GetBarBeats() int64 { return methodCall[int6
 
 type AudioStreamPlayback struct{_AudioStreamPlayback struct{}; obj cObject }
 func NewAudioStreamPlayback() (gdClass AudioStreamPlayback) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlayback) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlayback) owner() cObject { return gdClass.obj }
 func (AudioStreamPlayback) class() string { return "AudioStreamPlayback\000" }
 
@@ -3337,6 +3416,7 @@ func (gdClass AudioStreamPlayback) virtual(rtype reflect.Type, name string) (met
 
 type AudioStreamPlaybackOggVorbis struct{_AudioStreamPlaybackOggVorbis struct{}; obj cObject }
 func NewAudioStreamPlaybackOggVorbis() (gdClass AudioStreamPlaybackOggVorbis) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlaybackOggVorbis) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlaybackOggVorbis) owner() cObject { return gdClass.obj }
 func (AudioStreamPlaybackOggVorbis) class() string { return "AudioStreamPlaybackOggVorbis\000" }
 
@@ -3348,6 +3428,7 @@ func (gdClass AudioStreamPlaybackOggVorbis) virtual(rtype reflect.Type, name str
 
 type AudioStreamPlaybackResampled struct{_AudioStreamPlaybackResampled struct{}; obj cObject }
 func NewAudioStreamPlaybackResampled() (gdClass AudioStreamPlaybackResampled) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlaybackResampled) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlaybackResampled) owner() cObject { return gdClass.obj }
 func (AudioStreamPlaybackResampled) class() string { return "AudioStreamPlaybackResampled\000" }
 
@@ -3381,6 +3462,7 @@ const (
 
 type AudioStreamPlayer struct{_AudioStreamPlayer struct{}; obj cObject }
 func NewAudioStreamPlayer() (gdClass AudioStreamPlayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlayer) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlayer) owner() cObject { return gdClass.obj }
 func (AudioStreamPlayer) class() string { return "AudioStreamPlayer\000" }
 
@@ -3415,6 +3497,7 @@ func (gdClass AudioStreamPlayer) GetStreamPlayback() AudioStreamPlayback { retur
 
 type AudioStreamPlayer2D struct{_AudioStreamPlayer2D struct{}; obj cObject }
 func NewAudioStreamPlayer2D() (gdClass AudioStreamPlayer2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlayer2D) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlayer2D) owner() cObject { return gdClass.obj }
 func (AudioStreamPlayer2D) class() string { return "AudioStreamPlayer2D\000" }
 
@@ -3472,6 +3555,7 @@ const (
 
 type AudioStreamPlayer3D struct{_AudioStreamPlayer3D struct{}; obj cObject }
 func NewAudioStreamPlayer3D() (gdClass AudioStreamPlayer3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamPlayer3D) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamPlayer3D) owner() cObject { return gdClass.obj }
 func (AudioStreamPlayer3D) class() string { return "AudioStreamPlayer3D\000" }
 
@@ -3536,6 +3620,7 @@ const (
 
 type AudioStreamRandomizer struct{_AudioStreamRandomizer struct{}; obj cObject }
 func NewAudioStreamRandomizer() (gdClass AudioStreamRandomizer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamRandomizer) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamRandomizer) owner() cObject { return gdClass.obj }
 func (AudioStreamRandomizer) class() string { return "AudioStreamRandomizer\000" }
 
@@ -3580,6 +3665,7 @@ const (
 
 type AudioStreamWAV struct{_AudioStreamWAV struct{}; obj cObject }
 func NewAudioStreamWAV() (gdClass AudioStreamWAV) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass AudioStreamWAV) Free() { gdClass.obj.destroy() }
 func (gdClass AudioStreamWAV) owner() cObject { return gdClass.obj }
 func (AudioStreamWAV) class() string { return "AudioStreamWAV\000" }
 
@@ -3615,6 +3701,7 @@ const (
 
 type BackBufferCopy struct{_BackBufferCopy struct{}; obj cObject }
 func NewBackBufferCopy() (gdClass BackBufferCopy) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BackBufferCopy) Free() { gdClass.obj.destroy() }
 func (gdClass BackBufferCopy) owner() cObject { return gdClass.obj }
 func (BackBufferCopy) class() string { return "BackBufferCopy\000" }
 
@@ -3648,6 +3735,7 @@ const (
 
 type BaseButton struct{_BaseButton struct{}; obj cObject }
 func NewBaseButton() (gdClass BaseButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BaseButton) Free() { gdClass.obj.destroy() }
 func (gdClass BaseButton) owner() cObject { return gdClass.obj }
 func (BaseButton) class() string { return "BaseButton\000" }
 
@@ -3888,6 +3976,7 @@ const (
 
 type BaseMaterial3D struct{_BaseMaterial3D struct{}; obj cObject }
 func NewBaseMaterial3D() (gdClass BaseMaterial3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BaseMaterial3D) Free() { gdClass.obj.destroy() }
 func (gdClass BaseMaterial3D) owner() cObject { return gdClass.obj }
 func (BaseMaterial3D) class() string { return "BaseMaterial3D\000" }
 
@@ -4034,6 +4123,7 @@ func (gdClass BaseMaterial3D) GetDistanceFadeMinDistance() float64 { return meth
 
 type BitMap struct{_BitMap struct{}; obj cObject }
 func NewBitMap() (gdClass BitMap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BitMap) Free() { gdClass.obj.destroy() }
 func (gdClass BitMap) owner() cObject { return gdClass.obj }
 func (BitMap) class() string { return "BitMap\000" }
 
@@ -4057,6 +4147,7 @@ func (gdClass BitMap) OpaqueToPolygons(rect Rect2, epsilon float64) Array { retu
 
 type Bone2D struct{_Bone2D struct{}; obj cObject }
 func NewBone2D() (gdClass Bone2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Bone2D) Free() { gdClass.obj.destroy() }
 func (gdClass Bone2D) owner() cObject { return gdClass.obj }
 func (Bone2D) class() string { return "Bone2D\000" }
 
@@ -4082,6 +4173,7 @@ func (gdClass Bone2D) GetBoneAngle() float64 { return methodCall[float64](gdClas
 
 type BoneAttachment3D struct{_BoneAttachment3D struct{}; obj cObject }
 func NewBoneAttachment3D() (gdClass BoneAttachment3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoneAttachment3D) Free() { gdClass.obj.destroy() }
 func (gdClass BoneAttachment3D) owner() cObject { return gdClass.obj }
 func (BoneAttachment3D) class() string { return "BoneAttachment3D\000" }
 
@@ -4107,6 +4199,7 @@ func (gdClass BoneAttachment3D) GetExternalSkeleton() NodePath { return methodCa
 
 type BoneMap struct{_BoneMap struct{}; obj cObject }
 func NewBoneMap() (gdClass BoneMap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoneMap) Free() { gdClass.obj.destroy() }
 func (gdClass BoneMap) owner() cObject { return gdClass.obj }
 func (BoneMap) class() string { return "BoneMap\000" }
 
@@ -4132,6 +4225,7 @@ const (
 
 type BoxContainer struct{_BoxContainer struct{}; obj cObject }
 func NewBoxContainer() (gdClass BoxContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoxContainer) Free() { gdClass.obj.destroy() }
 func (gdClass BoxContainer) owner() cObject { return gdClass.obj }
 func (BoxContainer) class() string { return "BoxContainer\000" }
 
@@ -4147,6 +4241,7 @@ func (gdClass BoxContainer) SetAlignment(alignment BoxContainerAlignmentMode)  {
 
 type BoxMesh struct{_BoxMesh struct{}; obj cObject }
 func NewBoxMesh() (gdClass BoxMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoxMesh) Free() { gdClass.obj.destroy() }
 func (gdClass BoxMesh) owner() cObject { return gdClass.obj }
 func (BoxMesh) class() string { return "BoxMesh\000" }
 
@@ -4167,6 +4262,7 @@ func (gdClass BoxMesh) GetSubdivideDepth() int64 { return methodCall[int64](gdCl
 
 type BoxOccluder3D struct{_BoxOccluder3D struct{}; obj cObject }
 func NewBoxOccluder3D() (gdClass BoxOccluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoxOccluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass BoxOccluder3D) owner() cObject { return gdClass.obj }
 func (BoxOccluder3D) class() string { return "BoxOccluder3D\000" }
 
@@ -4181,6 +4277,7 @@ func (gdClass BoxOccluder3D) GetSize() Vector3 { return methodCall[Vector3](gdCl
 
 type BoxShape3D struct{_BoxShape3D struct{}; obj cObject }
 func NewBoxShape3D() (gdClass BoxShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass BoxShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass BoxShape3D) owner() cObject { return gdClass.obj }
 func (BoxShape3D) class() string { return "BoxShape3D\000" }
 
@@ -4195,6 +4292,7 @@ func (gdClass BoxShape3D) GetSize() Vector3 { return methodCall[Vector3](gdClass
 
 type Button struct{_Button struct{}; obj cObject }
 func NewButton() (gdClass Button) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Button) Free() { gdClass.obj.destroy() }
 func (gdClass Button) owner() cObject { return gdClass.obj }
 func (Button) class() string { return "Button\000" }
 
@@ -4227,6 +4325,7 @@ func (gdClass Button) IsExpandIcon() bool { return methodCall[bool](gdClass.obj,
 
 type ButtonGroup struct{_ButtonGroup struct{}; obj cObject }
 func NewButtonGroup() (gdClass ButtonGroup) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ButtonGroup) Free() { gdClass.obj.destroy() }
 func (gdClass ButtonGroup) owner() cObject { return gdClass.obj }
 func (ButtonGroup) class() string { return "ButtonGroup\000" }
 
@@ -4287,6 +4386,7 @@ const (
 
 type CPUParticles2D struct{_CPUParticles2D struct{}; obj cObject }
 func NewCPUParticles2D() (gdClass CPUParticles2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CPUParticles2D) Free() { gdClass.obj.destroy() }
 func (gdClass CPUParticles2D) owner() cObject { return gdClass.obj }
 func (CPUParticles2D) class() string { return "CPUParticles2D\000" }
 
@@ -4415,6 +4515,7 @@ const (
 
 type CPUParticles3D struct{_CPUParticles3D struct{}; obj cObject }
 func NewCPUParticles3D() (gdClass CPUParticles3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CPUParticles3D) Free() { gdClass.obj.destroy() }
 func (gdClass CPUParticles3D) owner() cObject { return gdClass.obj }
 func (CPUParticles3D) class() string { return "CPUParticles3D\000" }
 
@@ -4507,6 +4608,7 @@ func (gdClass CPUParticles3D) ConvertFromParticles(particles Node)  { methodCall
 
 type CSGBox3D struct{_CSGBox3D struct{}; obj cObject }
 func NewCSGBox3D() (gdClass CSGBox3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGBox3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGBox3D) owner() cObject { return gdClass.obj }
 func (CSGBox3D) class() string { return "CSGBox3D\000" }
 
@@ -4523,6 +4625,7 @@ func (gdClass CSGBox3D) GetMaterial() Material { return methodCall[Material](gdC
 
 type CSGCombiner3D struct{_CSGCombiner3D struct{}; obj cObject }
 func NewCSGCombiner3D() (gdClass CSGCombiner3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGCombiner3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGCombiner3D) owner() cObject { return gdClass.obj }
 func (CSGCombiner3D) class() string { return "CSGCombiner3D\000" }
 
@@ -4534,6 +4637,7 @@ func (gdClass CSGCombiner3D) virtual(rtype reflect.Type, name string) (method re
 
 type CSGCylinder3D struct{_CSGCylinder3D struct{}; obj cObject }
 func NewCSGCylinder3D() (gdClass CSGCylinder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGCylinder3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGCylinder3D) owner() cObject { return gdClass.obj }
 func (CSGCylinder3D) class() string { return "CSGCylinder3D\000" }
 
@@ -4558,6 +4662,7 @@ func (gdClass CSGCylinder3D) GetSmoothFaces() bool { return methodCall[bool](gdC
 
 type CSGMesh3D struct{_CSGMesh3D struct{}; obj cObject }
 func NewCSGMesh3D() (gdClass CSGMesh3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGMesh3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGMesh3D) owner() cObject { return gdClass.obj }
 func (CSGMesh3D) class() string { return "CSGMesh3D\000" }
 
@@ -4597,6 +4702,7 @@ const (
 
 type CSGPolygon3D struct{_CSGPolygon3D struct{}; obj cObject }
 func NewCSGPolygon3D() (gdClass CSGPolygon3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGPolygon3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGPolygon3D) owner() cObject { return gdClass.obj }
 func (CSGPolygon3D) class() string { return "CSGPolygon3D\000" }
 
@@ -4641,6 +4747,7 @@ func (gdClass CSGPolygon3D) GetSmoothFaces() bool { return methodCall[bool](gdCl
 
 type CSGPrimitive3D struct{_CSGPrimitive3D struct{}; obj cObject }
 func NewCSGPrimitive3D() (gdClass CSGPrimitive3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGPrimitive3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGPrimitive3D) owner() cObject { return gdClass.obj }
 func (CSGPrimitive3D) class() string { return "CSGPrimitive3D\000" }
 
@@ -4663,6 +4770,7 @@ const (
 
 type CSGShape3D struct{_CSGShape3D struct{}; obj cObject }
 func NewCSGShape3D() (gdClass CSGShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGShape3D) owner() cObject { return gdClass.obj }
 func (CSGShape3D) class() string { return "CSGShape3D\000" }
 
@@ -4695,6 +4803,7 @@ func (gdClass CSGShape3D) GetMeshes() Array { return methodCall[Array](gdClass.o
 
 type CSGSphere3D struct{_CSGSphere3D struct{}; obj cObject }
 func NewCSGSphere3D() (gdClass CSGSphere3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGSphere3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGSphere3D) owner() cObject { return gdClass.obj }
 func (CSGSphere3D) class() string { return "CSGSphere3D\000" }
 
@@ -4717,6 +4826,7 @@ func (gdClass CSGSphere3D) GetMaterial() Material { return methodCall[Material](
 
 type CSGTorus3D struct{_CSGTorus3D struct{}; obj cObject }
 func NewCSGTorus3D() (gdClass CSGTorus3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CSGTorus3D) Free() { gdClass.obj.destroy() }
 func (gdClass CSGTorus3D) owner() cObject { return gdClass.obj }
 func (CSGTorus3D) class() string { return "CSGTorus3D\000" }
 
@@ -4741,6 +4851,7 @@ func (gdClass CSGTorus3D) GetSmoothFaces() bool { return methodCall[bool](gdClas
 
 type CallbackTweener struct{_CallbackTweener struct{}; obj cObject }
 func NewCallbackTweener() (gdClass CallbackTweener) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CallbackTweener) Free() { gdClass.obj.destroy() }
 func (gdClass CallbackTweener) owner() cObject { return gdClass.obj }
 func (CallbackTweener) class() string { return "CallbackTweener\000" }
 
@@ -4768,6 +4879,7 @@ const (
 
 type Camera2D struct{_Camera2D struct{}; obj cObject }
 func NewCamera2D() (gdClass Camera2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Camera2D) Free() { gdClass.obj.destroy() }
 func (gdClass Camera2D) owner() cObject { return gdClass.obj }
 func (Camera2D) class() string { return "Camera2D\000" }
 
@@ -4846,6 +4958,7 @@ const (
 
 type Camera3D struct{_Camera3D struct{}; obj cObject }
 func NewCamera3D() (gdClass Camera3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Camera3D) Free() { gdClass.obj.destroy() }
 func (gdClass Camera3D) owner() cObject { return gdClass.obj }
 func (Camera3D) class() string { return "Camera3D\000" }
 
@@ -4904,6 +5017,7 @@ func (gdClass Camera3D) GetCullMaskValue(layer_number int64) bool { return metho
 
 type CameraEffects struct{_CameraEffects struct{}; obj cObject }
 func NewCameraEffects() (gdClass CameraEffects) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CameraEffects) Free() { gdClass.obj.destroy() }
 func (gdClass CameraEffects) owner() cObject { return gdClass.obj }
 func (CameraEffects) class() string { return "CameraEffects\000" }
 
@@ -4951,6 +5065,7 @@ const (
 
 type CameraFeed struct{_CameraFeed struct{}; obj cObject }
 func NewCameraFeed() (gdClass CameraFeed) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CameraFeed) Free() { gdClass.obj.destroy() }
 func (gdClass CameraFeed) owner() cObject { return gdClass.obj }
 func (CameraFeed) class() string { return "CameraFeed\000" }
 
@@ -4981,6 +5096,7 @@ var CameraServer CameraServerSingleton
 
 type CameraServerSingleton struct{_CameraServerSingleton struct{}; obj cObject }
 func NewCameraServerSingleton() (gdClass CameraServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CameraServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass CameraServerSingleton) owner() cObject { return gdClass.obj }
 func (CameraServerSingleton) class() string { return "CameraServerSingleton\000" }
 
@@ -4998,6 +5114,7 @@ func (gdClass CameraServerSingleton) RemoveFeed(feed CameraFeed)  { methodCall[s
 
 type CameraTexture struct{_CameraTexture struct{}; obj cObject }
 func NewCameraTexture() (gdClass CameraTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CameraTexture) Free() { gdClass.obj.destroy() }
 func (gdClass CameraTexture) owner() cObject { return gdClass.obj }
 func (CameraTexture) class() string { return "CameraTexture\000" }
 
@@ -5016,6 +5133,7 @@ func (gdClass CameraTexture) GetCameraActive() bool { return methodCall[bool](gd
 
 type CanvasGroup struct{_CanvasGroup struct{}; obj cObject }
 func NewCanvasGroup() (gdClass CanvasGroup) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasGroup) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasGroup) owner() cObject { return gdClass.obj }
 func (CanvasGroup) class() string { return "CanvasGroup\000" }
 
@@ -5057,6 +5175,7 @@ const (
 
 type CanvasItem struct{_CanvasItem struct{}; obj cObject }
 func NewCanvasItem() (gdClass CanvasItem) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasItem) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasItem) owner() cObject { return gdClass.obj }
 func (CanvasItem) class() string { return "CanvasItem\000" }
 
@@ -5169,6 +5288,7 @@ const (
 
 type CanvasItemMaterial struct{_CanvasItemMaterial struct{}; obj cObject }
 func NewCanvasItemMaterial() (gdClass CanvasItemMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasItemMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasItemMaterial) owner() cObject { return gdClass.obj }
 func (CanvasItemMaterial) class() string { return "CanvasItemMaterial\000" }
 
@@ -5193,6 +5313,7 @@ func (gdClass CanvasItemMaterial) GetParticlesAnimLoop() bool { return methodCal
 
 type CanvasLayer struct{_CanvasLayer struct{}; obj cObject }
 func NewCanvasLayer() (gdClass CanvasLayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasLayer) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasLayer) owner() cObject { return gdClass.obj }
 func (CanvasLayer) class() string { return "CanvasLayer\000" }
 
@@ -5226,6 +5347,7 @@ func (gdClass CanvasLayer) GetCanvas() RID { return methodCall[RID](gdClass.obj,
 
 type CanvasModulate struct{_CanvasModulate struct{}; obj cObject }
 func NewCanvasModulate() (gdClass CanvasModulate) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasModulate) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasModulate) owner() cObject { return gdClass.obj }
 func (CanvasModulate) class() string { return "CanvasModulate\000" }
 
@@ -5240,6 +5362,7 @@ func (gdClass CanvasModulate) GetColor() Color { return methodCall[Color](gdClas
 
 type CanvasTexture struct{_CanvasTexture struct{}; obj cObject }
 func NewCanvasTexture() (gdClass CanvasTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CanvasTexture) Free() { gdClass.obj.destroy() }
 func (gdClass CanvasTexture) owner() cObject { return gdClass.obj }
 func (CanvasTexture) class() string { return "CanvasTexture\000" }
 
@@ -5266,6 +5389,7 @@ func (gdClass CanvasTexture) GetTextureRepeat() CanvasItemTextureRepeat { return
 
 type CapsuleMesh struct{_CapsuleMesh struct{}; obj cObject }
 func NewCapsuleMesh() (gdClass CapsuleMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CapsuleMesh) Free() { gdClass.obj.destroy() }
 func (gdClass CapsuleMesh) owner() cObject { return gdClass.obj }
 func (CapsuleMesh) class() string { return "CapsuleMesh\000" }
 
@@ -5286,6 +5410,7 @@ func (gdClass CapsuleMesh) GetRings() int64 { return methodCall[int64](gdClass.o
 
 type CapsuleShape2D struct{_CapsuleShape2D struct{}; obj cObject }
 func NewCapsuleShape2D() (gdClass CapsuleShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CapsuleShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass CapsuleShape2D) owner() cObject { return gdClass.obj }
 func (CapsuleShape2D) class() string { return "CapsuleShape2D\000" }
 
@@ -5302,6 +5427,7 @@ func (gdClass CapsuleShape2D) GetHeight() float64 { return methodCall[float64](g
 
 type CapsuleShape3D struct{_CapsuleShape3D struct{}; obj cObject }
 func NewCapsuleShape3D() (gdClass CapsuleShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CapsuleShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass CapsuleShape3D) owner() cObject { return gdClass.obj }
 func (CapsuleShape3D) class() string { return "CapsuleShape3D\000" }
 
@@ -5318,6 +5444,7 @@ func (gdClass CapsuleShape3D) GetHeight() float64 { return methodCall[float64](g
 
 type CenterContainer struct{_CenterContainer struct{}; obj cObject }
 func NewCenterContainer() (gdClass CenterContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CenterContainer) Free() { gdClass.obj.destroy() }
 func (gdClass CenterContainer) owner() cObject { return gdClass.obj }
 func (CenterContainer) class() string { return "CenterContainer\000" }
 
@@ -5332,6 +5459,7 @@ func (gdClass CenterContainer) IsUsingTopLeft() bool { return methodCall[bool](g
 
 type CharFXTransform struct{_CharFXTransform struct{}; obj cObject }
 func NewCharFXTransform() (gdClass CharFXTransform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CharFXTransform) Free() { gdClass.obj.destroy() }
 func (gdClass CharFXTransform) owner() cObject { return gdClass.obj }
 func (CharFXTransform) class() string { return "CharFXTransform\000" }
 
@@ -5381,6 +5509,7 @@ const (
 
 type CharacterBody2D struct{_CharacterBody2D struct{}; obj cObject }
 func NewCharacterBody2D() (gdClass CharacterBody2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CharacterBody2D) Free() { gdClass.obj.destroy() }
 func (gdClass CharacterBody2D) owner() cObject { return gdClass.obj }
 func (CharacterBody2D) class() string { return "CharacterBody2D\000" }
 
@@ -5455,6 +5584,7 @@ const (
 
 type CharacterBody3D struct{_CharacterBody3D struct{}; obj cObject }
 func NewCharacterBody3D() (gdClass CharacterBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CharacterBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass CharacterBody3D) owner() cObject { return gdClass.obj }
 func (CharacterBody3D) class() string { return "CharacterBody3D\000" }
 
@@ -5514,6 +5644,7 @@ func (gdClass CharacterBody3D) GetLastSlideCollision() KinematicCollision3D { re
 
 type CheckBox struct{_CheckBox struct{}; obj cObject }
 func NewCheckBox() (gdClass CheckBox) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CheckBox) Free() { gdClass.obj.destroy() }
 func (gdClass CheckBox) owner() cObject { return gdClass.obj }
 func (CheckBox) class() string { return "CheckBox\000" }
 
@@ -5525,6 +5656,7 @@ func (gdClass CheckBox) virtual(rtype reflect.Type, name string) (method reflect
 
 type CheckButton struct{_CheckButton struct{}; obj cObject }
 func NewCheckButton() (gdClass CheckButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CheckButton) Free() { gdClass.obj.destroy() }
 func (gdClass CheckButton) owner() cObject { return gdClass.obj }
 func (CheckButton) class() string { return "CheckButton\000" }
 
@@ -5536,6 +5668,7 @@ func (gdClass CheckButton) virtual(rtype reflect.Type, name string) (method refl
 
 type CircleShape2D struct{_CircleShape2D struct{}; obj cObject }
 func NewCircleShape2D() (gdClass CircleShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CircleShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass CircleShape2D) owner() cObject { return gdClass.obj }
 func (CircleShape2D) class() string { return "CircleShape2D\000" }
 
@@ -5551,6 +5684,7 @@ var ClassDB ClassDBSingleton
 
 type ClassDBSingleton struct{_ClassDBSingleton struct{}; obj cObject }
 func NewClassDBSingleton() (gdClass ClassDBSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ClassDBSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass ClassDBSingleton) owner() cObject { return gdClass.obj }
 func (ClassDBSingleton) class() string { return "ClassDBSingleton\000" }
 
@@ -5601,6 +5735,7 @@ const (
 
 type CodeEdit struct{_CodeEdit struct{}; obj cObject }
 func NewCodeEdit() (gdClass CodeEdit) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CodeEdit) Free() { gdClass.obj.destroy() }
 func (gdClass CodeEdit) owner() cObject { return gdClass.obj }
 func (CodeEdit) class() string { return "CodeEdit\000" }
 
@@ -5726,6 +5861,7 @@ func (gdClass CodeEdit) SetSymbolLookupWordAsValid(valid bool)  { methodCall[str
 
 type CodeHighlighter struct{_CodeHighlighter struct{}; obj cObject }
 func NewCodeHighlighter() (gdClass CodeHighlighter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CodeHighlighter) Free() { gdClass.obj.destroy() }
 func (gdClass CodeHighlighter) owner() cObject { return gdClass.obj }
 func (CodeHighlighter) class() string { return "CodeHighlighter\000" }
 
@@ -5774,6 +5910,7 @@ const (
 
 type CollisionObject2D struct{_CollisionObject2D struct{}; obj cObject }
 func NewCollisionObject2D() (gdClass CollisionObject2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionObject2D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionObject2D) owner() cObject { return gdClass.obj }
 func (CollisionObject2D) class() string { return "CollisionObject2D\000" }
 
@@ -5835,6 +5972,7 @@ const (
 
 type CollisionObject3D struct{_CollisionObject3D struct{}; obj cObject }
 func NewCollisionObject3D() (gdClass CollisionObject3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionObject3D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionObject3D) owner() cObject { return gdClass.obj }
 func (CollisionObject3D) class() string { return "CollisionObject3D\000" }
 
@@ -5893,6 +6031,7 @@ const (
 
 type CollisionPolygon2D struct{_CollisionPolygon2D struct{}; obj cObject }
 func NewCollisionPolygon2D() (gdClass CollisionPolygon2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionPolygon2D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionPolygon2D) owner() cObject { return gdClass.obj }
 func (CollisionPolygon2D) class() string { return "CollisionPolygon2D\000" }
 
@@ -5915,6 +6054,7 @@ func (gdClass CollisionPolygon2D) GetOneWayCollisionMargin() float64 { return me
 
 type CollisionPolygon3D struct{_CollisionPolygon3D struct{}; obj cObject }
 func NewCollisionPolygon3D() (gdClass CollisionPolygon3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionPolygon3D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionPolygon3D) owner() cObject { return gdClass.obj }
 func (CollisionPolygon3D) class() string { return "CollisionPolygon3D\000" }
 
@@ -5935,6 +6075,7 @@ func (gdClass CollisionPolygon3D) GetMargin() float64 { return methodCall[float6
 
 type CollisionShape2D struct{_CollisionShape2D struct{}; obj cObject }
 func NewCollisionShape2D() (gdClass CollisionShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionShape2D) owner() cObject { return gdClass.obj }
 func (CollisionShape2D) class() string { return "CollisionShape2D\000" }
 
@@ -5955,6 +6096,7 @@ func (gdClass CollisionShape2D) GetOneWayCollisionMargin() float64 { return meth
 
 type CollisionShape3D struct{_CollisionShape3D struct{}; obj cObject }
 func NewCollisionShape3D() (gdClass CollisionShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CollisionShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass CollisionShape3D) owner() cObject { return gdClass.obj }
 func (CollisionShape3D) class() string { return "CollisionShape3D\000" }
 
@@ -5991,6 +6133,7 @@ const (
 
 type ColorPicker struct{_ColorPicker struct{}; obj cObject }
 func NewColorPicker() (gdClass ColorPicker) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ColorPicker) Free() { gdClass.obj.destroy() }
 func (gdClass ColorPicker) owner() cObject { return gdClass.obj }
 func (ColorPicker) class() string { return "ColorPicker\000" }
 
@@ -6020,6 +6163,7 @@ func (gdClass ColorPicker) GetPickerShape() ColorPickerPickerShapeType { return 
 
 type ColorPickerButton struct{_ColorPickerButton struct{}; obj cObject }
 func NewColorPickerButton() (gdClass ColorPickerButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ColorPickerButton) Free() { gdClass.obj.destroy() }
 func (gdClass ColorPickerButton) owner() cObject { return gdClass.obj }
 func (ColorPickerButton) class() string { return "ColorPickerButton\000" }
 
@@ -6038,6 +6182,7 @@ func (gdClass ColorPickerButton) IsEditingAlpha() bool { return methodCall[bool]
 
 type ColorRect struct{_ColorRect struct{}; obj cObject }
 func NewColorRect() (gdClass ColorRect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ColorRect) Free() { gdClass.obj.destroy() }
 func (gdClass ColorRect) owner() cObject { return gdClass.obj }
 func (ColorRect) class() string { return "ColorRect\000" }
 
@@ -6052,6 +6197,7 @@ func (gdClass ColorRect) GetColor() Color { return methodCall[Color](gdClass.obj
 
 type CompressedCubemap struct{_CompressedCubemap struct{}; obj cObject }
 func NewCompressedCubemap() (gdClass CompressedCubemap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedCubemap) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedCubemap) owner() cObject { return gdClass.obj }
 func (CompressedCubemap) class() string { return "CompressedCubemap\000" }
 
@@ -6063,6 +6209,7 @@ func (gdClass CompressedCubemap) virtual(rtype reflect.Type, name string) (metho
 
 type CompressedCubemapArray struct{_CompressedCubemapArray struct{}; obj cObject }
 func NewCompressedCubemapArray() (gdClass CompressedCubemapArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedCubemapArray) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedCubemapArray) owner() cObject { return gdClass.obj }
 func (CompressedCubemapArray) class() string { return "CompressedCubemapArray\000" }
 
@@ -6074,6 +6221,7 @@ func (gdClass CompressedCubemapArray) virtual(rtype reflect.Type, name string) (
 
 type CompressedTexture2D struct{_CompressedTexture2D struct{}; obj cObject }
 func NewCompressedTexture2D() (gdClass CompressedTexture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedTexture2D) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedTexture2D) owner() cObject { return gdClass.obj }
 func (CompressedTexture2D) class() string { return "CompressedTexture2D\000" }
 
@@ -6088,6 +6236,7 @@ func (gdClass CompressedTexture2D) GetLoadPath() string { return methodCall[stri
 
 type CompressedTexture2DArray struct{_CompressedTexture2DArray struct{}; obj cObject }
 func NewCompressedTexture2DArray() (gdClass CompressedTexture2DArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedTexture2DArray) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedTexture2DArray) owner() cObject { return gdClass.obj }
 func (CompressedTexture2DArray) class() string { return "CompressedTexture2DArray\000" }
 
@@ -6099,6 +6248,7 @@ func (gdClass CompressedTexture2DArray) virtual(rtype reflect.Type, name string)
 
 type CompressedTexture3D struct{_CompressedTexture3D struct{}; obj cObject }
 func NewCompressedTexture3D() (gdClass CompressedTexture3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedTexture3D) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedTexture3D) owner() cObject { return gdClass.obj }
 func (CompressedTexture3D) class() string { return "CompressedTexture3D\000" }
 
@@ -6113,6 +6263,7 @@ func (gdClass CompressedTexture3D) GetLoadPath() string { return methodCall[stri
 
 type CompressedTextureLayered struct{_CompressedTextureLayered struct{}; obj cObject }
 func NewCompressedTextureLayered() (gdClass CompressedTextureLayered) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CompressedTextureLayered) Free() { gdClass.obj.destroy() }
 func (gdClass CompressedTextureLayered) owner() cObject { return gdClass.obj }
 func (CompressedTextureLayered) class() string { return "CompressedTextureLayered\000" }
 
@@ -6127,6 +6278,7 @@ func (gdClass CompressedTextureLayered) GetLoadPath() string { return methodCall
 
 type ConcavePolygonShape2D struct{_ConcavePolygonShape2D struct{}; obj cObject }
 func NewConcavePolygonShape2D() (gdClass ConcavePolygonShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConcavePolygonShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass ConcavePolygonShape2D) owner() cObject { return gdClass.obj }
 func (ConcavePolygonShape2D) class() string { return "ConcavePolygonShape2D\000" }
 
@@ -6141,6 +6293,7 @@ func (gdClass ConcavePolygonShape2D) GetSegments() []Vector2 { return methodCall
 
 type ConcavePolygonShape3D struct{_ConcavePolygonShape3D struct{}; obj cObject }
 func NewConcavePolygonShape3D() (gdClass ConcavePolygonShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConcavePolygonShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass ConcavePolygonShape3D) owner() cObject { return gdClass.obj }
 func (ConcavePolygonShape3D) class() string { return "ConcavePolygonShape3D\000" }
 
@@ -6168,6 +6321,7 @@ const (
 
 type ConeTwistJoint3D struct{_ConeTwistJoint3D struct{}; obj cObject }
 func NewConeTwistJoint3D() (gdClass ConeTwistJoint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConeTwistJoint3D) Free() { gdClass.obj.destroy() }
 func (gdClass ConeTwistJoint3D) owner() cObject { return gdClass.obj }
 func (ConeTwistJoint3D) class() string { return "ConeTwistJoint3D\000" }
 
@@ -6182,6 +6336,7 @@ func (gdClass ConeTwistJoint3D) GetParam(param ConeTwistJoint3DParam) float64 { 
 
 type ConfigFile struct{_ConfigFile struct{}; obj cObject }
 func NewConfigFile() (gdClass ConfigFile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConfigFile) Free() { gdClass.obj.destroy() }
 func (gdClass ConfigFile) owner() cObject { return gdClass.obj }
 func (ConfigFile) class() string { return "ConfigFile\000" }
 
@@ -6210,6 +6365,7 @@ func (gdClass ConfigFile) Clear()  { methodCall[struct{}](gdClass.obj, methodCon
 
 type ConfirmationDialog struct{_ConfirmationDialog struct{}; obj cObject }
 func NewConfirmationDialog() (gdClass ConfirmationDialog) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConfirmationDialog) Free() { gdClass.obj.destroy() }
 func (gdClass ConfirmationDialog) owner() cObject { return gdClass.obj }
 func (ConfirmationDialog) class() string { return "ConfirmationDialog\000" }
 
@@ -6225,6 +6381,7 @@ func (gdClass ConfirmationDialog) GetCancelButtonText() string { return methodCa
 
 type Container struct{_Container struct{}; obj cObject }
 func NewContainer() (gdClass Container) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Container) Free() { gdClass.obj.destroy() }
 func (gdClass Container) owner() cObject { return gdClass.obj }
 func (Container) class() string { return "Container\000" }
 
@@ -6363,6 +6520,7 @@ const (
 
 type Control struct{_Control struct{}; obj cObject }
 func NewControl() (gdClass Control) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Control) Free() { gdClass.obj.destroy() }
 func (gdClass Control) owner() cObject { return gdClass.obj }
 func (Control) class() string { return "Control\000" }
 
@@ -6537,6 +6695,7 @@ func (gdClass Control) IsAutoTranslating() bool { return methodCall[bool](gdClas
 
 type ConvexPolygonShape2D struct{_ConvexPolygonShape2D struct{}; obj cObject }
 func NewConvexPolygonShape2D() (gdClass ConvexPolygonShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConvexPolygonShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass ConvexPolygonShape2D) owner() cObject { return gdClass.obj }
 func (ConvexPolygonShape2D) class() string { return "ConvexPolygonShape2D\000" }
 
@@ -6552,6 +6711,7 @@ func (gdClass ConvexPolygonShape2D) GetPoints() []Vector2 { return methodCall[[]
 
 type ConvexPolygonShape3D struct{_ConvexPolygonShape3D struct{}; obj cObject }
 func NewConvexPolygonShape3D() (gdClass ConvexPolygonShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ConvexPolygonShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass ConvexPolygonShape3D) owner() cObject { return gdClass.obj }
 func (ConvexPolygonShape3D) class() string { return "ConvexPolygonShape3D\000" }
 
@@ -6566,6 +6726,7 @@ func (gdClass ConvexPolygonShape3D) GetPoints() []Vector3 { return methodCall[[]
 
 type Crypto struct{_Crypto struct{}; obj cObject }
 func NewCrypto() (gdClass Crypto) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Crypto) Free() { gdClass.obj.destroy() }
 func (gdClass Crypto) owner() cObject { return gdClass.obj }
 func (Crypto) class() string { return "Crypto\000" }
 
@@ -6587,6 +6748,7 @@ func (gdClass Crypto) ConstantTimeCompare(trusted []byte, received []byte) bool 
 
 type CryptoKey struct{_CryptoKey struct{}; obj cObject }
 func NewCryptoKey() (gdClass CryptoKey) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CryptoKey) Free() { gdClass.obj.destroy() }
 func (gdClass CryptoKey) owner() cObject { return gdClass.obj }
 func (CryptoKey) class() string { return "CryptoKey\000" }
 
@@ -6604,6 +6766,7 @@ func (gdClass CryptoKey) LoadFromString(string_key string, public_only bool) int
 
 type Cubemap struct{_Cubemap struct{}; obj cObject }
 func NewCubemap() (gdClass Cubemap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Cubemap) Free() { gdClass.obj.destroy() }
 func (gdClass Cubemap) owner() cObject { return gdClass.obj }
 func (Cubemap) class() string { return "Cubemap\000" }
 
@@ -6615,6 +6778,7 @@ func (gdClass Cubemap) virtual(rtype reflect.Type, name string) (method reflect.
 
 type CubemapArray struct{_CubemapArray struct{}; obj cObject }
 func NewCubemapArray() (gdClass CubemapArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CubemapArray) Free() { gdClass.obj.destroy() }
 func (gdClass CubemapArray) owner() cObject { return gdClass.obj }
 func (CubemapArray) class() string { return "CubemapArray\000" }
 
@@ -6634,6 +6798,7 @@ const (
 
 type Curve struct{_Curve struct{}; obj cObject }
 func NewCurve() (gdClass Curve) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Curve) Free() { gdClass.obj.destroy() }
 func (gdClass Curve) owner() cObject { return gdClass.obj }
 func (Curve) class() string { return "Curve\000" }
 
@@ -6672,6 +6837,7 @@ func (gdClass Curve) SetBakeResolution(resolution int64)  { methodCall[struct{}]
 
 type Curve2D struct{_Curve2D struct{}; obj cObject }
 func NewCurve2D() (gdClass Curve2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Curve2D) Free() { gdClass.obj.destroy() }
 func (gdClass Curve2D) owner() cObject { return gdClass.obj }
 func (Curve2D) class() string { return "Curve2D\000" }
 
@@ -6705,6 +6871,7 @@ func (gdClass Curve2D) Tessellate(max_stages int64, tolerance_degrees float64) [
 
 type Curve3D struct{_Curve3D struct{}; obj cObject }
 func NewCurve3D() (gdClass Curve3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Curve3D) Free() { gdClass.obj.destroy() }
 func (gdClass Curve3D) owner() cObject { return gdClass.obj }
 func (Curve3D) class() string { return "Curve3D\000" }
 
@@ -6752,6 +6919,7 @@ const (
 
 type CurveTexture struct{_CurveTexture struct{}; obj cObject }
 func NewCurveTexture() (gdClass CurveTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CurveTexture) Free() { gdClass.obj.destroy() }
 func (gdClass CurveTexture) owner() cObject { return gdClass.obj }
 func (CurveTexture) class() string { return "CurveTexture\000" }
 
@@ -6769,6 +6937,7 @@ func (gdClass CurveTexture) GetTextureMode() CurveTextureTextureMode { return me
 
 type CurveXYZTexture struct{_CurveXYZTexture struct{}; obj cObject }
 func NewCurveXYZTexture() (gdClass CurveXYZTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CurveXYZTexture) Free() { gdClass.obj.destroy() }
 func (gdClass CurveXYZTexture) owner() cObject { return gdClass.obj }
 func (CurveXYZTexture) class() string { return "CurveXYZTexture\000" }
 
@@ -6788,6 +6957,7 @@ func (gdClass CurveXYZTexture) GetCurveZ() Curve { return methodCall[Curve](gdCl
 
 type CylinderMesh struct{_CylinderMesh struct{}; obj cObject }
 func NewCylinderMesh() (gdClass CylinderMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CylinderMesh) Free() { gdClass.obj.destroy() }
 func (gdClass CylinderMesh) owner() cObject { return gdClass.obj }
 func (CylinderMesh) class() string { return "CylinderMesh\000" }
 
@@ -6814,6 +6984,7 @@ func (gdClass CylinderMesh) IsCapBottom() bool { return methodCall[bool](gdClass
 
 type CylinderShape3D struct{_CylinderShape3D struct{}; obj cObject }
 func NewCylinderShape3D() (gdClass CylinderShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass CylinderShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass CylinderShape3D) owner() cObject { return gdClass.obj }
 func (CylinderShape3D) class() string { return "CylinderShape3D\000" }
 
@@ -6830,6 +7001,7 @@ func (gdClass CylinderShape3D) GetHeight() float64 { return methodCall[float64](
 
 type DTLSServer struct{_DTLSServer struct{}; obj cObject }
 func NewDTLSServer() (gdClass DTLSServer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass DTLSServer) Free() { gdClass.obj.destroy() }
 func (gdClass DTLSServer) owner() cObject { return gdClass.obj }
 func (DTLSServer) class() string { return "DTLSServer\000" }
 
@@ -6844,6 +7016,7 @@ func (gdClass DTLSServer) TakeConnection(udp_peer PacketPeerUDP) PacketPeerDTLS 
 
 type DampedSpringJoint2D struct{_DampedSpringJoint2D struct{}; obj cObject }
 func NewDampedSpringJoint2D() (gdClass DampedSpringJoint2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass DampedSpringJoint2D) Free() { gdClass.obj.destroy() }
 func (gdClass DampedSpringJoint2D) owner() cObject { return gdClass.obj }
 func (DampedSpringJoint2D) class() string { return "DampedSpringJoint2D\000" }
 
@@ -6874,6 +7047,7 @@ const (
 
 type Decal struct{_Decal struct{}; obj cObject }
 func NewDecal() (gdClass Decal) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Decal) Free() { gdClass.obj.destroy() }
 func (gdClass Decal) owner() cObject { return gdClass.obj }
 func (Decal) class() string { return "Decal\000" }
 
@@ -6910,6 +7084,7 @@ func (gdClass Decal) GetCullMask() int64 { return methodCall[int64](gdClass.obj,
 
 type DirectionalLight2D struct{_DirectionalLight2D struct{}; obj cObject }
 func NewDirectionalLight2D() (gdClass DirectionalLight2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass DirectionalLight2D) Free() { gdClass.obj.destroy() }
 func (gdClass DirectionalLight2D) owner() cObject { return gdClass.obj }
 func (DirectionalLight2D) class() string { return "DirectionalLight2D\000" }
 
@@ -6940,6 +7115,7 @@ const (
 
 type DirectionalLight3D struct{_DirectionalLight3D struct{}; obj cObject }
 func NewDirectionalLight3D() (gdClass DirectionalLight3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass DirectionalLight3D) Free() { gdClass.obj.destroy() }
 func (gdClass DirectionalLight3D) owner() cObject { return gdClass.obj }
 func (DirectionalLight3D) class() string { return "DirectionalLight3D\000" }
 
@@ -6958,6 +7134,7 @@ func (gdClass DirectionalLight3D) GetSkyMode() DirectionalLight3DSkyMode { retur
 
 type Directory struct{_Directory struct{}; obj cObject }
 func NewDirectory() (gdClass Directory) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Directory) Free() { gdClass.obj.destroy() }
 func (gdClass Directory) owner() cObject { return gdClass.obj }
 func (Directory) class() string { return "Directory\000" }
 
@@ -7139,6 +7316,7 @@ var DisplayServer DisplayServerSingleton
 
 type DisplayServerSingleton struct{_DisplayServerSingleton struct{}; obj cObject }
 func NewDisplayServerSingleton() (gdClass DisplayServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass DisplayServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass DisplayServerSingleton) owner() cObject { return gdClass.obj }
 func (DisplayServerSingleton) class() string { return "DisplayServerSingleton\000" }
 
@@ -7327,6 +7505,7 @@ const (
 
 type ENetConnection struct{_ENetConnection struct{}; obj cObject }
 func NewENetConnection() (gdClass ENetConnection) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ENetConnection) Free() { gdClass.obj.destroy() }
 func (gdClass ENetConnection) owner() cObject { return gdClass.obj }
 func (ENetConnection) class() string { return "ENetConnection\000" }
 
@@ -7356,6 +7535,7 @@ func (gdClass ENetConnection) GetPeers() Array { return methodCall[Array](gdClas
 
 type ENetMultiplayerPeer struct{_ENetMultiplayerPeer struct{}; obj cObject }
 func NewENetMultiplayerPeer() (gdClass ENetMultiplayerPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ENetMultiplayerPeer) Free() { gdClass.obj.destroy() }
 func (gdClass ENetMultiplayerPeer) owner() cObject { return gdClass.obj }
 func (ENetMultiplayerPeer) class() string { return "ENetMultiplayerPeer\000" }
 
@@ -7412,6 +7592,7 @@ const (
 
 type ENetPacketPeer struct{_ENetPacketPeer struct{}; obj cObject }
 func NewENetPacketPeer() (gdClass ENetPacketPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ENetPacketPeer) Free() { gdClass.obj.destroy() }
 func (gdClass ENetPacketPeer) owner() cObject { return gdClass.obj }
 func (ENetPacketPeer) class() string { return "ENetPacketPeer\000" }
 
@@ -7439,6 +7620,7 @@ func (gdClass ENetPacketPeer) IsActive() bool { return methodCall[bool](gdClass.
 
 type EditorCommandPalette struct{_EditorCommandPalette struct{}; obj cObject }
 func NewEditorCommandPalette() (gdClass EditorCommandPalette) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorCommandPalette) Free() { gdClass.obj.destroy() }
 func (gdClass EditorCommandPalette) owner() cObject { return gdClass.obj }
 func (EditorCommandPalette) class() string { return "EditorCommandPalette\000" }
 
@@ -7453,6 +7635,7 @@ func (gdClass EditorCommandPalette) RemoveCommand(key_name string)  { methodCall
 
 type EditorDebuggerPlugin struct{_EditorDebuggerPlugin struct{}; obj cObject }
 func NewEditorDebuggerPlugin() (gdClass EditorDebuggerPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorDebuggerPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorDebuggerPlugin) owner() cObject { return gdClass.obj }
 func (EditorDebuggerPlugin) class() string { return "EditorDebuggerPlugin\000" }
 
@@ -7472,6 +7655,7 @@ func (gdClass EditorDebuggerPlugin) IsSessionActive() bool { return methodCall[b
 
 type EditorExportPlugin struct{_EditorExportPlugin struct{}; obj cObject }
 func NewEditorExportPlugin() (gdClass EditorExportPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorExportPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorExportPlugin) owner() cObject { return gdClass.obj }
 func (EditorExportPlugin) class() string { return "EditorExportPlugin\000" }
 
@@ -7525,6 +7709,7 @@ const (
 
 type EditorFeatureProfile struct{_EditorFeatureProfile struct{}; obj cObject }
 func NewEditorFeatureProfile() (gdClass EditorFeatureProfile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorFeatureProfile) Free() { gdClass.obj.destroy() }
 func (gdClass EditorFeatureProfile) owner() cObject { return gdClass.obj }
 func (EditorFeatureProfile) class() string { return "EditorFeatureProfile\000" }
 
@@ -7573,6 +7758,7 @@ const (
 
 type EditorFileDialog struct{_EditorFileDialog struct{}; obj cObject }
 func NewEditorFileDialog() (gdClass EditorFileDialog) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorFileDialog) Free() { gdClass.obj.destroy() }
 func (gdClass EditorFileDialog) owner() cObject { return gdClass.obj }
 func (EditorFileDialog) class() string { return "EditorFileDialog\000" }
 
@@ -7605,6 +7791,7 @@ func (gdClass EditorFileDialog) Invalidate()  { methodCall[struct{}](gdClass.obj
 
 type EditorFileSystem struct{_EditorFileSystem struct{}; obj cObject }
 func NewEditorFileSystem() (gdClass EditorFileSystem) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorFileSystem) Free() { gdClass.obj.destroy() }
 func (gdClass EditorFileSystem) owner() cObject { return gdClass.obj }
 func (EditorFileSystem) class() string { return "EditorFileSystem\000" }
 
@@ -7627,6 +7814,7 @@ func (gdClass EditorFileSystem) ReimportFiles(files []string)  { methodCall[stru
 
 type EditorFileSystemDirectory struct{_EditorFileSystemDirectory struct{}; obj cObject }
 func NewEditorFileSystemDirectory() (gdClass EditorFileSystemDirectory) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorFileSystemDirectory) Free() { gdClass.obj.destroy() }
 func (gdClass EditorFileSystemDirectory) owner() cObject { return gdClass.obj }
 func (EditorFileSystemDirectory) class() string { return "EditorFileSystemDirectory\000" }
 
@@ -7653,6 +7841,7 @@ func (gdClass EditorFileSystemDirectory) FindDirIndex(name string) int64 { retur
 
 type EditorFileSystemImportFormatSupportQuery struct{_EditorFileSystemImportFormatSupportQuery struct{}; obj cObject }
 func NewEditorFileSystemImportFormatSupportQuery() (gdClass EditorFileSystemImportFormatSupportQuery) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorFileSystemImportFormatSupportQuery) Free() { gdClass.obj.destroy() }
 func (gdClass EditorFileSystemImportFormatSupportQuery) owner() cObject { return gdClass.obj }
 func (EditorFileSystemImportFormatSupportQuery) class() string { return "EditorFileSystemImportFormatSupportQuery\000" }
 
@@ -7681,6 +7870,7 @@ func (gdClass EditorFileSystemImportFormatSupportQuery) virtual(rtype reflect.Ty
 
 type EditorImportPlugin struct{_EditorImportPlugin struct{}; obj cObject }
 func NewEditorImportPlugin() (gdClass EditorImportPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorImportPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorImportPlugin) owner() cObject { return gdClass.obj }
 func (EditorImportPlugin) class() string { return "EditorImportPlugin\000" }
 
@@ -7754,6 +7944,7 @@ func (gdClass EditorImportPlugin) virtual(rtype reflect.Type, name string) (meth
 
 type EditorInspector struct{_EditorInspector struct{}; obj cObject }
 func NewEditorInspector() (gdClass EditorInspector) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorInspector) Free() { gdClass.obj.destroy() }
 func (gdClass EditorInspector) owner() cObject { return gdClass.obj }
 func (EditorInspector) class() string { return "EditorInspector\000" }
 
@@ -7765,6 +7956,7 @@ func (gdClass EditorInspector) virtual(rtype reflect.Type, name string) (method 
 
 type EditorInspectorPlugin struct{_EditorInspectorPlugin struct{}; obj cObject }
 func NewEditorInspectorPlugin() (gdClass EditorInspectorPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorInspectorPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorInspectorPlugin) owner() cObject { return gdClass.obj }
 func (EditorInspectorPlugin) class() string { return "EditorInspectorPlugin\000" }
 
@@ -7812,6 +8004,7 @@ func (gdClass EditorInspectorPlugin) AddPropertyEditorForMultipleProperties(labe
 
 type EditorInterface struct{_EditorInterface struct{}; obj cObject }
 func NewEditorInterface() (gdClass EditorInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorInterface) Free() { gdClass.obj.destroy() }
 func (gdClass EditorInterface) owner() cObject { return gdClass.obj }
 func (EditorInterface) class() string { return "EditorInterface\000" }
 
@@ -7862,6 +8055,7 @@ func (gdClass EditorInterface) IsDistractionFreeModeEnabled() bool { return meth
 
 type EditorNode3DGizmo struct{_EditorNode3DGizmo struct{}; obj cObject }
 func NewEditorNode3DGizmo() (gdClass EditorNode3DGizmo) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorNode3DGizmo) Free() { gdClass.obj.destroy() }
 func (gdClass EditorNode3DGizmo) owner() cObject { return gdClass.obj }
 func (EditorNode3DGizmo) class() string { return "EditorNode3DGizmo\000" }
 
@@ -7944,6 +8138,7 @@ func (gdClass EditorNode3DGizmo) GetSubgizmoSelection() []int32 { return methodC
 
 type EditorNode3DGizmoPlugin struct{_EditorNode3DGizmoPlugin struct{}; obj cObject }
 func NewEditorNode3DGizmoPlugin() (gdClass EditorNode3DGizmoPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorNode3DGizmoPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorNode3DGizmoPlugin) owner() cObject { return gdClass.obj }
 func (EditorNode3DGizmoPlugin) class() string { return "EditorNode3DGizmoPlugin\000" }
 
@@ -8048,6 +8243,7 @@ func (gdClass EditorNode3DGizmoPlugin) GetMaterial(name string, gizmo EditorNode
 
 type EditorPaths struct{_EditorPaths struct{}; obj cObject }
 func NewEditorPaths() (gdClass EditorPaths) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorPaths) Free() { gdClass.obj.destroy() }
 func (gdClass EditorPaths) owner() cObject { return gdClass.obj }
 func (EditorPaths) class() string { return "EditorPaths\000" }
 
@@ -8097,6 +8293,7 @@ const (
 
 type EditorPlugin struct{_EditorPlugin struct{}; obj cObject }
 func NewEditorPlugin() (gdClass EditorPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorPlugin) owner() cObject { return gdClass.obj }
 func (EditorPlugin) class() string { return "EditorPlugin\000" }
 
@@ -8267,6 +8464,7 @@ func (gdClass EditorPlugin) RemoveDebuggerPlugin(script Script)  { methodCall[st
 
 type EditorProperty struct{_EditorProperty struct{}; obj cObject }
 func NewEditorProperty() (gdClass EditorProperty) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorProperty) Free() { gdClass.obj.destroy() }
 func (gdClass EditorProperty) owner() cObject { return gdClass.obj }
 func (EditorProperty) class() string { return "EditorProperty\000" }
 
@@ -8306,6 +8504,7 @@ func (gdClass EditorProperty) EmitChanged(property Name, value any, field Name, 
 
 type EditorResourceConversionPlugin struct{_EditorResourceConversionPlugin struct{}; obj cObject }
 func NewEditorResourceConversionPlugin() (gdClass EditorResourceConversionPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorResourceConversionPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorResourceConversionPlugin) owner() cObject { return gdClass.obj }
 func (EditorResourceConversionPlugin) class() string { return "EditorResourceConversionPlugin\000" }
 
@@ -8334,6 +8533,7 @@ func (gdClass EditorResourceConversionPlugin) virtual(rtype reflect.Type, name s
 
 type EditorResourcePicker struct{_EditorResourcePicker struct{}; obj cObject }
 func NewEditorResourcePicker() (gdClass EditorResourcePicker) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorResourcePicker) Free() { gdClass.obj.destroy() }
 func (gdClass EditorResourcePicker) owner() cObject { return gdClass.obj }
 func (EditorResourcePicker) class() string { return "EditorResourcePicker\000" }
 
@@ -8368,6 +8568,7 @@ func (gdClass EditorResourcePicker) IsEditable() bool { return methodCall[bool](
 
 type EditorResourcePreview struct{_EditorResourcePreview struct{}; obj cObject }
 func NewEditorResourcePreview() (gdClass EditorResourcePreview) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorResourcePreview) Free() { gdClass.obj.destroy() }
 func (gdClass EditorResourcePreview) owner() cObject { return gdClass.obj }
 func (EditorResourcePreview) class() string { return "EditorResourcePreview\000" }
 
@@ -8385,6 +8586,7 @@ func (gdClass EditorResourcePreview) CheckForInvalidation(path string)  { method
 
 type EditorResourcePreviewGenerator struct{_EditorResourcePreviewGenerator struct{}; obj cObject }
 func NewEditorResourcePreviewGenerator() (gdClass EditorResourcePreviewGenerator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorResourcePreviewGenerator) Free() { gdClass.obj.destroy() }
 func (gdClass EditorResourcePreviewGenerator) owner() cObject { return gdClass.obj }
 func (EditorResourcePreviewGenerator) class() string { return "EditorResourcePreviewGenerator\000" }
 
@@ -8423,6 +8625,7 @@ func (gdClass EditorResourcePreviewGenerator) virtual(rtype reflect.Type, name s
 
 type EditorSceneFormatImporter struct{_EditorSceneFormatImporter struct{}; obj cObject }
 func NewEditorSceneFormatImporter() (gdClass EditorSceneFormatImporter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSceneFormatImporter) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSceneFormatImporter) owner() cObject { return gdClass.obj }
 func (EditorSceneFormatImporter) class() string { return "EditorSceneFormatImporter\000" }
 
@@ -8461,6 +8664,7 @@ func (gdClass EditorSceneFormatImporter) virtual(rtype reflect.Type, name string
 
 type EditorSceneFormatImporterBlend struct{_EditorSceneFormatImporterBlend struct{}; obj cObject }
 func NewEditorSceneFormatImporterBlend() (gdClass EditorSceneFormatImporterBlend) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSceneFormatImporterBlend) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSceneFormatImporterBlend) owner() cObject { return gdClass.obj }
 func (EditorSceneFormatImporterBlend) class() string { return "EditorSceneFormatImporterBlend\000" }
 
@@ -8472,6 +8676,7 @@ func (gdClass EditorSceneFormatImporterBlend) virtual(rtype reflect.Type, name s
 
 type EditorSceneFormatImporterFBX struct{_EditorSceneFormatImporterFBX struct{}; obj cObject }
 func NewEditorSceneFormatImporterFBX() (gdClass EditorSceneFormatImporterFBX) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSceneFormatImporterFBX) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSceneFormatImporterFBX) owner() cObject { return gdClass.obj }
 func (EditorSceneFormatImporterFBX) class() string { return "EditorSceneFormatImporterFBX\000" }
 
@@ -8483,6 +8688,7 @@ func (gdClass EditorSceneFormatImporterFBX) virtual(rtype reflect.Type, name str
 
 type EditorSceneFormatImporterGLTF struct{_EditorSceneFormatImporterGLTF struct{}; obj cObject }
 func NewEditorSceneFormatImporterGLTF() (gdClass EditorSceneFormatImporterGLTF) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSceneFormatImporterGLTF) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSceneFormatImporterGLTF) owner() cObject { return gdClass.obj }
 func (EditorSceneFormatImporterGLTF) class() string { return "EditorSceneFormatImporterGLTF\000" }
 
@@ -8494,6 +8700,7 @@ func (gdClass EditorSceneFormatImporterGLTF) virtual(rtype reflect.Type, name st
 
 type EditorScenePostImport struct{_EditorScenePostImport struct{}; obj cObject }
 func NewEditorScenePostImport() (gdClass EditorScenePostImport) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorScenePostImport) Free() { gdClass.obj.destroy() }
 func (gdClass EditorScenePostImport) owner() cObject { return gdClass.obj }
 func (EditorScenePostImport) class() string { return "EditorScenePostImport\000" }
 
@@ -8527,6 +8734,7 @@ const (
 
 type EditorScenePostImportPlugin struct{_EditorScenePostImportPlugin struct{}; obj cObject }
 func NewEditorScenePostImportPlugin() (gdClass EditorScenePostImportPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorScenePostImportPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorScenePostImportPlugin) owner() cObject { return gdClass.obj }
 func (EditorScenePostImportPlugin) class() string { return "EditorScenePostImportPlugin\000" }
 
@@ -8584,6 +8792,7 @@ func (gdClass EditorScenePostImportPlugin) AddImportOptionAdvanced(atype Variant
 
 type EditorScript struct{_EditorScript struct{}; obj cObject }
 func NewEditorScript() (gdClass EditorScript) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorScript) Free() { gdClass.obj.destroy() }
 func (gdClass EditorScript) owner() cObject { return gdClass.obj }
 func (EditorScript) class() string { return "EditorScript\000" }
 
@@ -8606,6 +8815,7 @@ func (gdClass EditorScript) GetEditorInterface() EditorInterface { return method
 
 type EditorScriptPicker struct{_EditorScriptPicker struct{}; obj cObject }
 func NewEditorScriptPicker() (gdClass EditorScriptPicker) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorScriptPicker) Free() { gdClass.obj.destroy() }
 func (gdClass EditorScriptPicker) owner() cObject { return gdClass.obj }
 func (EditorScriptPicker) class() string { return "EditorScriptPicker\000" }
 
@@ -8620,6 +8830,7 @@ func (gdClass EditorScriptPicker) GetScriptOwner() Node { return methodCall[Node
 
 type EditorSelection struct{_EditorSelection struct{}; obj cObject }
 func NewEditorSelection() (gdClass EditorSelection) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSelection) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSelection) owner() cObject { return gdClass.obj }
 func (EditorSelection) class() string { return "EditorSelection\000" }
 
@@ -8637,6 +8848,7 @@ func (gdClass EditorSelection) GetTransformableSelectedNodes() Array { return me
 
 type EditorSettings struct{_EditorSettings struct{}; obj cObject }
 func NewEditorSettings() (gdClass EditorSettings) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSettings) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSettings) owner() cObject { return gdClass.obj }
 func (EditorSettings) class() string { return "EditorSettings\000" }
 
@@ -8665,6 +8877,7 @@ func (gdClass EditorSettings) MarkSettingChanged(setting string)  { methodCall[s
 
 type EditorSpinSlider struct{_EditorSpinSlider struct{}; obj cObject }
 func NewEditorSpinSlider() (gdClass EditorSpinSlider) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSpinSlider) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSpinSlider) owner() cObject { return gdClass.obj }
 func (EditorSpinSlider) class() string { return "EditorSpinSlider\000" }
 
@@ -8687,6 +8900,7 @@ func (gdClass EditorSpinSlider) IsHidingSlider() bool { return methodCall[bool](
 
 type EditorSyntaxHighlighter struct{_EditorSyntaxHighlighter struct{}; obj cObject }
 func NewEditorSyntaxHighlighter() (gdClass EditorSyntaxHighlighter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorSyntaxHighlighter) Free() { gdClass.obj.destroy() }
 func (gdClass EditorSyntaxHighlighter) owner() cObject { return gdClass.obj }
 func (EditorSyntaxHighlighter) class() string { return "EditorSyntaxHighlighter\000" }
 
@@ -8710,6 +8924,7 @@ func (gdClass EditorSyntaxHighlighter) virtual(rtype reflect.Type, name string) 
 
 type EditorTranslationParserPlugin struct{_EditorTranslationParserPlugin struct{}; obj cObject }
 func NewEditorTranslationParserPlugin() (gdClass EditorTranslationParserPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorTranslationParserPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass EditorTranslationParserPlugin) owner() cObject { return gdClass.obj }
 func (EditorTranslationParserPlugin) class() string { return "EditorTranslationParserPlugin\000" }
 
@@ -8740,6 +8955,7 @@ const (
 
 type EditorUndoRedoManager struct{_EditorUndoRedoManager struct{}; obj cObject }
 func NewEditorUndoRedoManager() (gdClass EditorUndoRedoManager) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorUndoRedoManager) Free() { gdClass.obj.destroy() }
 func (gdClass EditorUndoRedoManager) owner() cObject { return gdClass.obj }
 func (EditorUndoRedoManager) class() string { return "EditorUndoRedoManager\000" }
 
@@ -8763,6 +8979,7 @@ func (gdClass EditorUndoRedoManager) GetHistoryUndoRedo(id int64) UndoRedo { ret
 
 type EditorVCSInterface struct{_EditorVCSInterface struct{}; obj cObject }
 func NewEditorVCSInterface() (gdClass EditorVCSInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EditorVCSInterface) Free() { gdClass.obj.destroy() }
 func (gdClass EditorVCSInterface) owner() cObject { return gdClass.obj }
 func (EditorVCSInterface) class() string { return "EditorVCSInterface\000" }
 
@@ -8786,6 +9003,7 @@ func (gdClass EditorVCSInterface) GetVcsName() string { return methodCall[string
 
 type EncodedObjectAsID struct{_EncodedObjectAsID struct{}; obj cObject }
 func NewEncodedObjectAsID() (gdClass EncodedObjectAsID) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EncodedObjectAsID) Free() { gdClass.obj.destroy() }
 func (gdClass EncodedObjectAsID) owner() cObject { return gdClass.obj }
 func (EncodedObjectAsID) class() string { return "EncodedObjectAsID\000" }
 
@@ -8801,6 +9019,7 @@ var Engine EngineSingleton
 
 type EngineSingleton struct{_EngineSingleton struct{}; obj cObject }
 func NewEngineSingleton() (gdClass EngineSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EngineSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass EngineSingleton) owner() cObject { return gdClass.obj }
 func (EngineSingleton) class() string { return "EngineSingleton\000" }
 
@@ -8848,6 +9067,7 @@ var EngineDebugger EngineDebuggerSingleton
 
 type EngineDebuggerSingleton struct{_EngineDebuggerSingleton struct{}; obj cObject }
 func NewEngineDebuggerSingleton() (gdClass EngineDebuggerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EngineDebuggerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass EngineDebuggerSingleton) owner() cObject { return gdClass.obj }
 func (EngineDebuggerSingleton) class() string { return "EngineDebuggerSingleton\000" }
 
@@ -8871,6 +9091,7 @@ func (gdClass EngineDebuggerSingleton) SendMessage(message string, data Array)  
 
 type EngineProfiler struct{_EngineProfiler struct{}; obj cObject }
 func NewEngineProfiler() (gdClass EngineProfiler) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass EngineProfiler) Free() { gdClass.obj.destroy() }
 func (gdClass EngineProfiler) owner() cObject { return gdClass.obj }
 func (EngineProfiler) class() string { return "EngineProfiler\000" }
 
@@ -8955,6 +9176,7 @@ const (
 
 type Environment struct{_Environment struct{}; obj cObject }
 func NewEnvironment() (gdClass Environment) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Environment) Free() { gdClass.obj.destroy() }
 func (gdClass Environment) owner() cObject { return gdClass.obj }
 func (Environment) class() string { return "Environment\000" }
 
@@ -9147,6 +9369,7 @@ func (gdClass Environment) GetAdjustmentColorCorrection() Texture { return metho
 
 type Expression struct{_Expression struct{}; obj cObject }
 func NewExpression() (gdClass Expression) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Expression) Free() { gdClass.obj.destroy() }
 func (gdClass Expression) owner() cObject { return gdClass.obj }
 func (Expression) class() string { return "Expression\000" }
 
@@ -9220,6 +9443,7 @@ const (
 
 type FastNoiseLite struct{_FastNoiseLite struct{}; obj cObject }
 func NewFastNoiseLite() (gdClass FastNoiseLite) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FastNoiseLite) Free() { gdClass.obj.destroy() }
 func (gdClass FastNoiseLite) owner() cObject { return gdClass.obj }
 func (FastNoiseLite) class() string { return "FastNoiseLite\000" }
 
@@ -9292,6 +9516,7 @@ const (
 
 type File struct{_File struct{}; obj cObject }
 func NewFile() (gdClass File) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass File) Free() { gdClass.obj.destroy() }
 func (gdClass File) owner() cObject { return gdClass.obj }
 func (File) class() string { return "File\000" }
 
@@ -9369,6 +9594,7 @@ const (
 
 type FileDialog struct{_FileDialog struct{}; obj cObject }
 func NewFileDialog() (gdClass FileDialog) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FileDialog) Free() { gdClass.obj.destroy() }
 func (gdClass FileDialog) owner() cObject { return gdClass.obj }
 func (FileDialog) class() string { return "FileDialog\000" }
 
@@ -9405,6 +9631,7 @@ func (gdClass FileDialog) Invalidate()  { methodCall[struct{}](gdClass.obj, meth
 
 type FileSystemDock struct{_FileSystemDock struct{}; obj cObject }
 func NewFileSystemDock() (gdClass FileSystemDock) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FileSystemDock) Free() { gdClass.obj.destroy() }
 func (gdClass FileSystemDock) owner() cObject { return gdClass.obj }
 func (FileSystemDock) class() string { return "FileSystemDock\000" }
 
@@ -9418,6 +9645,7 @@ func (gdClass FileSystemDock) NavigateToPath(path string)  { methodCall[struct{}
 
 type FlowContainer struct{_FlowContainer struct{}; obj cObject }
 func NewFlowContainer() (gdClass FlowContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FlowContainer) Free() { gdClass.obj.destroy() }
 func (gdClass FlowContainer) owner() cObject { return gdClass.obj }
 func (FlowContainer) class() string { return "FlowContainer\000" }
 
@@ -9431,6 +9659,7 @@ func (gdClass FlowContainer) GetLineCount() int64 { return methodCall[int64](gdC
 
 type FogMaterial struct{_FogMaterial struct{}; obj cObject }
 func NewFogMaterial() (gdClass FogMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FogMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass FogMaterial) owner() cObject { return gdClass.obj }
 func (FogMaterial) class() string { return "FogMaterial\000" }
 
@@ -9455,6 +9684,7 @@ func (gdClass FogMaterial) GetDensityTexture() Texture3D { return methodCall[Tex
 
 type FogVolume struct{_FogVolume struct{}; obj cObject }
 func NewFogVolume() (gdClass FogVolume) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FogVolume) Free() { gdClass.obj.destroy() }
 func (gdClass FogVolume) owner() cObject { return gdClass.obj }
 func (FogVolume) class() string { return "FogVolume\000" }
 
@@ -9473,6 +9703,7 @@ func (gdClass FogVolume) GetMaterial() Material { return methodCall[Material](gd
 
 type Font struct{_Font struct{}; obj cObject }
 func NewFont() (gdClass Font) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Font) Free() { gdClass.obj.destroy() }
 func (gdClass Font) owner() cObject { return gdClass.obj }
 func (Font) class() string { return "Font\000" }
 
@@ -9516,6 +9747,7 @@ func (gdClass Font) GetFaceCount() int64 { return methodCall[int64](gdClass.obj,
 
 type FontFile struct{_FontFile struct{}; obj cObject }
 func NewFontFile() (gdClass FontFile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FontFile) Free() { gdClass.obj.destroy() }
 func (gdClass FontFile) owner() cObject { return gdClass.obj }
 func (FontFile) class() string { return "FontFile\000" }
 
@@ -9617,6 +9849,7 @@ func (gdClass FontFile) GetGlyphIndex(size int64, char int64, variation_selector
 
 type FontVariation struct{_FontVariation struct{}; obj cObject }
 func NewFontVariation() (gdClass FontVariation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FontVariation) Free() { gdClass.obj.destroy() }
 func (gdClass FontVariation) owner() cObject { return gdClass.obj }
 func (FontVariation) class() string { return "FontVariation\000" }
 
@@ -9641,6 +9874,7 @@ func (gdClass FontVariation) SetSpacing(spacing TextServerSpacingType, value int
 
 type FramebufferCacheRD struct{_FramebufferCacheRD struct{}; obj cObject }
 func NewFramebufferCacheRD() (gdClass FramebufferCacheRD) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass FramebufferCacheRD) Free() { gdClass.obj.destroy() }
 func (gdClass FramebufferCacheRD) owner() cObject { return gdClass.obj }
 func (FramebufferCacheRD) class() string { return "FramebufferCacheRD\000" }
 
@@ -9652,6 +9886,7 @@ func (gdClass FramebufferCacheRD) virtual(rtype reflect.Type, name string) (meth
 
 type GDScript struct{_GDScript struct{}; obj cObject }
 func NewGDScript() (gdClass GDScript) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GDScript) Free() { gdClass.obj.destroy() }
 func (gdClass GDScript) owner() cObject { return gdClass.obj }
 func (GDScript) class() string { return "GDScript\000" }
 
@@ -9666,6 +9901,7 @@ func (gdClass GDScript) GetAsByteCode() []byte { return methodCall[[]byte](gdCla
 
 type GDScriptEditorTranslationParserPlugin struct{_GDScriptEditorTranslationParserPlugin struct{}; obj cObject }
 func NewGDScriptEditorTranslationParserPlugin() (gdClass GDScriptEditorTranslationParserPlugin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GDScriptEditorTranslationParserPlugin) Free() { gdClass.obj.destroy() }
 func (gdClass GDScriptEditorTranslationParserPlugin) owner() cObject { return gdClass.obj }
 func (GDScriptEditorTranslationParserPlugin) class() string { return "GDScriptEditorTranslationParserPlugin\000" }
 
@@ -9677,6 +9913,7 @@ func (gdClass GDScriptEditorTranslationParserPlugin) virtual(rtype reflect.Type,
 
 type GDScriptNativeClass struct{_GDScriptNativeClass struct{}; obj cObject }
 func NewGDScriptNativeClass() (gdClass GDScriptNativeClass) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GDScriptNativeClass) Free() { gdClass.obj.destroy() }
 func (gdClass GDScriptNativeClass) owner() cObject { return gdClass.obj }
 func (GDScriptNativeClass) class() string { return "GDScriptNativeClass\000" }
 
@@ -9690,6 +9927,7 @@ func (gdClass GDScriptNativeClass) New() any { return methodCall[any](gdClass.ob
 
 type GLTFAccessor struct{_GLTFAccessor struct{}; obj cObject }
 func NewGLTFAccessor() (gdClass GLTFAccessor) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFAccessor) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFAccessor) owner() cObject { return gdClass.obj }
 func (GLTFAccessor) class() string { return "GLTFAccessor\000" }
 
@@ -9730,6 +9968,7 @@ func (gdClass GLTFAccessor) SetSparseValuesByteOffset(sparse_values_byte_offset 
 
 type GLTFAnimation struct{_GLTFAnimation struct{}; obj cObject }
 func NewGLTFAnimation() (gdClass GLTFAnimation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFAnimation) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFAnimation) owner() cObject { return gdClass.obj }
 func (GLTFAnimation) class() string { return "GLTFAnimation\000" }
 
@@ -9744,6 +9983,7 @@ func (gdClass GLTFAnimation) SetLoop(loop bool)  { methodCall[struct{}](gdClass.
 
 type GLTFBufferView struct{_GLTFBufferView struct{}; obj cObject }
 func NewGLTFBufferView() (gdClass GLTFBufferView) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFBufferView) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFBufferView) owner() cObject { return gdClass.obj }
 func (GLTFBufferView) class() string { return "GLTFBufferView\000" }
 
@@ -9766,6 +10006,7 @@ func (gdClass GLTFBufferView) SetIndices(indices bool)  { methodCall[struct{}](g
 
 type GLTFCamera struct{_GLTFCamera struct{}; obj cObject }
 func NewGLTFCamera() (gdClass GLTFCamera) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFCamera) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFCamera) owner() cObject { return gdClass.obj }
 func (GLTFCamera) class() string { return "GLTFCamera\000" }
 
@@ -9788,6 +10029,7 @@ func (gdClass GLTFCamera) SetDepthNear(zdepth_near float64)  { methodCall[struct
 
 type GLTFDocument struct{_GLTFDocument struct{}; obj cObject }
 func NewGLTFDocument() (gdClass GLTFDocument) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFDocument) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFDocument) owner() cObject { return gdClass.obj }
 func (GLTFDocument) class() string { return "GLTFDocument\000" }
 
@@ -9808,6 +10050,7 @@ func (gdClass GLTFDocument) GetExtensions() Array { return methodCall[Array](gdC
 
 type GLTFDocumentExtension struct{_GLTFDocumentExtension struct{}; obj cObject }
 func NewGLTFDocumentExtension() (gdClass GLTFDocumentExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFDocumentExtension) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFDocumentExtension) owner() cObject { return gdClass.obj }
 func (GLTFDocumentExtension) class() string { return "GLTFDocumentExtension\000" }
 
@@ -9856,6 +10099,7 @@ func (gdClass GLTFDocumentExtension) virtual(rtype reflect.Type, name string) (m
 
 type GLTFDocumentExtensionConvertImporterMesh struct{_GLTFDocumentExtensionConvertImporterMesh struct{}; obj cObject }
 func NewGLTFDocumentExtensionConvertImporterMesh() (gdClass GLTFDocumentExtensionConvertImporterMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFDocumentExtensionConvertImporterMesh) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFDocumentExtensionConvertImporterMesh) owner() cObject { return gdClass.obj }
 func (GLTFDocumentExtensionConvertImporterMesh) class() string { return "GLTFDocumentExtensionConvertImporterMesh\000" }
 
@@ -9867,6 +10111,7 @@ func (gdClass GLTFDocumentExtensionConvertImporterMesh) virtual(rtype reflect.Ty
 
 type GLTFLight struct{_GLTFLight struct{}; obj cObject }
 func NewGLTFLight() (gdClass GLTFLight) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFLight) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFLight) owner() cObject { return gdClass.obj }
 func (GLTFLight) class() string { return "GLTFLight\000" }
 
@@ -9891,6 +10136,7 @@ func (gdClass GLTFLight) SetOuterConeAngle(outer_cone_angle float64)  { methodCa
 
 type GLTFMesh struct{_GLTFMesh struct{}; obj cObject }
 func NewGLTFMesh() (gdClass GLTFMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFMesh) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFMesh) owner() cObject { return gdClass.obj }
 func (GLTFMesh) class() string { return "GLTFMesh\000" }
 
@@ -9909,6 +10155,7 @@ func (gdClass GLTFMesh) SetInstanceMaterials(instance_materials Array)  { method
 
 type GLTFNode struct{_GLTFNode struct{}; obj cObject }
 func NewGLTFNode() (gdClass GLTFNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFNode) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFNode) owner() cObject { return gdClass.obj }
 func (GLTFNode) class() string { return "GLTFNode\000" }
 
@@ -9947,6 +10194,7 @@ func (gdClass GLTFNode) SetLight(light int64)  { methodCall[struct{}](gdClass.ob
 
 type GLTFSkeleton struct{_GLTFSkeleton struct{}; obj cObject }
 func NewGLTFSkeleton() (gdClass GLTFSkeleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFSkeleton) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFSkeleton) owner() cObject { return gdClass.obj }
 func (GLTFSkeleton) class() string { return "GLTFSkeleton\000" }
 
@@ -9970,6 +10218,7 @@ func (gdClass GLTFSkeleton) GetBoneAttachment(idx int64) BoneAttachment3D { retu
 
 type GLTFSkin struct{_GLTFSkin struct{}; obj cObject }
 func NewGLTFSkin() (gdClass GLTFSkin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFSkin) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFSkin) owner() cObject { return gdClass.obj }
 func (GLTFSkin) class() string { return "GLTFSkin\000" }
 
@@ -10002,6 +10251,7 @@ func (gdClass GLTFSkin) SetGodotSkin(godot_skin Skin)  { methodCall[struct{}](gd
 
 type GLTFSpecGloss struct{_GLTFSpecGloss struct{}; obj cObject }
 func NewGLTFSpecGloss() (gdClass GLTFSpecGloss) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFSpecGloss) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFSpecGloss) owner() cObject { return gdClass.obj }
 func (GLTFSpecGloss) class() string { return "GLTFSpecGloss\000" }
 
@@ -10024,6 +10274,7 @@ func (gdClass GLTFSpecGloss) SetSpecGlossImg(spec_gloss_img Image)  { methodCall
 
 type GLTFState struct{_GLTFState struct{}; obj cObject }
 func NewGLTFState() (gdClass GLTFState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFState) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFState) owner() cObject { return gdClass.obj }
 func (GLTFState) class() string { return "GLTFState\000" }
 
@@ -10089,6 +10340,7 @@ func (gdClass GLTFState) GetSceneNode(idx int64) Node { return methodCall[Node](
 
 type GLTFTexture struct{_GLTFTexture struct{}; obj cObject }
 func NewGLTFTexture() (gdClass GLTFTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GLTFTexture) Free() { gdClass.obj.destroy() }
 func (gdClass GLTFTexture) owner() cObject { return gdClass.obj }
 func (GLTFTexture) class() string { return "GLTFTexture\000" }
 
@@ -10121,6 +10373,7 @@ const (
 
 type GPUParticles2D struct{_GPUParticles2D struct{}; obj cObject }
 func NewGPUParticles2D() (gdClass GPUParticles2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticles2D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticles2D) owner() cObject { return gdClass.obj }
 func (GPUParticles2D) class() string { return "GPUParticles2D\000" }
 
@@ -10208,6 +10461,7 @@ const (
 
 type GPUParticles3D struct{_GPUParticles3D struct{}; obj cObject }
 func NewGPUParticles3D() (gdClass GPUParticles3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticles3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticles3D) owner() cObject { return gdClass.obj }
 func (GPUParticles3D) class() string { return "GPUParticles3D\000" }
 
@@ -10269,6 +10523,7 @@ func (gdClass GPUParticles3D) GetTransformAlign() GPUParticles3DTransformAlign {
 
 type GPUParticlesAttractor3D struct{_GPUParticlesAttractor3D struct{}; obj cObject }
 func NewGPUParticlesAttractor3D() (gdClass GPUParticlesAttractor3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesAttractor3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesAttractor3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesAttractor3D) class() string { return "GPUParticlesAttractor3D\000" }
 
@@ -10289,6 +10544,7 @@ func (gdClass GPUParticlesAttractor3D) GetDirectionality() float64 { return meth
 
 type GPUParticlesAttractorBox3D struct{_GPUParticlesAttractorBox3D struct{}; obj cObject }
 func NewGPUParticlesAttractorBox3D() (gdClass GPUParticlesAttractorBox3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesAttractorBox3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesAttractorBox3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesAttractorBox3D) class() string { return "GPUParticlesAttractorBox3D\000" }
 
@@ -10303,6 +10559,7 @@ func (gdClass GPUParticlesAttractorBox3D) GetExtents() Vector3 { return methodCa
 
 type GPUParticlesAttractorSphere3D struct{_GPUParticlesAttractorSphere3D struct{}; obj cObject }
 func NewGPUParticlesAttractorSphere3D() (gdClass GPUParticlesAttractorSphere3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesAttractorSphere3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesAttractorSphere3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesAttractorSphere3D) class() string { return "GPUParticlesAttractorSphere3D\000" }
 
@@ -10317,6 +10574,7 @@ func (gdClass GPUParticlesAttractorSphere3D) GetRadius() float64 { return method
 
 type GPUParticlesAttractorVectorField3D struct{_GPUParticlesAttractorVectorField3D struct{}; obj cObject }
 func NewGPUParticlesAttractorVectorField3D() (gdClass GPUParticlesAttractorVectorField3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesAttractorVectorField3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesAttractorVectorField3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesAttractorVectorField3D) class() string { return "GPUParticlesAttractorVectorField3D\000" }
 
@@ -10333,6 +10591,7 @@ func (gdClass GPUParticlesAttractorVectorField3D) GetTexture() Texture3D { retur
 
 type GPUParticlesCollision3D struct{_GPUParticlesCollision3D struct{}; obj cObject }
 func NewGPUParticlesCollision3D() (gdClass GPUParticlesCollision3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesCollision3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesCollision3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesCollision3D) class() string { return "GPUParticlesCollision3D\000" }
 
@@ -10347,6 +10606,7 @@ func (gdClass GPUParticlesCollision3D) GetCullMask() int64 { return methodCall[i
 
 type GPUParticlesCollisionBox3D struct{_GPUParticlesCollisionBox3D struct{}; obj cObject }
 func NewGPUParticlesCollisionBox3D() (gdClass GPUParticlesCollisionBox3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesCollisionBox3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesCollisionBox3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesCollisionBox3D) class() string { return "GPUParticlesCollisionBox3D\000" }
 
@@ -10380,6 +10640,7 @@ const (
 
 type GPUParticlesCollisionHeightField3D struct{_GPUParticlesCollisionHeightField3D struct{}; obj cObject }
 func NewGPUParticlesCollisionHeightField3D() (gdClass GPUParticlesCollisionHeightField3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesCollisionHeightField3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesCollisionHeightField3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesCollisionHeightField3D) class() string { return "GPUParticlesCollisionHeightField3D\000" }
 
@@ -10412,6 +10673,7 @@ const (
 
 type GPUParticlesCollisionSDF3D struct{_GPUParticlesCollisionSDF3D struct{}; obj cObject }
 func NewGPUParticlesCollisionSDF3D() (gdClass GPUParticlesCollisionSDF3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesCollisionSDF3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesCollisionSDF3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesCollisionSDF3D) class() string { return "GPUParticlesCollisionSDF3D\000" }
 
@@ -10436,6 +10698,7 @@ func (gdClass GPUParticlesCollisionSDF3D) GetBakeMaskValue(layer_number int64) b
 
 type GPUParticlesCollisionSphere3D struct{_GPUParticlesCollisionSphere3D struct{}; obj cObject }
 func NewGPUParticlesCollisionSphere3D() (gdClass GPUParticlesCollisionSphere3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GPUParticlesCollisionSphere3D) Free() { gdClass.obj.destroy() }
 func (gdClass GPUParticlesCollisionSphere3D) owner() cObject { return gdClass.obj }
 func (GPUParticlesCollisionSphere3D) class() string { return "GPUParticlesCollisionSphere3D\000" }
 
@@ -10490,6 +10753,7 @@ const (
 
 type Generic6DOFJoint3D struct{_Generic6DOFJoint3D struct{}; obj cObject }
 func NewGeneric6DOFJoint3D() (gdClass Generic6DOFJoint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Generic6DOFJoint3D) Free() { gdClass.obj.destroy() }
 func (gdClass Generic6DOFJoint3D) owner() cObject { return gdClass.obj }
 func (Generic6DOFJoint3D) class() string { return "Generic6DOFJoint3D\000" }
 
@@ -10542,6 +10806,7 @@ var Geometry2D Geometry2DSingleton
 
 type Geometry2DSingleton struct{_Geometry2DSingleton struct{}; obj cObject }
 func NewGeometry2DSingleton() (gdClass Geometry2DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Geometry2DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass Geometry2DSingleton) owner() cObject { return gdClass.obj }
 func (Geometry2DSingleton) class() string { return "Geometry2DSingleton\000" }
 
@@ -10577,6 +10842,7 @@ var Geometry3D Geometry3DSingleton
 
 type Geometry3DSingleton struct{_Geometry3DSingleton struct{}; obj cObject }
 func NewGeometry3DSingleton() (gdClass Geometry3DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Geometry3DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass Geometry3DSingleton) owner() cObject { return gdClass.obj }
 func (Geometry3DSingleton) class() string { return "Geometry3DSingleton\000" }
 
@@ -10636,6 +10902,7 @@ const (
 
 type GeometryInstance3D struct{_GeometryInstance3D struct{}; obj cObject }
 func NewGeometryInstance3D() (gdClass GeometryInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GeometryInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass GeometryInstance3D) owner() cObject { return gdClass.obj }
 func (GeometryInstance3D) class() string { return "GeometryInstance3D\000" }
 
@@ -10679,6 +10946,7 @@ func (gdClass GeometryInstance3D) SetCustomAabb(aabb AABB)  { methodCall[struct{
 
 type GodotPhysicsServer2D struct{_GodotPhysicsServer2D struct{}; obj cObject }
 func NewGodotPhysicsServer2D() (gdClass GodotPhysicsServer2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GodotPhysicsServer2D) Free() { gdClass.obj.destroy() }
 func (gdClass GodotPhysicsServer2D) owner() cObject { return gdClass.obj }
 func (GodotPhysicsServer2D) class() string { return "GodotPhysicsServer2D\000" }
 
@@ -10690,6 +10958,7 @@ func (gdClass GodotPhysicsServer2D) virtual(rtype reflect.Type, name string) (me
 
 type GodotPhysicsServer3D struct{_GodotPhysicsServer3D struct{}; obj cObject }
 func NewGodotPhysicsServer3D() (gdClass GodotPhysicsServer3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GodotPhysicsServer3D) Free() { gdClass.obj.destroy() }
 func (gdClass GodotPhysicsServer3D) owner() cObject { return gdClass.obj }
 func (GodotPhysicsServer3D) class() string { return "GodotPhysicsServer3D\000" }
 
@@ -10709,6 +10978,7 @@ const (
 
 type Gradient struct{_Gradient struct{}; obj cObject }
 func NewGradient() (gdClass Gradient) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Gradient) Free() { gdClass.obj.destroy() }
 func (gdClass Gradient) owner() cObject { return gdClass.obj }
 func (Gradient) class() string { return "Gradient\000" }
 
@@ -10736,6 +11006,7 @@ func (gdClass Gradient) GetInterpolationMode() GradientInterpolationMode { retur
 
 type GradientTexture1D struct{_GradientTexture1D struct{}; obj cObject }
 func NewGradientTexture1D() (gdClass GradientTexture1D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GradientTexture1D) Free() { gdClass.obj.destroy() }
 func (gdClass GradientTexture1D) owner() cObject { return gdClass.obj }
 func (GradientTexture1D) class() string { return "GradientTexture1D\000" }
 
@@ -10768,6 +11039,7 @@ const (
 
 type GradientTexture2D struct{_GradientTexture2D struct{}; obj cObject }
 func NewGradientTexture2D() (gdClass GradientTexture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GradientTexture2D) Free() { gdClass.obj.destroy() }
 func (gdClass GradientTexture2D) owner() cObject { return gdClass.obj }
 func (GradientTexture2D) class() string { return "GradientTexture2D\000" }
 
@@ -10801,6 +11073,7 @@ const (
 
 type GraphEdit struct{_GraphEdit struct{}; obj cObject }
 func NewGraphEdit() (gdClass GraphEdit) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GraphEdit) Free() { gdClass.obj.destroy() }
 func (gdClass GraphEdit) owner() cObject { return gdClass.obj }
 func (GraphEdit) class() string { return "GraphEdit\000" }
 
@@ -10895,6 +11168,7 @@ const (
 
 type GraphNode struct{_GraphNode struct{}; obj cObject }
 func NewGraphNode() (gdClass GraphNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GraphNode) Free() { gdClass.obj.destroy() }
 func (gdClass GraphNode) owner() cObject { return gdClass.obj }
 func (GraphNode) class() string { return "GraphNode\000" }
 
@@ -10956,6 +11230,7 @@ func (gdClass GraphNode) GetOverlay() GraphNodeOverlay { return methodCall[Graph
 
 type GridContainer struct{_GridContainer struct{}; obj cObject }
 func NewGridContainer() (gdClass GridContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GridContainer) Free() { gdClass.obj.destroy() }
 func (gdClass GridContainer) owner() cObject { return gdClass.obj }
 func (GridContainer) class() string { return "GridContainer\000" }
 
@@ -10970,6 +11245,7 @@ func (gdClass GridContainer) GetColumns() int64 { return methodCall[int64](gdCla
 
 type GridMap struct{_GridMap struct{}; obj cObject }
 func NewGridMap() (gdClass GridMap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GridMap) Free() { gdClass.obj.destroy() }
 func (gdClass GridMap) owner() cObject { return gdClass.obj }
 func (GridMap) class() string { return "GridMap\000" }
 
@@ -11029,6 +11305,7 @@ func (gdClass GridMap) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_s
 
 type GrooveJoint2D struct{_GrooveJoint2D struct{}; obj cObject }
 func NewGrooveJoint2D() (gdClass GrooveJoint2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass GrooveJoint2D) Free() { gdClass.obj.destroy() }
 func (gdClass GrooveJoint2D) owner() cObject { return gdClass.obj }
 func (GrooveJoint2D) class() string { return "GrooveJoint2D\000" }
 
@@ -11045,6 +11322,7 @@ func (gdClass GrooveJoint2D) GetInitialOffset() float64 { return methodCall[floa
 
 type HBoxContainer struct{_HBoxContainer struct{}; obj cObject }
 func NewHBoxContainer() (gdClass HBoxContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HBoxContainer) Free() { gdClass.obj.destroy() }
 func (gdClass HBoxContainer) owner() cObject { return gdClass.obj }
 func (HBoxContainer) class() string { return "HBoxContainer\000" }
 
@@ -11056,6 +11334,7 @@ func (gdClass HBoxContainer) virtual(rtype reflect.Type, name string) (method re
 
 type HFlowContainer struct{_HFlowContainer struct{}; obj cObject }
 func NewHFlowContainer() (gdClass HFlowContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HFlowContainer) Free() { gdClass.obj.destroy() }
 func (gdClass HFlowContainer) owner() cObject { return gdClass.obj }
 func (HFlowContainer) class() string { return "HFlowContainer\000" }
 
@@ -11067,6 +11346,7 @@ func (gdClass HFlowContainer) virtual(rtype reflect.Type, name string) (method r
 
 type HMACContext struct{_HMACContext struct{}; obj cObject }
 func NewHMACContext() (gdClass HMACContext) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HMACContext) Free() { gdClass.obj.destroy() }
 func (gdClass HMACContext) owner() cObject { return gdClass.obj }
 func (HMACContext) class() string { return "HMACContext\000" }
 
@@ -11082,6 +11362,7 @@ func (gdClass HMACContext) Finish() []byte { return methodCall[[]byte](gdClass.o
 
 type HScrollBar struct{_HScrollBar struct{}; obj cObject }
 func NewHScrollBar() (gdClass HScrollBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HScrollBar) Free() { gdClass.obj.destroy() }
 func (gdClass HScrollBar) owner() cObject { return gdClass.obj }
 func (HScrollBar) class() string { return "HScrollBar\000" }
 
@@ -11093,6 +11374,7 @@ func (gdClass HScrollBar) virtual(rtype reflect.Type, name string) (method refle
 
 type HSeparator struct{_HSeparator struct{}; obj cObject }
 func NewHSeparator() (gdClass HSeparator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HSeparator) Free() { gdClass.obj.destroy() }
 func (gdClass HSeparator) owner() cObject { return gdClass.obj }
 func (HSeparator) class() string { return "HSeparator\000" }
 
@@ -11104,6 +11386,7 @@ func (gdClass HSeparator) virtual(rtype reflect.Type, name string) (method refle
 
 type HSlider struct{_HSlider struct{}; obj cObject }
 func NewHSlider() (gdClass HSlider) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HSlider) Free() { gdClass.obj.destroy() }
 func (gdClass HSlider) owner() cObject { return gdClass.obj }
 func (HSlider) class() string { return "HSlider\000" }
 
@@ -11115,6 +11398,7 @@ func (gdClass HSlider) virtual(rtype reflect.Type, name string) (method reflect.
 
 type HSplitContainer struct{_HSplitContainer struct{}; obj cObject }
 func NewHSplitContainer() (gdClass HSplitContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HSplitContainer) Free() { gdClass.obj.destroy() }
 func (gdClass HSplitContainer) owner() cObject { return gdClass.obj }
 func (HSplitContainer) class() string { return "HSplitContainer\000" }
 
@@ -11222,6 +11506,7 @@ const (
 
 type HTTPClient struct{_HTTPClient struct{}; obj cObject }
 func NewHTTPClient() (gdClass HTTPClient) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HTTPClient) Free() { gdClass.obj.destroy() }
 func (gdClass HTTPClient) owner() cObject { return gdClass.obj }
 func (HTTPClient) class() string { return "HTTPClient\000" }
 
@@ -11275,6 +11560,7 @@ const (
 
 type HTTPRequest struct{_HTTPRequest struct{}; obj cObject }
 func NewHTTPRequest() (gdClass HTTPRequest) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HTTPRequest) Free() { gdClass.obj.destroy() }
 func (gdClass HTTPRequest) owner() cObject { return gdClass.obj }
 func (HTTPRequest) class() string { return "HTTPRequest\000" }
 
@@ -11317,6 +11603,7 @@ const (
 
 type HashingContext struct{_HashingContext struct{}; obj cObject }
 func NewHashingContext() (gdClass HashingContext) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HashingContext) Free() { gdClass.obj.destroy() }
 func (gdClass HashingContext) owner() cObject { return gdClass.obj }
 func (HashingContext) class() string { return "HashingContext\000" }
 
@@ -11332,6 +11619,7 @@ func (gdClass HashingContext) Finish() []byte { return methodCall[[]byte](gdClas
 
 type HeightMapShape3D struct{_HeightMapShape3D struct{}; obj cObject }
 func NewHeightMapShape3D() (gdClass HeightMapShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HeightMapShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass HeightMapShape3D) owner() cObject { return gdClass.obj }
 func (HeightMapShape3D) class() string { return "HeightMapShape3D\000" }
 
@@ -11372,6 +11660,7 @@ const (
 
 type HingeJoint3D struct{_HingeJoint3D struct{}; obj cObject }
 func NewHingeJoint3D() (gdClass HingeJoint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass HingeJoint3D) Free() { gdClass.obj.destroy() }
 func (gdClass HingeJoint3D) owner() cObject { return gdClass.obj }
 func (HingeJoint3D) class() string { return "HingeJoint3D\000" }
 
@@ -11407,6 +11696,7 @@ var IP IPSingleton
 
 type IPSingleton struct{_IPSingleton struct{}; obj cObject }
 func NewIPSingleton() (gdClass IPSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass IPSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass IPSingleton) owner() cObject { return gdClass.obj }
 func (IPSingleton) class() string { return "IPSingleton\000" }
 
@@ -11429,6 +11719,7 @@ func (gdClass IPSingleton) ClearCache(hostname string)  { methodCall[struct{}](g
 
 type IPUnix struct{_IPUnix struct{}; obj cObject }
 func NewIPUnix() (gdClass IPUnix) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass IPUnix) Free() { gdClass.obj.destroy() }
 func (gdClass IPUnix) owner() cObject { return gdClass.obj }
 func (IPUnix) class() string { return "IPUnix\000" }
 
@@ -11527,6 +11818,7 @@ const (
 
 type Image struct{_Image struct{}; obj cObject }
 func NewImage() (gdClass Image) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Image) Free() { gdClass.obj.destroy() }
 func (gdClass Image) owner() cObject { return gdClass.obj }
 func (Image) class() string { return "Image\000" }
 
@@ -11603,6 +11895,7 @@ func (gdClass Image) LoadBmpFromBuffer(buffer []byte) int64 { return methodCall[
 
 type ImageTexture struct{_ImageTexture struct{}; obj cObject }
 func NewImageTexture() (gdClass ImageTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImageTexture) Free() { gdClass.obj.destroy() }
 func (gdClass ImageTexture) owner() cObject { return gdClass.obj }
 func (ImageTexture) class() string { return "ImageTexture\000" }
 
@@ -11620,6 +11913,7 @@ func (gdClass ImageTexture) SetSizeOverride(size Vector2i)  { methodCall[struct{
 
 type ImageTexture3D struct{_ImageTexture3D struct{}; obj cObject }
 func NewImageTexture3D() (gdClass ImageTexture3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImageTexture3D) Free() { gdClass.obj.destroy() }
 func (gdClass ImageTexture3D) owner() cObject { return gdClass.obj }
 func (ImageTexture3D) class() string { return "ImageTexture3D\000" }
 
@@ -11634,6 +11928,7 @@ func (gdClass ImageTexture3D) Update(data Array)  { methodCall[struct{}](gdClass
 
 type ImageTextureLayered struct{_ImageTextureLayered struct{}; obj cObject }
 func NewImageTextureLayered() (gdClass ImageTextureLayered) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImageTextureLayered) Free() { gdClass.obj.destroy() }
 func (gdClass ImageTextureLayered) owner() cObject { return gdClass.obj }
 func (ImageTextureLayered) class() string { return "ImageTextureLayered\000" }
 
@@ -11648,6 +11943,7 @@ func (gdClass ImageTextureLayered) UpdateLayer(image Image, layer int64)  { meth
 
 type ImmediateMesh struct{_ImmediateMesh struct{}; obj cObject }
 func NewImmediateMesh() (gdClass ImmediateMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImmediateMesh) Free() { gdClass.obj.destroy() }
 func (gdClass ImmediateMesh) owner() cObject { return gdClass.obj }
 func (ImmediateMesh) class() string { return "ImmediateMesh\000" }
 
@@ -11670,6 +11966,7 @@ func (gdClass ImmediateMesh) ClearSurfaces()  { methodCall[struct{}](gdClass.obj
 
 type ImporterMesh struct{_ImporterMesh struct{}; obj cObject }
 func NewImporterMesh() (gdClass ImporterMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImporterMesh) Free() { gdClass.obj.destroy() }
 func (gdClass ImporterMesh) owner() cObject { return gdClass.obj }
 func (ImporterMesh) class() string { return "ImporterMesh\000" }
 
@@ -11705,6 +12002,7 @@ func (gdClass ImporterMesh) GetLightmapSizeHint() Vector2i { return methodCall[V
 
 type ImporterMeshInstance3D struct{_ImporterMeshInstance3D struct{}; obj cObject }
 func NewImporterMeshInstance3D() (gdClass ImporterMeshInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ImporterMeshInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass ImporterMeshInstance3D) owner() cObject { return gdClass.obj }
 func (ImporterMeshInstance3D) class() string { return "ImporterMeshInstance3D\000" }
 
@@ -11756,6 +12054,7 @@ var Input InputSingleton
 
 type InputSingleton struct{_InputSingleton struct{}; obj cObject }
 func NewInputSingleton() (gdClass InputSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass InputSingleton) owner() cObject { return gdClass.obj }
 func (InputSingleton) class() string { return "InputSingleton\000" }
 
@@ -11814,6 +12113,7 @@ func (gdClass InputSingleton) FlushBufferedEvents()  { methodCall[struct{}](gdCl
 
 type InputEvent struct{_InputEvent struct{}; obj cObject }
 func NewInputEvent() (gdClass InputEvent) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEvent) Free() { gdClass.obj.destroy() }
 func (gdClass InputEvent) owner() cObject { return gdClass.obj }
 func (InputEvent) class() string { return "InputEvent\000" }
 
@@ -11839,6 +12139,7 @@ func (gdClass InputEvent) XformedBy(xform Transform2D, local_ofs Vector2) InputE
 
 type InputEventAction struct{_InputEventAction struct{}; obj cObject }
 func NewInputEventAction() (gdClass InputEventAction) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventAction) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventAction) owner() cObject { return gdClass.obj }
 func (InputEventAction) class() string { return "InputEventAction\000" }
 
@@ -11856,6 +12157,7 @@ func (gdClass InputEventAction) GetStrength() float64 { return methodCall[float6
 
 type InputEventFromWindow struct{_InputEventFromWindow struct{}; obj cObject }
 func NewInputEventFromWindow() (gdClass InputEventFromWindow) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventFromWindow) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventFromWindow) owner() cObject { return gdClass.obj }
 func (InputEventFromWindow) class() string { return "InputEventFromWindow\000" }
 
@@ -11870,6 +12172,7 @@ func (gdClass InputEventFromWindow) GetWindowId() int64 { return methodCall[int6
 
 type InputEventGesture struct{_InputEventGesture struct{}; obj cObject }
 func NewInputEventGesture() (gdClass InputEventGesture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventGesture) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventGesture) owner() cObject { return gdClass.obj }
 func (InputEventGesture) class() string { return "InputEventGesture\000" }
 
@@ -11884,6 +12187,7 @@ func (gdClass InputEventGesture) GetPosition() Vector2 { return methodCall[Vecto
 
 type InputEventJoypadButton struct{_InputEventJoypadButton struct{}; obj cObject }
 func NewInputEventJoypadButton() (gdClass InputEventJoypadButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventJoypadButton) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventJoypadButton) owner() cObject { return gdClass.obj }
 func (InputEventJoypadButton) class() string { return "InputEventJoypadButton\000" }
 
@@ -11901,6 +12205,7 @@ func (gdClass InputEventJoypadButton) SetPressed(pressed bool)  { methodCall[str
 
 type InputEventJoypadMotion struct{_InputEventJoypadMotion struct{}; obj cObject }
 func NewInputEventJoypadMotion() (gdClass InputEventJoypadMotion) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventJoypadMotion) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventJoypadMotion) owner() cObject { return gdClass.obj }
 func (InputEventJoypadMotion) class() string { return "InputEventJoypadMotion\000" }
 
@@ -11917,6 +12222,7 @@ func (gdClass InputEventJoypadMotion) GetAxisValue() float64 { return methodCall
 
 type InputEventKey struct{_InputEventKey struct{}; obj cObject }
 func NewInputEventKey() (gdClass InputEventKey) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventKey) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventKey) owner() cObject { return gdClass.obj }
 func (InputEventKey) class() string { return "InputEventKey\000" }
 
@@ -11939,6 +12245,7 @@ func (gdClass InputEventKey) GetPhysicalKeycodeWithModifiers() Key { return meth
 
 type InputEventMIDI struct{_InputEventMIDI struct{}; obj cObject }
 func NewInputEventMIDI() (gdClass InputEventMIDI) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventMIDI) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventMIDI) owner() cObject { return gdClass.obj }
 func (InputEventMIDI) class() string { return "InputEventMIDI\000" }
 
@@ -11967,6 +12274,7 @@ func (gdClass InputEventMIDI) GetControllerValue() int64 { return methodCall[int
 
 type InputEventMagnifyGesture struct{_InputEventMagnifyGesture struct{}; obj cObject }
 func NewInputEventMagnifyGesture() (gdClass InputEventMagnifyGesture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventMagnifyGesture) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventMagnifyGesture) owner() cObject { return gdClass.obj }
 func (InputEventMagnifyGesture) class() string { return "InputEventMagnifyGesture\000" }
 
@@ -11981,6 +12289,7 @@ func (gdClass InputEventMagnifyGesture) GetFactor() float64 { return methodCall[
 
 type InputEventMouse struct{_InputEventMouse struct{}; obj cObject }
 func NewInputEventMouse() (gdClass InputEventMouse) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventMouse) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventMouse) owner() cObject { return gdClass.obj }
 func (InputEventMouse) class() string { return "InputEventMouse\000" }
 
@@ -11999,6 +12308,7 @@ func (gdClass InputEventMouse) GetGlobalPosition() Vector2 { return methodCall[V
 
 type InputEventMouseButton struct{_InputEventMouseButton struct{}; obj cObject }
 func NewInputEventMouseButton() (gdClass InputEventMouseButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventMouseButton) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventMouseButton) owner() cObject { return gdClass.obj }
 func (InputEventMouseButton) class() string { return "InputEventMouseButton\000" }
 
@@ -12018,6 +12328,7 @@ func (gdClass InputEventMouseButton) IsDoubleClick() bool { return methodCall[bo
 
 type InputEventMouseMotion struct{_InputEventMouseMotion struct{}; obj cObject }
 func NewInputEventMouseMotion() (gdClass InputEventMouseMotion) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventMouseMotion) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventMouseMotion) owner() cObject { return gdClass.obj }
 func (InputEventMouseMotion) class() string { return "InputEventMouseMotion\000" }
 
@@ -12040,6 +12351,7 @@ func (gdClass InputEventMouseMotion) GetVelocity() Vector2 { return methodCall[V
 
 type InputEventPanGesture struct{_InputEventPanGesture struct{}; obj cObject }
 func NewInputEventPanGesture() (gdClass InputEventPanGesture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventPanGesture) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventPanGesture) owner() cObject { return gdClass.obj }
 func (InputEventPanGesture) class() string { return "InputEventPanGesture\000" }
 
@@ -12054,6 +12366,7 @@ func (gdClass InputEventPanGesture) GetDelta() Vector2 { return methodCall[Vecto
 
 type InputEventScreenDrag struct{_InputEventScreenDrag struct{}; obj cObject }
 func NewInputEventScreenDrag() (gdClass InputEventScreenDrag) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventScreenDrag) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventScreenDrag) owner() cObject { return gdClass.obj }
 func (InputEventScreenDrag) class() string { return "InputEventScreenDrag\000" }
 
@@ -12074,6 +12387,7 @@ func (gdClass InputEventScreenDrag) GetVelocity() Vector2 { return methodCall[Ve
 
 type InputEventScreenTouch struct{_InputEventScreenTouch struct{}; obj cObject }
 func NewInputEventScreenTouch() (gdClass InputEventScreenTouch) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventScreenTouch) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventScreenTouch) owner() cObject { return gdClass.obj }
 func (InputEventScreenTouch) class() string { return "InputEventScreenTouch\000" }
 
@@ -12091,6 +12405,7 @@ func (gdClass InputEventScreenTouch) SetPressed(pressed bool)  { methodCall[stru
 
 type InputEventShortcut struct{_InputEventShortcut struct{}; obj cObject }
 func NewInputEventShortcut() (gdClass InputEventShortcut) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventShortcut) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventShortcut) owner() cObject { return gdClass.obj }
 func (InputEventShortcut) class() string { return "InputEventShortcut\000" }
 
@@ -12105,6 +12420,7 @@ func (gdClass InputEventShortcut) GetShortcut() Shortcut { return methodCall[Sho
 
 type InputEventWithModifiers struct{_InputEventWithModifiers struct{}; obj cObject }
 func NewInputEventWithModifiers() (gdClass InputEventWithModifiers) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputEventWithModifiers) Free() { gdClass.obj.destroy() }
 func (gdClass InputEventWithModifiers) owner() cObject { return gdClass.obj }
 func (InputEventWithModifiers) class() string { return "InputEventWithModifiers\000" }
 
@@ -12130,6 +12446,7 @@ var InputMap InputMapSingleton
 
 type InputMapSingleton struct{_InputMapSingleton struct{}; obj cObject }
 func NewInputMapSingleton() (gdClass InputMapSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InputMapSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass InputMapSingleton) owner() cObject { return gdClass.obj }
 func (InputMapSingleton) class() string { return "InputMapSingleton\000" }
 
@@ -12155,6 +12472,7 @@ func (gdClass InputMapSingleton) LoadFromProjectSettings()  { methodCall[struct{
 
 type InstancePlaceholder struct{_InstancePlaceholder struct{}; obj cObject }
 func NewInstancePlaceholder() (gdClass InstancePlaceholder) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass InstancePlaceholder) Free() { gdClass.obj.destroy() }
 func (gdClass InstancePlaceholder) owner() cObject { return gdClass.obj }
 func (InstancePlaceholder) class() string { return "InstancePlaceholder\000" }
 
@@ -12170,6 +12488,7 @@ func (gdClass InstancePlaceholder) GetInstancePath() string { return methodCall[
 
 type IntervalTweener struct{_IntervalTweener struct{}; obj cObject }
 func NewIntervalTweener() (gdClass IntervalTweener) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass IntervalTweener) Free() { gdClass.obj.destroy() }
 func (gdClass IntervalTweener) owner() cObject { return gdClass.obj }
 func (IntervalTweener) class() string { return "IntervalTweener\000" }
 
@@ -12195,6 +12514,7 @@ const (
 
 type ItemList struct{_ItemList struct{}; obj cObject }
 func NewItemList() (gdClass ItemList) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ItemList) Free() { gdClass.obj.destroy() }
 func (gdClass ItemList) owner() cObject { return gdClass.obj }
 func (ItemList) class() string { return "ItemList\000" }
 
@@ -12276,6 +12596,7 @@ func (gdClass ItemList) GetTextOverrunBehavior() TextServerOverrunBehavior { ret
 
 type JNISingleton struct{_JNISingleton struct{}; obj cObject }
 func NewJNISingleton() (gdClass JNISingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JNISingleton) Free() { gdClass.obj.destroy() }
 func (gdClass JNISingleton) owner() cObject { return gdClass.obj }
 func (JNISingleton) class() string { return "JNISingleton\000" }
 
@@ -12287,6 +12608,7 @@ func (gdClass JNISingleton) virtual(rtype reflect.Type, name string) (method ref
 
 type JSON struct{_JSON struct{}; obj cObject }
 func NewJSON() (gdClass JSON) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JSON) Free() { gdClass.obj.destroy() }
 func (gdClass JSON) owner() cObject { return gdClass.obj }
 func (JSON) class() string { return "JSON\000" }
 
@@ -12315,6 +12637,7 @@ const (
 
 type JSONRPC struct{_JSONRPC struct{}; obj cObject }
 func NewJSONRPC() (gdClass JSONRPC) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JSONRPC) Free() { gdClass.obj.destroy() }
 func (gdClass JSONRPC) owner() cObject { return gdClass.obj }
 func (JSONRPC) class() string { return "JSONRPC\000" }
 
@@ -12334,6 +12657,7 @@ func (gdClass JSONRPC) MakeResponseError(code int64, message string, id any) Dic
 
 type JavaClass struct{_JavaClass struct{}; obj cObject }
 func NewJavaClass() (gdClass JavaClass) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JavaClass) Free() { gdClass.obj.destroy() }
 func (gdClass JavaClass) owner() cObject { return gdClass.obj }
 func (JavaClass) class() string { return "JavaClass\000" }
 
@@ -12346,6 +12670,7 @@ var JavaClassWrapper JavaClassWrapperSingleton
 
 type JavaClassWrapperSingleton struct{_JavaClassWrapperSingleton struct{}; obj cObject }
 func NewJavaClassWrapperSingleton() (gdClass JavaClassWrapperSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JavaClassWrapperSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass JavaClassWrapperSingleton) owner() cObject { return gdClass.obj }
 func (JavaClassWrapperSingleton) class() string { return "JavaClassWrapperSingleton\000" }
 
@@ -12360,6 +12685,7 @@ var JavaScript JavaScriptSingleton
 
 type JavaScriptSingleton struct{_JavaScriptSingleton struct{}; obj cObject }
 func NewJavaScriptSingleton() (gdClass JavaScriptSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JavaScriptSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass JavaScriptSingleton) owner() cObject { return gdClass.obj }
 func (JavaScriptSingleton) class() string { return "JavaScriptSingleton\000" }
 
@@ -12379,6 +12705,7 @@ func (gdClass JavaScriptSingleton) PwaUpdate() int64 { return methodCall[int64](
 
 type JavaScriptObject struct{_JavaScriptObject struct{}; obj cObject }
 func NewJavaScriptObject() (gdClass JavaScriptObject) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass JavaScriptObject) Free() { gdClass.obj.destroy() }
 func (gdClass JavaScriptObject) owner() cObject { return gdClass.obj }
 func (JavaScriptObject) class() string { return "JavaScriptObject\000" }
 
@@ -12390,6 +12717,7 @@ func (gdClass JavaScriptObject) virtual(rtype reflect.Type, name string) (method
 
 type Joint2D struct{_Joint2D struct{}; obj cObject }
 func NewJoint2D() (gdClass Joint2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Joint2D) Free() { gdClass.obj.destroy() }
 func (gdClass Joint2D) owner() cObject { return gdClass.obj }
 func (Joint2D) class() string { return "Joint2D\000" }
 
@@ -12410,6 +12738,7 @@ func (gdClass Joint2D) GetExcludeNodesFromCollision() bool { return methodCall[b
 
 type Joint3D struct{_Joint3D struct{}; obj cObject }
 func NewJoint3D() (gdClass Joint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Joint3D) Free() { gdClass.obj.destroy() }
 func (gdClass Joint3D) owner() cObject { return gdClass.obj }
 func (Joint3D) class() string { return "Joint3D\000" }
 
@@ -12430,6 +12759,7 @@ func (gdClass Joint3D) GetExcludeNodesFromCollision() bool { return methodCall[b
 
 type KinematicCollision2D struct{_KinematicCollision2D struct{}; obj cObject }
 func NewKinematicCollision2D() (gdClass KinematicCollision2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass KinematicCollision2D) Free() { gdClass.obj.destroy() }
 func (gdClass KinematicCollision2D) owner() cObject { return gdClass.obj }
 func (KinematicCollision2D) class() string { return "KinematicCollision2D\000" }
 
@@ -12455,6 +12785,7 @@ func (gdClass KinematicCollision2D) GetColliderVelocity() Vector2 { return metho
 
 type KinematicCollision3D struct{_KinematicCollision3D struct{}; obj cObject }
 func NewKinematicCollision3D() (gdClass KinematicCollision3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass KinematicCollision3D) Free() { gdClass.obj.destroy() }
 func (gdClass KinematicCollision3D) owner() cObject { return gdClass.obj }
 func (KinematicCollision3D) class() string { return "KinematicCollision3D\000" }
 
@@ -12481,6 +12812,7 @@ func (gdClass KinematicCollision3D) GetColliderVelocity(collision_index int64) V
 
 type Label struct{_Label struct{}; obj cObject }
 func NewLabel() (gdClass Label) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Label) Free() { gdClass.obj.destroy() }
 func (gdClass Label) owner() cObject { return gdClass.obj }
 func (Label) class() string { return "Label\000" }
 
@@ -12549,6 +12881,7 @@ const (
 
 type Label3D struct{_Label3D struct{}; obj cObject }
 func NewLabel3D() (gdClass Label3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Label3D) Free() { gdClass.obj.destroy() }
 func (gdClass Label3D) owner() cObject { return gdClass.obj }
 func (Label3D) class() string { return "Label3D\000" }
 
@@ -12612,6 +12945,7 @@ func (gdClass Label3D) GenerateTriangleMesh() TriangleMesh { return methodCall[T
 
 type LabelSettings struct{_LabelSettings struct{}; obj cObject }
 func NewLabelSettings() (gdClass LabelSettings) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LabelSettings) Free() { gdClass.obj.destroy() }
 func (gdClass LabelSettings) owner() cObject { return gdClass.obj }
 func (LabelSettings) class() string { return "LabelSettings\000" }
 
@@ -12658,6 +12992,7 @@ const (
 
 type Light2D struct{_Light2D struct{}; obj cObject }
 func NewLight2D() (gdClass Light2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Light2D) Free() { gdClass.obj.destroy() }
 func (gdClass Light2D) owner() cObject { return gdClass.obj }
 func (Light2D) class() string { return "Light2D\000" }
 
@@ -12736,6 +13071,7 @@ const (
 
 type Light3D struct{_Light3D struct{}; obj cObject }
 func NewLight3D() (gdClass Light3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Light3D) Free() { gdClass.obj.destroy() }
 func (gdClass Light3D) owner() cObject { return gdClass.obj }
 func (Light3D) class() string { return "Light3D\000" }
 
@@ -12774,6 +13110,7 @@ func (gdClass Light3D) GetProjector() Texture2D { return methodCall[Texture2D](g
 
 type LightOccluder2D struct{_LightOccluder2D struct{}; obj cObject }
 func NewLightOccluder2D() (gdClass LightOccluder2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LightOccluder2D) Free() { gdClass.obj.destroy() }
 func (gdClass LightOccluder2D) owner() cObject { return gdClass.obj }
 func (LightOccluder2D) class() string { return "LightOccluder2D\000" }
 
@@ -12832,6 +13169,7 @@ const (
 
 type LightmapGI struct{_LightmapGI struct{}; obj cObject }
 func NewLightmapGI() (gdClass LightmapGI) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LightmapGI) Free() { gdClass.obj.destroy() }
 func (gdClass LightmapGI) owner() cObject { return gdClass.obj }
 func (LightmapGI) class() string { return "LightmapGI\000" }
 
@@ -12870,6 +13208,7 @@ func (gdClass LightmapGI) IsDirectional() bool { return methodCall[bool](gdClass
 
 type LightmapGIData struct{_LightmapGIData struct{}; obj cObject }
 func NewLightmapGIData() (gdClass LightmapGIData) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LightmapGIData) Free() { gdClass.obj.destroy() }
 func (gdClass LightmapGIData) owner() cObject { return gdClass.obj }
 func (LightmapGIData) class() string { return "LightmapGIData\000" }
 
@@ -12890,6 +13229,7 @@ func (gdClass LightmapGIData) ClearUsers()  { methodCall[struct{}](gdClass.obj, 
 
 type LightmapProbe struct{_LightmapProbe struct{}; obj cObject }
 func NewLightmapProbe() (gdClass LightmapProbe) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LightmapProbe) Free() { gdClass.obj.destroy() }
 func (gdClass LightmapProbe) owner() cObject { return gdClass.obj }
 func (LightmapProbe) class() string { return "LightmapProbe\000" }
 
@@ -12901,6 +13241,7 @@ func (gdClass LightmapProbe) virtual(rtype reflect.Type, name string) (method re
 
 type Lightmapper struct{_Lightmapper struct{}; obj cObject }
 func NewLightmapper() (gdClass Lightmapper) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Lightmapper) Free() { gdClass.obj.destroy() }
 func (gdClass Lightmapper) owner() cObject { return gdClass.obj }
 func (Lightmapper) class() string { return "Lightmapper\000" }
 
@@ -12912,6 +13253,7 @@ func (gdClass Lightmapper) virtual(rtype reflect.Type, name string) (method refl
 
 type LightmapperRD struct{_LightmapperRD struct{}; obj cObject }
 func NewLightmapperRD() (gdClass LightmapperRD) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LightmapperRD) Free() { gdClass.obj.destroy() }
 func (gdClass LightmapperRD) owner() cObject { return gdClass.obj }
 func (LightmapperRD) class() string { return "LightmapperRD\000" }
 
@@ -12947,6 +13289,7 @@ const (
 
 type Line2D struct{_Line2D struct{}; obj cObject }
 func NewLine2D() (gdClass Line2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Line2D) Free() { gdClass.obj.destroy() }
 func (gdClass Line2D) owner() cObject { return gdClass.obj }
 func (Line2D) class() string { return "Line2D\000" }
 
@@ -13038,6 +13381,7 @@ const (
 
 type LineEdit struct{_LineEdit struct{}; obj cObject }
 func NewLineEdit() (gdClass LineEdit) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LineEdit) Free() { gdClass.obj.destroy() }
 func (gdClass LineEdit) owner() cObject { return gdClass.obj }
 func (LineEdit) class() string { return "LineEdit\000" }
 
@@ -13128,6 +13472,7 @@ const (
 
 type LinkButton struct{_LinkButton struct{}; obj cObject }
 func NewLinkButton() (gdClass LinkButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass LinkButton) Free() { gdClass.obj.destroy() }
 func (gdClass LinkButton) owner() cObject { return gdClass.obj }
 func (LinkButton) class() string { return "LinkButton\000" }
 
@@ -13152,6 +13497,7 @@ func (gdClass LinkButton) GetStructuredTextBidiOverrideOptions() Array { return 
 
 type MainLoop struct{_MainLoop struct{}; obj cObject }
 func NewMainLoop() (gdClass MainLoop) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MainLoop) Free() { gdClass.obj.destroy() }
 func (gdClass MainLoop) owner() cObject { return gdClass.obj }
 func (MainLoop) class() string { return "MainLoop\000" }
 
@@ -13185,6 +13531,7 @@ func (gdClass MainLoop) virtual(rtype reflect.Type, name string) (method reflect
 
 type MarginContainer struct{_MarginContainer struct{}; obj cObject }
 func NewMarginContainer() (gdClass MarginContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MarginContainer) Free() { gdClass.obj.destroy() }
 func (gdClass MarginContainer) owner() cObject { return gdClass.obj }
 func (MarginContainer) class() string { return "MarginContainer\000" }
 
@@ -13196,6 +13543,7 @@ func (gdClass MarginContainer) virtual(rtype reflect.Type, name string) (method 
 
 type Marker2D struct{_Marker2D struct{}; obj cObject }
 func NewMarker2D() (gdClass Marker2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Marker2D) Free() { gdClass.obj.destroy() }
 func (gdClass Marker2D) owner() cObject { return gdClass.obj }
 func (Marker2D) class() string { return "Marker2D\000" }
 
@@ -13210,6 +13558,7 @@ func (gdClass Marker2D) GetGizmoExtents() float64 { return methodCall[float64](g
 
 type Marker3D struct{_Marker3D struct{}; obj cObject }
 func NewMarker3D() (gdClass Marker3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Marker3D) Free() { gdClass.obj.destroy() }
 func (gdClass Marker3D) owner() cObject { return gdClass.obj }
 func (Marker3D) class() string { return "Marker3D\000" }
 
@@ -13222,6 +13571,7 @@ var Marshalls MarshallsSingleton
 
 type MarshallsSingleton struct{_MarshallsSingleton struct{}; obj cObject }
 func NewMarshallsSingleton() (gdClass MarshallsSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MarshallsSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass MarshallsSingleton) owner() cObject { return gdClass.obj }
 func (MarshallsSingleton) class() string { return "MarshallsSingleton\000" }
 
@@ -13240,6 +13590,7 @@ func (gdClass MarshallsSingleton) Base64ToUtf8(base64_str string) string { retur
 
 type Material struct{_Material struct{}; obj cObject }
 func NewMaterial() (gdClass Material) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Material) Free() { gdClass.obj.destroy() }
 func (gdClass Material) owner() cObject { return gdClass.obj }
 func (Material) class() string { return "Material\000" }
 
@@ -13279,6 +13630,7 @@ func (gdClass Material) InspectNativeShaderCode()  { methodCall[struct{}](gdClas
 
 type MenuBar struct{_MenuBar struct{}; obj cObject }
 func NewMenuBar() (gdClass MenuBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MenuBar) Free() { gdClass.obj.destroy() }
 func (gdClass MenuBar) owner() cObject { return gdClass.obj }
 func (MenuBar) class() string { return "MenuBar\000" }
 
@@ -13317,6 +13669,7 @@ func (gdClass MenuBar) GetMenuPopup(menu int64) PopupMenu { return methodCall[Po
 
 type MenuButton struct{_MenuButton struct{}; obj cObject }
 func NewMenuButton() (gdClass MenuButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MenuButton) Free() { gdClass.obj.destroy() }
 func (gdClass MenuButton) owner() cObject { return gdClass.obj }
 func (MenuButton) class() string { return "MenuButton\000" }
 
@@ -13415,6 +13768,7 @@ const (
 
 type Mesh struct{_Mesh struct{}; obj cObject }
 func NewMesh() (gdClass Mesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Mesh) Free() { gdClass.obj.destroy() }
 func (gdClass Mesh) owner() cObject { return gdClass.obj }
 func (Mesh) class() string { return "Mesh\000" }
 
@@ -13512,6 +13866,7 @@ func (gdClass Mesh) GenerateTriangleMesh() TriangleMesh { return methodCall[Tria
 
 type MeshDataTool struct{_MeshDataTool struct{}; obj cObject }
 func NewMeshDataTool() (gdClass MeshDataTool) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MeshDataTool) Free() { gdClass.obj.destroy() }
 func (gdClass MeshDataTool) owner() cObject { return gdClass.obj }
 func (MeshDataTool) class() string { return "MeshDataTool\000" }
 
@@ -13562,6 +13917,7 @@ func (gdClass MeshDataTool) GetMaterial() Material { return methodCall[Material]
 
 type MeshInstance2D struct{_MeshInstance2D struct{}; obj cObject }
 func NewMeshInstance2D() (gdClass MeshInstance2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MeshInstance2D) Free() { gdClass.obj.destroy() }
 func (gdClass MeshInstance2D) owner() cObject { return gdClass.obj }
 func (MeshInstance2D) class() string { return "MeshInstance2D\000" }
 
@@ -13580,6 +13936,7 @@ func (gdClass MeshInstance2D) GetNormalMap() Texture2D { return methodCall[Textu
 
 type MeshInstance3D struct{_MeshInstance3D struct{}; obj cObject }
 func NewMeshInstance3D() (gdClass MeshInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MeshInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass MeshInstance3D) owner() cObject { return gdClass.obj }
 func (MeshInstance3D) class() string { return "MeshInstance3D\000" }
 
@@ -13610,6 +13967,7 @@ func (gdClass MeshInstance3D) CreateDebugTangents()  { methodCall[struct{}](gdCl
 
 type MeshLibrary struct{_MeshLibrary struct{}; obj cObject }
 func NewMeshLibrary() (gdClass MeshLibrary) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MeshLibrary) Free() { gdClass.obj.destroy() }
 func (gdClass MeshLibrary) owner() cObject { return gdClass.obj }
 func (MeshLibrary) class() string { return "MeshLibrary\000" }
 
@@ -13642,6 +14000,7 @@ func (gdClass MeshLibrary) GetLastUnusedItemId() int64 { return methodCall[int64
 
 type MeshTexture struct{_MeshTexture struct{}; obj cObject }
 func NewMeshTexture() (gdClass MeshTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MeshTexture) Free() { gdClass.obj.destroy() }
 func (gdClass MeshTexture) owner() cObject { return gdClass.obj }
 func (MeshTexture) class() string { return "MeshTexture\000" }
 
@@ -13660,6 +14019,7 @@ func (gdClass MeshTexture) GetBaseTexture() Texture2D { return methodCall[Textur
 
 type MethodTweener struct{_MethodTweener struct{}; obj cObject }
 func NewMethodTweener() (gdClass MethodTweener) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MethodTweener) Free() { gdClass.obj.destroy() }
 func (gdClass MethodTweener) owner() cObject { return gdClass.obj }
 func (MethodTweener) class() string { return "MethodTweener\000" }
 
@@ -13675,6 +14035,7 @@ func (gdClass MethodTweener) SetEase(ease TweenEaseType) MethodTweener { return 
 
 type MissingNode struct{_MissingNode struct{}; obj cObject }
 func NewMissingNode() (gdClass MissingNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MissingNode) Free() { gdClass.obj.destroy() }
 func (gdClass MissingNode) owner() cObject { return gdClass.obj }
 func (MissingNode) class() string { return "MissingNode\000" }
 
@@ -13691,6 +14052,7 @@ func (gdClass MissingNode) IsRecordingProperties() bool { return methodCall[bool
 
 type MissingResource struct{_MissingResource struct{}; obj cObject }
 func NewMissingResource() (gdClass MissingResource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MissingResource) Free() { gdClass.obj.destroy() }
 func (gdClass MissingResource) owner() cObject { return gdClass.obj }
 func (MissingResource) class() string { return "MissingResource\000" }
 
@@ -13707,6 +14069,7 @@ func (gdClass MissingResource) IsRecordingProperties() bool { return methodCall[
 
 type MobileVRInterface struct{_MobileVRInterface struct{}; obj cObject }
 func NewMobileVRInterface() (gdClass MobileVRInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MobileVRInterface) Free() { gdClass.obj.destroy() }
 func (gdClass MobileVRInterface) owner() cObject { return gdClass.obj }
 func (MobileVRInterface) class() string { return "MobileVRInterface\000" }
 
@@ -13733,6 +14096,7 @@ func (gdClass MobileVRInterface) GetK2() float64 { return methodCall[float64](gd
 
 type MovieWriter struct{_MovieWriter struct{}; obj cObject }
 func NewMovieWriter() (gdClass MovieWriter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MovieWriter) Free() { gdClass.obj.destroy() }
 func (gdClass MovieWriter) owner() cObject { return gdClass.obj }
 func (MovieWriter) class() string { return "MovieWriter\000" }
 
@@ -13778,6 +14142,7 @@ func (gdClass MovieWriter) AddWriter(writer MovieWriter)  { methodCall[struct{}]
 
 type MovieWriterMJPEG struct{_MovieWriterMJPEG struct{}; obj cObject }
 func NewMovieWriterMJPEG() (gdClass MovieWriterMJPEG) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MovieWriterMJPEG) Free() { gdClass.obj.destroy() }
 func (gdClass MovieWriterMJPEG) owner() cObject { return gdClass.obj }
 func (MovieWriterMJPEG) class() string { return "MovieWriterMJPEG\000" }
 
@@ -13789,6 +14154,7 @@ func (gdClass MovieWriterMJPEG) virtual(rtype reflect.Type, name string) (method
 
 type MovieWriterPNGWAV struct{_MovieWriterPNGWAV struct{}; obj cObject }
 func NewMovieWriterPNGWAV() (gdClass MovieWriterPNGWAV) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MovieWriterPNGWAV) Free() { gdClass.obj.destroy() }
 func (gdClass MovieWriterPNGWAV) owner() cObject { return gdClass.obj }
 func (MovieWriterPNGWAV) class() string { return "MovieWriterPNGWAV\000" }
 
@@ -13807,6 +14173,7 @@ const (
 
 type MultiMesh struct{_MultiMesh struct{}; obj cObject }
 func NewMultiMesh() (gdClass MultiMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiMesh) Free() { gdClass.obj.destroy() }
 func (gdClass MultiMesh) owner() cObject { return gdClass.obj }
 func (MultiMesh) class() string { return "MultiMesh\000" }
 
@@ -13842,6 +14209,7 @@ func (gdClass MultiMesh) SetBuffer(buffer []float32)  { methodCall[struct{}](gdC
 
 type MultiMeshInstance2D struct{_MultiMeshInstance2D struct{}; obj cObject }
 func NewMultiMeshInstance2D() (gdClass MultiMeshInstance2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiMeshInstance2D) Free() { gdClass.obj.destroy() }
 func (gdClass MultiMeshInstance2D) owner() cObject { return gdClass.obj }
 func (MultiMeshInstance2D) class() string { return "MultiMeshInstance2D\000" }
 
@@ -13860,6 +14228,7 @@ func (gdClass MultiMeshInstance2D) GetNormalMap() Texture2D { return methodCall[
 
 type MultiMeshInstance3D struct{_MultiMeshInstance3D struct{}; obj cObject }
 func NewMultiMeshInstance3D() (gdClass MultiMeshInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiMeshInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass MultiMeshInstance3D) owner() cObject { return gdClass.obj }
 func (MultiMeshInstance3D) class() string { return "MultiMeshInstance3D\000" }
 
@@ -13882,6 +14251,7 @@ const (
 
 type MultiplayerAPI struct{_MultiplayerAPI struct{}; obj cObject }
 func NewMultiplayerAPI() (gdClass MultiplayerAPI) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerAPI) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerAPI) owner() cObject { return gdClass.obj }
 func (MultiplayerAPI) class() string { return "MultiplayerAPI\000" }
 
@@ -13908,6 +14278,7 @@ func (gdClass MultiplayerAPI) CreateDefaultInterface() MultiplayerAPI { return m
 
 type MultiplayerAPIExtension struct{_MultiplayerAPIExtension struct{}; obj cObject }
 func NewMultiplayerAPIExtension() (gdClass MultiplayerAPIExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerAPIExtension) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerAPIExtension) owner() cObject { return gdClass.obj }
 func (MultiplayerAPIExtension) class() string { return "MultiplayerAPIExtension\000" }
 
@@ -13982,6 +14353,7 @@ const (
 
 type MultiplayerPeer struct{_MultiplayerPeer struct{}; obj cObject }
 func NewMultiplayerPeer() (gdClass MultiplayerPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerPeer) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerPeer) owner() cObject { return gdClass.obj }
 func (MultiplayerPeer) class() string { return "MultiplayerPeer\000" }
 
@@ -14006,6 +14378,7 @@ func (gdClass MultiplayerPeer) IsRefusingNewConnections() bool { return methodCa
 
 type MultiplayerPeerExtension struct{_MultiplayerPeerExtension struct{}; obj cObject }
 func NewMultiplayerPeerExtension() (gdClass MultiplayerPeerExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerPeerExtension) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerPeerExtension) owner() cObject { return gdClass.obj }
 func (MultiplayerPeerExtension) class() string { return "MultiplayerPeerExtension\000" }
 
@@ -14109,6 +14482,7 @@ func (gdClass MultiplayerPeerExtension) virtual(rtype reflect.Type, name string)
 
 type MultiplayerSpawner struct{_MultiplayerSpawner struct{}; obj cObject }
 func NewMultiplayerSpawner() (gdClass MultiplayerSpawner) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerSpawner) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerSpawner) owner() cObject { return gdClass.obj }
 func (MultiplayerSpawner) class() string { return "MultiplayerSpawner\000" }
 
@@ -14145,6 +14519,7 @@ const (
 
 type MultiplayerSynchronizer struct{_MultiplayerSynchronizer struct{}; obj cObject }
 func NewMultiplayerSynchronizer() (gdClass MultiplayerSynchronizer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass MultiplayerSynchronizer) Free() { gdClass.obj.destroy() }
 func (gdClass MultiplayerSynchronizer) owner() cObject { return gdClass.obj }
 func (MultiplayerSynchronizer) class() string { return "MultiplayerSynchronizer\000" }
 
@@ -14172,6 +14547,7 @@ func (gdClass MultiplayerSynchronizer) GetVisibilityFor(peer int64) bool { retur
 
 type Mutex struct{_Mutex struct{}; obj cObject }
 func NewMutex() (gdClass Mutex) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Mutex) Free() { gdClass.obj.destroy() }
 func (gdClass Mutex) owner() cObject { return gdClass.obj }
 func (Mutex) class() string { return "Mutex\000" }
 
@@ -14196,6 +14572,7 @@ const (
 
 type NativeExtension struct{_NativeExtension struct{}; obj cObject }
 func NewNativeExtension() (gdClass NativeExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NativeExtension) Free() { gdClass.obj.destroy() }
 func (gdClass NativeExtension) owner() cObject { return gdClass.obj }
 func (NativeExtension) class() string { return "NativeExtension\000" }
 
@@ -14224,6 +14601,7 @@ var NativeExtensionManager NativeExtensionManagerSingleton
 
 type NativeExtensionManagerSingleton struct{_NativeExtensionManagerSingleton struct{}; obj cObject }
 func NewNativeExtensionManagerSingleton() (gdClass NativeExtensionManagerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NativeExtensionManagerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass NativeExtensionManagerSingleton) owner() cObject { return gdClass.obj }
 func (NativeExtensionManagerSingleton) class() string { return "NativeExtensionManagerSingleton\000" }
 
@@ -14242,6 +14620,7 @@ func (gdClass NativeExtensionManagerSingleton) GetExtension(path string) NativeE
 
 type NavigationAgent2D struct{_NavigationAgent2D struct{}; obj cObject }
 func NewNavigationAgent2D() (gdClass NavigationAgent2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationAgent2D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationAgent2D) owner() cObject { return gdClass.obj }
 func (NavigationAgent2D) class() string { return "NavigationAgent2D\000" }
 
@@ -14290,6 +14669,7 @@ func (gdClass NavigationAgent2D) GetFinalLocation() Vector2 { return methodCall[
 
 type NavigationAgent3D struct{_NavigationAgent3D struct{}; obj cObject }
 func NewNavigationAgent3D() (gdClass NavigationAgent3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationAgent3D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationAgent3D) owner() cObject { return gdClass.obj }
 func (NavigationAgent3D) class() string { return "NavigationAgent3D\000" }
 
@@ -14369,6 +14749,7 @@ const (
 
 type NavigationMesh struct{_NavigationMesh struct{}; obj cObject }
 func NewNavigationMesh() (gdClass NavigationMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationMesh) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationMesh) owner() cObject { return gdClass.obj }
 func (NavigationMesh) class() string { return "NavigationMesh\000" }
 
@@ -14437,6 +14818,7 @@ var NavigationMeshGenerator NavigationMeshGeneratorSingleton
 
 type NavigationMeshGeneratorSingleton struct{_NavigationMeshGeneratorSingleton struct{}; obj cObject }
 func NewNavigationMeshGeneratorSingleton() (gdClass NavigationMeshGeneratorSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationMeshGeneratorSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationMeshGeneratorSingleton) owner() cObject { return gdClass.obj }
 func (NavigationMeshGeneratorSingleton) class() string { return "NavigationMeshGeneratorSingleton\000" }
 
@@ -14451,6 +14833,7 @@ func (gdClass NavigationMeshGeneratorSingleton) Clear(nav_mesh NavigationMesh)  
 
 type NavigationObstacle2D struct{_NavigationObstacle2D struct{}; obj cObject }
 func NewNavigationObstacle2D() (gdClass NavigationObstacle2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationObstacle2D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationObstacle2D) owner() cObject { return gdClass.obj }
 func (NavigationObstacle2D) class() string { return "NavigationObstacle2D\000" }
 
@@ -14468,6 +14851,7 @@ func (gdClass NavigationObstacle2D) GetRadius() float64 { return methodCall[floa
 
 type NavigationObstacle3D struct{_NavigationObstacle3D struct{}; obj cObject }
 func NewNavigationObstacle3D() (gdClass NavigationObstacle3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationObstacle3D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationObstacle3D) owner() cObject { return gdClass.obj }
 func (NavigationObstacle3D) class() string { return "NavigationObstacle3D\000" }
 
@@ -14485,6 +14869,7 @@ func (gdClass NavigationObstacle3D) GetRadius() float64 { return methodCall[floa
 
 type NavigationPolygon struct{_NavigationPolygon struct{}; obj cObject }
 func NewNavigationPolygon() (gdClass NavigationPolygon) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationPolygon) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationPolygon) owner() cObject { return gdClass.obj }
 func (NavigationPolygon) class() string { return "NavigationPolygon\000" }
 
@@ -14512,6 +14897,7 @@ func (gdClass NavigationPolygon) MakePolygonsFromOutlines()  { methodCall[struct
 
 type NavigationRegion2D struct{_NavigationRegion2D struct{}; obj cObject }
 func NewNavigationRegion2D() (gdClass NavigationRegion2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationRegion2D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationRegion2D) owner() cObject { return gdClass.obj }
 func (NavigationRegion2D) class() string { return "NavigationRegion2D\000" }
 
@@ -14537,6 +14923,7 @@ func (gdClass NavigationRegion2D) GetTravelCost() float64 { return methodCall[fl
 
 type NavigationRegion3D struct{_NavigationRegion3D struct{}; obj cObject }
 func NewNavigationRegion3D() (gdClass NavigationRegion3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationRegion3D) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationRegion3D) owner() cObject { return gdClass.obj }
 func (NavigationRegion3D) class() string { return "NavigationRegion3D\000" }
 
@@ -14564,6 +14951,7 @@ var NavigationServer2D NavigationServer2DSingleton
 
 type NavigationServer2DSingleton struct{_NavigationServer2DSingleton struct{}; obj cObject }
 func NewNavigationServer2DSingleton() (gdClass NavigationServer2DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationServer2DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationServer2DSingleton) owner() cObject { return gdClass.obj }
 func (NavigationServer2DSingleton) class() string { return "NavigationServer2DSingleton\000" }
 
@@ -14620,6 +15008,7 @@ var NavigationServer3D NavigationServer3DSingleton
 
 type NavigationServer3DSingleton struct{_NavigationServer3DSingleton struct{}; obj cObject }
 func NewNavigationServer3DSingleton() (gdClass NavigationServer3DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NavigationServer3DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass NavigationServer3DSingleton) owner() cObject { return gdClass.obj }
 func (NavigationServer3DSingleton) class() string { return "NavigationServer3DSingleton\000" }
 
@@ -14690,6 +15079,7 @@ const (
 
 type NinePatchRect struct{_NinePatchRect struct{}; obj cObject }
 func NewNinePatchRect() (gdClass NinePatchRect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NinePatchRect) Free() { gdClass.obj.destroy() }
 func (gdClass NinePatchRect) owner() cObject { return gdClass.obj }
 func (NinePatchRect) class() string { return "NinePatchRect\000" }
 
@@ -14741,6 +15131,7 @@ const (
 
 type Node struct{_Node struct{}; obj cObject }
 func NewNode() (gdClass Node) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Node) Free() { gdClass.obj.destroy() }
 func (gdClass Node) owner() cObject { return gdClass.obj }
 func (Node) class() string { return "Node\000" }
 
@@ -14892,6 +15283,7 @@ func (gdClass Node) UpdateConfigurationWarnings()  { methodCall[struct{}](gdClas
 
 type Node2D struct{_Node2D struct{}; obj cObject }
 func NewNode2D() (gdClass Node2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Node2D) Free() { gdClass.obj.destroy() }
 func (gdClass Node2D) owner() cObject { return gdClass.obj }
 func (Node2D) class() string { return "Node2D\000" }
 
@@ -14958,6 +15350,7 @@ const (
 
 type Node3D struct{_Node3D struct{}; obj cObject }
 func NewNode3D() (gdClass Node3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Node3D) Free() { gdClass.obj.destroy() }
 func (gdClass Node3D) owner() cObject { return gdClass.obj }
 func (Node3D) class() string { return "Node3D\000" }
 
@@ -15034,6 +15427,7 @@ func (gdClass Node3D) ToGlobal(local_point Vector3) Vector3 { return methodCall[
 
 type Node3DGizmo struct{_Node3DGizmo struct{}; obj cObject }
 func NewNode3DGizmo() (gdClass Node3DGizmo) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Node3DGizmo) Free() { gdClass.obj.destroy() }
 func (gdClass Node3DGizmo) owner() cObject { return gdClass.obj }
 func (Node3DGizmo) class() string { return "Node3DGizmo\000" }
 
@@ -15045,6 +15439,7 @@ func (gdClass Node3DGizmo) virtual(rtype reflect.Type, name string) (method refl
 
 type Noise struct{_Noise struct{}; obj cObject }
 func NewNoise() (gdClass Noise) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Noise) Free() { gdClass.obj.destroy() }
 func (gdClass Noise) owner() cObject { return gdClass.obj }
 func (Noise) class() string { return "Noise\000" }
 
@@ -15064,6 +15459,7 @@ func (gdClass Noise) GetSeamlessImage(width int64, height int64, invert bool, in
 
 type NoiseTexture2D struct{_NoiseTexture2D struct{}; obj cObject }
 func NewNoiseTexture2D() (gdClass NoiseTexture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass NoiseTexture2D) Free() { gdClass.obj.destroy() }
 func (gdClass NoiseTexture2D) owner() cObject { return gdClass.obj }
 func (NoiseTexture2D) class() string { return "NoiseTexture2D\000" }
 
@@ -15096,6 +15492,7 @@ func (gdClass NoiseTexture2D) GetNoise() Noise { return methodCall[Noise](gdClas
 
 type ORMMaterial3D struct{_ORMMaterial3D struct{}; obj cObject }
 func NewORMMaterial3D() (gdClass ORMMaterial3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ORMMaterial3D) Free() { gdClass.obj.destroy() }
 func (gdClass ORMMaterial3D) owner() cObject { return gdClass.obj }
 func (ORMMaterial3D) class() string { return "ORMMaterial3D\000" }
 
@@ -15157,6 +15554,7 @@ var OS OSSingleton
 
 type OSSingleton struct{_OSSingleton struct{}; obj cObject }
 func NewOSSingleton() (gdClass OSSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OSSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass OSSingleton) owner() cObject { return gdClass.obj }
 func (OSSingleton) class() string { return "OSSingleton\000" }
 
@@ -15242,6 +15640,7 @@ const (
 
 type Object struct{_Object struct{}; obj cObject }
 func NewObject() (gdClass Object) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Object) Free() { gdClass.obj.destroy() }
 func (gdClass Object) owner() cObject { return gdClass.obj }
 func (Object) class() string { return "Object\000" }
 
@@ -15293,6 +15692,7 @@ func (gdClass Object) IsQueuedForDeletion() bool { return methodCall[bool](gdCla
 
 type Occluder3D struct{_Occluder3D struct{}; obj cObject }
 func NewOccluder3D() (gdClass Occluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Occluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass Occluder3D) owner() cObject { return gdClass.obj }
 func (Occluder3D) class() string { return "Occluder3D\000" }
 
@@ -15307,6 +15707,7 @@ func (gdClass Occluder3D) GetIndices() []int32 { return methodCall[[]int32](gdCl
 
 type OccluderInstance3D struct{_OccluderInstance3D struct{}; obj cObject }
 func NewOccluderInstance3D() (gdClass OccluderInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OccluderInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass OccluderInstance3D) owner() cObject { return gdClass.obj }
 func (OccluderInstance3D) class() string { return "OccluderInstance3D\000" }
 
@@ -15335,6 +15736,7 @@ const (
 
 type OccluderPolygon2D struct{_OccluderPolygon2D struct{}; obj cObject }
 func NewOccluderPolygon2D() (gdClass OccluderPolygon2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OccluderPolygon2D) Free() { gdClass.obj.destroy() }
 func (gdClass OccluderPolygon2D) owner() cObject { return gdClass.obj }
 func (OccluderPolygon2D) class() string { return "OccluderPolygon2D\000" }
 
@@ -15353,6 +15755,7 @@ func (gdClass OccluderPolygon2D) GetPolygon() []Vector2 { return methodCall[[]Ve
 
 type OggPacketSequence struct{_OggPacketSequence struct{}; obj cObject }
 func NewOggPacketSequence() (gdClass OggPacketSequence) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OggPacketSequence) Free() { gdClass.obj.destroy() }
 func (gdClass OggPacketSequence) owner() cObject { return gdClass.obj }
 func (OggPacketSequence) class() string { return "OggPacketSequence\000" }
 
@@ -15372,6 +15775,7 @@ func (gdClass OggPacketSequence) GetLength() float64 { return methodCall[float64
 
 type OggPacketSequencePlayback struct{_OggPacketSequencePlayback struct{}; obj cObject }
 func NewOggPacketSequencePlayback() (gdClass OggPacketSequencePlayback) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OggPacketSequencePlayback) Free() { gdClass.obj.destroy() }
 func (gdClass OggPacketSequencePlayback) owner() cObject { return gdClass.obj }
 func (OggPacketSequencePlayback) class() string { return "OggPacketSequencePlayback\000" }
 
@@ -15390,6 +15794,7 @@ const (
 
 type OmniLight3D struct{_OmniLight3D struct{}; obj cObject }
 func NewOmniLight3D() (gdClass OmniLight3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OmniLight3D) Free() { gdClass.obj.destroy() }
 func (gdClass OmniLight3D) owner() cObject { return gdClass.obj }
 func (OmniLight3D) class() string { return "OmniLight3D\000" }
 
@@ -15413,6 +15818,7 @@ const (
 
 type OpenXRAction struct{_OpenXRAction struct{}; obj cObject }
 func NewOpenXRAction() (gdClass OpenXRAction) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRAction) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRAction) owner() cObject { return gdClass.obj }
 func (OpenXRAction) class() string { return "OpenXRAction\000" }
 
@@ -15431,6 +15837,7 @@ func (gdClass OpenXRAction) GetToplevelPaths() []string { return methodCall[[]st
 
 type OpenXRActionMap struct{_OpenXRActionMap struct{}; obj cObject }
 func NewOpenXRActionMap() (gdClass OpenXRActionMap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRActionMap) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRActionMap) owner() cObject { return gdClass.obj }
 func (OpenXRActionMap) class() string { return "OpenXRActionMap\000" }
 
@@ -15458,6 +15865,7 @@ func (gdClass OpenXRActionMap) CreateDefaultActionSets()  { methodCall[struct{}]
 
 type OpenXRActionSet struct{_OpenXRActionSet struct{}; obj cObject }
 func NewOpenXRActionSet() (gdClass OpenXRActionSet) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRActionSet) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRActionSet) owner() cObject { return gdClass.obj }
 func (OpenXRActionSet) class() string { return "OpenXRActionSet\000" }
 
@@ -15479,6 +15887,7 @@ func (gdClass OpenXRActionSet) RemoveAction(action OpenXRAction)  { methodCall[s
 
 type OpenXRIPBinding struct{_OpenXRIPBinding struct{}; obj cObject }
 func NewOpenXRIPBinding() (gdClass OpenXRIPBinding) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRIPBinding) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRIPBinding) owner() cObject { return gdClass.obj }
 func (OpenXRIPBinding) class() string { return "OpenXRIPBinding\000" }
 
@@ -15499,6 +15908,7 @@ func (gdClass OpenXRIPBinding) RemovePath(path string)  { methodCall[struct{}](g
 
 type OpenXRInteractionProfile struct{_OpenXRInteractionProfile struct{}; obj cObject }
 func NewOpenXRInteractionProfile() (gdClass OpenXRInteractionProfile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRInteractionProfile) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRInteractionProfile) owner() cObject { return gdClass.obj }
 func (OpenXRInteractionProfile) class() string { return "OpenXRInteractionProfile\000" }
 
@@ -15517,6 +15927,7 @@ func (gdClass OpenXRInteractionProfile) GetBindings() Array { return methodCall[
 
 type OpenXRInterface struct{_OpenXRInterface struct{}; obj cObject }
 func NewOpenXRInterface() (gdClass OpenXRInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OpenXRInterface) Free() { gdClass.obj.destroy() }
 func (gdClass OpenXRInterface) owner() cObject { return gdClass.obj }
 func (OpenXRInterface) class() string { return "OpenXRInterface\000" }
 
@@ -15528,6 +15939,7 @@ func (gdClass OpenXRInterface) virtual(rtype reflect.Type, name string) (method 
 
 type OptimizedTranslation struct{_OptimizedTranslation struct{}; obj cObject }
 func NewOptimizedTranslation() (gdClass OptimizedTranslation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OptimizedTranslation) Free() { gdClass.obj.destroy() }
 func (gdClass OptimizedTranslation) owner() cObject { return gdClass.obj }
 func (OptimizedTranslation) class() string { return "OptimizedTranslation\000" }
 
@@ -15541,6 +15953,7 @@ func (gdClass OptimizedTranslation) Generate(from Translation)  { methodCall[str
 
 type OptionButton struct{_OptionButton struct{}; obj cObject }
 func NewOptionButton() (gdClass OptionButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass OptionButton) Free() { gdClass.obj.destroy() }
 func (gdClass OptionButton) owner() cObject { return gdClass.obj }
 func (OptionButton) class() string { return "OptionButton\000" }
 
@@ -15583,6 +15996,7 @@ func (gdClass OptionButton) IsFitToLongestItem() bool { return methodCall[bool](
 
 type PCKPacker struct{_PCKPacker struct{}; obj cObject }
 func NewPCKPacker() (gdClass PCKPacker) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PCKPacker) Free() { gdClass.obj.destroy() }
 func (gdClass PCKPacker) owner() cObject { return gdClass.obj }
 func (PCKPacker) class() string { return "PCKPacker\000" }
 
@@ -15598,6 +16012,7 @@ func (gdClass PCKPacker) Flush(verbose bool) int64 { return methodCall[int64](gd
 
 type PackedDataContainer struct{_PackedDataContainer struct{}; obj cObject }
 func NewPackedDataContainer() (gdClass PackedDataContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PackedDataContainer) Free() { gdClass.obj.destroy() }
 func (gdClass PackedDataContainer) owner() cObject { return gdClass.obj }
 func (PackedDataContainer) class() string { return "PackedDataContainer\000" }
 
@@ -15612,6 +16027,7 @@ func (gdClass PackedDataContainer) Size() int64 { return methodCall[int64](gdCla
 
 type PackedDataContainerRef struct{_PackedDataContainerRef struct{}; obj cObject }
 func NewPackedDataContainerRef() (gdClass PackedDataContainerRef) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PackedDataContainerRef) Free() { gdClass.obj.destroy() }
 func (gdClass PackedDataContainerRef) owner() cObject { return gdClass.obj }
 func (PackedDataContainerRef) class() string { return "PackedDataContainerRef\000" }
 
@@ -15634,6 +16050,7 @@ const (
 
 type PackedScene struct{_PackedScene struct{}; obj cObject }
 func NewPackedScene() (gdClass PackedScene) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PackedScene) Free() { gdClass.obj.destroy() }
 func (gdClass PackedScene) owner() cObject { return gdClass.obj }
 func (PackedScene) class() string { return "PackedScene\000" }
 
@@ -15650,6 +16067,7 @@ func (gdClass PackedScene) GetState() SceneState { return methodCall[SceneState]
 
 type PacketPeer struct{_PacketPeer struct{}; obj cObject }
 func NewPacketPeer() (gdClass PacketPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PacketPeer) Free() { gdClass.obj.destroy() }
 func (gdClass PacketPeer) owner() cObject { return gdClass.obj }
 func (PacketPeer) class() string { return "PacketPeer\000" }
 
@@ -15680,6 +16098,7 @@ const (
 
 type PacketPeerDTLS struct{_PacketPeerDTLS struct{}; obj cObject }
 func NewPacketPeerDTLS() (gdClass PacketPeerDTLS) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PacketPeerDTLS) Free() { gdClass.obj.destroy() }
 func (gdClass PacketPeerDTLS) owner() cObject { return gdClass.obj }
 func (PacketPeerDTLS) class() string { return "PacketPeerDTLS\000" }
 
@@ -15696,6 +16115,7 @@ func (gdClass PacketPeerDTLS) DisconnectFromPeer()  { methodCall[struct{}](gdCla
 
 type PacketPeerExtension struct{_PacketPeerExtension struct{}; obj cObject }
 func NewPacketPeerExtension() (gdClass PacketPeerExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PacketPeerExtension) Free() { gdClass.obj.destroy() }
 func (gdClass PacketPeerExtension) owner() cObject { return gdClass.obj }
 func (PacketPeerExtension) class() string { return "PacketPeerExtension\000" }
 
@@ -15729,6 +16149,7 @@ func (gdClass PacketPeerExtension) virtual(rtype reflect.Type, name string) (met
 
 type PacketPeerStream struct{_PacketPeerStream struct{}; obj cObject }
 func NewPacketPeerStream() (gdClass PacketPeerStream) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PacketPeerStream) Free() { gdClass.obj.destroy() }
 func (gdClass PacketPeerStream) owner() cObject { return gdClass.obj }
 func (PacketPeerStream) class() string { return "PacketPeerStream\000" }
 
@@ -15747,6 +16168,7 @@ func (gdClass PacketPeerStream) GetOutputBufferMaxSize() int64 { return methodCa
 
 type PacketPeerUDP struct{_PacketPeerUDP struct{}; obj cObject }
 func NewPacketPeerUDP() (gdClass PacketPeerUDP) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PacketPeerUDP) Free() { gdClass.obj.destroy() }
 func (gdClass PacketPeerUDP) owner() cObject { return gdClass.obj }
 func (PacketPeerUDP) class() string { return "PacketPeerUDP\000" }
 
@@ -15772,6 +16194,7 @@ func (gdClass PacketPeerUDP) LeaveMulticastGroup(multicast_address string, inter
 
 type Panel struct{_Panel struct{}; obj cObject }
 func NewPanel() (gdClass Panel) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Panel) Free() { gdClass.obj.destroy() }
 func (gdClass Panel) owner() cObject { return gdClass.obj }
 func (Panel) class() string { return "Panel\000" }
 
@@ -15783,6 +16206,7 @@ func (gdClass Panel) virtual(rtype reflect.Type, name string) (method reflect.Me
 
 type PanelContainer struct{_PanelContainer struct{}; obj cObject }
 func NewPanelContainer() (gdClass PanelContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PanelContainer) Free() { gdClass.obj.destroy() }
 func (gdClass PanelContainer) owner() cObject { return gdClass.obj }
 func (PanelContainer) class() string { return "PanelContainer\000" }
 
@@ -15794,6 +16218,7 @@ func (gdClass PanelContainer) virtual(rtype reflect.Type, name string) (method r
 
 type PanoramaSkyMaterial struct{_PanoramaSkyMaterial struct{}; obj cObject }
 func NewPanoramaSkyMaterial() (gdClass PanoramaSkyMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PanoramaSkyMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass PanoramaSkyMaterial) owner() cObject { return gdClass.obj }
 func (PanoramaSkyMaterial) class() string { return "PanoramaSkyMaterial\000" }
 
@@ -15810,6 +16235,7 @@ func (gdClass PanoramaSkyMaterial) IsFilteringEnabled() bool { return methodCall
 
 type ParallaxBackground struct{_ParallaxBackground struct{}; obj cObject }
 func NewParallaxBackground() (gdClass ParallaxBackground) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ParallaxBackground) Free() { gdClass.obj.destroy() }
 func (gdClass ParallaxBackground) owner() cObject { return gdClass.obj }
 func (ParallaxBackground) class() string { return "ParallaxBackground\000" }
 
@@ -15834,6 +16260,7 @@ func (gdClass ParallaxBackground) IsIgnoreCameraZoom() bool { return methodCall[
 
 type ParallaxLayer struct{_ParallaxLayer struct{}; obj cObject }
 func NewParallaxLayer() (gdClass ParallaxLayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ParallaxLayer) Free() { gdClass.obj.destroy() }
 func (gdClass ParallaxLayer) owner() cObject { return gdClass.obj }
 func (ParallaxLayer) class() string { return "ParallaxLayer\000" }
 
@@ -15914,6 +16341,7 @@ const (
 
 type ParticleProcessMaterial struct{_ParticleProcessMaterial struct{}; obj cObject }
 func NewParticleProcessMaterial() (gdClass ParticleProcessMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ParticleProcessMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass ParticleProcessMaterial) owner() cObject { return gdClass.obj }
 func (ParticleProcessMaterial) class() string { return "ParticleProcessMaterial\000" }
 
@@ -16000,6 +16428,7 @@ func (gdClass ParticleProcessMaterial) GetCollisionBounce() float64 { return met
 
 type Path2D struct{_Path2D struct{}; obj cObject }
 func NewPath2D() (gdClass Path2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Path2D) Free() { gdClass.obj.destroy() }
 func (gdClass Path2D) owner() cObject { return gdClass.obj }
 func (Path2D) class() string { return "Path2D\000" }
 
@@ -16014,6 +16443,7 @@ func (gdClass Path2D) GetCurve() Curve2D { return methodCall[Curve2D](gdClass.ob
 
 type Path3D struct{_Path3D struct{}; obj cObject }
 func NewPath3D() (gdClass Path3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Path3D) Free() { gdClass.obj.destroy() }
 func (gdClass Path3D) owner() cObject { return gdClass.obj }
 func (Path3D) class() string { return "Path3D\000" }
 
@@ -16028,6 +16458,7 @@ func (gdClass Path3D) GetCurve() Curve3D { return methodCall[Curve3D](gdClass.ob
 
 type PathFollow2D struct{_PathFollow2D struct{}; obj cObject }
 func NewPathFollow2D() (gdClass PathFollow2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PathFollow2D) Free() { gdClass.obj.destroy() }
 func (gdClass PathFollow2D) owner() cObject { return gdClass.obj }
 func (PathFollow2D) class() string { return "PathFollow2D\000" }
 
@@ -16066,6 +16497,7 @@ const (
 
 type PathFollow3D struct{_PathFollow3D struct{}; obj cObject }
 func NewPathFollow3D() (gdClass PathFollow3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PathFollow3D) Free() { gdClass.obj.destroy() }
 func (gdClass PathFollow3D) owner() cObject { return gdClass.obj }
 func (PathFollow3D) class() string { return "PathFollow3D\000" }
 
@@ -16122,6 +16554,7 @@ var Performance PerformanceSingleton
 
 type PerformanceSingleton struct{_PerformanceSingleton struct{}; obj cObject }
 func NewPerformanceSingleton() (gdClass PerformanceSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PerformanceSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass PerformanceSingleton) owner() cObject { return gdClass.obj }
 func (PerformanceSingleton) class() string { return "PerformanceSingleton\000" }
 
@@ -16141,6 +16574,7 @@ func (gdClass PerformanceSingleton) GetCustomMonitorNames() Array { return metho
 
 type PhysicalBone2D struct{_PhysicalBone2D struct{}; obj cObject }
 func NewPhysicalBone2D() (gdClass PhysicalBone2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicalBone2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicalBone2D) owner() cObject { return gdClass.obj }
 func (PhysicalBone2D) class() string { return "PhysicalBone2D\000" }
 
@@ -16183,6 +16617,7 @@ const (
 
 type PhysicalBone3D struct{_PhysicalBone3D struct{}; obj cObject }
 func NewPhysicalBone3D() (gdClass PhysicalBone3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicalBone3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicalBone3D) owner() cObject { return gdClass.obj }
 func (PhysicalBone3D) class() string { return "PhysicalBone3D\000" }
 
@@ -16239,6 +16674,7 @@ func (gdClass PhysicalBone3D) IsAbleToSleep() bool { return methodCall[bool](gdC
 
 type PhysicalSkyMaterial struct{_PhysicalSkyMaterial struct{}; obj cObject }
 func NewPhysicalSkyMaterial() (gdClass PhysicalSkyMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicalSkyMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicalSkyMaterial) owner() cObject { return gdClass.obj }
 func (PhysicalSkyMaterial) class() string { return "PhysicalSkyMaterial\000" }
 
@@ -16273,6 +16709,7 @@ func (gdClass PhysicalSkyMaterial) GetNightSky() Texture2D { return methodCall[T
 
 type PhysicsBody2D struct{_PhysicsBody2D struct{}; obj cObject }
 func NewPhysicsBody2D() (gdClass PhysicsBody2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsBody2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsBody2D) owner() cObject { return gdClass.obj }
 func (PhysicsBody2D) class() string { return "PhysicsBody2D\000" }
 
@@ -16290,6 +16727,7 @@ func (gdClass PhysicsBody2D) RemoveCollisionExceptionWith(body Node)  { methodCa
 
 type PhysicsBody3D struct{_PhysicsBody3D struct{}; obj cObject }
 func NewPhysicsBody3D() (gdClass PhysicsBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsBody3D) owner() cObject { return gdClass.obj }
 func (PhysicsBody3D) class() string { return "PhysicsBody3D\000" }
 
@@ -16309,6 +16747,7 @@ func (gdClass PhysicsBody3D) RemoveCollisionExceptionWith(body Node)  { methodCa
 
 type PhysicsDirectBodyState2D struct{_PhysicsDirectBodyState2D struct{}; obj cObject }
 func NewPhysicsDirectBodyState2D() (gdClass PhysicsDirectBodyState2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectBodyState2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectBodyState2D) owner() cObject { return gdClass.obj }
 func (PhysicsDirectBodyState2D) class() string { return "PhysicsDirectBodyState2D\000" }
 
@@ -16363,6 +16802,7 @@ func (gdClass PhysicsDirectBodyState2D) GetSpaceState() PhysicsDirectSpaceState2
 
 type PhysicsDirectBodyState3D struct{_PhysicsDirectBodyState3D struct{}; obj cObject }
 func NewPhysicsDirectBodyState3D() (gdClass PhysicsDirectBodyState3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectBodyState3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectBodyState3D) owner() cObject { return gdClass.obj }
 func (PhysicsDirectBodyState3D) class() string { return "PhysicsDirectBodyState3D\000" }
 
@@ -16419,6 +16859,7 @@ func (gdClass PhysicsDirectBodyState3D) GetSpaceState() PhysicsDirectSpaceState3
 
 type PhysicsDirectBodyState3DExtension struct{_PhysicsDirectBodyState3DExtension struct{}; obj cObject }
 func NewPhysicsDirectBodyState3DExtension() (gdClass PhysicsDirectBodyState3DExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectBodyState3DExtension) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectBodyState3DExtension) owner() cObject { return gdClass.obj }
 func (PhysicsDirectBodyState3DExtension) class() string { return "PhysicsDirectBodyState3DExtension\000" }
 
@@ -16652,6 +17093,7 @@ func (gdClass PhysicsDirectBodyState3DExtension) virtual(rtype reflect.Type, nam
 
 type PhysicsDirectSpaceState2D struct{_PhysicsDirectSpaceState2D struct{}; obj cObject }
 func NewPhysicsDirectSpaceState2D() (gdClass PhysicsDirectSpaceState2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectSpaceState2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectSpaceState2D) owner() cObject { return gdClass.obj }
 func (PhysicsDirectSpaceState2D) class() string { return "PhysicsDirectSpaceState2D\000" }
 
@@ -16670,6 +17112,7 @@ func (gdClass PhysicsDirectSpaceState2D) GetRestInfo(parameters PhysicsShapeQuer
 
 type PhysicsDirectSpaceState3D struct{_PhysicsDirectSpaceState3D struct{}; obj cObject }
 func NewPhysicsDirectSpaceState3D() (gdClass PhysicsDirectSpaceState3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectSpaceState3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectSpaceState3D) owner() cObject { return gdClass.obj }
 func (PhysicsDirectSpaceState3D) class() string { return "PhysicsDirectSpaceState3D\000" }
 
@@ -16688,6 +17131,7 @@ func (gdClass PhysicsDirectSpaceState3D) GetRestInfo(parameters PhysicsShapeQuer
 
 type PhysicsDirectSpaceState3DExtension struct{_PhysicsDirectSpaceState3DExtension struct{}; obj cObject }
 func NewPhysicsDirectSpaceState3DExtension() (gdClass PhysicsDirectSpaceState3DExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsDirectSpaceState3DExtension) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsDirectSpaceState3DExtension) owner() cObject { return gdClass.obj }
 func (PhysicsDirectSpaceState3DExtension) class() string { return "PhysicsDirectSpaceState3DExtension\000" }
 
@@ -16736,6 +17180,7 @@ func (gdClass PhysicsDirectSpaceState3DExtension) virtual(rtype reflect.Type, na
 
 type PhysicsMaterial struct{_PhysicsMaterial struct{}; obj cObject }
 func NewPhysicsMaterial() (gdClass PhysicsMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsMaterial) owner() cObject { return gdClass.obj }
 func (PhysicsMaterial) class() string { return "PhysicsMaterial\000" }
 
@@ -16756,6 +17201,7 @@ func (gdClass PhysicsMaterial) IsAbsorbent() bool { return methodCall[bool](gdCl
 
 type PhysicsPointQueryParameters2D struct{_PhysicsPointQueryParameters2D struct{}; obj cObject }
 func NewPhysicsPointQueryParameters2D() (gdClass PhysicsPointQueryParameters2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsPointQueryParameters2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsPointQueryParameters2D) owner() cObject { return gdClass.obj }
 func (PhysicsPointQueryParameters2D) class() string { return "PhysicsPointQueryParameters2D\000" }
 
@@ -16780,6 +17226,7 @@ func (gdClass PhysicsPointQueryParameters2D) IsCollideWithAreasEnabled() bool { 
 
 type PhysicsPointQueryParameters3D struct{_PhysicsPointQueryParameters3D struct{}; obj cObject }
 func NewPhysicsPointQueryParameters3D() (gdClass PhysicsPointQueryParameters3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsPointQueryParameters3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsPointQueryParameters3D) owner() cObject { return gdClass.obj }
 func (PhysicsPointQueryParameters3D) class() string { return "PhysicsPointQueryParameters3D\000" }
 
@@ -16802,6 +17249,7 @@ func (gdClass PhysicsPointQueryParameters3D) IsCollideWithAreasEnabled() bool { 
 
 type PhysicsRayQueryParameters2D struct{_PhysicsRayQueryParameters2D struct{}; obj cObject }
 func NewPhysicsRayQueryParameters2D() (gdClass PhysicsRayQueryParameters2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsRayQueryParameters2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsRayQueryParameters2D) owner() cObject { return gdClass.obj }
 func (PhysicsRayQueryParameters2D) class() string { return "PhysicsRayQueryParameters2D\000" }
 
@@ -16829,6 +17277,7 @@ func (gdClass PhysicsRayQueryParameters2D) IsHitFromInsideEnabled() bool { retur
 
 type PhysicsRayQueryParameters3D struct{_PhysicsRayQueryParameters3D struct{}; obj cObject }
 func NewPhysicsRayQueryParameters3D() (gdClass PhysicsRayQueryParameters3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsRayQueryParameters3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsRayQueryParameters3D) owner() cObject { return gdClass.obj }
 func (PhysicsRayQueryParameters3D) class() string { return "PhysicsRayQueryParameters3D\000" }
 
@@ -17003,6 +17452,7 @@ var PhysicsServer2D PhysicsServer2DSingleton
 
 type PhysicsServer2DSingleton struct{_PhysicsServer2DSingleton struct{}; obj cObject }
 func NewPhysicsServer2DSingleton() (gdClass PhysicsServer2DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsServer2DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsServer2DSingleton) owner() cObject { return gdClass.obj }
 func (PhysicsServer2DSingleton) class() string { return "PhysicsServer2DSingleton\000" }
 
@@ -17360,6 +17810,7 @@ var PhysicsServer3D PhysicsServer3DSingleton
 
 type PhysicsServer3DSingleton struct{_PhysicsServer3DSingleton struct{}; obj cObject }
 func NewPhysicsServer3DSingleton() (gdClass PhysicsServer3DSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsServer3DSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsServer3DSingleton) owner() cObject { return gdClass.obj }
 func (PhysicsServer3DSingleton) class() string { return "PhysicsServer3DSingleton\000" }
 
@@ -17502,6 +17953,7 @@ func (gdClass PhysicsServer3DSingleton) GetProcessInfo(process_info PhysicsServe
 
 type PhysicsServer3DExtension struct{_PhysicsServer3DExtension struct{}; obj cObject }
 func NewPhysicsServer3DExtension() (gdClass PhysicsServer3DExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsServer3DExtension) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsServer3DExtension) owner() cObject { return gdClass.obj }
 func (PhysicsServer3DExtension) class() string { return "PhysicsServer3DExtension\000" }
 
@@ -18165,6 +18617,7 @@ func (gdClass PhysicsServer3DExtension) virtual(rtype reflect.Type, name string)
 
 type PhysicsServer3DRenderingServerHandler struct{_PhysicsServer3DRenderingServerHandler struct{}; obj cObject }
 func NewPhysicsServer3DRenderingServerHandler() (gdClass PhysicsServer3DRenderingServerHandler) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsServer3DRenderingServerHandler) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsServer3DRenderingServerHandler) owner() cObject { return gdClass.obj }
 func (PhysicsServer3DRenderingServerHandler) class() string { return "PhysicsServer3DRenderingServerHandler\000" }
 
@@ -18193,6 +18646,7 @@ func (gdClass PhysicsServer3DRenderingServerHandler) virtual(rtype reflect.Type,
 
 type PhysicsShapeQueryParameters2D struct{_PhysicsShapeQueryParameters2D struct{}; obj cObject }
 func NewPhysicsShapeQueryParameters2D() (gdClass PhysicsShapeQueryParameters2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsShapeQueryParameters2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsShapeQueryParameters2D) owner() cObject { return gdClass.obj }
 func (PhysicsShapeQueryParameters2D) class() string { return "PhysicsShapeQueryParameters2D\000" }
 
@@ -18223,6 +18677,7 @@ func (gdClass PhysicsShapeQueryParameters2D) IsCollideWithAreasEnabled() bool { 
 
 type PhysicsShapeQueryParameters3D struct{_PhysicsShapeQueryParameters3D struct{}; obj cObject }
 func NewPhysicsShapeQueryParameters3D() (gdClass PhysicsShapeQueryParameters3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsShapeQueryParameters3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsShapeQueryParameters3D) owner() cObject { return gdClass.obj }
 func (PhysicsShapeQueryParameters3D) class() string { return "PhysicsShapeQueryParameters3D\000" }
 
@@ -18253,6 +18708,7 @@ func (gdClass PhysicsShapeQueryParameters3D) IsCollideWithAreasEnabled() bool { 
 
 type PhysicsTestMotionParameters2D struct{_PhysicsTestMotionParameters2D struct{}; obj cObject }
 func NewPhysicsTestMotionParameters2D() (gdClass PhysicsTestMotionParameters2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsTestMotionParameters2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsTestMotionParameters2D) owner() cObject { return gdClass.obj }
 func (PhysicsTestMotionParameters2D) class() string { return "PhysicsTestMotionParameters2D\000" }
 
@@ -18279,6 +18735,7 @@ func (gdClass PhysicsTestMotionParameters2D) SetRecoveryAsCollisionEnabled(enabl
 
 type PhysicsTestMotionParameters3D struct{_PhysicsTestMotionParameters3D struct{}; obj cObject }
 func NewPhysicsTestMotionParameters3D() (gdClass PhysicsTestMotionParameters3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsTestMotionParameters3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsTestMotionParameters3D) owner() cObject { return gdClass.obj }
 func (PhysicsTestMotionParameters3D) class() string { return "PhysicsTestMotionParameters3D\000" }
 
@@ -18307,6 +18764,7 @@ func (gdClass PhysicsTestMotionParameters3D) SetRecoveryAsCollisionEnabled(enabl
 
 type PhysicsTestMotionResult2D struct{_PhysicsTestMotionResult2D struct{}; obj cObject }
 func NewPhysicsTestMotionResult2D() (gdClass PhysicsTestMotionResult2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsTestMotionResult2D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsTestMotionResult2D) owner() cObject { return gdClass.obj }
 func (PhysicsTestMotionResult2D) class() string { return "PhysicsTestMotionResult2D\000" }
 
@@ -18332,6 +18790,7 @@ func (gdClass PhysicsTestMotionResult2D) GetCollisionUnsafeFraction() float64 { 
 
 type PhysicsTestMotionResult3D struct{_PhysicsTestMotionResult3D struct{}; obj cObject }
 func NewPhysicsTestMotionResult3D() (gdClass PhysicsTestMotionResult3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PhysicsTestMotionResult3D) Free() { gdClass.obj.destroy() }
 func (gdClass PhysicsTestMotionResult3D) owner() cObject { return gdClass.obj }
 func (PhysicsTestMotionResult3D) class() string { return "PhysicsTestMotionResult3D\000" }
 
@@ -18358,6 +18817,7 @@ func (gdClass PhysicsTestMotionResult3D) GetCollisionDepth(collision_index int64
 
 type PinJoint2D struct{_PinJoint2D struct{}; obj cObject }
 func NewPinJoint2D() (gdClass PinJoint2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PinJoint2D) Free() { gdClass.obj.destroy() }
 func (gdClass PinJoint2D) owner() cObject { return gdClass.obj }
 func (PinJoint2D) class() string { return "PinJoint2D\000" }
 
@@ -18380,6 +18840,7 @@ const (
 
 type PinJoint3D struct{_PinJoint3D struct{}; obj cObject }
 func NewPinJoint3D() (gdClass PinJoint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PinJoint3D) Free() { gdClass.obj.destroy() }
 func (gdClass PinJoint3D) owner() cObject { return gdClass.obj }
 func (PinJoint3D) class() string { return "PinJoint3D\000" }
 
@@ -18394,6 +18855,7 @@ func (gdClass PinJoint3D) GetParam(param PinJoint3DParam) float64 { return metho
 
 type PlaceholderCubemap struct{_PlaceholderCubemap struct{}; obj cObject }
 func NewPlaceholderCubemap() (gdClass PlaceholderCubemap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderCubemap) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderCubemap) owner() cObject { return gdClass.obj }
 func (PlaceholderCubemap) class() string { return "PlaceholderCubemap\000" }
 
@@ -18405,6 +18867,7 @@ func (gdClass PlaceholderCubemap) virtual(rtype reflect.Type, name string) (meth
 
 type PlaceholderCubemapArray struct{_PlaceholderCubemapArray struct{}; obj cObject }
 func NewPlaceholderCubemapArray() (gdClass PlaceholderCubemapArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderCubemapArray) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderCubemapArray) owner() cObject { return gdClass.obj }
 func (PlaceholderCubemapArray) class() string { return "PlaceholderCubemapArray\000" }
 
@@ -18416,6 +18879,7 @@ func (gdClass PlaceholderCubemapArray) virtual(rtype reflect.Type, name string) 
 
 type PlaceholderMaterial struct{_PlaceholderMaterial struct{}; obj cObject }
 func NewPlaceholderMaterial() (gdClass PlaceholderMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderMaterial) owner() cObject { return gdClass.obj }
 func (PlaceholderMaterial) class() string { return "PlaceholderMaterial\000" }
 
@@ -18427,6 +18891,7 @@ func (gdClass PlaceholderMaterial) virtual(rtype reflect.Type, name string) (met
 
 type PlaceholderMesh struct{_PlaceholderMesh struct{}; obj cObject }
 func NewPlaceholderMesh() (gdClass PlaceholderMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderMesh) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderMesh) owner() cObject { return gdClass.obj }
 func (PlaceholderMesh) class() string { return "PlaceholderMesh\000" }
 
@@ -18440,6 +18905,7 @@ func (gdClass PlaceholderMesh) SetAabb(aabb AABB)  { methodCall[struct{}](gdClas
 
 type PlaceholderTexture2D struct{_PlaceholderTexture2D struct{}; obj cObject }
 func NewPlaceholderTexture2D() (gdClass PlaceholderTexture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderTexture2D) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderTexture2D) owner() cObject { return gdClass.obj }
 func (PlaceholderTexture2D) class() string { return "PlaceholderTexture2D\000" }
 
@@ -18453,6 +18919,7 @@ func (gdClass PlaceholderTexture2D) SetSize(size Vector2)  { methodCall[struct{}
 
 type PlaceholderTexture2DArray struct{_PlaceholderTexture2DArray struct{}; obj cObject }
 func NewPlaceholderTexture2DArray() (gdClass PlaceholderTexture2DArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderTexture2DArray) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderTexture2DArray) owner() cObject { return gdClass.obj }
 func (PlaceholderTexture2DArray) class() string { return "PlaceholderTexture2DArray\000" }
 
@@ -18464,6 +18931,7 @@ func (gdClass PlaceholderTexture2DArray) virtual(rtype reflect.Type, name string
 
 type PlaceholderTexture3D struct{_PlaceholderTexture3D struct{}; obj cObject }
 func NewPlaceholderTexture3D() (gdClass PlaceholderTexture3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderTexture3D) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderTexture3D) owner() cObject { return gdClass.obj }
 func (PlaceholderTexture3D) class() string { return "PlaceholderTexture3D\000" }
 
@@ -18478,6 +18946,7 @@ func (gdClass PlaceholderTexture3D) GetSize() Vector3i { return methodCall[Vecto
 
 type PlaceholderTextureLayered struct{_PlaceholderTextureLayered struct{}; obj cObject }
 func NewPlaceholderTextureLayered() (gdClass PlaceholderTextureLayered) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaceholderTextureLayered) Free() { gdClass.obj.destroy() }
 func (gdClass PlaceholderTextureLayered) owner() cObject { return gdClass.obj }
 func (PlaceholderTextureLayered) class() string { return "PlaceholderTextureLayered\000" }
 
@@ -18501,6 +18970,7 @@ const (
 
 type PlaneMesh struct{_PlaneMesh struct{}; obj cObject }
 func NewPlaneMesh() (gdClass PlaneMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PlaneMesh) Free() { gdClass.obj.destroy() }
 func (gdClass PlaneMesh) owner() cObject { return gdClass.obj }
 func (PlaneMesh) class() string { return "PlaneMesh\000" }
 
@@ -18523,6 +18993,7 @@ func (gdClass PlaneMesh) GetOrientation() PlaneMeshOrientation { return methodCa
 
 type PointLight2D struct{_PointLight2D struct{}; obj cObject }
 func NewPointLight2D() (gdClass PointLight2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PointLight2D) Free() { gdClass.obj.destroy() }
 func (gdClass PointLight2D) owner() cObject { return gdClass.obj }
 func (PointLight2D) class() string { return "PointLight2D\000" }
 
@@ -18541,6 +19012,7 @@ func (gdClass PointLight2D) GetTextureScale() float64 { return methodCall[float6
 
 type PointMesh struct{_PointMesh struct{}; obj cObject }
 func NewPointMesh() (gdClass PointMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PointMesh) Free() { gdClass.obj.destroy() }
 func (gdClass PointMesh) owner() cObject { return gdClass.obj }
 func (PointMesh) class() string { return "PointMesh\000" }
 
@@ -18552,6 +19024,7 @@ func (gdClass PointMesh) virtual(rtype reflect.Type, name string) (method reflec
 
 type Polygon2D struct{_Polygon2D struct{}; obj cObject }
 func NewPolygon2D() (gdClass Polygon2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Polygon2D) Free() { gdClass.obj.destroy() }
 func (gdClass Polygon2D) owner() cObject { return gdClass.obj }
 func (Polygon2D) class() string { return "Polygon2D\000" }
 
@@ -18602,6 +19075,7 @@ func (gdClass Polygon2D) GetInternalVertexCount() int64 { return methodCall[int6
 
 type PolygonOccluder3D struct{_PolygonOccluder3D struct{}; obj cObject }
 func NewPolygonOccluder3D() (gdClass PolygonOccluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PolygonOccluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass PolygonOccluder3D) owner() cObject { return gdClass.obj }
 func (PolygonOccluder3D) class() string { return "PolygonOccluder3D\000" }
 
@@ -18616,6 +19090,7 @@ func (gdClass PolygonOccluder3D) GetPolygon() []Vector2 { return methodCall[[]Ve
 
 type PolygonPathFinder struct{_PolygonPathFinder struct{}; obj cObject }
 func NewPolygonPathFinder() (gdClass PolygonPathFinder) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PolygonPathFinder) Free() { gdClass.obj.destroy() }
 func (gdClass PolygonPathFinder) owner() cObject { return gdClass.obj }
 func (PolygonPathFinder) class() string { return "PolygonPathFinder\000" }
 
@@ -18636,6 +19111,7 @@ func (gdClass PolygonPathFinder) GetBounds() Rect2 { return methodCall[Rect2](gd
 
 type Popup struct{_Popup struct{}; obj cObject }
 func NewPopup() (gdClass Popup) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Popup) Free() { gdClass.obj.destroy() }
 func (gdClass Popup) owner() cObject { return gdClass.obj }
 func (Popup) class() string { return "Popup\000" }
 
@@ -18647,6 +19123,7 @@ func (gdClass Popup) virtual(rtype reflect.Type, name string) (method reflect.Me
 
 type PopupMenu struct{_PopupMenu struct{}; obj cObject }
 func NewPopupMenu() (gdClass PopupMenu) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PopupMenu) Free() { gdClass.obj.destroy() }
 func (gdClass PopupMenu) owner() cObject { return gdClass.obj }
 func (PopupMenu) class() string { return "PopupMenu\000" }
 
@@ -18729,6 +19206,7 @@ func (gdClass PopupMenu) GetAllowSearch() bool { return methodCall[bool](gdClass
 
 type PopupPanel struct{_PopupPanel struct{}; obj cObject }
 func NewPopupPanel() (gdClass PopupPanel) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PopupPanel) Free() { gdClass.obj.destroy() }
 func (gdClass PopupPanel) owner() cObject { return gdClass.obj }
 func (PopupPanel) class() string { return "PopupPanel\000" }
 
@@ -18751,6 +19229,7 @@ const (
 
 type PortableCompressedTexture2D struct{_PortableCompressedTexture2D struct{}; obj cObject }
 func NewPortableCompressedTexture2D() (gdClass PortableCompressedTexture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PortableCompressedTexture2D) Free() { gdClass.obj.destroy() }
 func (gdClass PortableCompressedTexture2D) owner() cObject { return gdClass.obj }
 func (PortableCompressedTexture2D) class() string { return "PortableCompressedTexture2D\000" }
 
@@ -18772,6 +19251,7 @@ func (gdClass PortableCompressedTexture2D) IsKeepingAllCompressedBuffers() bool 
 
 type PrimitiveMesh struct{_PrimitiveMesh struct{}; obj cObject }
 func NewPrimitiveMesh() (gdClass PrimitiveMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PrimitiveMesh) Free() { gdClass.obj.destroy() }
 func (gdClass PrimitiveMesh) owner() cObject { return gdClass.obj }
 func (PrimitiveMesh) class() string { return "PrimitiveMesh\000" }
 
@@ -18798,6 +19278,7 @@ func (gdClass PrimitiveMesh) GetFlipFaces() bool { return methodCall[bool](gdCla
 
 type PrismMesh struct{_PrismMesh struct{}; obj cObject }
 func NewPrismMesh() (gdClass PrismMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PrismMesh) Free() { gdClass.obj.destroy() }
 func (gdClass PrismMesh) owner() cObject { return gdClass.obj }
 func (PrismMesh) class() string { return "PrismMesh\000" }
 
@@ -18820,6 +19301,7 @@ func (gdClass PrismMesh) GetSubdivideDepth() int64 { return methodCall[int64](gd
 
 type ProceduralSkyMaterial struct{_ProceduralSkyMaterial struct{}; obj cObject }
 func NewProceduralSkyMaterial() (gdClass ProceduralSkyMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ProceduralSkyMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass ProceduralSkyMaterial) owner() cObject { return gdClass.obj }
 func (ProceduralSkyMaterial) class() string { return "ProceduralSkyMaterial\000" }
 
@@ -18867,6 +19349,7 @@ const (
 
 type ProgressBar struct{_ProgressBar struct{}; obj cObject }
 func NewProgressBar() (gdClass ProgressBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ProgressBar) Free() { gdClass.obj.destroy() }
 func (gdClass ProgressBar) owner() cObject { return gdClass.obj }
 func (ProgressBar) class() string { return "ProgressBar\000" }
 
@@ -18884,6 +19367,7 @@ var ProjectSettings ProjectSettingsSingleton
 
 type ProjectSettingsSingleton struct{_ProjectSettingsSingleton struct{}; obj cObject }
 func NewProjectSettingsSingleton() (gdClass ProjectSettingsSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ProjectSettingsSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass ProjectSettingsSingleton) owner() cObject { return gdClass.obj }
 func (ProjectSettingsSingleton) class() string { return "ProjectSettingsSingleton\000" }
 
@@ -18909,6 +19393,7 @@ func (gdClass ProjectSettingsSingleton) SaveCustom(file string) int64 { return m
 
 type PropertyTweener struct{_PropertyTweener struct{}; obj cObject }
 func NewPropertyTweener() (gdClass PropertyTweener) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass PropertyTweener) Free() { gdClass.obj.destroy() }
 func (gdClass PropertyTweener) owner() cObject { return gdClass.obj }
 func (PropertyTweener) class() string { return "PropertyTweener\000" }
 
@@ -18927,6 +19412,7 @@ func (gdClass PropertyTweener) SetDelay(delay float64) PropertyTweener { return 
 
 type QuadOccluder3D struct{_QuadOccluder3D struct{}; obj cObject }
 func NewQuadOccluder3D() (gdClass QuadOccluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass QuadOccluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass QuadOccluder3D) owner() cObject { return gdClass.obj }
 func (QuadOccluder3D) class() string { return "QuadOccluder3D\000" }
 
@@ -18941,6 +19427,7 @@ func (gdClass QuadOccluder3D) GetSize() Vector2 { return methodCall[Vector2](gdC
 
 type RDAttachmentFormat struct{_RDAttachmentFormat struct{}; obj cObject }
 func NewRDAttachmentFormat() (gdClass RDAttachmentFormat) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDAttachmentFormat) Free() { gdClass.obj.destroy() }
 func (gdClass RDAttachmentFormat) owner() cObject { return gdClass.obj }
 func (RDAttachmentFormat) class() string { return "RDAttachmentFormat\000" }
 
@@ -18959,6 +19446,7 @@ func (gdClass RDAttachmentFormat) GetUsageFlags() int64 { return methodCall[int6
 
 type RDFramebufferPass struct{_RDFramebufferPass struct{}; obj cObject }
 func NewRDFramebufferPass() (gdClass RDFramebufferPass) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDFramebufferPass) Free() { gdClass.obj.destroy() }
 func (gdClass RDFramebufferPass) owner() cObject { return gdClass.obj }
 func (RDFramebufferPass) class() string { return "RDFramebufferPass\000" }
 
@@ -18981,6 +19469,7 @@ func (gdClass RDFramebufferPass) GetDepthAttachment() int64 { return methodCall[
 
 type RDPipelineColorBlendState struct{_RDPipelineColorBlendState struct{}; obj cObject }
 func NewRDPipelineColorBlendState() (gdClass RDPipelineColorBlendState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineColorBlendState) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineColorBlendState) owner() cObject { return gdClass.obj }
 func (RDPipelineColorBlendState) class() string { return "RDPipelineColorBlendState\000" }
 
@@ -19001,6 +19490,7 @@ func (gdClass RDPipelineColorBlendState) GetAttachments() Array { return methodC
 
 type RDPipelineColorBlendStateAttachment struct{_RDPipelineColorBlendStateAttachment struct{}; obj cObject }
 func NewRDPipelineColorBlendStateAttachment() (gdClass RDPipelineColorBlendStateAttachment) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineColorBlendStateAttachment) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineColorBlendStateAttachment) owner() cObject { return gdClass.obj }
 func (RDPipelineColorBlendStateAttachment) class() string { return "RDPipelineColorBlendStateAttachment\000" }
 
@@ -19036,6 +19526,7 @@ func (gdClass RDPipelineColorBlendStateAttachment) GetWriteA() bool { return met
 
 type RDPipelineDepthStencilState struct{_RDPipelineDepthStencilState struct{}; obj cObject }
 func NewRDPipelineDepthStencilState() (gdClass RDPipelineDepthStencilState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineDepthStencilState) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineDepthStencilState) owner() cObject { return gdClass.obj }
 func (RDPipelineDepthStencilState) class() string { return "RDPipelineDepthStencilState\000" }
 
@@ -19090,6 +19581,7 @@ func (gdClass RDPipelineDepthStencilState) GetBackOpReference() int64 { return m
 
 type RDPipelineMultisampleState struct{_RDPipelineMultisampleState struct{}; obj cObject }
 func NewRDPipelineMultisampleState() (gdClass RDPipelineMultisampleState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineMultisampleState) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineMultisampleState) owner() cObject { return gdClass.obj }
 func (RDPipelineMultisampleState) class() string { return "RDPipelineMultisampleState\000" }
 
@@ -19114,6 +19606,7 @@ func (gdClass RDPipelineMultisampleState) GetSampleMasks() Array { return method
 
 type RDPipelineRasterizationState struct{_RDPipelineRasterizationState struct{}; obj cObject }
 func NewRDPipelineRasterizationState() (gdClass RDPipelineRasterizationState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineRasterizationState) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineRasterizationState) owner() cObject { return gdClass.obj }
 func (RDPipelineRasterizationState) class() string { return "RDPipelineRasterizationState\000" }
 
@@ -19148,6 +19641,7 @@ func (gdClass RDPipelineRasterizationState) GetPatchControlPoints() int64 { retu
 
 type RDPipelineSpecializationConstant struct{_RDPipelineSpecializationConstant struct{}; obj cObject }
 func NewRDPipelineSpecializationConstant() (gdClass RDPipelineSpecializationConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDPipelineSpecializationConstant) Free() { gdClass.obj.destroy() }
 func (gdClass RDPipelineSpecializationConstant) owner() cObject { return gdClass.obj }
 func (RDPipelineSpecializationConstant) class() string { return "RDPipelineSpecializationConstant\000" }
 
@@ -19164,6 +19658,7 @@ func (gdClass RDPipelineSpecializationConstant) GetConstantId() int64 { return m
 
 type RDSamplerState struct{_RDSamplerState struct{}; obj cObject }
 func NewRDSamplerState() (gdClass RDSamplerState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDSamplerState) Free() { gdClass.obj.destroy() }
 func (gdClass RDSamplerState) owner() cObject { return gdClass.obj }
 func (RDSamplerState) class() string { return "RDSamplerState\000" }
 
@@ -19206,6 +19701,7 @@ func (gdClass RDSamplerState) GetUnnormalizedUvw() bool { return methodCall[bool
 
 type RDShaderFile struct{_RDShaderFile struct{}; obj cObject }
 func NewRDShaderFile() (gdClass RDShaderFile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDShaderFile) Free() { gdClass.obj.destroy() }
 func (gdClass RDShaderFile) owner() cObject { return gdClass.obj }
 func (RDShaderFile) class() string { return "RDShaderFile\000" }
 
@@ -19223,6 +19719,7 @@ func (gdClass RDShaderFile) GetBaseError() string { return methodCall[string](gd
 
 type RDShaderSPIRV struct{_RDShaderSPIRV struct{}; obj cObject }
 func NewRDShaderSPIRV() (gdClass RDShaderSPIRV) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDShaderSPIRV) Free() { gdClass.obj.destroy() }
 func (gdClass RDShaderSPIRV) owner() cObject { return gdClass.obj }
 func (RDShaderSPIRV) class() string { return "RDShaderSPIRV\000" }
 
@@ -19239,6 +19736,7 @@ func (gdClass RDShaderSPIRV) GetStageCompileError(stage RenderingDeviceShaderSta
 
 type RDShaderSource struct{_RDShaderSource struct{}; obj cObject }
 func NewRDShaderSource() (gdClass RDShaderSource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDShaderSource) Free() { gdClass.obj.destroy() }
 func (gdClass RDShaderSource) owner() cObject { return gdClass.obj }
 func (RDShaderSource) class() string { return "RDShaderSource\000" }
 
@@ -19255,6 +19753,7 @@ func (gdClass RDShaderSource) GetLanguage() RenderingDeviceShaderLanguage { retu
 
 type RDTextureFormat struct{_RDTextureFormat struct{}; obj cObject }
 func NewRDTextureFormat() (gdClass RDTextureFormat) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDTextureFormat) Free() { gdClass.obj.destroy() }
 func (gdClass RDTextureFormat) owner() cObject { return gdClass.obj }
 func (RDTextureFormat) class() string { return "RDTextureFormat\000" }
 
@@ -19287,6 +19786,7 @@ func (gdClass RDTextureFormat) RemoveShareableFormat(format RenderingDeviceDataF
 
 type RDTextureView struct{_RDTextureView struct{}; obj cObject }
 func NewRDTextureView() (gdClass RDTextureView) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDTextureView) Free() { gdClass.obj.destroy() }
 func (gdClass RDTextureView) owner() cObject { return gdClass.obj }
 func (RDTextureView) class() string { return "RDTextureView\000" }
 
@@ -19309,6 +19809,7 @@ func (gdClass RDTextureView) GetSwizzleA() RenderingDeviceTextureSwizzle { retur
 
 type RDUniform struct{_RDUniform struct{}; obj cObject }
 func NewRDUniform() (gdClass RDUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDUniform) Free() { gdClass.obj.destroy() }
 func (gdClass RDUniform) owner() cObject { return gdClass.obj }
 func (RDUniform) class() string { return "RDUniform\000" }
 
@@ -19328,6 +19829,7 @@ func (gdClass RDUniform) GetIds() Array { return methodCall[Array](gdClass.obj, 
 
 type RDVertexAttribute struct{_RDVertexAttribute struct{}; obj cObject }
 func NewRDVertexAttribute() (gdClass RDVertexAttribute) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RDVertexAttribute) Free() { gdClass.obj.destroy() }
 func (gdClass RDVertexAttribute) owner() cObject { return gdClass.obj }
 func (RDVertexAttribute) class() string { return "RDVertexAttribute\000" }
 
@@ -19350,6 +19852,7 @@ func (gdClass RDVertexAttribute) GetFrequency() RenderingDeviceVertexFrequency {
 
 type RandomNumberGenerator struct{_RandomNumberGenerator struct{}; obj cObject }
 func NewRandomNumberGenerator() (gdClass RandomNumberGenerator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RandomNumberGenerator) Free() { gdClass.obj.destroy() }
 func (gdClass RandomNumberGenerator) owner() cObject { return gdClass.obj }
 func (RandomNumberGenerator) class() string { return "RandomNumberGenerator\000" }
 
@@ -19372,6 +19875,7 @@ func (gdClass RandomNumberGenerator) Randomize()  { methodCall[struct{}](gdClass
 
 type Range struct{_Range struct{}; obj cObject }
 func NewRange() (gdClass Range) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Range) Free() { gdClass.obj.destroy() }
 func (gdClass Range) owner() cObject { return gdClass.obj }
 func (Range) class() string { return "Range\000" }
 
@@ -19413,6 +19917,7 @@ func (gdClass Range) Unshare()  { methodCall[struct{}](gdClass.obj, methodRange[
 
 type RayCast2D struct{_RayCast2D struct{}; obj cObject }
 func NewRayCast2D() (gdClass RayCast2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RayCast2D) Free() { gdClass.obj.destroy() }
 func (gdClass RayCast2D) owner() cObject { return gdClass.obj }
 func (RayCast2D) class() string { return "RayCast2D\000" }
 
@@ -19453,6 +19958,7 @@ func (gdClass RayCast2D) IsHitFromInsideEnabled() bool { return methodCall[bool]
 
 type RayCast3D struct{_RayCast3D struct{}; obj cObject }
 func NewRayCast3D() (gdClass RayCast3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RayCast3D) Free() { gdClass.obj.destroy() }
 func (gdClass RayCast3D) owner() cObject { return gdClass.obj }
 func (RayCast3D) class() string { return "RayCast3D\000" }
 
@@ -19497,6 +20003,7 @@ func (gdClass RayCast3D) GetDebugShapeThickness() int64 { return methodCall[int6
 
 type RectangleShape2D struct{_RectangleShape2D struct{}; obj cObject }
 func NewRectangleShape2D() (gdClass RectangleShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RectangleShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass RectangleShape2D) owner() cObject { return gdClass.obj }
 func (RectangleShape2D) class() string { return "RectangleShape2D\000" }
 
@@ -19511,6 +20018,7 @@ func (gdClass RectangleShape2D) GetSize() Vector2 { return methodCall[Vector2](g
 
 type RefCounted struct{_RefCounted struct{}; obj cObject }
 func NewRefCounted() (gdClass RefCounted) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RefCounted) Free() { gdClass.obj.destroy() }
 func (gdClass RefCounted) owner() cObject { return gdClass.obj }
 func (RefCounted) class() string { return "RefCounted\000" }
 
@@ -19526,6 +20034,7 @@ func (gdClass RefCounted) Unreference() bool { return methodCall[bool](gdClass.o
 
 type ReferenceRect struct{_ReferenceRect struct{}; obj cObject }
 func NewReferenceRect() (gdClass ReferenceRect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ReferenceRect) Free() { gdClass.obj.destroy() }
 func (gdClass ReferenceRect) owner() cObject { return gdClass.obj }
 func (ReferenceRect) class() string { return "ReferenceRect\000" }
 
@@ -19559,6 +20068,7 @@ const (
 
 type ReflectionProbe struct{_ReflectionProbe struct{}; obj cObject }
 func NewReflectionProbe() (gdClass ReflectionProbe) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ReflectionProbe) Free() { gdClass.obj.destroy() }
 func (gdClass ReflectionProbe) owner() cObject { return gdClass.obj }
 func (ReflectionProbe) class() string { return "ReflectionProbe\000" }
 
@@ -19597,6 +20107,7 @@ func (gdClass ReflectionProbe) GetUpdateMode() ReflectionProbeUpdateMode { retur
 
 type RegEx struct{_RegEx struct{}; obj cObject }
 func NewRegEx() (gdClass RegEx) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RegEx) Free() { gdClass.obj.destroy() }
 func (gdClass RegEx) owner() cObject { return gdClass.obj }
 func (RegEx) class() string { return "RegEx\000" }
 
@@ -19619,6 +20130,7 @@ func (gdClass RegEx) GetNames() []string { return methodCall[[]string](gdClass.o
 
 type RegExMatch struct{_RegExMatch struct{}; obj cObject }
 func NewRegExMatch() (gdClass RegExMatch) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RegExMatch) Free() { gdClass.obj.destroy() }
 func (gdClass RegExMatch) owner() cObject { return gdClass.obj }
 func (RegExMatch) class() string { return "RegExMatch\000" }
 
@@ -19638,6 +20150,7 @@ func (gdClass RegExMatch) GetEnd(name any) int64 { return methodCall[int64](gdCl
 
 type RemoteTransform2D struct{_RemoteTransform2D struct{}; obj cObject }
 func NewRemoteTransform2D() (gdClass RemoteTransform2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RemoteTransform2D) Free() { gdClass.obj.destroy() }
 func (gdClass RemoteTransform2D) owner() cObject { return gdClass.obj }
 func (RemoteTransform2D) class() string { return "RemoteTransform2D\000" }
 
@@ -19661,6 +20174,7 @@ func (gdClass RemoteTransform2D) GetUpdateScale() bool { return methodCall[bool]
 
 type RemoteTransform3D struct{_RemoteTransform3D struct{}; obj cObject }
 func NewRemoteTransform3D() (gdClass RemoteTransform3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RemoteTransform3D) Free() { gdClass.obj.destroy() }
 func (gdClass RemoteTransform3D) owner() cObject { return gdClass.obj }
 func (RemoteTransform3D) class() string { return "RemoteTransform3D\000" }
 
@@ -20295,6 +20809,7 @@ const (
 
 type RenderingDevice struct{_RenderingDevice struct{}; obj cObject }
 func NewRenderingDevice() (gdClass RenderingDevice) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RenderingDevice) Free() { gdClass.obj.destroy() }
 func (gdClass RenderingDevice) owner() cObject { return gdClass.obj }
 func (RenderingDevice) class() string { return "RenderingDevice\000" }
 
@@ -21178,6 +21693,7 @@ var RenderingServer RenderingServerSingleton
 
 type RenderingServerSingleton struct{_RenderingServerSingleton struct{}; obj cObject }
 func NewRenderingServerSingleton() (gdClass RenderingServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RenderingServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass RenderingServerSingleton) owner() cObject { return gdClass.obj }
 func (RenderingServerSingleton) class() string { return "RenderingServerSingleton\000" }
 
@@ -21639,6 +22155,7 @@ func (gdClass RenderingServerSingleton) CreateLocalRenderingDevice() RenderingDe
 
 type Resource struct{_Resource struct{}; obj cObject }
 func NewResource() (gdClass Resource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Resource) Free() { gdClass.obj.destroy() }
 func (gdClass Resource) owner() cObject { return gdClass.obj }
 func (Resource) class() string { return "Resource\000" }
 
@@ -21671,6 +22188,7 @@ const (
 
 type ResourceFormatLoader struct{_ResourceFormatLoader struct{}; obj cObject }
 func NewResourceFormatLoader() (gdClass ResourceFormatLoader) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceFormatLoader) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceFormatLoader) owner() cObject { return gdClass.obj }
 func (ResourceFormatLoader) class() string { return "ResourceFormatLoader\000" }
 
@@ -21729,6 +22247,7 @@ func (gdClass ResourceFormatLoader) virtual(rtype reflect.Type, name string) (me
 
 type ResourceFormatSaver struct{_ResourceFormatSaver struct{}; obj cObject }
 func NewResourceFormatSaver() (gdClass ResourceFormatSaver) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceFormatSaver) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceFormatSaver) owner() cObject { return gdClass.obj }
 func (ResourceFormatSaver) class() string { return "ResourceFormatSaver\000" }
 
@@ -21764,6 +22283,7 @@ const (
 
 type ResourceImporter struct{_ResourceImporter struct{}; obj cObject }
 func NewResourceImporter() (gdClass ResourceImporter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceImporter) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceImporter) owner() cObject { return gdClass.obj }
 func (ResourceImporter) class() string { return "ResourceImporter\000" }
 
@@ -21793,6 +22313,7 @@ var ResourceLoader ResourceLoaderSingleton
 
 type ResourceLoaderSingleton struct{_ResourceLoaderSingleton struct{}; obj cObject }
 func NewResourceLoaderSingleton() (gdClass ResourceLoaderSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceLoaderSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceLoaderSingleton) owner() cObject { return gdClass.obj }
 func (ResourceLoaderSingleton) class() string { return "ResourceLoaderSingleton\000" }
 
@@ -21817,6 +22338,7 @@ func (gdClass ResourceLoaderSingleton) GetResourceUid(path string) int64 { retur
 
 type ResourcePreloader struct{_ResourcePreloader struct{}; obj cObject }
 func NewResourcePreloader() (gdClass ResourcePreloader) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourcePreloader) Free() { gdClass.obj.destroy() }
 func (gdClass ResourcePreloader) owner() cObject { return gdClass.obj }
 func (ResourcePreloader) class() string { return "ResourcePreloader\000" }
 
@@ -21849,6 +22371,7 @@ var ResourceSaver ResourceSaverSingleton
 
 type ResourceSaverSingleton struct{_ResourceSaverSingleton struct{}; obj cObject }
 func NewResourceSaverSingleton() (gdClass ResourceSaverSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceSaverSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceSaverSingleton) owner() cObject { return gdClass.obj }
 func (ResourceSaverSingleton) class() string { return "ResourceSaverSingleton\000" }
 
@@ -21866,6 +22389,7 @@ var ResourceUID ResourceUIDSingleton
 
 type ResourceUIDSingleton struct{_ResourceUIDSingleton struct{}; obj cObject }
 func NewResourceUIDSingleton() (gdClass ResourceUIDSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ResourceUIDSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass ResourceUIDSingleton) owner() cObject { return gdClass.obj }
 func (ResourceUIDSingleton) class() string { return "ResourceUIDSingleton\000" }
 
@@ -21893,6 +22417,7 @@ const (
 
 type RibbonTrailMesh struct{_RibbonTrailMesh struct{}; obj cObject }
 func NewRibbonTrailMesh() (gdClass RibbonTrailMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RibbonTrailMesh) Free() { gdClass.obj.destroy() }
 func (gdClass RibbonTrailMesh) owner() cObject { return gdClass.obj }
 func (RibbonTrailMesh) class() string { return "RibbonTrailMesh\000" }
 
@@ -21917,6 +22442,7 @@ func (gdClass RibbonTrailMesh) GetShape() RibbonTrailMeshShape { return methodCa
 
 type RichTextEffect struct{_RichTextEffect struct{}; obj cObject }
 func NewRichTextEffect() (gdClass RichTextEffect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RichTextEffect) Free() { gdClass.obj.destroy() }
 func (gdClass RichTextEffect) owner() cObject { return gdClass.obj }
 func (RichTextEffect) class() string { return "RichTextEffect\000" }
 
@@ -21976,6 +22502,7 @@ const (
 
 type RichTextLabel struct{_RichTextLabel struct{}; obj cObject }
 func NewRichTextLabel() (gdClass RichTextLabel) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RichTextLabel) Free() { gdClass.obj.destroy() }
 func (gdClass RichTextLabel) owner() cObject { return gdClass.obj }
 func (RichTextLabel) class() string { return "RichTextLabel\000" }
 
@@ -22125,6 +22652,7 @@ const (
 
 type RigidBody2D struct{_RigidBody2D struct{}; obj cObject }
 func NewRigidBody2D() (gdClass RigidBody2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RigidBody2D) Free() { gdClass.obj.destroy() }
 func (gdClass RigidBody2D) owner() cObject { return gdClass.obj }
 func (RigidBody2D) class() string { return "RigidBody2D\000" }
 
@@ -22223,6 +22751,7 @@ const (
 
 type RigidBody3D struct{_RigidBody3D struct{}; obj cObject }
 func NewRigidBody3D() (gdClass RigidBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RigidBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass RigidBody3D) owner() cObject { return gdClass.obj }
 func (RigidBody3D) class() string { return "RigidBody3D\000" }
 
@@ -22301,6 +22830,7 @@ func (gdClass RigidBody3D) GetCollidingBodies() Array { return methodCall[Array]
 
 type RootMotionView struct{_RootMotionView struct{}; obj cObject }
 func NewRootMotionView() (gdClass RootMotionView) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass RootMotionView) Free() { gdClass.obj.destroy() }
 func (gdClass RootMotionView) owner() cObject { return gdClass.obj }
 func (RootMotionView) class() string { return "RootMotionView\000" }
 
@@ -22323,6 +22853,7 @@ func (gdClass RootMotionView) GetZeroY() bool { return methodCall[bool](gdClass.
 
 type SceneMultiplayer struct{_SceneMultiplayer struct{}; obj cObject }
 func NewSceneMultiplayer() (gdClass SceneMultiplayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SceneMultiplayer) Free() { gdClass.obj.destroy() }
 func (gdClass SceneMultiplayer) owner() cObject { return gdClass.obj }
 func (SceneMultiplayer) class() string { return "SceneMultiplayer\000" }
 
@@ -22343,6 +22874,7 @@ func (gdClass SceneMultiplayer) SendBytes(bytes []byte, id int64, mode Multiplay
 
 type SceneReplicationConfig struct{_SceneReplicationConfig struct{}; obj cObject }
 func NewSceneReplicationConfig() (gdClass SceneReplicationConfig) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SceneReplicationConfig) Free() { gdClass.obj.destroy() }
 func (gdClass SceneReplicationConfig) owner() cObject { return gdClass.obj }
 func (SceneReplicationConfig) class() string { return "SceneReplicationConfig\000" }
 
@@ -22373,6 +22905,7 @@ const (
 
 type SceneState struct{_SceneState struct{}; obj cObject }
 func NewSceneState() (gdClass SceneState) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SceneState) Free() { gdClass.obj.destroy() }
 func (gdClass SceneState) owner() cObject { return gdClass.obj }
 func (SceneState) class() string { return "SceneState\000" }
 
@@ -22415,6 +22948,7 @@ const (
 
 type SceneTree struct{_SceneTree struct{}; obj cObject }
 func NewSceneTree() (gdClass SceneTree) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SceneTree) Free() { gdClass.obj.destroy() }
 func (gdClass SceneTree) owner() cObject { return gdClass.obj }
 func (SceneTree) class() string { return "SceneTree\000" }
 
@@ -22467,6 +23001,7 @@ func (gdClass SceneTree) IsMultiplayerPollEnabled() bool { return methodCall[boo
 
 type SceneTreeTimer struct{_SceneTreeTimer struct{}; obj cObject }
 func NewSceneTreeTimer() (gdClass SceneTreeTimer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SceneTreeTimer) Free() { gdClass.obj.destroy() }
 func (gdClass SceneTreeTimer) owner() cObject { return gdClass.obj }
 func (SceneTreeTimer) class() string { return "SceneTreeTimer\000" }
 
@@ -22481,6 +23016,7 @@ func (gdClass SceneTreeTimer) GetTimeLeft() float64 { return methodCall[float64]
 
 type Script struct{_Script struct{}; obj cObject }
 func NewScript() (gdClass Script) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Script) Free() { gdClass.obj.destroy() }
 func (gdClass Script) owner() cObject { return gdClass.obj }
 func (Script) class() string { return "Script\000" }
 
@@ -22508,6 +23044,7 @@ func (gdClass Script) IsTool() bool { return methodCall[bool](gdClass.obj, metho
 
 type ScriptCreateDialog struct{_ScriptCreateDialog struct{}; obj cObject }
 func NewScriptCreateDialog() (gdClass ScriptCreateDialog) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptCreateDialog) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptCreateDialog) owner() cObject { return gdClass.obj }
 func (ScriptCreateDialog) class() string { return "ScriptCreateDialog\000" }
 
@@ -22521,6 +23058,7 @@ func (gdClass ScriptCreateDialog) Config(inherits string, path string, built_in_
 
 type ScriptEditor struct{_ScriptEditor struct{}; obj cObject }
 func NewScriptEditor() (gdClass ScriptEditor) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptEditor) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptEditor) owner() cObject { return gdClass.obj }
 func (ScriptEditor) class() string { return "ScriptEditor\000" }
 
@@ -22541,6 +23079,7 @@ func (gdClass ScriptEditor) OpenScriptCreateDialog(base_name string, base_path s
 
 type ScriptEditorBase struct{_ScriptEditorBase struct{}; obj cObject }
 func NewScriptEditorBase() (gdClass ScriptEditorBase) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptEditorBase) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptEditorBase) owner() cObject { return gdClass.obj }
 func (ScriptEditorBase) class() string { return "ScriptEditorBase\000" }
 
@@ -22555,6 +23094,7 @@ func (gdClass ScriptEditorBase) AddSyntaxHighlighter(highlighter EditorSyntaxHig
 
 type ScriptExtension struct{_ScriptExtension struct{}; obj cObject }
 func NewScriptExtension() (gdClass ScriptExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptExtension) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptExtension) owner() cObject { return gdClass.obj }
 func (ScriptExtension) class() string { return "ScriptExtension\000" }
 
@@ -22723,6 +23263,7 @@ func (gdClass ScriptExtension) virtual(rtype reflect.Type, name string) (method 
 
 type ScriptLanguage struct{_ScriptLanguage struct{}; obj cObject }
 func NewScriptLanguage() (gdClass ScriptLanguage) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptLanguage) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptLanguage) owner() cObject { return gdClass.obj }
 func (ScriptLanguage) class() string { return "ScriptLanguage\000" }
 
@@ -22774,6 +23315,7 @@ const (
 
 type ScriptLanguageExtension struct{_ScriptLanguageExtension struct{}; obj cObject }
 func NewScriptLanguageExtension() (gdClass ScriptLanguageExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScriptLanguageExtension) Free() { gdClass.obj.destroy() }
 func (gdClass ScriptLanguageExtension) owner() cObject { return gdClass.obj }
 func (ScriptLanguageExtension) class() string { return "ScriptLanguageExtension\000" }
 
@@ -23082,6 +23624,7 @@ func (gdClass ScriptLanguageExtension) virtual(rtype reflect.Type, name string) 
 
 type ScrollBar struct{_ScrollBar struct{}; obj cObject }
 func NewScrollBar() (gdClass ScrollBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScrollBar) Free() { gdClass.obj.destroy() }
 func (gdClass ScrollBar) owner() cObject { return gdClass.obj }
 func (ScrollBar) class() string { return "ScrollBar\000" }
 
@@ -23105,6 +23648,7 @@ const (
 
 type ScrollContainer struct{_ScrollContainer struct{}; obj cObject }
 func NewScrollContainer() (gdClass ScrollContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ScrollContainer) Free() { gdClass.obj.destroy() }
 func (gdClass ScrollContainer) owner() cObject { return gdClass.obj }
 func (ScrollContainer) class() string { return "ScrollContainer\000" }
 
@@ -23132,6 +23676,7 @@ func (gdClass ScrollContainer) EnsureControlVisible(control Control)  { methodCa
 
 type SegmentShape2D struct{_SegmentShape2D struct{}; obj cObject }
 func NewSegmentShape2D() (gdClass SegmentShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SegmentShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass SegmentShape2D) owner() cObject { return gdClass.obj }
 func (SegmentShape2D) class() string { return "SegmentShape2D\000" }
 
@@ -23148,6 +23693,7 @@ func (gdClass SegmentShape2D) GetB() Vector2 { return methodCall[Vector2](gdClas
 
 type Semaphore struct{_Semaphore struct{}; obj cObject }
 func NewSemaphore() (gdClass Semaphore) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Semaphore) Free() { gdClass.obj.destroy() }
 func (gdClass Semaphore) owner() cObject { return gdClass.obj }
 func (Semaphore) class() string { return "Semaphore\000" }
 
@@ -23163,6 +23709,7 @@ func (gdClass Semaphore) Post()  { methodCall[struct{}](gdClass.obj, methodSemap
 
 type SeparationRayShape2D struct{_SeparationRayShape2D struct{}; obj cObject }
 func NewSeparationRayShape2D() (gdClass SeparationRayShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SeparationRayShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass SeparationRayShape2D) owner() cObject { return gdClass.obj }
 func (SeparationRayShape2D) class() string { return "SeparationRayShape2D\000" }
 
@@ -23179,6 +23726,7 @@ func (gdClass SeparationRayShape2D) GetSlideOnSlope() bool { return methodCall[b
 
 type SeparationRayShape3D struct{_SeparationRayShape3D struct{}; obj cObject }
 func NewSeparationRayShape3D() (gdClass SeparationRayShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SeparationRayShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass SeparationRayShape3D) owner() cObject { return gdClass.obj }
 func (SeparationRayShape3D) class() string { return "SeparationRayShape3D\000" }
 
@@ -23195,6 +23743,7 @@ func (gdClass SeparationRayShape3D) GetSlideOnSlope() bool { return methodCall[b
 
 type Separator struct{_Separator struct{}; obj cObject }
 func NewSeparator() (gdClass Separator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Separator) Free() { gdClass.obj.destroy() }
 func (gdClass Separator) owner() cObject { return gdClass.obj }
 func (Separator) class() string { return "Separator\000" }
 
@@ -23216,6 +23765,7 @@ const (
 
 type Shader struct{_Shader struct{}; obj cObject }
 func NewShader() (gdClass Shader) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Shader) Free() { gdClass.obj.destroy() }
 func (gdClass Shader) owner() cObject { return gdClass.obj }
 func (Shader) class() string { return "Shader\000" }
 
@@ -23234,6 +23784,7 @@ func (gdClass Shader) HasUniform(name Name) bool { return methodCall[bool](gdCla
 
 type ShaderGlobalsOverride struct{_ShaderGlobalsOverride struct{}; obj cObject }
 func NewShaderGlobalsOverride() (gdClass ShaderGlobalsOverride) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ShaderGlobalsOverride) Free() { gdClass.obj.destroy() }
 func (gdClass ShaderGlobalsOverride) owner() cObject { return gdClass.obj }
 func (ShaderGlobalsOverride) class() string { return "ShaderGlobalsOverride\000" }
 
@@ -23245,6 +23796,7 @@ func (gdClass ShaderGlobalsOverride) virtual(rtype reflect.Type, name string) (m
 
 type ShaderInclude struct{_ShaderInclude struct{}; obj cObject }
 func NewShaderInclude() (gdClass ShaderInclude) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ShaderInclude) Free() { gdClass.obj.destroy() }
 func (gdClass ShaderInclude) owner() cObject { return gdClass.obj }
 func (ShaderInclude) class() string { return "ShaderInclude\000" }
 
@@ -23259,6 +23811,7 @@ func (gdClass ShaderInclude) GetCode() string { return methodCall[string](gdClas
 
 type ShaderMaterial struct{_ShaderMaterial struct{}; obj cObject }
 func NewShaderMaterial() (gdClass ShaderMaterial) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ShaderMaterial) Free() { gdClass.obj.destroy() }
 func (gdClass ShaderMaterial) owner() cObject { return gdClass.obj }
 func (ShaderMaterial) class() string { return "ShaderMaterial\000" }
 
@@ -23275,6 +23828,7 @@ func (gdClass ShaderMaterial) GetShaderUniform(param Name) any { return methodCa
 
 type Shape2D struct{_Shape2D struct{}; obj cObject }
 func NewShape2D() (gdClass Shape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Shape2D) Free() { gdClass.obj.destroy() }
 func (gdClass Shape2D) owner() cObject { return gdClass.obj }
 func (Shape2D) class() string { return "Shape2D\000" }
 
@@ -23294,6 +23848,7 @@ func (gdClass Shape2D) Draw(canvas_item RID, color Color)  { methodCall[struct{}
 
 type Shape3D struct{_Shape3D struct{}; obj cObject }
 func NewShape3D() (gdClass Shape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Shape3D) Free() { gdClass.obj.destroy() }
 func (gdClass Shape3D) owner() cObject { return gdClass.obj }
 func (Shape3D) class() string { return "Shape3D\000" }
 
@@ -23311,6 +23866,7 @@ func (gdClass Shape3D) GetDebugMesh() ArrayMesh { return methodCall[ArrayMesh](g
 
 type ShapeCast2D struct{_ShapeCast2D struct{}; obj cObject }
 func NewShapeCast2D() (gdClass ShapeCast2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ShapeCast2D) Free() { gdClass.obj.destroy() }
 func (gdClass ShapeCast2D) owner() cObject { return gdClass.obj }
 func (ShapeCast2D) class() string { return "ShapeCast2D\000" }
 
@@ -23357,6 +23913,7 @@ func (gdClass ShapeCast2D) IsCollideWithBodiesEnabled() bool { return methodCall
 
 type ShapeCast3D struct{_ShapeCast3D struct{}; obj cObject }
 func NewShapeCast3D() (gdClass ShapeCast3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ShapeCast3D) Free() { gdClass.obj.destroy() }
 func (gdClass ShapeCast3D) owner() cObject { return gdClass.obj }
 func (ShapeCast3D) class() string { return "ShapeCast3D\000" }
 
@@ -23406,6 +23963,7 @@ func (gdClass ShapeCast3D) GetDebugShapeCustomColor() Color { return methodCall[
 
 type Shortcut struct{_Shortcut struct{}; obj cObject }
 func NewShortcut() (gdClass Shortcut) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Shortcut) Free() { gdClass.obj.destroy() }
 func (gdClass Shortcut) owner() cObject { return gdClass.obj }
 func (Shortcut) class() string { return "Shortcut\000" }
 
@@ -23423,6 +23981,7 @@ func (gdClass Shortcut) GetAsText() string { return methodCall[string](gdClass.o
 
 type Skeleton2D struct{_Skeleton2D struct{}; obj cObject }
 func NewSkeleton2D() (gdClass Skeleton2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Skeleton2D) Free() { gdClass.obj.destroy() }
 func (gdClass Skeleton2D) owner() cObject { return gdClass.obj }
 func (Skeleton2D) class() string { return "Skeleton2D\000" }
 
@@ -23443,6 +24002,7 @@ func (gdClass Skeleton2D) GetBoneLocalPoseOverride(bone_idx int64) Transform2D {
 
 type Skeleton3D struct{_Skeleton3D struct{}; obj cObject }
 func NewSkeleton3D() (gdClass Skeleton3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Skeleton3D) Free() { gdClass.obj.destroy() }
 func (gdClass Skeleton3D) owner() cObject { return gdClass.obj }
 func (Skeleton3D) class() string { return "Skeleton3D\000" }
 
@@ -23511,6 +24071,7 @@ func (gdClass Skeleton3D) ExecuteModifications(delta float64, execution_mode int
 
 type SkeletonIK3D struct{_SkeletonIK3D struct{}; obj cObject }
 func NewSkeletonIK3D() (gdClass SkeletonIK3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonIK3D) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonIK3D) owner() cObject { return gdClass.obj }
 func (SkeletonIK3D) class() string { return "SkeletonIK3D\000" }
 
@@ -23547,6 +24108,7 @@ func (gdClass SkeletonIK3D) Stop()  { methodCall[struct{}](gdClass.obj, methodSk
 
 type SkeletonModification2D struct{_SkeletonModification2D struct{}; obj cObject }
 func NewSkeletonModification2D() (gdClass SkeletonModification2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2D) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2D) owner() cObject { return gdClass.obj }
 func (SkeletonModification2D) class() string { return "SkeletonModification2D\000" }
 
@@ -23586,6 +24148,7 @@ func (gdClass SkeletonModification2D) GetEditorDrawGizmo() bool { return methodC
 
 type SkeletonModification2DCCDIK struct{_SkeletonModification2DCCDIK struct{}; obj cObject }
 func NewSkeletonModification2DCCDIK() (gdClass SkeletonModification2DCCDIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DCCDIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DCCDIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DCCDIK) class() string { return "SkeletonModification2DCCDIK\000" }
 
@@ -23618,6 +24181,7 @@ func (gdClass SkeletonModification2DCCDIK) GetCcdikJointConstraintAngleInvert(jo
 
 type SkeletonModification2DFABRIK struct{_SkeletonModification2DFABRIK struct{}; obj cObject }
 func NewSkeletonModification2DFABRIK() (gdClass SkeletonModification2DFABRIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DFABRIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DFABRIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DFABRIK) class() string { return "SkeletonModification2DFABRIK\000" }
 
@@ -23642,6 +24206,7 @@ func (gdClass SkeletonModification2DFABRIK) GetFabrikJointUseTargetRotation(join
 
 type SkeletonModification2DJiggle struct{_SkeletonModification2DJiggle struct{}; obj cObject }
 func NewSkeletonModification2DJiggle() (gdClass SkeletonModification2DJiggle) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DJiggle) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DJiggle) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DJiggle) class() string { return "SkeletonModification2DJiggle\000" }
 
@@ -23688,6 +24253,7 @@ func (gdClass SkeletonModification2DJiggle) GetJiggleJointGravity(joint_idx int6
 
 type SkeletonModification2DLookAt struct{_SkeletonModification2DLookAt struct{}; obj cObject }
 func NewSkeletonModification2DLookAt() (gdClass SkeletonModification2DLookAt) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DLookAt) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DLookAt) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DLookAt) class() string { return "SkeletonModification2DLookAt\000" }
 
@@ -23716,6 +24282,7 @@ func (gdClass SkeletonModification2DLookAt) GetConstraintAngleInvert() bool { re
 
 type SkeletonModification2DPhysicalBones struct{_SkeletonModification2DPhysicalBones struct{}; obj cObject }
 func NewSkeletonModification2DPhysicalBones() (gdClass SkeletonModification2DPhysicalBones) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DPhysicalBones) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DPhysicalBones) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DPhysicalBones) class() string { return "SkeletonModification2DPhysicalBones\000" }
 
@@ -23735,6 +24302,7 @@ func (gdClass SkeletonModification2DPhysicalBones) StopSimulation(bones Array)  
 
 type SkeletonModification2DStackHolder struct{_SkeletonModification2DStackHolder struct{}; obj cObject }
 func NewSkeletonModification2DStackHolder() (gdClass SkeletonModification2DStackHolder) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DStackHolder) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DStackHolder) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DStackHolder) class() string { return "SkeletonModification2DStackHolder\000" }
 
@@ -23749,6 +24317,7 @@ func (gdClass SkeletonModification2DStackHolder) GetHeldModificationStack() Skel
 
 type SkeletonModification2DTwoBoneIK struct{_SkeletonModification2DTwoBoneIK struct{}; obj cObject }
 func NewSkeletonModification2DTwoBoneIK() (gdClass SkeletonModification2DTwoBoneIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification2DTwoBoneIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification2DTwoBoneIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification2DTwoBoneIK) class() string { return "SkeletonModification2DTwoBoneIK\000" }
 
@@ -23777,6 +24346,7 @@ func (gdClass SkeletonModification2DTwoBoneIK) GetJointTwoBoneIdx() int64 { retu
 
 type SkeletonModification3D struct{_SkeletonModification3D struct{}; obj cObject }
 func NewSkeletonModification3D() (gdClass SkeletonModification3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3D) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3D) owner() cObject { return gdClass.obj }
 func (SkeletonModification3D) class() string { return "SkeletonModification3D\000" }
 
@@ -23809,6 +24379,7 @@ func (gdClass SkeletonModification3D) ClampAngle(angle float64, min float64, max
 
 type SkeletonModification3DCCDIK struct{_SkeletonModification3DCCDIK struct{}; obj cObject }
 func NewSkeletonModification3DCCDIK() (gdClass SkeletonModification3DCCDIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DCCDIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DCCDIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DCCDIK) class() string { return "SkeletonModification3DCCDIK\000" }
 
@@ -23843,6 +24414,7 @@ func (gdClass SkeletonModification3DCCDIK) GetCcdikDataChainLength() int64 { ret
 
 type SkeletonModification3DFABRIK struct{_SkeletonModification3DFABRIK struct{}; obj cObject }
 func NewSkeletonModification3DFABRIK() (gdClass SkeletonModification3DFABRIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DFABRIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DFABRIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DFABRIK) class() string { return "SkeletonModification3DFABRIK\000" }
 
@@ -23880,6 +24452,7 @@ func (gdClass SkeletonModification3DFABRIK) SetFabrikJointUseTargetBasis(joint_i
 
 type SkeletonModification3DJiggle struct{_SkeletonModification3DJiggle struct{}; obj cObject }
 func NewSkeletonModification3DJiggle() (gdClass SkeletonModification3DJiggle) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DJiggle) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DJiggle) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DJiggle) class() string { return "SkeletonModification3DJiggle\000" }
 
@@ -23928,6 +24501,7 @@ func (gdClass SkeletonModification3DJiggle) GetJiggleJointRoll(joint_idx int64) 
 
 type SkeletonModification3DLookAt struct{_SkeletonModification3DLookAt struct{}; obj cObject }
 func NewSkeletonModification3DLookAt() (gdClass SkeletonModification3DLookAt) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DLookAt) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DLookAt) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DLookAt) class() string { return "SkeletonModification3DLookAt\000" }
 
@@ -23952,6 +24526,7 @@ func (gdClass SkeletonModification3DLookAt) GetLockRotationPlane() int64 { retur
 
 type SkeletonModification3DStackHolder struct{_SkeletonModification3DStackHolder struct{}; obj cObject }
 func NewSkeletonModification3DStackHolder() (gdClass SkeletonModification3DStackHolder) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DStackHolder) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DStackHolder) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DStackHolder) class() string { return "SkeletonModification3DStackHolder\000" }
 
@@ -23966,6 +24541,7 @@ func (gdClass SkeletonModification3DStackHolder) GetHeldModificationStack() Skel
 
 type SkeletonModification3DTwoBoneIK struct{_SkeletonModification3DTwoBoneIK struct{}; obj cObject }
 func NewSkeletonModification3DTwoBoneIK() (gdClass SkeletonModification3DTwoBoneIK) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModification3DTwoBoneIK) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModification3DTwoBoneIK) owner() cObject { return gdClass.obj }
 func (SkeletonModification3DTwoBoneIK) class() string { return "SkeletonModification3DTwoBoneIK\000" }
 
@@ -24006,6 +24582,7 @@ func (gdClass SkeletonModification3DTwoBoneIK) GetJointTwoRoll() float64 { retur
 
 type SkeletonModificationStack2D struct{_SkeletonModificationStack2D struct{}; obj cObject }
 func NewSkeletonModificationStack2D() (gdClass SkeletonModificationStack2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModificationStack2D) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModificationStack2D) owner() cObject { return gdClass.obj }
 func (SkeletonModificationStack2D) class() string { return "SkeletonModificationStack2D\000" }
 
@@ -24033,6 +24610,7 @@ func (gdClass SkeletonModificationStack2D) GetSkeleton() Skeleton2D { return met
 
 type SkeletonModificationStack3D struct{_SkeletonModificationStack3D struct{}; obj cObject }
 func NewSkeletonModificationStack3D() (gdClass SkeletonModificationStack3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonModificationStack3D) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonModificationStack3D) owner() cObject { return gdClass.obj }
 func (SkeletonModificationStack3D) class() string { return "SkeletonModificationStack3D\000" }
 
@@ -24068,6 +24646,7 @@ const (
 
 type SkeletonProfile struct{_SkeletonProfile struct{}; obj cObject }
 func NewSkeletonProfile() (gdClass SkeletonProfile) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonProfile) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonProfile) owner() cObject { return gdClass.obj }
 func (SkeletonProfile) class() string { return "SkeletonProfile\000" }
 
@@ -24107,6 +24686,7 @@ func (gdClass SkeletonProfile) SetGroup(bone_idx int64, group Name)  { methodCal
 
 type SkeletonProfileHumanoid struct{_SkeletonProfileHumanoid struct{}; obj cObject }
 func NewSkeletonProfileHumanoid() (gdClass SkeletonProfileHumanoid) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkeletonProfileHumanoid) Free() { gdClass.obj.destroy() }
 func (gdClass SkeletonProfileHumanoid) owner() cObject { return gdClass.obj }
 func (SkeletonProfileHumanoid) class() string { return "SkeletonProfileHumanoid\000" }
 
@@ -24118,6 +24698,7 @@ func (gdClass SkeletonProfileHumanoid) virtual(rtype reflect.Type, name string) 
 
 type Skin struct{_Skin struct{}; obj cObject }
 func NewSkin() (gdClass Skin) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Skin) Free() { gdClass.obj.destroy() }
 func (gdClass Skin) owner() cObject { return gdClass.obj }
 func (Skin) class() string { return "Skin\000" }
 
@@ -24141,6 +24722,7 @@ func (gdClass Skin) ClearBinds()  { methodCall[struct{}](gdClass.obj, methodSkin
 
 type SkinReference struct{_SkinReference struct{}; obj cObject }
 func NewSkinReference() (gdClass SkinReference) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SkinReference) Free() { gdClass.obj.destroy() }
 func (gdClass SkinReference) owner() cObject { return gdClass.obj }
 func (SkinReference) class() string { return "SkinReference\000" }
 
@@ -24177,6 +24759,7 @@ const (
 
 type Sky struct{_Sky struct{}; obj cObject }
 func NewSky() (gdClass Sky) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Sky) Free() { gdClass.obj.destroy() }
 func (gdClass Sky) owner() cObject { return gdClass.obj }
 func (Sky) class() string { return "Sky\000" }
 
@@ -24195,6 +24778,7 @@ func (gdClass Sky) GetMaterial() Material { return methodCall[Material](gdClass.
 
 type Slider struct{_Slider struct{}; obj cObject }
 func NewSlider() (gdClass Slider) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Slider) Free() { gdClass.obj.destroy() }
 func (gdClass Slider) owner() cObject { return gdClass.obj }
 func (Slider) class() string { return "Slider\000" }
 
@@ -24243,6 +24827,7 @@ const (
 
 type SliderJoint3D struct{_SliderJoint3D struct{}; obj cObject }
 func NewSliderJoint3D() (gdClass SliderJoint3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SliderJoint3D) Free() { gdClass.obj.destroy() }
 func (gdClass SliderJoint3D) owner() cObject { return gdClass.obj }
 func (SliderJoint3D) class() string { return "SliderJoint3D\000" }
 
@@ -24264,6 +24849,7 @@ const (
 
 type SoftBody3D struct{_SoftBody3D struct{}; obj cObject }
 func NewSoftBody3D() (gdClass SoftBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SoftBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass SoftBody3D) owner() cObject { return gdClass.obj }
 func (SoftBody3D) class() string { return "SoftBody3D\000" }
 
@@ -24309,6 +24895,7 @@ func (gdClass SoftBody3D) IsRayPickable() bool { return methodCall[bool](gdClass
 
 type SphereMesh struct{_SphereMesh struct{}; obj cObject }
 func NewSphereMesh() (gdClass SphereMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SphereMesh) Free() { gdClass.obj.destroy() }
 func (gdClass SphereMesh) owner() cObject { return gdClass.obj }
 func (SphereMesh) class() string { return "SphereMesh\000" }
 
@@ -24331,6 +24918,7 @@ func (gdClass SphereMesh) GetIsHemisphere() bool { return methodCall[bool](gdCla
 
 type SphereOccluder3D struct{_SphereOccluder3D struct{}; obj cObject }
 func NewSphereOccluder3D() (gdClass SphereOccluder3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SphereOccluder3D) Free() { gdClass.obj.destroy() }
 func (gdClass SphereOccluder3D) owner() cObject { return gdClass.obj }
 func (SphereOccluder3D) class() string { return "SphereOccluder3D\000" }
 
@@ -24345,6 +24933,7 @@ func (gdClass SphereOccluder3D) GetRadius() float64 { return methodCall[float64]
 
 type SphereShape3D struct{_SphereShape3D struct{}; obj cObject }
 func NewSphereShape3D() (gdClass SphereShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SphereShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass SphereShape3D) owner() cObject { return gdClass.obj }
 func (SphereShape3D) class() string { return "SphereShape3D\000" }
 
@@ -24359,6 +24948,7 @@ func (gdClass SphereShape3D) GetRadius() float64 { return methodCall[float64](gd
 
 type SpinBox struct{_SpinBox struct{}; obj cObject }
 func NewSpinBox() (gdClass SpinBox) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SpinBox) Free() { gdClass.obj.destroy() }
 func (gdClass SpinBox) owner() cObject { return gdClass.obj }
 func (SpinBox) class() string { return "SpinBox\000" }
 
@@ -24393,6 +24983,7 @@ const (
 
 type SplitContainer struct{_SplitContainer struct{}; obj cObject }
 func NewSplitContainer() (gdClass SplitContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SplitContainer) Free() { gdClass.obj.destroy() }
 func (gdClass SplitContainer) owner() cObject { return gdClass.obj }
 func (SplitContainer) class() string { return "SplitContainer\000" }
 
@@ -24412,6 +25003,7 @@ func (gdClass SplitContainer) GetDraggerVisibility() SplitContainerDraggerVisibi
 
 type SpotLight3D struct{_SpotLight3D struct{}; obj cObject }
 func NewSpotLight3D() (gdClass SpotLight3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SpotLight3D) Free() { gdClass.obj.destroy() }
 func (gdClass SpotLight3D) owner() cObject { return gdClass.obj }
 func (SpotLight3D) class() string { return "SpotLight3D\000" }
 
@@ -24423,6 +25015,7 @@ func (gdClass SpotLight3D) virtual(rtype reflect.Type, name string) (method refl
 
 type SpringArm3D struct{_SpringArm3D struct{}; obj cObject }
 func NewSpringArm3D() (gdClass SpringArm3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SpringArm3D) Free() { gdClass.obj.destroy() }
 func (gdClass SpringArm3D) owner() cObject { return gdClass.obj }
 func (SpringArm3D) class() string { return "SpringArm3D\000" }
 
@@ -24447,6 +25040,7 @@ func (gdClass SpringArm3D) GetMargin() float64 { return methodCall[float64](gdCl
 
 type Sprite2D struct{_Sprite2D struct{}; obj cObject }
 func NewSprite2D() (gdClass Sprite2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Sprite2D) Free() { gdClass.obj.destroy() }
 func (gdClass Sprite2D) owner() cObject { return gdClass.obj }
 func (Sprite2D) class() string { return "Sprite2D\000" }
 
@@ -24485,6 +25079,7 @@ func (gdClass Sprite2D) GetRect() Rect2 { return methodCall[Rect2](gdClass.obj, 
 
 type Sprite3D struct{_Sprite3D struct{}; obj cObject }
 func NewSprite3D() (gdClass Sprite3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Sprite3D) Free() { gdClass.obj.destroy() }
 func (gdClass Sprite3D) owner() cObject { return gdClass.obj }
 func (Sprite3D) class() string { return "Sprite3D\000" }
 
@@ -24530,6 +25125,7 @@ const (
 
 type SpriteBase3D struct{_SpriteBase3D struct{}; obj cObject }
 func NewSpriteBase3D() (gdClass SpriteBase3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SpriteBase3D) Free() { gdClass.obj.destroy() }
 func (gdClass SpriteBase3D) owner() cObject { return gdClass.obj }
 func (SpriteBase3D) class() string { return "SpriteBase3D\000" }
 
@@ -24568,6 +25164,7 @@ func (gdClass SpriteBase3D) GenerateTriangleMesh() TriangleMesh { return methodC
 
 type SpriteFrames struct{_SpriteFrames struct{}; obj cObject }
 func NewSpriteFrames() (gdClass SpriteFrames) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SpriteFrames) Free() { gdClass.obj.destroy() }
 func (gdClass SpriteFrames) owner() cObject { return gdClass.obj }
 func (SpriteFrames) class() string { return "SpriteFrames\000" }
 
@@ -24596,6 +25193,7 @@ func (gdClass SpriteFrames) ClearAll()  { methodCall[struct{}](gdClass.obj, meth
 
 type StandardMaterial3D struct{_StandardMaterial3D struct{}; obj cObject }
 func NewStandardMaterial3D() (gdClass StandardMaterial3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StandardMaterial3D) Free() { gdClass.obj.destroy() }
 func (gdClass StandardMaterial3D) owner() cObject { return gdClass.obj }
 func (StandardMaterial3D) class() string { return "StandardMaterial3D\000" }
 
@@ -24607,6 +25205,7 @@ func (gdClass StandardMaterial3D) virtual(rtype reflect.Type, name string) (meth
 
 type StaticBody2D struct{_StaticBody2D struct{}; obj cObject }
 func NewStaticBody2D() (gdClass StaticBody2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StaticBody2D) Free() { gdClass.obj.destroy() }
 func (gdClass StaticBody2D) owner() cObject { return gdClass.obj }
 func (StaticBody2D) class() string { return "StaticBody2D\000" }
 
@@ -24625,6 +25224,7 @@ func (gdClass StaticBody2D) GetPhysicsMaterialOverride() PhysicsMaterial { retur
 
 type StaticBody3D struct{_StaticBody3D struct{}; obj cObject }
 func NewStaticBody3D() (gdClass StaticBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StaticBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass StaticBody3D) owner() cObject { return gdClass.obj }
 func (StaticBody3D) class() string { return "StaticBody3D\000" }
 
@@ -24643,6 +25243,7 @@ func (gdClass StaticBody3D) GetPhysicsMaterialOverride() PhysicsMaterial { retur
 
 type StreamPeer struct{_StreamPeer struct{}; obj cObject }
 func NewStreamPeer() (gdClass StreamPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StreamPeer) Free() { gdClass.obj.destroy() }
 func (gdClass StreamPeer) owner() cObject { return gdClass.obj }
 func (StreamPeer) class() string { return "StreamPeer\000" }
 
@@ -24688,6 +25289,7 @@ func (gdClass StreamPeer) GetVar(allow_objects bool) any { return methodCall[any
 
 type StreamPeerBuffer struct{_StreamPeerBuffer struct{}; obj cObject }
 func NewStreamPeerBuffer() (gdClass StreamPeerBuffer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StreamPeerBuffer) Free() { gdClass.obj.destroy() }
 func (gdClass StreamPeerBuffer) owner() cObject { return gdClass.obj }
 func (StreamPeerBuffer) class() string { return "StreamPeerBuffer\000" }
 
@@ -24708,6 +25310,7 @@ func (gdClass StreamPeerBuffer) Duplicate() StreamPeerBuffer { return methodCall
 
 type StreamPeerExtension struct{_StreamPeerExtension struct{}; obj cObject }
 func NewStreamPeerExtension() (gdClass StreamPeerExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StreamPeerExtension) Free() { gdClass.obj.destroy() }
 func (gdClass StreamPeerExtension) owner() cObject { return gdClass.obj }
 func (StreamPeerExtension) class() string { return "StreamPeerExtension\000" }
 
@@ -24756,6 +25359,7 @@ const (
 
 type StreamPeerSSL struct{_StreamPeerSSL struct{}; obj cObject }
 func NewStreamPeerSSL() (gdClass StreamPeerSSL) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StreamPeerSSL) Free() { gdClass.obj.destroy() }
 func (gdClass StreamPeerSSL) owner() cObject { return gdClass.obj }
 func (StreamPeerSSL) class() string { return "StreamPeerSSL\000" }
 
@@ -24785,6 +25389,7 @@ const (
 
 type StreamPeerTCP struct{_StreamPeerTCP struct{}; obj cObject }
 func NewStreamPeerTCP() (gdClass StreamPeerTCP) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StreamPeerTCP) Free() { gdClass.obj.destroy() }
 func (gdClass StreamPeerTCP) owner() cObject { return gdClass.obj }
 func (StreamPeerTCP) class() string { return "StreamPeerTCP\000" }
 
@@ -24806,6 +25411,7 @@ func (gdClass StreamPeerTCP) SetNoDelay(enabled bool)  { methodCall[struct{}](gd
 
 type StyleBox struct{_StyleBox struct{}; obj cObject }
 func NewStyleBox() (gdClass StyleBox) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StyleBox) Free() { gdClass.obj.destroy() }
 func (gdClass StyleBox) owner() cObject { return gdClass.obj }
 func (StyleBox) class() string { return "StyleBox\000" }
 
@@ -24854,6 +25460,7 @@ func (gdClass StyleBox) Draw(canvas_item RID, rect Rect2)  { methodCall[struct{}
 
 type StyleBoxEmpty struct{_StyleBoxEmpty struct{}; obj cObject }
 func NewStyleBoxEmpty() (gdClass StyleBoxEmpty) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StyleBoxEmpty) Free() { gdClass.obj.destroy() }
 func (gdClass StyleBoxEmpty) owner() cObject { return gdClass.obj }
 func (StyleBoxEmpty) class() string { return "StyleBoxEmpty\000" }
 
@@ -24865,6 +25472,7 @@ func (gdClass StyleBoxEmpty) virtual(rtype reflect.Type, name string) (method re
 
 type StyleBoxFlat struct{_StyleBoxFlat struct{}; obj cObject }
 func NewStyleBoxFlat() (gdClass StyleBoxFlat) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StyleBoxFlat) Free() { gdClass.obj.destroy() }
 func (gdClass StyleBoxFlat) owner() cObject { return gdClass.obj }
 func (StyleBoxFlat) class() string { return "StyleBoxFlat\000" }
 
@@ -24911,6 +25519,7 @@ func (gdClass StyleBoxFlat) GetCornerDetail() int64 { return methodCall[int64](g
 
 type StyleBoxLine struct{_StyleBoxLine struct{}; obj cObject }
 func NewStyleBoxLine() (gdClass StyleBoxLine) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StyleBoxLine) Free() { gdClass.obj.destroy() }
 func (gdClass StyleBoxLine) owner() cObject { return gdClass.obj }
 func (StyleBoxLine) class() string { return "StyleBoxLine\000" }
 
@@ -24941,6 +25550,7 @@ const (
 
 type StyleBoxTexture struct{_StyleBoxTexture struct{}; obj cObject }
 func NewStyleBoxTexture() (gdClass StyleBoxTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass StyleBoxTexture) Free() { gdClass.obj.destroy() }
 func (gdClass StyleBoxTexture) owner() cObject { return gdClass.obj }
 func (StyleBoxTexture) class() string { return "StyleBoxTexture\000" }
 
@@ -24989,6 +25599,7 @@ const (
 
 type SubViewport struct{_SubViewport struct{}; obj cObject }
 func NewSubViewport() (gdClass SubViewport) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SubViewport) Free() { gdClass.obj.destroy() }
 func (gdClass SubViewport) owner() cObject { return gdClass.obj }
 func (SubViewport) class() string { return "SubViewport\000" }
 
@@ -25011,6 +25622,7 @@ func (gdClass SubViewport) GetClearMode() SubViewportClearMode { return methodCa
 
 type SubViewportContainer struct{_SubViewportContainer struct{}; obj cObject }
 func NewSubViewportContainer() (gdClass SubViewportContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SubViewportContainer) Free() { gdClass.obj.destroy() }
 func (gdClass SubViewportContainer) owner() cObject { return gdClass.obj }
 func (SubViewportContainer) class() string { return "SubViewportContainer\000" }
 
@@ -25048,6 +25660,7 @@ const (
 
 type SurfaceTool struct{_SurfaceTool struct{}; obj cObject }
 func NewSurfaceTool() (gdClass SurfaceTool) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SurfaceTool) Free() { gdClass.obj.destroy() }
 func (gdClass SurfaceTool) owner() cObject { return gdClass.obj }
 func (SurfaceTool) class() string { return "SurfaceTool\000" }
 
@@ -25092,6 +25705,7 @@ func (gdClass SurfaceTool) CommitToArrays() Array { return methodCall[Array](gdC
 
 type SyntaxHighlighter struct{_SyntaxHighlighter struct{}; obj cObject }
 func NewSyntaxHighlighter() (gdClass SyntaxHighlighter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SyntaxHighlighter) Free() { gdClass.obj.destroy() }
 func (gdClass SyntaxHighlighter) owner() cObject { return gdClass.obj }
 func (SyntaxHighlighter) class() string { return "SyntaxHighlighter\000" }
 
@@ -25125,6 +25739,7 @@ func (gdClass SyntaxHighlighter) GetTextEdit() TextEdit { return methodCall[Text
 
 type SystemFont struct{_SystemFont struct{}; obj cObject }
 func NewSystemFont() (gdClass SystemFont) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass SystemFont) Free() { gdClass.obj.destroy() }
 func (gdClass SystemFont) owner() cObject { return gdClass.obj }
 func (SystemFont) class() string { return "SystemFont\000" }
 
@@ -25154,6 +25769,7 @@ func (gdClass SystemFont) SetFontStyle(style TextServerFontStyle)  { methodCall[
 
 type TCPServer struct{_TCPServer struct{}; obj cObject }
 func NewTCPServer() (gdClass TCPServer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TCPServer) Free() { gdClass.obj.destroy() }
 func (gdClass TCPServer) owner() cObject { return gdClass.obj }
 func (TCPServer) class() string { return "TCPServer\000" }
 
@@ -25190,6 +25806,7 @@ const (
 
 type TabBar struct{_TabBar struct{}; obj cObject }
 func NewTabBar() (gdClass TabBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TabBar) Free() { gdClass.obj.destroy() }
 func (gdClass TabBar) owner() cObject { return gdClass.obj }
 func (TabBar) class() string { return "TabBar\000" }
 
@@ -25247,6 +25864,7 @@ func (gdClass TabBar) GetSelectWithRmb() bool { return methodCall[bool](gdClass.
 
 type TabContainer struct{_TabContainer struct{}; obj cObject }
 func NewTabContainer() (gdClass TabContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TabContainer) Free() { gdClass.obj.destroy() }
 func (gdClass TabContainer) owner() cObject { return gdClass.obj }
 func (TabContainer) class() string { return "TabContainer\000" }
 
@@ -25367,6 +25985,7 @@ const (
 
 type TextEdit struct{_TextEdit struct{}; obj cObject }
 func NewTextEdit() (gdClass TextEdit) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextEdit) Free() { gdClass.obj.destroy() }
 func (gdClass TextEdit) owner() cObject { return gdClass.obj }
 func (TextEdit) class() string { return "TextEdit\000" }
 
@@ -25600,6 +26219,7 @@ func (gdClass TextEdit) MenuOption(option int64)  { methodCall[struct{}](gdClass
 
 type TextLine struct{_TextLine struct{}; obj cObject }
 func NewTextLine() (gdClass TextLine) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextLine) Free() { gdClass.obj.destroy() }
 func (gdClass TextLine) owner() cObject { return gdClass.obj }
 func (TextLine) class() string { return "TextLine\000" }
 
@@ -25646,6 +26266,7 @@ func (gdClass TextLine) HitTest(coords float64) int64 { return methodCall[int64]
 
 type TextMesh struct{_TextMesh struct{}; obj cObject }
 func NewTextMesh() (gdClass TextMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextMesh) Free() { gdClass.obj.destroy() }
 func (gdClass TextMesh) owner() cObject { return gdClass.obj }
 func (TextMesh) class() string { return "TextMesh\000" }
 
@@ -25692,6 +26313,7 @@ func (gdClass TextMesh) IsUppercase() bool { return methodCall[bool](gdClass.obj
 
 type TextParagraph struct{_TextParagraph struct{}; obj cObject }
 func NewTextParagraph() (gdClass TextParagraph) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextParagraph) Free() { gdClass.obj.destroy() }
 func (gdClass TextParagraph) owner() cObject { return gdClass.obj }
 func (TextParagraph) class() string { return "TextParagraph\000" }
 
@@ -25946,6 +26568,7 @@ const (
 
 type TextServer struct{_TextServer struct{}; obj cObject }
 func NewTextServer() (gdClass TextServer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextServer) Free() { gdClass.obj.destroy() }
 func (gdClass TextServer) owner() cObject { return gdClass.obj }
 func (TextServer) class() string { return "TextServer\000" }
 
@@ -26142,6 +26765,7 @@ func (gdClass TextServer) ParseStructuredText(parser_type TextServerStructuredTe
 
 type TextServerAdvanced struct{_TextServerAdvanced struct{}; obj cObject }
 func NewTextServerAdvanced() (gdClass TextServerAdvanced) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextServerAdvanced) Free() { gdClass.obj.destroy() }
 func (gdClass TextServerAdvanced) owner() cObject { return gdClass.obj }
 func (TextServerAdvanced) class() string { return "TextServerAdvanced\000" }
 
@@ -26153,6 +26777,7 @@ func (gdClass TextServerAdvanced) virtual(rtype reflect.Type, name string) (meth
 
 type TextServerDummy struct{_TextServerDummy struct{}; obj cObject }
 func NewTextServerDummy() (gdClass TextServerDummy) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextServerDummy) Free() { gdClass.obj.destroy() }
 func (gdClass TextServerDummy) owner() cObject { return gdClass.obj }
 func (TextServerDummy) class() string { return "TextServerDummy\000" }
 
@@ -26164,6 +26789,7 @@ func (gdClass TextServerDummy) virtual(rtype reflect.Type, name string) (method 
 
 type TextServerExtension struct{_TextServerExtension struct{}; obj cObject }
 func NewTextServerExtension() (gdClass TextServerExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextServerExtension) Free() { gdClass.obj.destroy() }
 func (gdClass TextServerExtension) owner() cObject { return gdClass.obj }
 func (TextServerExtension) class() string { return "TextServerExtension\000" }
 
@@ -27113,6 +27739,7 @@ var TextServerManager TextServerManagerSingleton
 
 type TextServerManagerSingleton struct{_TextServerManagerSingleton struct{}; obj cObject }
 func NewTextServerManagerSingleton() (gdClass TextServerManagerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextServerManagerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass TextServerManagerSingleton) owner() cObject { return gdClass.obj }
 func (TextServerManagerSingleton) class() string { return "TextServerManagerSingleton\000" }
 
@@ -27133,6 +27760,7 @@ func (gdClass TextServerManagerSingleton) GetPrimaryInterface() TextServer { ret
 
 type Texture struct{_Texture struct{}; obj cObject }
 func NewTexture() (gdClass Texture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Texture) Free() { gdClass.obj.destroy() }
 func (gdClass Texture) owner() cObject { return gdClass.obj }
 func (Texture) class() string { return "Texture\000" }
 
@@ -27144,6 +27772,7 @@ func (gdClass Texture) virtual(rtype reflect.Type, name string) (method reflect.
 
 type Texture2D struct{_Texture2D struct{}; obj cObject }
 func NewTexture2D() (gdClass Texture2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Texture2D) Free() { gdClass.obj.destroy() }
 func (gdClass Texture2D) owner() cObject { return gdClass.obj }
 func (Texture2D) class() string { return "Texture2D\000" }
 
@@ -27201,6 +27830,7 @@ func (gdClass Texture2D) GetImage() Image { return methodCall[Image](gdClass.obj
 
 type Texture2DArray struct{_Texture2DArray struct{}; obj cObject }
 func NewTexture2DArray() (gdClass Texture2DArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Texture2DArray) Free() { gdClass.obj.destroy() }
 func (gdClass Texture2DArray) owner() cObject { return gdClass.obj }
 func (Texture2DArray) class() string { return "Texture2DArray\000" }
 
@@ -27212,6 +27842,7 @@ func (gdClass Texture2DArray) virtual(rtype reflect.Type, name string) (method r
 
 type Texture3D struct{_Texture3D struct{}; obj cObject }
 func NewTexture3D() (gdClass Texture3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Texture3D) Free() { gdClass.obj.destroy() }
 func (gdClass Texture3D) owner() cObject { return gdClass.obj }
 func (Texture3D) class() string { return "Texture3D\000" }
 
@@ -27274,6 +27905,7 @@ const (
 
 type TextureButton struct{_TextureButton struct{}; obj cObject }
 func NewTextureButton() (gdClass TextureButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextureButton) Free() { gdClass.obj.destroy() }
 func (gdClass TextureButton) owner() cObject { return gdClass.obj }
 func (TextureButton) class() string { return "TextureButton\000" }
 
@@ -27314,6 +27946,7 @@ const (
 
 type TextureLayered struct{_TextureLayered struct{}; obj cObject }
 func NewTextureLayered() (gdClass TextureLayered) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextureLayered) Free() { gdClass.obj.destroy() }
 func (gdClass TextureLayered) owner() cObject { return gdClass.obj }
 func (TextureLayered) class() string { return "TextureLayered\000" }
 
@@ -27384,6 +28017,7 @@ const (
 
 type TextureProgressBar struct{_TextureProgressBar struct{}; obj cObject }
 func NewTextureProgressBar() (gdClass TextureProgressBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextureProgressBar) Free() { gdClass.obj.destroy() }
 func (gdClass TextureProgressBar) owner() cObject { return gdClass.obj }
 func (TextureProgressBar) class() string { return "TextureProgressBar\000" }
 
@@ -27434,6 +28068,7 @@ const (
 
 type TextureRect struct{_TextureRect struct{}; obj cObject }
 func NewTextureRect() (gdClass TextureRect) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TextureRect) Free() { gdClass.obj.destroy() }
 func (gdClass TextureRect) owner() cObject { return gdClass.obj }
 func (TextureRect) class() string { return "TextureRect\000" }
 
@@ -27468,6 +28103,7 @@ const (
 
 type Theme struct{_Theme struct{}; obj cObject }
 func NewTheme() (gdClass Theme) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Theme) Free() { gdClass.obj.destroy() }
 func (gdClass Theme) owner() cObject { return gdClass.obj }
 func (Theme) class() string { return "Theme\000" }
 
@@ -27556,6 +28192,7 @@ const (
 
 type Thread struct{_Thread struct{}; obj cObject }
 func NewThread() (gdClass Thread) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Thread) Free() { gdClass.obj.destroy() }
 func (gdClass Thread) owner() cObject { return gdClass.obj }
 func (Thread) class() string { return "Thread\000" }
 
@@ -27573,6 +28210,7 @@ func (gdClass Thread) WaitToFinish() any { return methodCall[any](gdClass.obj, m
 
 type TileData struct{_TileData struct{}; obj cObject }
 func NewTileData() (gdClass TileData) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileData) Free() { gdClass.obj.destroy() }
 func (gdClass TileData) owner() cObject { return gdClass.obj }
 func (TileData) class() string { return "TileData\000" }
 
@@ -27639,6 +28277,7 @@ const (
 
 type TileMap struct{_TileMap struct{}; obj cObject }
 func NewTileMap() (gdClass TileMap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileMap) Free() { gdClass.obj.destroy() }
 func (gdClass TileMap) owner() cObject { return gdClass.obj }
 func (TileMap) class() string { return "TileMap\000" }
 
@@ -27711,6 +28350,7 @@ func (gdClass TileMap) GetNeighborCell(coords Vector2i, neighbor TileSetCellNeig
 
 type TileMapPattern struct{_TileMapPattern struct{}; obj cObject }
 func NewTileMapPattern() (gdClass TileMapPattern) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileMapPattern) Free() { gdClass.obj.destroy() }
 func (gdClass TileMapPattern) owner() cObject { return gdClass.obj }
 func (TileMapPattern) class() string { return "TileMapPattern\000" }
 
@@ -27789,6 +28429,7 @@ const (
 
 type TileSet struct{_TileSet struct{}; obj cObject }
 func NewTileSet() (gdClass TileSet) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileSet) Free() { gdClass.obj.destroy() }
 func (gdClass TileSet) owner() cObject { return gdClass.obj }
 func (TileSet) class() string { return "TileSet\000" }
 
@@ -27885,6 +28526,7 @@ func (gdClass TileSet) GetPatternsCount() int64 { return methodCall[int64](gdCla
 
 type TileSetAtlasSource struct{_TileSetAtlasSource struct{}; obj cObject }
 func NewTileSetAtlasSource() (gdClass TileSetAtlasSource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileSetAtlasSource) Free() { gdClass.obj.destroy() }
 func (gdClass TileSetAtlasSource) owner() cObject { return gdClass.obj }
 func (TileSetAtlasSource) class() string { return "TileSetAtlasSource\000" }
 
@@ -27934,6 +28576,7 @@ func (gdClass TileSetAtlasSource) GetRuntimeTileTextureRegion(atlas_coords Vecto
 
 type TileSetScenesCollectionSource struct{_TileSetScenesCollectionSource struct{}; obj cObject }
 func NewTileSetScenesCollectionSource() (gdClass TileSetScenesCollectionSource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileSetScenesCollectionSource) Free() { gdClass.obj.destroy() }
 func (gdClass TileSetScenesCollectionSource) owner() cObject { return gdClass.obj }
 func (TileSetScenesCollectionSource) class() string { return "TileSetScenesCollectionSource\000" }
 
@@ -27957,6 +28600,7 @@ func (gdClass TileSetScenesCollectionSource) GetNextSceneTileId() int64 { return
 
 type TileSetSource struct{_TileSetSource struct{}; obj cObject }
 func NewTileSetSource() (gdClass TileSetSource) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TileSetSource) Free() { gdClass.obj.destroy() }
 func (gdClass TileSetSource) owner() cObject { return gdClass.obj }
 func (TileSetSource) class() string { return "TileSetSource\000" }
 
@@ -28005,6 +28649,7 @@ var Time TimeSingleton
 
 type TimeSingleton struct{_TimeSingleton struct{}; obj cObject }
 func NewTimeSingleton() (gdClass TimeSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TimeSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass TimeSingleton) owner() cObject { return gdClass.obj }
 func (TimeSingleton) class() string { return "TimeSingleton\000" }
 
@@ -28045,6 +28690,7 @@ const (
 
 type Timer struct{_Timer struct{}; obj cObject }
 func NewTimer() (gdClass Timer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Timer) Free() { gdClass.obj.destroy() }
 func (gdClass Timer) owner() cObject { return gdClass.obj }
 func (Timer) class() string { return "Timer\000" }
 
@@ -28071,6 +28717,7 @@ func (gdClass Timer) GetTimerProcessCallback() TimerTimerProcessCallback { retur
 
 type TorusMesh struct{_TorusMesh struct{}; obj cObject }
 func NewTorusMesh() (gdClass TorusMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TorusMesh) Free() { gdClass.obj.destroy() }
 func (gdClass TorusMesh) owner() cObject { return gdClass.obj }
 func (TorusMesh) class() string { return "TorusMesh\000" }
 
@@ -28098,6 +28745,7 @@ const (
 
 type TouchScreenButton struct{_TouchScreenButton struct{}; obj cObject }
 func NewTouchScreenButton() (gdClass TouchScreenButton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TouchScreenButton) Free() { gdClass.obj.destroy() }
 func (gdClass TouchScreenButton) owner() cObject { return gdClass.obj }
 func (TouchScreenButton) class() string { return "TouchScreenButton\000" }
 
@@ -28129,6 +28777,7 @@ func (gdClass TouchScreenButton) IsPressed() bool { return methodCall[bool](gdCl
 
 type Translation struct{_Translation struct{}; obj cObject }
 func NewTranslation() (gdClass Translation) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Translation) Free() { gdClass.obj.destroy() }
 func (gdClass Translation) owner() cObject { return gdClass.obj }
 func (Translation) class() string { return "Translation\000" }
 
@@ -28163,6 +28812,7 @@ var TranslationServer TranslationServerSingleton
 
 type TranslationServerSingleton struct{_TranslationServerSingleton struct{}; obj cObject }
 func NewTranslationServerSingleton() (gdClass TranslationServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TranslationServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass TranslationServerSingleton) owner() cObject { return gdClass.obj }
 func (TranslationServerSingleton) class() string { return "TranslationServerSingleton\000" }
 
@@ -28214,6 +28864,7 @@ const (
 
 type Tree struct{_Tree struct{}; obj cObject }
 func NewTree() (gdClass Tree) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Tree) Free() { gdClass.obj.destroy() }
 func (gdClass Tree) owner() cObject { return gdClass.obj }
 func (Tree) class() string { return "Tree\000" }
 
@@ -28289,6 +28940,7 @@ const (
 
 type TreeItem struct{_TreeItem struct{}; obj cObject }
 func NewTreeItem() (gdClass TreeItem) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TreeItem) Free() { gdClass.obj.destroy() }
 func (gdClass TreeItem) owner() cObject { return gdClass.obj }
 func (TreeItem) class() string { return "TreeItem\000" }
 
@@ -28395,6 +29047,7 @@ func (gdClass TreeItem) CallRecursive(method Name)  { methodCall[struct{}](gdCla
 
 type TriangleMesh struct{_TriangleMesh struct{}; obj cObject }
 func NewTriangleMesh() (gdClass TriangleMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TriangleMesh) Free() { gdClass.obj.destroy() }
 func (gdClass TriangleMesh) owner() cObject { return gdClass.obj }
 func (TriangleMesh) class() string { return "TriangleMesh\000" }
 
@@ -28406,6 +29059,7 @@ func (gdClass TriangleMesh) virtual(rtype reflect.Type, name string) (method ref
 
 type TubeTrailMesh struct{_TubeTrailMesh struct{}; obj cObject }
 func NewTubeTrailMesh() (gdClass TubeTrailMesh) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass TubeTrailMesh) Free() { gdClass.obj.destroy() }
 func (gdClass TubeTrailMesh) owner() cObject { return gdClass.obj }
 func (TubeTrailMesh) class() string { return "TubeTrailMesh\000" }
 
@@ -28470,6 +29124,7 @@ const (
 
 type Tween struct{_Tween struct{}; obj cObject }
 func NewTween() (gdClass Tween) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Tween) Free() { gdClass.obj.destroy() }
 func (gdClass Tween) owner() cObject { return gdClass.obj }
 func (Tween) class() string { return "Tween\000" }
 
@@ -28505,6 +29160,7 @@ func (gdClass Tween) InterpolateValue(initial_value any, delta_value any, elapse
 
 type Tweener struct{_Tweener struct{}; obj cObject }
 func NewTweener() (gdClass Tweener) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Tweener) Free() { gdClass.obj.destroy() }
 func (gdClass Tweener) owner() cObject { return gdClass.obj }
 func (Tweener) class() string { return "Tweener\000" }
 
@@ -28516,6 +29172,7 @@ func (gdClass Tweener) virtual(rtype reflect.Type, name string) (method reflect.
 
 type UDPServer struct{_UDPServer struct{}; obj cObject }
 func NewUDPServer() (gdClass UDPServer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass UDPServer) Free() { gdClass.obj.destroy() }
 func (gdClass UDPServer) owner() cObject { return gdClass.obj }
 func (UDPServer) class() string { return "UDPServer\000" }
 
@@ -28571,6 +29228,7 @@ const (
 
 type UPNP struct{_UPNP struct{}; obj cObject }
 func NewUPNP() (gdClass UPNP) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass UPNP) Free() { gdClass.obj.destroy() }
 func (gdClass UPNP) owner() cObject { return gdClass.obj }
 func (UPNP) class() string { return "UPNP\000" }
 
@@ -28615,6 +29273,7 @@ const (
 
 type UPNPDevice struct{_UPNPDevice struct{}; obj cObject }
 func NewUPNPDevice() (gdClass UPNPDevice) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass UPNPDevice) Free() { gdClass.obj.destroy() }
 func (gdClass UPNPDevice) owner() cObject { return gdClass.obj }
 func (UPNPDevice) class() string { return "UPNPDevice\000" }
 
@@ -28651,6 +29310,7 @@ const (
 
 type UndoRedo struct{_UndoRedo struct{}; obj cObject }
 func NewUndoRedo() (gdClass UndoRedo) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass UndoRedo) Free() { gdClass.obj.destroy() }
 func (gdClass UndoRedo) owner() cObject { return gdClass.obj }
 func (UndoRedo) class() string { return "UndoRedo\000" }
 
@@ -28684,6 +29344,7 @@ func (gdClass UndoRedo) Undo() bool { return methodCall[bool](gdClass.obj, metho
 
 type UniformSetCacheRD struct{_UniformSetCacheRD struct{}; obj cObject }
 func NewUniformSetCacheRD() (gdClass UniformSetCacheRD) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass UniformSetCacheRD) Free() { gdClass.obj.destroy() }
 func (gdClass UniformSetCacheRD) owner() cObject { return gdClass.obj }
 func (UniformSetCacheRD) class() string { return "UniformSetCacheRD\000" }
 
@@ -28695,6 +29356,7 @@ func (gdClass UniformSetCacheRD) virtual(rtype reflect.Type, name string) (metho
 
 type VBoxContainer struct{_VBoxContainer struct{}; obj cObject }
 func NewVBoxContainer() (gdClass VBoxContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VBoxContainer) Free() { gdClass.obj.destroy() }
 func (gdClass VBoxContainer) owner() cObject { return gdClass.obj }
 func (VBoxContainer) class() string { return "VBoxContainer\000" }
 
@@ -28706,6 +29368,7 @@ func (gdClass VBoxContainer) virtual(rtype reflect.Type, name string) (method re
 
 type VFlowContainer struct{_VFlowContainer struct{}; obj cObject }
 func NewVFlowContainer() (gdClass VFlowContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VFlowContainer) Free() { gdClass.obj.destroy() }
 func (gdClass VFlowContainer) owner() cObject { return gdClass.obj }
 func (VFlowContainer) class() string { return "VFlowContainer\000" }
 
@@ -28717,6 +29380,7 @@ func (gdClass VFlowContainer) virtual(rtype reflect.Type, name string) (method r
 
 type VScrollBar struct{_VScrollBar struct{}; obj cObject }
 func NewVScrollBar() (gdClass VScrollBar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VScrollBar) Free() { gdClass.obj.destroy() }
 func (gdClass VScrollBar) owner() cObject { return gdClass.obj }
 func (VScrollBar) class() string { return "VScrollBar\000" }
 
@@ -28728,6 +29392,7 @@ func (gdClass VScrollBar) virtual(rtype reflect.Type, name string) (method refle
 
 type VSeparator struct{_VSeparator struct{}; obj cObject }
 func NewVSeparator() (gdClass VSeparator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VSeparator) Free() { gdClass.obj.destroy() }
 func (gdClass VSeparator) owner() cObject { return gdClass.obj }
 func (VSeparator) class() string { return "VSeparator\000" }
 
@@ -28739,6 +29404,7 @@ func (gdClass VSeparator) virtual(rtype reflect.Type, name string) (method refle
 
 type VSlider struct{_VSlider struct{}; obj cObject }
 func NewVSlider() (gdClass VSlider) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VSlider) Free() { gdClass.obj.destroy() }
 func (gdClass VSlider) owner() cObject { return gdClass.obj }
 func (VSlider) class() string { return "VSlider\000" }
 
@@ -28750,6 +29416,7 @@ func (gdClass VSlider) virtual(rtype reflect.Type, name string) (method reflect.
 
 type VSplitContainer struct{_VSplitContainer struct{}; obj cObject }
 func NewVSplitContainer() (gdClass VSplitContainer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VSplitContainer) Free() { gdClass.obj.destroy() }
 func (gdClass VSplitContainer) owner() cObject { return gdClass.obj }
 func (VSplitContainer) class() string { return "VSplitContainer\000" }
 
@@ -28761,6 +29428,7 @@ func (gdClass VSplitContainer) virtual(rtype reflect.Type, name string) (method 
 
 type VehicleBody3D struct{_VehicleBody3D struct{}; obj cObject }
 func NewVehicleBody3D() (gdClass VehicleBody3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VehicleBody3D) Free() { gdClass.obj.destroy() }
 func (gdClass VehicleBody3D) owner() cObject { return gdClass.obj }
 func (VehicleBody3D) class() string { return "VehicleBody3D\000" }
 
@@ -28779,6 +29447,7 @@ func (gdClass VehicleBody3D) GetSteering() float64 { return methodCall[float64](
 
 type VehicleWheel3D struct{_VehicleWheel3D struct{}; obj cObject }
 func NewVehicleWheel3D() (gdClass VehicleWheel3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VehicleWheel3D) Free() { gdClass.obj.destroy() }
 func (gdClass VehicleWheel3D) owner() cObject { return gdClass.obj }
 func (VehicleWheel3D) class() string { return "VehicleWheel3D\000" }
 
@@ -28823,6 +29492,7 @@ func (gdClass VehicleWheel3D) GetSteering() float64 { return methodCall[float64]
 
 type VideoStream struct{_VideoStream struct{}; obj cObject }
 func NewVideoStream() (gdClass VideoStream) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VideoStream) Free() { gdClass.obj.destroy() }
 func (gdClass VideoStream) owner() cObject { return gdClass.obj }
 func (VideoStream) class() string { return "VideoStream\000" }
 
@@ -28834,6 +29504,7 @@ func (gdClass VideoStream) virtual(rtype reflect.Type, name string) (method refl
 
 type VideoStreamPlayer struct{_VideoStreamPlayer struct{}; obj cObject }
 func NewVideoStreamPlayer() (gdClass VideoStreamPlayer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VideoStreamPlayer) Free() { gdClass.obj.destroy() }
 func (gdClass VideoStreamPlayer) owner() cObject { return gdClass.obj }
 func (VideoStreamPlayer) class() string { return "VideoStreamPlayer\000" }
 
@@ -28871,6 +29542,7 @@ func (gdClass VideoStreamPlayer) GetVideoTexture() Texture2D { return methodCall
 
 type VideoStreamTheora struct{_VideoStreamTheora struct{}; obj cObject }
 func NewVideoStreamTheora() (gdClass VideoStreamTheora) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VideoStreamTheora) Free() { gdClass.obj.destroy() }
 func (gdClass VideoStreamTheora) owner() cObject { return gdClass.obj }
 func (VideoStreamTheora) class() string { return "VideoStreamTheora\000" }
 
@@ -29019,6 +29691,7 @@ const (
 
 type Viewport struct{_Viewport struct{}; obj cObject }
 func NewViewport() (gdClass Viewport) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Viewport) Free() { gdClass.obj.destroy() }
 func (gdClass Viewport) owner() cObject { return gdClass.obj }
 func (Viewport) class() string { return "Viewport\000" }
 
@@ -29126,6 +29799,7 @@ func (gdClass Viewport) GetVrsTexture() Texture2D { return methodCall[Texture2D]
 
 type ViewportTexture struct{_ViewportTexture struct{}; obj cObject }
 func NewViewportTexture() (gdClass ViewportTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass ViewportTexture) Free() { gdClass.obj.destroy() }
 func (gdClass ViewportTexture) owner() cObject { return gdClass.obj }
 func (ViewportTexture) class() string { return "ViewportTexture\000" }
 
@@ -29148,6 +29822,7 @@ const (
 
 type VisibleOnScreenEnabler2D struct{_VisibleOnScreenEnabler2D struct{}; obj cObject }
 func NewVisibleOnScreenEnabler2D() (gdClass VisibleOnScreenEnabler2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisibleOnScreenEnabler2D) Free() { gdClass.obj.destroy() }
 func (gdClass VisibleOnScreenEnabler2D) owner() cObject { return gdClass.obj }
 func (VisibleOnScreenEnabler2D) class() string { return "VisibleOnScreenEnabler2D\000" }
 
@@ -29172,6 +29847,7 @@ const (
 
 type VisibleOnScreenEnabler3D struct{_VisibleOnScreenEnabler3D struct{}; obj cObject }
 func NewVisibleOnScreenEnabler3D() (gdClass VisibleOnScreenEnabler3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisibleOnScreenEnabler3D) Free() { gdClass.obj.destroy() }
 func (gdClass VisibleOnScreenEnabler3D) owner() cObject { return gdClass.obj }
 func (VisibleOnScreenEnabler3D) class() string { return "VisibleOnScreenEnabler3D\000" }
 
@@ -29188,6 +29864,7 @@ func (gdClass VisibleOnScreenEnabler3D) GetEnableNodePath() NodePath { return me
 
 type VisibleOnScreenNotifier2D struct{_VisibleOnScreenNotifier2D struct{}; obj cObject }
 func NewVisibleOnScreenNotifier2D() (gdClass VisibleOnScreenNotifier2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisibleOnScreenNotifier2D) Free() { gdClass.obj.destroy() }
 func (gdClass VisibleOnScreenNotifier2D) owner() cObject { return gdClass.obj }
 func (VisibleOnScreenNotifier2D) class() string { return "VisibleOnScreenNotifier2D\000" }
 
@@ -29203,6 +29880,7 @@ func (gdClass VisibleOnScreenNotifier2D) IsOnScreen() bool { return methodCall[b
 
 type VisibleOnScreenNotifier3D struct{_VisibleOnScreenNotifier3D struct{}; obj cObject }
 func NewVisibleOnScreenNotifier3D() (gdClass VisibleOnScreenNotifier3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisibleOnScreenNotifier3D) Free() { gdClass.obj.destroy() }
 func (gdClass VisibleOnScreenNotifier3D) owner() cObject { return gdClass.obj }
 func (VisibleOnScreenNotifier3D) class() string { return "VisibleOnScreenNotifier3D\000" }
 
@@ -29217,6 +29895,7 @@ func (gdClass VisibleOnScreenNotifier3D) IsOnScreen() bool { return methodCall[b
 
 type VisualInstance3D struct{_VisualInstance3D struct{}; obj cObject }
 func NewVisualInstance3D() (gdClass VisualInstance3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualInstance3D) Free() { gdClass.obj.destroy() }
 func (gdClass VisualInstance3D) owner() cObject { return gdClass.obj }
 func (VisualInstance3D) class() string { return "VisualInstance3D\000" }
 
@@ -29282,6 +29961,7 @@ const (
 
 type VisualShader struct{_VisualShader struct{}; obj cObject }
 func NewVisualShader() (gdClass VisualShader) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShader) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShader) owner() cObject { return gdClass.obj }
 func (VisualShader) class() string { return "VisualShader\000" }
 
@@ -29328,6 +30008,7 @@ const (
 
 type VisualShaderNode struct{_VisualShaderNode struct{}; obj cObject }
 func NewVisualShaderNode() (gdClass VisualShaderNode) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNode) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNode) owner() cObject { return gdClass.obj }
 func (VisualShaderNode) class() string { return "VisualShaderNode\000" }
 
@@ -29358,6 +30039,7 @@ const (
 
 type VisualShaderNodeBillboard struct{_VisualShaderNodeBillboard struct{}; obj cObject }
 func NewVisualShaderNodeBillboard() (gdClass VisualShaderNodeBillboard) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeBillboard) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeBillboard) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeBillboard) class() string { return "VisualShaderNodeBillboard\000" }
 
@@ -29374,6 +30056,7 @@ func (gdClass VisualShaderNodeBillboard) IsKeepScaleEnabled() bool { return meth
 
 type VisualShaderNodeBooleanConstant struct{_VisualShaderNodeBooleanConstant struct{}; obj cObject }
 func NewVisualShaderNodeBooleanConstant() (gdClass VisualShaderNodeBooleanConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeBooleanConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeBooleanConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeBooleanConstant) class() string { return "VisualShaderNodeBooleanConstant\000" }
 
@@ -29388,6 +30071,7 @@ func (gdClass VisualShaderNodeBooleanConstant) GetConstant() bool { return metho
 
 type VisualShaderNodeBooleanUniform struct{_VisualShaderNodeBooleanUniform struct{}; obj cObject }
 func NewVisualShaderNodeBooleanUniform() (gdClass VisualShaderNodeBooleanUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeBooleanUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeBooleanUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeBooleanUniform) class() string { return "VisualShaderNodeBooleanUniform\000" }
 
@@ -29415,6 +30099,7 @@ const (
 
 type VisualShaderNodeClamp struct{_VisualShaderNodeClamp struct{}; obj cObject }
 func NewVisualShaderNodeClamp() (gdClass VisualShaderNodeClamp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeClamp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeClamp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeClamp) class() string { return "VisualShaderNodeClamp\000" }
 
@@ -29429,6 +30114,7 @@ func (gdClass VisualShaderNodeClamp) GetOpType() VisualShaderNodeClampOpType { r
 
 type VisualShaderNodeColorConstant struct{_VisualShaderNodeColorConstant struct{}; obj cObject }
 func NewVisualShaderNodeColorConstant() (gdClass VisualShaderNodeColorConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeColorConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeColorConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeColorConstant) class() string { return "VisualShaderNodeColorConstant\000" }
 
@@ -29453,6 +30139,7 @@ const (
 
 type VisualShaderNodeColorFunc struct{_VisualShaderNodeColorFunc struct{}; obj cObject }
 func NewVisualShaderNodeColorFunc() (gdClass VisualShaderNodeColorFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeColorFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeColorFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeColorFunc) class() string { return "VisualShaderNodeColorFunc\000" }
 
@@ -29482,6 +30169,7 @@ const (
 
 type VisualShaderNodeColorOp struct{_VisualShaderNodeColorOp struct{}; obj cObject }
 func NewVisualShaderNodeColorOp() (gdClass VisualShaderNodeColorOp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeColorOp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeColorOp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeColorOp) class() string { return "VisualShaderNodeColorOp\000" }
 
@@ -29496,6 +30184,7 @@ func (gdClass VisualShaderNodeColorOp) GetOperator() VisualShaderNodeColorOpOper
 
 type VisualShaderNodeColorUniform struct{_VisualShaderNodeColorUniform struct{}; obj cObject }
 func NewVisualShaderNodeColorUniform() (gdClass VisualShaderNodeColorUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeColorUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeColorUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeColorUniform) class() string { return "VisualShaderNodeColorUniform\000" }
 
@@ -29512,6 +30201,7 @@ func (gdClass VisualShaderNodeColorUniform) GetDefaultValue() Color { return met
 
 type VisualShaderNodeComment struct{_VisualShaderNodeComment struct{}; obj cObject }
 func NewVisualShaderNodeComment() (gdClass VisualShaderNodeComment) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeComment) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeComment) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeComment) class() string { return "VisualShaderNodeComment\000" }
 
@@ -29561,6 +30251,7 @@ const (
 
 type VisualShaderNodeCompare struct{_VisualShaderNodeCompare struct{}; obj cObject }
 func NewVisualShaderNodeCompare() (gdClass VisualShaderNodeCompare) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCompare) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCompare) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCompare) class() string { return "VisualShaderNodeCompare\000" }
 
@@ -29579,6 +30270,7 @@ func (gdClass VisualShaderNodeCompare) GetCondition() VisualShaderNodeCompareCon
 
 type VisualShaderNodeConstant struct{_VisualShaderNodeConstant struct{}; obj cObject }
 func NewVisualShaderNodeConstant() (gdClass VisualShaderNodeConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeConstant) class() string { return "VisualShaderNodeConstant\000" }
 
@@ -29607,6 +30299,7 @@ const (
 
 type VisualShaderNodeCubemap struct{_VisualShaderNodeCubemap struct{}; obj cObject }
 func NewVisualShaderNodeCubemap() (gdClass VisualShaderNodeCubemap) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCubemap) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCubemap) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCubemap) class() string { return "VisualShaderNodeCubemap\000" }
 
@@ -29625,6 +30318,7 @@ func (gdClass VisualShaderNodeCubemap) GetTextureType() VisualShaderNodeCubemapT
 
 type VisualShaderNodeCubemapUniform struct{_VisualShaderNodeCubemapUniform struct{}; obj cObject }
 func NewVisualShaderNodeCubemapUniform() (gdClass VisualShaderNodeCubemapUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCubemapUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCubemapUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCubemapUniform) class() string { return "VisualShaderNodeCubemapUniform\000" }
 
@@ -29636,6 +30330,7 @@ func (gdClass VisualShaderNodeCubemapUniform) virtual(rtype reflect.Type, name s
 
 type VisualShaderNodeCurveTexture struct{_VisualShaderNodeCurveTexture struct{}; obj cObject }
 func NewVisualShaderNodeCurveTexture() (gdClass VisualShaderNodeCurveTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCurveTexture) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCurveTexture) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCurveTexture) class() string { return "VisualShaderNodeCurveTexture\000" }
 
@@ -29650,6 +30345,7 @@ func (gdClass VisualShaderNodeCurveTexture) GetTexture() CurveTexture { return m
 
 type VisualShaderNodeCurveXYZTexture struct{_VisualShaderNodeCurveXYZTexture struct{}; obj cObject }
 func NewVisualShaderNodeCurveXYZTexture() (gdClass VisualShaderNodeCurveXYZTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCurveXYZTexture) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCurveXYZTexture) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCurveXYZTexture) class() string { return "VisualShaderNodeCurveXYZTexture\000" }
 
@@ -29664,6 +30360,7 @@ func (gdClass VisualShaderNodeCurveXYZTexture) GetTexture() CurveXYZTexture { re
 
 type VisualShaderNodeCustom struct{_VisualShaderNodeCustom struct{}; obj cObject }
 func NewVisualShaderNodeCustom() (gdClass VisualShaderNodeCustom) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeCustom) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeCustom) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeCustom) class() string { return "VisualShaderNodeCustom\000" }
 
@@ -29771,6 +30468,7 @@ const (
 
 type VisualShaderNodeDerivativeFunc struct{_VisualShaderNodeDerivativeFunc struct{}; obj cObject }
 func NewVisualShaderNodeDerivativeFunc() (gdClass VisualShaderNodeDerivativeFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeDerivativeFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeDerivativeFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeDerivativeFunc) class() string { return "VisualShaderNodeDerivativeFunc\000" }
 
@@ -29787,6 +30485,7 @@ func (gdClass VisualShaderNodeDerivativeFunc) GetFunction() VisualShaderNodeDeri
 
 type VisualShaderNodeDeterminant struct{_VisualShaderNodeDeterminant struct{}; obj cObject }
 func NewVisualShaderNodeDeterminant() (gdClass VisualShaderNodeDeterminant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeDeterminant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeDeterminant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeDeterminant) class() string { return "VisualShaderNodeDeterminant\000" }
 
@@ -29798,6 +30497,7 @@ func (gdClass VisualShaderNodeDeterminant) virtual(rtype reflect.Type, name stri
 
 type VisualShaderNodeDotProduct struct{_VisualShaderNodeDotProduct struct{}; obj cObject }
 func NewVisualShaderNodeDotProduct() (gdClass VisualShaderNodeDotProduct) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeDotProduct) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeDotProduct) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeDotProduct) class() string { return "VisualShaderNodeDotProduct\000" }
 
@@ -29809,6 +30509,7 @@ func (gdClass VisualShaderNodeDotProduct) virtual(rtype reflect.Type, name strin
 
 type VisualShaderNodeExpression struct{_VisualShaderNodeExpression struct{}; obj cObject }
 func NewVisualShaderNodeExpression() (gdClass VisualShaderNodeExpression) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeExpression) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeExpression) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeExpression) class() string { return "VisualShaderNodeExpression\000" }
 
@@ -29823,6 +30524,7 @@ func (gdClass VisualShaderNodeExpression) GetExpression() string { return method
 
 type VisualShaderNodeFaceForward struct{_VisualShaderNodeFaceForward struct{}; obj cObject }
 func NewVisualShaderNodeFaceForward() (gdClass VisualShaderNodeFaceForward) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFaceForward) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFaceForward) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFaceForward) class() string { return "VisualShaderNodeFaceForward\000" }
 
@@ -29834,6 +30536,7 @@ func (gdClass VisualShaderNodeFaceForward) virtual(rtype reflect.Type, name stri
 
 type VisualShaderNodeFloatConstant struct{_VisualShaderNodeFloatConstant struct{}; obj cObject }
 func NewVisualShaderNodeFloatConstant() (gdClass VisualShaderNodeFloatConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFloatConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFloatConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFloatConstant) class() string { return "VisualShaderNodeFloatConstant\000" }
 
@@ -29886,6 +30589,7 @@ const (
 
 type VisualShaderNodeFloatFunc struct{_VisualShaderNodeFloatFunc struct{}; obj cObject }
 func NewVisualShaderNodeFloatFunc() (gdClass VisualShaderNodeFloatFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFloatFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFloatFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFloatFunc) class() string { return "VisualShaderNodeFloatFunc\000" }
 
@@ -29916,6 +30620,7 @@ const (
 
 type VisualShaderNodeFloatOp struct{_VisualShaderNodeFloatOp struct{}; obj cObject }
 func NewVisualShaderNodeFloatOp() (gdClass VisualShaderNodeFloatOp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFloatOp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFloatOp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFloatOp) class() string { return "VisualShaderNodeFloatOp\000" }
 
@@ -29939,6 +30644,7 @@ const (
 
 type VisualShaderNodeFloatUniform struct{_VisualShaderNodeFloatUniform struct{}; obj cObject }
 func NewVisualShaderNodeFloatUniform() (gdClass VisualShaderNodeFloatUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFloatUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFloatUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFloatUniform) class() string { return "VisualShaderNodeFloatUniform\000" }
 
@@ -29963,6 +30669,7 @@ func (gdClass VisualShaderNodeFloatUniform) GetDefaultValue() float64 { return m
 
 type VisualShaderNodeFresnel struct{_VisualShaderNodeFresnel struct{}; obj cObject }
 func NewVisualShaderNodeFresnel() (gdClass VisualShaderNodeFresnel) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeFresnel) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeFresnel) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeFresnel) class() string { return "VisualShaderNodeFresnel\000" }
 
@@ -29974,6 +30681,7 @@ func (gdClass VisualShaderNodeFresnel) virtual(rtype reflect.Type, name string) 
 
 type VisualShaderNodeGlobalExpression struct{_VisualShaderNodeGlobalExpression struct{}; obj cObject }
 func NewVisualShaderNodeGlobalExpression() (gdClass VisualShaderNodeGlobalExpression) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeGlobalExpression) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeGlobalExpression) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeGlobalExpression) class() string { return "VisualShaderNodeGlobalExpression\000" }
 
@@ -29985,6 +30693,7 @@ func (gdClass VisualShaderNodeGlobalExpression) virtual(rtype reflect.Type, name
 
 type VisualShaderNodeGroupBase struct{_VisualShaderNodeGroupBase struct{}; obj cObject }
 func NewVisualShaderNodeGroupBase() (gdClass VisualShaderNodeGroupBase) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeGroupBase) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeGroupBase) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeGroupBase) class() string { return "VisualShaderNodeGroupBase\000" }
 
@@ -30018,6 +30727,7 @@ func (gdClass VisualShaderNodeGroupBase) GetFreeOutputPortId() int64 { return me
 
 type VisualShaderNodeIf struct{_VisualShaderNodeIf struct{}; obj cObject }
 func NewVisualShaderNodeIf() (gdClass VisualShaderNodeIf) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIf) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIf) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIf) class() string { return "VisualShaderNodeIf\000" }
 
@@ -30029,6 +30739,7 @@ func (gdClass VisualShaderNodeIf) virtual(rtype reflect.Type, name string) (meth
 
 type VisualShaderNodeInput struct{_VisualShaderNodeInput struct{}; obj cObject }
 func NewVisualShaderNodeInput() (gdClass VisualShaderNodeInput) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeInput) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeInput) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeInput) class() string { return "VisualShaderNodeInput\000" }
 
@@ -30044,6 +30755,7 @@ func (gdClass VisualShaderNodeInput) GetInputRealName() string { return methodCa
 
 type VisualShaderNodeIntConstant struct{_VisualShaderNodeIntConstant struct{}; obj cObject }
 func NewVisualShaderNodeIntConstant() (gdClass VisualShaderNodeIntConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIntConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIntConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIntConstant) class() string { return "VisualShaderNodeIntConstant\000" }
 
@@ -30068,6 +30780,7 @@ const (
 
 type VisualShaderNodeIntFunc struct{_VisualShaderNodeIntFunc struct{}; obj cObject }
 func NewVisualShaderNodeIntFunc() (gdClass VisualShaderNodeIntFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIntFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIntFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIntFunc) class() string { return "VisualShaderNodeIntFunc\000" }
 
@@ -30100,6 +30813,7 @@ const (
 
 type VisualShaderNodeIntOp struct{_VisualShaderNodeIntOp struct{}; obj cObject }
 func NewVisualShaderNodeIntOp() (gdClass VisualShaderNodeIntOp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIntOp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIntOp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIntOp) class() string { return "VisualShaderNodeIntOp\000" }
 
@@ -30123,6 +30837,7 @@ const (
 
 type VisualShaderNodeIntUniform struct{_VisualShaderNodeIntUniform struct{}; obj cObject }
 func NewVisualShaderNodeIntUniform() (gdClass VisualShaderNodeIntUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIntUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIntUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIntUniform) class() string { return "VisualShaderNodeIntUniform\000" }
 
@@ -30155,6 +30870,7 @@ const (
 
 type VisualShaderNodeIs struct{_VisualShaderNodeIs struct{}; obj cObject }
 func NewVisualShaderNodeIs() (gdClass VisualShaderNodeIs) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeIs) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeIs) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeIs) class() string { return "VisualShaderNodeIs\000" }
 
@@ -30182,6 +30898,7 @@ const (
 
 type VisualShaderNodeMix struct{_VisualShaderNodeMix struct{}; obj cObject }
 func NewVisualShaderNodeMix() (gdClass VisualShaderNodeMix) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeMix) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeMix) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeMix) class() string { return "VisualShaderNodeMix\000" }
 
@@ -30206,6 +30923,7 @@ const (
 
 type VisualShaderNodeMultiplyAdd struct{_VisualShaderNodeMultiplyAdd struct{}; obj cObject }
 func NewVisualShaderNodeMultiplyAdd() (gdClass VisualShaderNodeMultiplyAdd) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeMultiplyAdd) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeMultiplyAdd) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeMultiplyAdd) class() string { return "VisualShaderNodeMultiplyAdd\000" }
 
@@ -30220,6 +30938,7 @@ func (gdClass VisualShaderNodeMultiplyAdd) GetOpType() VisualShaderNodeMultiplyA
 
 type VisualShaderNodeOuterProduct struct{_VisualShaderNodeOuterProduct struct{}; obj cObject }
 func NewVisualShaderNodeOuterProduct() (gdClass VisualShaderNodeOuterProduct) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeOuterProduct) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeOuterProduct) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeOuterProduct) class() string { return "VisualShaderNodeOuterProduct\000" }
 
@@ -30231,6 +30950,7 @@ func (gdClass VisualShaderNodeOuterProduct) virtual(rtype reflect.Type, name str
 
 type VisualShaderNodeOutput struct{_VisualShaderNodeOutput struct{}; obj cObject }
 func NewVisualShaderNodeOutput() (gdClass VisualShaderNodeOutput) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeOutput) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeOutput) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeOutput) class() string { return "VisualShaderNodeOutput\000" }
 
@@ -30251,6 +30971,7 @@ const (
 
 type VisualShaderNodeParticleAccelerator struct{_VisualShaderNodeParticleAccelerator struct{}; obj cObject }
 func NewVisualShaderNodeParticleAccelerator() (gdClass VisualShaderNodeParticleAccelerator) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleAccelerator) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleAccelerator) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleAccelerator) class() string { return "VisualShaderNodeParticleAccelerator\000" }
 
@@ -30265,6 +30986,7 @@ func (gdClass VisualShaderNodeParticleAccelerator) GetMode() VisualShaderNodePar
 
 type VisualShaderNodeParticleBoxEmitter struct{_VisualShaderNodeParticleBoxEmitter struct{}; obj cObject }
 func NewVisualShaderNodeParticleBoxEmitter() (gdClass VisualShaderNodeParticleBoxEmitter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleBoxEmitter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleBoxEmitter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleBoxEmitter) class() string { return "VisualShaderNodeParticleBoxEmitter\000" }
 
@@ -30276,6 +30998,7 @@ func (gdClass VisualShaderNodeParticleBoxEmitter) virtual(rtype reflect.Type, na
 
 type VisualShaderNodeParticleConeVelocity struct{_VisualShaderNodeParticleConeVelocity struct{}; obj cObject }
 func NewVisualShaderNodeParticleConeVelocity() (gdClass VisualShaderNodeParticleConeVelocity) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleConeVelocity) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleConeVelocity) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleConeVelocity) class() string { return "VisualShaderNodeParticleConeVelocity\000" }
 
@@ -30297,6 +31020,7 @@ const (
 
 type VisualShaderNodeParticleEmit struct{_VisualShaderNodeParticleEmit struct{}; obj cObject }
 func NewVisualShaderNodeParticleEmit() (gdClass VisualShaderNodeParticleEmit) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleEmit) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleEmit) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleEmit) class() string { return "VisualShaderNodeParticleEmit\000" }
 
@@ -30311,6 +31035,7 @@ func (gdClass VisualShaderNodeParticleEmit) GetFlags() VisualShaderNodeParticleE
 
 type VisualShaderNodeParticleEmitter struct{_VisualShaderNodeParticleEmitter struct{}; obj cObject }
 func NewVisualShaderNodeParticleEmitter() (gdClass VisualShaderNodeParticleEmitter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleEmitter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleEmitter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleEmitter) class() string { return "VisualShaderNodeParticleEmitter\000" }
 
@@ -30325,6 +31050,7 @@ func (gdClass VisualShaderNodeParticleEmitter) IsMode2d() bool { return methodCa
 
 type VisualShaderNodeParticleMeshEmitter struct{_VisualShaderNodeParticleMeshEmitter struct{}; obj cObject }
 func NewVisualShaderNodeParticleMeshEmitter() (gdClass VisualShaderNodeParticleMeshEmitter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleMeshEmitter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleMeshEmitter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleMeshEmitter) class() string { return "VisualShaderNodeParticleMeshEmitter\000" }
 
@@ -30343,6 +31069,7 @@ func (gdClass VisualShaderNodeParticleMeshEmitter) GetSurfaceIndex() int64 { ret
 
 type VisualShaderNodeParticleMultiplyByAxisAngle struct{_VisualShaderNodeParticleMultiplyByAxisAngle struct{}; obj cObject }
 func NewVisualShaderNodeParticleMultiplyByAxisAngle() (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleMultiplyByAxisAngle) class() string { return "VisualShaderNodeParticleMultiplyByAxisAngle\000" }
 
@@ -30357,6 +31084,7 @@ func (gdClass VisualShaderNodeParticleMultiplyByAxisAngle) IsDegreesMode() bool 
 
 type VisualShaderNodeParticleOutput struct{_VisualShaderNodeParticleOutput struct{}; obj cObject }
 func NewVisualShaderNodeParticleOutput() (gdClass VisualShaderNodeParticleOutput) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleOutput) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleOutput) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleOutput) class() string { return "VisualShaderNodeParticleOutput\000" }
 
@@ -30377,6 +31105,7 @@ const (
 
 type VisualShaderNodeParticleRandomness struct{_VisualShaderNodeParticleRandomness struct{}; obj cObject }
 func NewVisualShaderNodeParticleRandomness() (gdClass VisualShaderNodeParticleRandomness) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleRandomness) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleRandomness) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleRandomness) class() string { return "VisualShaderNodeParticleRandomness\000" }
 
@@ -30391,6 +31120,7 @@ func (gdClass VisualShaderNodeParticleRandomness) GetOpType() VisualShaderNodePa
 
 type VisualShaderNodeParticleRingEmitter struct{_VisualShaderNodeParticleRingEmitter struct{}; obj cObject }
 func NewVisualShaderNodeParticleRingEmitter() (gdClass VisualShaderNodeParticleRingEmitter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleRingEmitter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleRingEmitter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleRingEmitter) class() string { return "VisualShaderNodeParticleRingEmitter\000" }
 
@@ -30402,6 +31132,7 @@ func (gdClass VisualShaderNodeParticleRingEmitter) virtual(rtype reflect.Type, n
 
 type VisualShaderNodeParticleSphereEmitter struct{_VisualShaderNodeParticleSphereEmitter struct{}; obj cObject }
 func NewVisualShaderNodeParticleSphereEmitter() (gdClass VisualShaderNodeParticleSphereEmitter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeParticleSphereEmitter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeParticleSphereEmitter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeParticleSphereEmitter) class() string { return "VisualShaderNodeParticleSphereEmitter\000" }
 
@@ -30413,6 +31144,7 @@ func (gdClass VisualShaderNodeParticleSphereEmitter) virtual(rtype reflect.Type,
 
 type VisualShaderNodeResizableBase struct{_VisualShaderNodeResizableBase struct{}; obj cObject }
 func NewVisualShaderNodeResizableBase() (gdClass VisualShaderNodeResizableBase) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeResizableBase) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeResizableBase) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeResizableBase) class() string { return "VisualShaderNodeResizableBase\000" }
 
@@ -30427,6 +31159,7 @@ func (gdClass VisualShaderNodeResizableBase) GetSize() Vector2 { return methodCa
 
 type VisualShaderNodeSDFRaymarch struct{_VisualShaderNodeSDFRaymarch struct{}; obj cObject }
 func NewVisualShaderNodeSDFRaymarch() (gdClass VisualShaderNodeSDFRaymarch) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeSDFRaymarch) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeSDFRaymarch) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeSDFRaymarch) class() string { return "VisualShaderNodeSDFRaymarch\000" }
 
@@ -30438,6 +31171,7 @@ func (gdClass VisualShaderNodeSDFRaymarch) virtual(rtype reflect.Type, name stri
 
 type VisualShaderNodeSDFToScreenUV struct{_VisualShaderNodeSDFToScreenUV struct{}; obj cObject }
 func NewVisualShaderNodeSDFToScreenUV() (gdClass VisualShaderNodeSDFToScreenUV) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeSDFToScreenUV) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeSDFToScreenUV) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeSDFToScreenUV) class() string { return "VisualShaderNodeSDFToScreenUV\000" }
 
@@ -30457,6 +31191,7 @@ const (
 
 type VisualShaderNodeSample3D struct{_VisualShaderNodeSample3D struct{}; obj cObject }
 func NewVisualShaderNodeSample3D() (gdClass VisualShaderNodeSample3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeSample3D) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeSample3D) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeSample3D) class() string { return "VisualShaderNodeSample3D\000" }
 
@@ -30471,6 +31206,7 @@ func (gdClass VisualShaderNodeSample3D) GetSource() VisualShaderNodeSample3DSour
 
 type VisualShaderNodeScreenUVToSDF struct{_VisualShaderNodeScreenUVToSDF struct{}; obj cObject }
 func NewVisualShaderNodeScreenUVToSDF() (gdClass VisualShaderNodeScreenUVToSDF) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeScreenUVToSDF) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeScreenUVToSDF) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeScreenUVToSDF) class() string { return "VisualShaderNodeScreenUVToSDF\000" }
 
@@ -30495,6 +31231,7 @@ const (
 
 type VisualShaderNodeSmoothStep struct{_VisualShaderNodeSmoothStep struct{}; obj cObject }
 func NewVisualShaderNodeSmoothStep() (gdClass VisualShaderNodeSmoothStep) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeSmoothStep) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeSmoothStep) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeSmoothStep) class() string { return "VisualShaderNodeSmoothStep\000" }
 
@@ -30522,6 +31259,7 @@ const (
 
 type VisualShaderNodeStep struct{_VisualShaderNodeStep struct{}; obj cObject }
 func NewVisualShaderNodeStep() (gdClass VisualShaderNodeStep) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeStep) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeStep) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeStep) class() string { return "VisualShaderNodeStep\000" }
 
@@ -30549,6 +31287,7 @@ const (
 
 type VisualShaderNodeSwitch struct{_VisualShaderNodeSwitch struct{}; obj cObject }
 func NewVisualShaderNodeSwitch() (gdClass VisualShaderNodeSwitch) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeSwitch) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeSwitch) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeSwitch) class() string { return "VisualShaderNodeSwitch\000" }
 
@@ -30584,6 +31323,7 @@ const (
 
 type VisualShaderNodeTexture struct{_VisualShaderNodeTexture struct{}; obj cObject }
 func NewVisualShaderNodeTexture() (gdClass VisualShaderNodeTexture) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTexture) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTexture) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTexture) class() string { return "VisualShaderNodeTexture\000" }
 
@@ -30602,6 +31342,7 @@ func (gdClass VisualShaderNodeTexture) GetTextureType() VisualShaderNodeTextureT
 
 type VisualShaderNodeTexture2DArray struct{_VisualShaderNodeTexture2DArray struct{}; obj cObject }
 func NewVisualShaderNodeTexture2DArray() (gdClass VisualShaderNodeTexture2DArray) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTexture2DArray) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTexture2DArray) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTexture2DArray) class() string { return "VisualShaderNodeTexture2DArray\000" }
 
@@ -30616,6 +31357,7 @@ func (gdClass VisualShaderNodeTexture2DArray) GetTextureArray() Texture2DArray {
 
 type VisualShaderNodeTexture2DArrayUniform struct{_VisualShaderNodeTexture2DArrayUniform struct{}; obj cObject }
 func NewVisualShaderNodeTexture2DArrayUniform() (gdClass VisualShaderNodeTexture2DArrayUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTexture2DArrayUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTexture2DArrayUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTexture2DArrayUniform) class() string { return "VisualShaderNodeTexture2DArrayUniform\000" }
 
@@ -30627,6 +31369,7 @@ func (gdClass VisualShaderNodeTexture2DArrayUniform) virtual(rtype reflect.Type,
 
 type VisualShaderNodeTexture3D struct{_VisualShaderNodeTexture3D struct{}; obj cObject }
 func NewVisualShaderNodeTexture3D() (gdClass VisualShaderNodeTexture3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTexture3D) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTexture3D) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTexture3D) class() string { return "VisualShaderNodeTexture3D\000" }
 
@@ -30641,6 +31384,7 @@ func (gdClass VisualShaderNodeTexture3D) GetTexture() Texture3D { return methodC
 
 type VisualShaderNodeTexture3DUniform struct{_VisualShaderNodeTexture3DUniform struct{}; obj cObject }
 func NewVisualShaderNodeTexture3DUniform() (gdClass VisualShaderNodeTexture3DUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTexture3DUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTexture3DUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTexture3DUniform) class() string { return "VisualShaderNodeTexture3DUniform\000" }
 
@@ -30652,6 +31396,7 @@ func (gdClass VisualShaderNodeTexture3DUniform) virtual(rtype reflect.Type, name
 
 type VisualShaderNodeTextureSDF struct{_VisualShaderNodeTextureSDF struct{}; obj cObject }
 func NewVisualShaderNodeTextureSDF() (gdClass VisualShaderNodeTextureSDF) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTextureSDF) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTextureSDF) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTextureSDF) class() string { return "VisualShaderNodeTextureSDF\000" }
 
@@ -30663,6 +31408,7 @@ func (gdClass VisualShaderNodeTextureSDF) virtual(rtype reflect.Type, name strin
 
 type VisualShaderNodeTextureSDFNormal struct{_VisualShaderNodeTextureSDFNormal struct{}; obj cObject }
 func NewVisualShaderNodeTextureSDFNormal() (gdClass VisualShaderNodeTextureSDFNormal) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTextureSDFNormal) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTextureSDFNormal) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTextureSDFNormal) class() string { return "VisualShaderNodeTextureSDFNormal\000" }
 
@@ -30715,6 +31461,7 @@ const (
 
 type VisualShaderNodeTextureUniform struct{_VisualShaderNodeTextureUniform struct{}; obj cObject }
 func NewVisualShaderNodeTextureUniform() (gdClass VisualShaderNodeTextureUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTextureUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTextureUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTextureUniform) class() string { return "VisualShaderNodeTextureUniform\000" }
 
@@ -30735,6 +31482,7 @@ func (gdClass VisualShaderNodeTextureUniform) GetTextureRepeat() VisualShaderNod
 
 type VisualShaderNodeTextureUniformTriplanar struct{_VisualShaderNodeTextureUniformTriplanar struct{}; obj cObject }
 func NewVisualShaderNodeTextureUniformTriplanar() (gdClass VisualShaderNodeTextureUniformTriplanar) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTextureUniformTriplanar) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTextureUniformTriplanar) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTextureUniformTriplanar) class() string { return "VisualShaderNodeTextureUniformTriplanar\000" }
 
@@ -30746,6 +31494,7 @@ func (gdClass VisualShaderNodeTextureUniformTriplanar) virtual(rtype reflect.Typ
 
 type VisualShaderNodeTransformCompose struct{_VisualShaderNodeTransformCompose struct{}; obj cObject }
 func NewVisualShaderNodeTransformCompose() (gdClass VisualShaderNodeTransformCompose) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformCompose) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformCompose) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformCompose) class() string { return "VisualShaderNodeTransformCompose\000" }
 
@@ -30757,6 +31506,7 @@ func (gdClass VisualShaderNodeTransformCompose) virtual(rtype reflect.Type, name
 
 type VisualShaderNodeTransformConstant struct{_VisualShaderNodeTransformConstant struct{}; obj cObject }
 func NewVisualShaderNodeTransformConstant() (gdClass VisualShaderNodeTransformConstant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformConstant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformConstant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformConstant) class() string { return "VisualShaderNodeTransformConstant\000" }
 
@@ -30771,6 +31521,7 @@ func (gdClass VisualShaderNodeTransformConstant) GetConstant() Transform3D { ret
 
 type VisualShaderNodeTransformDecompose struct{_VisualShaderNodeTransformDecompose struct{}; obj cObject }
 func NewVisualShaderNodeTransformDecompose() (gdClass VisualShaderNodeTransformDecompose) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformDecompose) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformDecompose) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformDecompose) class() string { return "VisualShaderNodeTransformDecompose\000" }
 
@@ -30790,6 +31541,7 @@ const (
 
 type VisualShaderNodeTransformFunc struct{_VisualShaderNodeTransformFunc struct{}; obj cObject }
 func NewVisualShaderNodeTransformFunc() (gdClass VisualShaderNodeTransformFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformFunc) class() string { return "VisualShaderNodeTransformFunc\000" }
 
@@ -30819,6 +31571,7 @@ const (
 
 type VisualShaderNodeTransformOp struct{_VisualShaderNodeTransformOp struct{}; obj cObject }
 func NewVisualShaderNodeTransformOp() (gdClass VisualShaderNodeTransformOp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformOp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformOp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformOp) class() string { return "VisualShaderNodeTransformOp\000" }
 
@@ -30833,6 +31586,7 @@ func (gdClass VisualShaderNodeTransformOp) GetOperator() VisualShaderNodeTransfo
 
 type VisualShaderNodeTransformUniform struct{_VisualShaderNodeTransformUniform struct{}; obj cObject }
 func NewVisualShaderNodeTransformUniform() (gdClass VisualShaderNodeTransformUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformUniform) class() string { return "VisualShaderNodeTransformUniform\000" }
 
@@ -30859,6 +31613,7 @@ const (
 
 type VisualShaderNodeTransformVecMult struct{_VisualShaderNodeTransformVecMult struct{}; obj cObject }
 func NewVisualShaderNodeTransformVecMult() (gdClass VisualShaderNodeTransformVecMult) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeTransformVecMult) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeTransformVecMult) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeTransformVecMult) class() string { return "VisualShaderNodeTransformVecMult\000" }
 
@@ -30881,6 +31636,7 @@ const (
 
 type VisualShaderNodeUVFunc struct{_VisualShaderNodeUVFunc struct{}; obj cObject }
 func NewVisualShaderNodeUVFunc() (gdClass VisualShaderNodeUVFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeUVFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeUVFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeUVFunc) class() string { return "VisualShaderNodeUVFunc\000" }
 
@@ -30904,6 +31660,7 @@ const (
 
 type VisualShaderNodeUniform struct{_VisualShaderNodeUniform struct{}; obj cObject }
 func NewVisualShaderNodeUniform() (gdClass VisualShaderNodeUniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeUniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeUniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeUniform) class() string { return "VisualShaderNodeUniform\000" }
 
@@ -30920,6 +31677,7 @@ func (gdClass VisualShaderNodeUniform) GetQualifier() VisualShaderNodeUniformQua
 
 type VisualShaderNodeUniformRef struct{_VisualShaderNodeUniformRef struct{}; obj cObject }
 func NewVisualShaderNodeUniformRef() (gdClass VisualShaderNodeUniformRef) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeUniformRef) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeUniformRef) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeUniformRef) class() string { return "VisualShaderNodeUniformRef\000" }
 
@@ -30934,6 +31692,7 @@ func (gdClass VisualShaderNodeUniformRef) GetUniformName() string { return metho
 
 type VisualShaderNodeVarying struct{_VisualShaderNodeVarying struct{}; obj cObject }
 func NewVisualShaderNodeVarying() (gdClass VisualShaderNodeVarying) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVarying) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVarying) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVarying) class() string { return "VisualShaderNodeVarying\000" }
 
@@ -30950,6 +31709,7 @@ func (gdClass VisualShaderNodeVarying) GetVaryingType() VisualShaderVaryingType 
 
 type VisualShaderNodeVaryingGetter struct{_VisualShaderNodeVaryingGetter struct{}; obj cObject }
 func NewVisualShaderNodeVaryingGetter() (gdClass VisualShaderNodeVaryingGetter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVaryingGetter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVaryingGetter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVaryingGetter) class() string { return "VisualShaderNodeVaryingGetter\000" }
 
@@ -30961,6 +31721,7 @@ func (gdClass VisualShaderNodeVaryingGetter) virtual(rtype reflect.Type, name st
 
 type VisualShaderNodeVaryingSetter struct{_VisualShaderNodeVaryingSetter struct{}; obj cObject }
 func NewVisualShaderNodeVaryingSetter() (gdClass VisualShaderNodeVaryingSetter) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVaryingSetter) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVaryingSetter) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVaryingSetter) class() string { return "VisualShaderNodeVaryingSetter\000" }
 
@@ -30972,6 +31733,7 @@ func (gdClass VisualShaderNodeVaryingSetter) virtual(rtype reflect.Type, name st
 
 type VisualShaderNodeVec2Constant struct{_VisualShaderNodeVec2Constant struct{}; obj cObject }
 func NewVisualShaderNodeVec2Constant() (gdClass VisualShaderNodeVec2Constant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec2Constant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec2Constant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec2Constant) class() string { return "VisualShaderNodeVec2Constant\000" }
 
@@ -30986,6 +31748,7 @@ func (gdClass VisualShaderNodeVec2Constant) GetConstant() Vector2 { return metho
 
 type VisualShaderNodeVec2Uniform struct{_VisualShaderNodeVec2Uniform struct{}; obj cObject }
 func NewVisualShaderNodeVec2Uniform() (gdClass VisualShaderNodeVec2Uniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec2Uniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec2Uniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec2Uniform) class() string { return "VisualShaderNodeVec2Uniform\000" }
 
@@ -31002,6 +31765,7 @@ func (gdClass VisualShaderNodeVec2Uniform) GetDefaultValue() Vector2 { return me
 
 type VisualShaderNodeVec3Constant struct{_VisualShaderNodeVec3Constant struct{}; obj cObject }
 func NewVisualShaderNodeVec3Constant() (gdClass VisualShaderNodeVec3Constant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec3Constant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec3Constant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec3Constant) class() string { return "VisualShaderNodeVec3Constant\000" }
 
@@ -31016,6 +31780,7 @@ func (gdClass VisualShaderNodeVec3Constant) GetConstant() Vector3 { return metho
 
 type VisualShaderNodeVec3Uniform struct{_VisualShaderNodeVec3Uniform struct{}; obj cObject }
 func NewVisualShaderNodeVec3Uniform() (gdClass VisualShaderNodeVec3Uniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec3Uniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec3Uniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec3Uniform) class() string { return "VisualShaderNodeVec3Uniform\000" }
 
@@ -31032,6 +31797,7 @@ func (gdClass VisualShaderNodeVec3Uniform) GetDefaultValue() Vector3 { return me
 
 type VisualShaderNodeVec4Constant struct{_VisualShaderNodeVec4Constant struct{}; obj cObject }
 func NewVisualShaderNodeVec4Constant() (gdClass VisualShaderNodeVec4Constant) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec4Constant) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec4Constant) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec4Constant) class() string { return "VisualShaderNodeVec4Constant\000" }
 
@@ -31046,6 +31812,7 @@ func (gdClass VisualShaderNodeVec4Constant) GetConstant() Quaternion { return me
 
 type VisualShaderNodeVec4Uniform struct{_VisualShaderNodeVec4Uniform struct{}; obj cObject }
 func NewVisualShaderNodeVec4Uniform() (gdClass VisualShaderNodeVec4Uniform) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVec4Uniform) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVec4Uniform) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVec4Uniform) class() string { return "VisualShaderNodeVec4Uniform\000" }
 
@@ -31071,6 +31838,7 @@ const (
 
 type VisualShaderNodeVectorBase struct{_VisualShaderNodeVectorBase struct{}; obj cObject }
 func NewVisualShaderNodeVectorBase() (gdClass VisualShaderNodeVectorBase) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorBase) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorBase) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorBase) class() string { return "VisualShaderNodeVectorBase\000" }
 
@@ -31085,6 +31853,7 @@ func (gdClass VisualShaderNodeVectorBase) GetOpType() VisualShaderNodeVectorBase
 
 type VisualShaderNodeVectorCompose struct{_VisualShaderNodeVectorCompose struct{}; obj cObject }
 func NewVisualShaderNodeVectorCompose() (gdClass VisualShaderNodeVectorCompose) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorCompose) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorCompose) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorCompose) class() string { return "VisualShaderNodeVectorCompose\000" }
 
@@ -31096,6 +31865,7 @@ func (gdClass VisualShaderNodeVectorCompose) virtual(rtype reflect.Type, name st
 
 type VisualShaderNodeVectorDecompose struct{_VisualShaderNodeVectorDecompose struct{}; obj cObject }
 func NewVisualShaderNodeVectorDecompose() (gdClass VisualShaderNodeVectorDecompose) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorDecompose) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorDecompose) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorDecompose) class() string { return "VisualShaderNodeVectorDecompose\000" }
 
@@ -31107,6 +31877,7 @@ func (gdClass VisualShaderNodeVectorDecompose) virtual(rtype reflect.Type, name 
 
 type VisualShaderNodeVectorDistance struct{_VisualShaderNodeVectorDistance struct{}; obj cObject }
 func NewVisualShaderNodeVectorDistance() (gdClass VisualShaderNodeVectorDistance) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorDistance) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorDistance) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorDistance) class() string { return "VisualShaderNodeVectorDistance\000" }
 
@@ -31157,6 +31928,7 @@ const (
 
 type VisualShaderNodeVectorFunc struct{_VisualShaderNodeVectorFunc struct{}; obj cObject }
 func NewVisualShaderNodeVectorFunc() (gdClass VisualShaderNodeVectorFunc) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorFunc) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorFunc) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorFunc) class() string { return "VisualShaderNodeVectorFunc\000" }
 
@@ -31171,6 +31943,7 @@ func (gdClass VisualShaderNodeVectorFunc) GetFunction() VisualShaderNodeVectorFu
 
 type VisualShaderNodeVectorLen struct{_VisualShaderNodeVectorLen struct{}; obj cObject }
 func NewVisualShaderNodeVectorLen() (gdClass VisualShaderNodeVectorLen) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorLen) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorLen) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorLen) class() string { return "VisualShaderNodeVectorLen\000" }
 
@@ -31200,6 +31973,7 @@ const (
 
 type VisualShaderNodeVectorOp struct{_VisualShaderNodeVectorOp struct{}; obj cObject }
 func NewVisualShaderNodeVectorOp() (gdClass VisualShaderNodeVectorOp) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorOp) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorOp) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorOp) class() string { return "VisualShaderNodeVectorOp\000" }
 
@@ -31214,6 +31988,7 @@ func (gdClass VisualShaderNodeVectorOp) GetOperator() VisualShaderNodeVectorOpOp
 
 type VisualShaderNodeVectorRefract struct{_VisualShaderNodeVectorRefract struct{}; obj cObject }
 func NewVisualShaderNodeVectorRefract() (gdClass VisualShaderNodeVectorRefract) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VisualShaderNodeVectorRefract) Free() { gdClass.obj.destroy() }
 func (gdClass VisualShaderNodeVectorRefract) owner() cObject { return gdClass.obj }
 func (VisualShaderNodeVectorRefract) class() string { return "VisualShaderNodeVectorRefract\000" }
 
@@ -31235,6 +32010,7 @@ const (
 
 type VoxelGI struct{_VoxelGI struct{}; obj cObject }
 func NewVoxelGI() (gdClass VoxelGI) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VoxelGI) Free() { gdClass.obj.destroy() }
 func (gdClass VoxelGI) owner() cObject { return gdClass.obj }
 func (VoxelGI) class() string { return "VoxelGI\000" }
 
@@ -31255,6 +32031,7 @@ func (gdClass VoxelGI) DebugBake()  { methodCall[struct{}](gdClass.obj, methodVo
 
 type VoxelGIData struct{_VoxelGIData struct{}; obj cObject }
 func NewVoxelGIData() (gdClass VoxelGIData) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass VoxelGIData) Free() { gdClass.obj.destroy() }
 func (gdClass VoxelGIData) owner() cObject { return gdClass.obj }
 func (VoxelGIData) class() string { return "VoxelGIData\000" }
 
@@ -31288,6 +32065,7 @@ func (gdClass VoxelGIData) IsUsingTwoBounces() bool { return methodCall[bool](gd
 
 type WeakRef struct{_WeakRef struct{}; obj cObject }
 func NewWeakRef() (gdClass WeakRef) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WeakRef) Free() { gdClass.obj.destroy() }
 func (gdClass WeakRef) owner() cObject { return gdClass.obj }
 func (WeakRef) class() string { return "WeakRef\000" }
 
@@ -31317,6 +32095,7 @@ const (
 
 type WebRTCDataChannel struct{_WebRTCDataChannel struct{}; obj cObject }
 func NewWebRTCDataChannel() (gdClass WebRTCDataChannel) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebRTCDataChannel) Free() { gdClass.obj.destroy() }
 func (gdClass WebRTCDataChannel) owner() cObject { return gdClass.obj }
 func (WebRTCDataChannel) class() string { return "WebRTCDataChannel\000" }
 
@@ -31343,6 +32122,7 @@ func (gdClass WebRTCDataChannel) GetBufferedAmount() int64 { return methodCall[i
 
 type WebRTCDataChannelExtension struct{_WebRTCDataChannelExtension struct{}; obj cObject }
 func NewWebRTCDataChannelExtension() (gdClass WebRTCDataChannelExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebRTCDataChannelExtension) Free() { gdClass.obj.destroy() }
 func (gdClass WebRTCDataChannelExtension) owner() cObject { return gdClass.obj }
 func (WebRTCDataChannelExtension) class() string { return "WebRTCDataChannelExtension\000" }
 
@@ -31446,6 +32226,7 @@ func (gdClass WebRTCDataChannelExtension) virtual(rtype reflect.Type, name strin
 
 type WebRTCMultiplayerPeer struct{_WebRTCMultiplayerPeer struct{}; obj cObject }
 func NewWebRTCMultiplayerPeer() (gdClass WebRTCMultiplayerPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebRTCMultiplayerPeer) Free() { gdClass.obj.destroy() }
 func (gdClass WebRTCMultiplayerPeer) owner() cObject { return gdClass.obj }
 func (WebRTCMultiplayerPeer) class() string { return "WebRTCMultiplayerPeer\000" }
 
@@ -31476,6 +32257,7 @@ const (
 
 type WebRTCPeerConnection struct{_WebRTCPeerConnection struct{}; obj cObject }
 func NewWebRTCPeerConnection() (gdClass WebRTCPeerConnection) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebRTCPeerConnection) Free() { gdClass.obj.destroy() }
 func (gdClass WebRTCPeerConnection) owner() cObject { return gdClass.obj }
 func (WebRTCPeerConnection) class() string { return "WebRTCPeerConnection\000" }
 
@@ -31498,6 +32280,7 @@ func (gdClass WebRTCPeerConnection) GetConnectionState() WebRTCPeerConnectionCon
 
 type WebRTCPeerConnectionExtension struct{_WebRTCPeerConnectionExtension struct{}; obj cObject }
 func NewWebRTCPeerConnectionExtension() (gdClass WebRTCPeerConnectionExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebRTCPeerConnectionExtension) Free() { gdClass.obj.destroy() }
 func (gdClass WebRTCPeerConnectionExtension) owner() cObject { return gdClass.obj }
 func (WebRTCPeerConnectionExtension) class() string { return "WebRTCPeerConnectionExtension\000" }
 
@@ -31556,6 +32339,7 @@ func (gdClass WebRTCPeerConnectionExtension) virtual(rtype reflect.Type, name st
 
 type WebSocketClient struct{_WebSocketClient struct{}; obj cObject }
 func NewWebSocketClient() (gdClass WebSocketClient) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebSocketClient) Free() { gdClass.obj.destroy() }
 func (gdClass WebSocketClient) owner() cObject { return gdClass.obj }
 func (WebSocketClient) class() string { return "WebSocketClient\000" }
 
@@ -31576,6 +32360,7 @@ func (gdClass WebSocketClient) SetTrustedSslCertificate(cert X509Certificate)  {
 
 type WebSocketMultiplayerPeer struct{_WebSocketMultiplayerPeer struct{}; obj cObject }
 func NewWebSocketMultiplayerPeer() (gdClass WebSocketMultiplayerPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebSocketMultiplayerPeer) Free() { gdClass.obj.destroy() }
 func (gdClass WebSocketMultiplayerPeer) owner() cObject { return gdClass.obj }
 func (WebSocketMultiplayerPeer) class() string { return "WebSocketMultiplayerPeer\000" }
 
@@ -31597,6 +32382,7 @@ const (
 
 type WebSocketPeer struct{_WebSocketPeer struct{}; obj cObject }
 func NewWebSocketPeer() (gdClass WebSocketPeer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebSocketPeer) Free() { gdClass.obj.destroy() }
 func (gdClass WebSocketPeer) owner() cObject { return gdClass.obj }
 func (WebSocketPeer) class() string { return "WebSocketPeer\000" }
 
@@ -31618,6 +32404,7 @@ func (gdClass WebSocketPeer) GetCurrentOutboundBufferedAmount() int64 { return m
 
 type WebSocketServer struct{_WebSocketServer struct{}; obj cObject }
 func NewWebSocketServer() (gdClass WebSocketServer) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebSocketServer) Free() { gdClass.obj.destroy() }
 func (gdClass WebSocketServer) owner() cObject { return gdClass.obj }
 func (WebSocketServer) class() string { return "WebSocketServer\000" }
 
@@ -31648,6 +32435,7 @@ func (gdClass WebSocketServer) SetHandshakeTimeout(timeout float64)  { methodCal
 
 type WebXRInterface struct{_WebXRInterface struct{}; obj cObject }
 func NewWebXRInterface() (gdClass WebXRInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WebXRInterface) Free() { gdClass.obj.destroy() }
 func (gdClass WebXRInterface) owner() cObject { return gdClass.obj }
 func (WebXRInterface) class() string { return "WebXRInterface\000" }
 
@@ -31723,6 +32511,7 @@ const (
 
 type Window struct{_Window struct{}; obj cObject }
 func NewWindow() (gdClass Window) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass Window) Free() { gdClass.obj.destroy() }
 func (gdClass Window) owner() cObject { return gdClass.obj }
 func (Window) class() string { return "Window\000" }
 
@@ -31814,6 +32603,7 @@ var WorkerThreadPool WorkerThreadPoolSingleton
 
 type WorkerThreadPoolSingleton struct{_WorkerThreadPoolSingleton struct{}; obj cObject }
 func NewWorkerThreadPoolSingleton() (gdClass WorkerThreadPoolSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WorkerThreadPoolSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass WorkerThreadPoolSingleton) owner() cObject { return gdClass.obj }
 func (WorkerThreadPoolSingleton) class() string { return "WorkerThreadPoolSingleton\000" }
 
@@ -31833,6 +32623,7 @@ func (gdClass WorkerThreadPoolSingleton) WaitForGroupTaskCompletion(group_id int
 
 type World2D struct{_World2D struct{}; obj cObject }
 func NewWorld2D() (gdClass World2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass World2D) Free() { gdClass.obj.destroy() }
 func (gdClass World2D) owner() cObject { return gdClass.obj }
 func (World2D) class() string { return "World2D\000" }
 
@@ -31849,6 +32640,7 @@ func (gdClass World2D) GetDirectSpaceState() PhysicsDirectSpaceState2D { return 
 
 type World3D struct{_World3D struct{}; obj cObject }
 func NewWorld3D() (gdClass World3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass World3D) Free() { gdClass.obj.destroy() }
 func (gdClass World3D) owner() cObject { return gdClass.obj }
 func (World3D) class() string { return "World3D\000" }
 
@@ -31871,6 +32663,7 @@ func (gdClass World3D) GetDirectSpaceState() PhysicsDirectSpaceState3D { return 
 
 type WorldBoundaryShape2D struct{_WorldBoundaryShape2D struct{}; obj cObject }
 func NewWorldBoundaryShape2D() (gdClass WorldBoundaryShape2D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WorldBoundaryShape2D) Free() { gdClass.obj.destroy() }
 func (gdClass WorldBoundaryShape2D) owner() cObject { return gdClass.obj }
 func (WorldBoundaryShape2D) class() string { return "WorldBoundaryShape2D\000" }
 
@@ -31887,6 +32680,7 @@ func (gdClass WorldBoundaryShape2D) GetDistance() float64 { return methodCall[fl
 
 type WorldBoundaryShape3D struct{_WorldBoundaryShape3D struct{}; obj cObject }
 func NewWorldBoundaryShape3D() (gdClass WorldBoundaryShape3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WorldBoundaryShape3D) Free() { gdClass.obj.destroy() }
 func (gdClass WorldBoundaryShape3D) owner() cObject { return gdClass.obj }
 func (WorldBoundaryShape3D) class() string { return "WorldBoundaryShape3D\000" }
 
@@ -31901,6 +32695,7 @@ func (gdClass WorldBoundaryShape3D) GetPlane() Plane { return methodCall[Plane](
 
 type WorldEnvironment struct{_WorldEnvironment struct{}; obj cObject }
 func NewWorldEnvironment() (gdClass WorldEnvironment) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass WorldEnvironment) Free() { gdClass.obj.destroy() }
 func (gdClass WorldEnvironment) owner() cObject { return gdClass.obj }
 func (WorldEnvironment) class() string { return "WorldEnvironment\000" }
 
@@ -31917,6 +32712,7 @@ func (gdClass WorldEnvironment) GetCameraEffects() CameraEffects { return method
 
 type X509Certificate struct{_X509Certificate struct{}; obj cObject }
 func NewX509Certificate() (gdClass X509Certificate) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass X509Certificate) Free() { gdClass.obj.destroy() }
 func (gdClass X509Certificate) owner() cObject { return gdClass.obj }
 func (X509Certificate) class() string { return "X509Certificate\000" }
 
@@ -31943,6 +32739,7 @@ const (
 
 type XMLParser struct{_XMLParser struct{}; obj cObject }
 func NewXMLParser() (gdClass XMLParser) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XMLParser) Free() { gdClass.obj.destroy() }
 func (gdClass XMLParser) owner() cObject { return gdClass.obj }
 func (XMLParser) class() string { return "XMLParser\000" }
 
@@ -31972,6 +32769,7 @@ func (gdClass XMLParser) OpenBuffer(buffer []byte) int64 { return methodCall[int
 
 type XRAnchor3D struct{_XRAnchor3D struct{}; obj cObject }
 func NewXRAnchor3D() (gdClass XRAnchor3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRAnchor3D) Free() { gdClass.obj.destroy() }
 func (gdClass XRAnchor3D) owner() cObject { return gdClass.obj }
 func (XRAnchor3D) class() string { return "XRAnchor3D\000" }
 
@@ -31986,6 +32784,7 @@ func (gdClass XRAnchor3D) GetPlane() Plane { return methodCall[Plane](gdClass.ob
 
 type XRCamera3D struct{_XRCamera3D struct{}; obj cObject }
 func NewXRCamera3D() (gdClass XRCamera3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRCamera3D) Free() { gdClass.obj.destroy() }
 func (gdClass XRCamera3D) owner() cObject { return gdClass.obj }
 func (XRCamera3D) class() string { return "XRCamera3D\000" }
 
@@ -31997,6 +32796,7 @@ func (gdClass XRCamera3D) virtual(rtype reflect.Type, name string) (method refle
 
 type XRController3D struct{_XRController3D struct{}; obj cObject }
 func NewXRController3D() (gdClass XRController3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRController3D) Free() { gdClass.obj.destroy() }
 func (gdClass XRController3D) owner() cObject { return gdClass.obj }
 func (XRController3D) class() string { return "XRController3D\000" }
 
@@ -32045,6 +32845,7 @@ const (
 
 type XRInterface struct{_XRInterface struct{}; obj cObject }
 func NewXRInterface() (gdClass XRInterface) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRInterface) Free() { gdClass.obj.destroy() }
 func (gdClass XRInterface) owner() cObject { return gdClass.obj }
 func (XRInterface) class() string { return "XRInterface\000" }
 
@@ -32075,6 +32876,7 @@ func (gdClass XRInterface) GetCameraFeedId() int64 { return methodCall[int64](gd
 
 type XRInterfaceExtension struct{_XRInterfaceExtension struct{}; obj cObject }
 func NewXRInterfaceExtension() (gdClass XRInterfaceExtension) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRInterfaceExtension) Free() { gdClass.obj.destroy() }
 func (gdClass XRInterfaceExtension) owner() cObject { return gdClass.obj }
 func (XRInterfaceExtension) class() string { return "XRInterfaceExtension\000" }
 
@@ -32231,6 +33033,7 @@ func (gdClass XRInterfaceExtension) GetRenderTargetTexture(render_target RID) RI
 
 type XRNode3D struct{_XRNode3D struct{}; obj cObject }
 func NewXRNode3D() (gdClass XRNode3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRNode3D) Free() { gdClass.obj.destroy() }
 func (gdClass XRNode3D) owner() cObject { return gdClass.obj }
 func (XRNode3D) class() string { return "XRNode3D\000" }
 
@@ -32251,6 +33054,7 @@ func (gdClass XRNode3D) TriggerHapticPulse(action_name string, frequency float64
 
 type XROrigin3D struct{_XROrigin3D struct{}; obj cObject }
 func NewXROrigin3D() (gdClass XROrigin3D) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XROrigin3D) Free() { gdClass.obj.destroy() }
 func (gdClass XROrigin3D) owner() cObject { return gdClass.obj }
 func (XROrigin3D) class() string { return "XROrigin3D\000" }
 
@@ -32273,6 +33077,7 @@ const (
 
 type XRPose struct{_XRPose struct{}; obj cObject }
 func NewXRPose() (gdClass XRPose) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRPose) Free() { gdClass.obj.destroy() }
 func (gdClass XRPose) owner() cObject { return gdClass.obj }
 func (XRPose) class() string { return "XRPose\000" }
 
@@ -32306,6 +33111,7 @@ const (
 
 type XRPositionalTracker struct{_XRPositionalTracker struct{}; obj cObject }
 func NewXRPositionalTracker() (gdClass XRPositionalTracker) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRPositionalTracker) Free() { gdClass.obj.destroy() }
 func (gdClass XRPositionalTracker) owner() cObject { return gdClass.obj }
 func (XRPositionalTracker) class() string { return "XRPositionalTracker\000" }
 
@@ -32355,6 +33161,7 @@ var XRServer XRServerSingleton
 
 type XRServerSingleton struct{_XRServerSingleton struct{}; obj cObject }
 func NewXRServerSingleton() (gdClass XRServerSingleton) { gdClass.obj = classDB.construct_object(gdClass.class()); return }
+func (gdClass XRServerSingleton) Free() { gdClass.obj.destroy() }
 func (gdClass XRServerSingleton) owner() cObject { return gdClass.obj }
 func (XRServerSingleton) class() string { return "XRServerSingleton\000" }
 

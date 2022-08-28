@@ -476,6 +476,7 @@ func generate() error {
 		fmt.Fprintln(code)
 		fmt.Fprintf(code, "type %v struct{_%v struct{}; obj cObject }\n", class.Name, class.Name)
 		fmt.Fprintf(code, `func New%v() (gdClass %v) { gdClass.obj = classDB.construct_object(gdClass.class()); return }`+"\n", class.Name, class.Name)
+		fmt.Fprintf(code, `func (gdClass %v) Free() { gdClass.obj.destroy() }`+"\n", class.Name)
 		fmt.Fprintf(code, `func (gdClass %v) owner() cObject { return gdClass.obj }`+"\n", class.Name)
 		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
 		fmt.Fprintln(code)

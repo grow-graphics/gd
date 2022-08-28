@@ -17,20 +17,6 @@ var NewHelloWorld = gd.Register(func(hello *HelloWorld) gd.Object {
 	return hello.Object
 })
 
-// not implemented yet, exists here as a design for how docs
-// can be created for methods and script export can be
-// more specifically controlled.
-/*func (h HelloWorld) ScriptInterface() (export struct {
-	Print func(HelloWorld) `godot:"print()"
-		prints "Hello World!" to stdout.`
-	Echo func(HelloWorld, string) `godot:"echo(s)"
-		prints 's' to stdout.`
-}) {
-	export.Print = HelloWorld.Print
-	export.Echo = HelloWorld.Echo
-	return
-}*/
-
 func (h HelloWorld) Print() {
 	fmt.Println("Hello World!")
 }
@@ -53,6 +39,10 @@ func (e ExtendedNode) Ready() {
 		fmt.Println(gd.Engine.GetLicenseText())
 		return
 	}
+
+	var obj = gd.NewObject()
+	fmt.Println(obj.GetClass())
+	defer obj.Free()
 
 	//gd.LoadSingletons()
 
