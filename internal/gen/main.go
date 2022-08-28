@@ -271,6 +271,10 @@ func generate() error {
 		case "StringName":
 			class.Name = "Name"
 		}
+		if strings.HasPrefix(class.Name, "Packed") {
+			continue
+		}
+
 		fmt.Fprintf(code, "type %v = c%v\n", class.Name, class.Name)
 
 		fmt.Fprintf(code, "var method%v [%d]cBuiltInMethod\n", class.Name, len(class.Methods))
@@ -420,6 +424,9 @@ func generate() error {
 			continue
 		case "StringName":
 			name = "Name"
+		}
+		if strings.HasPrefix(name, "Packed") {
+			continue
 		}
 
 		for i, method := range class.Methods {

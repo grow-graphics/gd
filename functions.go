@@ -634,6 +634,24 @@ package gd
 		((GDNativePtrBuiltInMethod)(builtin))(p_base, &stack[0], r_ret, 8);
 	}
 
+	void constructor0(void *p_base, uintptr_t constructor) {
+		((GDNativePtrConstructor)constructor)(p_base, NULL);
+	}
+	void constructor1(void *p_base, uintptr_t constructor, void *a) {
+		((GDNativePtrConstructor)(constructor))(p_base, &a);
+	}
+	void constructor2(void *p_base, uintptr_t constructor, void *a, void *b) {
+		GDNativeTypePtr stack[2] = { a, b };
+		((GDNativePtrConstructor)(constructor))(p_base, &stack[0]);
+	}
+	void constructor3(void *p_base, uintptr_t constructor, void *a, void *b, void *c) {
+		GDNativeTypePtr stack[3] = { a, b, c };
+		((GDNativePtrConstructor)(constructor))(p_base, &stack[0]);
+	}
+	void constructor4(void *p_base, uintptr_t constructor, void *a, void *b, void *c, void *d) {
+		GDNativeTypePtr stack[4] = { a, b, c, d };
+		((GDNativePtrConstructor)(constructor))(p_base, &stack[0]);
+	}
 */
 import "C"
 import (
@@ -661,15 +679,115 @@ func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 		return unsafe.Pointer(&native), func() {
 			cVariantTypeString.get_destructor().call(unsafe.Pointer(&native))
 		}
-	case *[]string:
-		var native cPackedStringArray
-		return unsafe.Pointer(&native), func() {
-			cVariantTypePackedStringArray.get_destructor().call(unsafe.Pointer(&native))
-		}
 	case *cPackedStringArray:
 		return unsafe.Pointer(v), nil
 	case *cName:
+		var native cStringName
+		var s cString
+		if *v != "" {
+			s.with_utf8_chars(string(*v))
+		}
+		constructorCall(unsafe.Pointer(&native), cVariantTypeStringName.get_constructor(2), unsafe.Pointer(&s))
+		return unsafe.Pointer(&native), func() {
+			cVariantTypeStringName.get_destructor().call(unsafe.Pointer(&native))
+			cVariantTypeString.get_destructor().call(unsafe.Pointer(&s))
+		}
+	case *cNodePath:
 		return unsafe.Pointer(v), nil
+	case *cRID:
+		return unsafe.Pointer(v), nil
+	case *cObject:
+		return unsafe.Pointer(v), nil
+	case *cCallable:
+		return unsafe.Pointer(v), nil
+	case *cSignal:
+		return unsafe.Pointer(v), nil
+	case *cDictionary:
+		return unsafe.Pointer(v), nil
+	case *cArray:
+		return unsafe.Pointer(v), nil
+	case *[]byte:
+		var native cPackedByteArray
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedByteArray.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]int32:
+		var native cPackedInt32Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedInt32Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]int64:
+		var native cPackedInt64Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedInt64Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]float32:
+		var native cPackedFloat32Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedFloat32Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]float64:
+		var native cPackedFloat64Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedFloat64Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]string:
+		var native cPackedStringArray
+
+		var converted []cString
+		for _, s := range *v {
+			var c cString
+			if s != "" {
+				c.with_utf8_chars(s)
+			}
+			converted = append(converted, c)
+		}
+		if len(converted) > 0 {
+			native.from(converted)
+		}
+
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedStringArray.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]Vector2:
+		var native cPackedVector2Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedVector2Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]Vector3:
+		var native cPackedVector3Array
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedVector3Array.get_destructor().call(unsafe.Pointer(&native))
+		}
+	case *[]Color:
+		var native cPackedColorArray
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+		return unsafe.Pointer(&native), func() {
+			cVariantTypePackedColorArray.get_destructor().call(unsafe.Pointer(&native))
+		}
 	default:
 		panic("toUnsafe: unsupported type " + reflect.TypeOf(val).String())
 	}
@@ -685,15 +803,44 @@ func into(result any, ptr unsafe.Pointer) {
 		*v = *(*int64)(ptr)
 	case *float64:
 		*v = *(*float64)(ptr)
-	case *cVector2:
-		*v = *(*cVector2)(ptr)
 	case *string:
 		*v = (*cString)(ptr).to_utf8_chars()
+	case *cVector2:
+		*v = *(*cVector2)(ptr)
+	case *cVector2i:
+		*v = *(*cVector2i)(ptr)
+	case *cRect2:
+		*v = *(*cRect2)(ptr)
+	case *cRect2i:
+		*v = *(*cRect2i)(ptr)
+	case *cVector3:
+		*v = *(*cVector3)(ptr)
+	case *cVector3i:
+		*v = *(*cVector3i)(ptr)
+	case *cTransform2D:
+		*v = *(*cTransform2D)(ptr)
+	case *cVector4:
+		*v = *(*cVector4)(ptr)
+	case *cVector4i:
+		*v = *(*cVector4i)(ptr)
+	case *cPlane:
+		*v = *(*cPlane)(ptr)
+	case *cQuaternion:
+		*v = *(*cQuaternion)(ptr)
+	case *cAABB:
+		*v = *(*cAABB)(ptr)
+	case *cBasis:
+		*v = *(*cBasis)(ptr)
+	case *cTransform3D:
+		*v = *(*cTransform3D)(ptr)
+	case *cProjection:
+		*v = *(*cProjection)(ptr)
+	case *cColor:
+		*v = *(*cColor)(ptr)
 	case *[]string:
-		packed := (*cPackedStringArray)(ptr)
-		memory := unsafe.Slice((*cString)(unsafe.Pointer(packed[1])), uintptr(packed.Size()))
-		for i := range memory {
-			*v = append(*v, memory[i].to_utf8_chars())
+		packed := (*cPackedStringArray)(ptr).slice()
+		for i := range packed {
+			*v = append(*v, packed[i].to_utf8_chars())
 		}
 	default:
 		panic("into: unsupported type " + reflect.TypeOf(result).String())
@@ -887,6 +1034,44 @@ func (builtin cBuiltInMethod) unsafeReturn(base unsafe.Pointer, result unsafe.Po
 		C.builtin8(base, C.uintptr_t(builtin), result, args[0],
 			args[1], args[2], args[3], args[4], args[5], args[6],
 			args[7])
+	default:
+		panic("too many arguments")
+	}
+}
+
+func constructorCall(base any, constructor cConstructor, args ...any) {
+	var free func()
+	var c_args = make([]unsafe.Pointer, len(args))
+	for i := range args {
+		c_args[i], free = toUnsafe(args[i])
+		if free != nil {
+			defer free()
+		}
+	}
+
+	c_base, free := toUnsafe(base)
+	if free != nil {
+		defer free()
+	}
+
+	constructor.unsafeReturn(c_base, c_args...)
+}
+
+func (constructor cConstructor) unsafeReturn(base unsafe.Pointer, args ...unsafe.Pointer) {
+	switch len(args) {
+	case 0:
+		C.constructor0(base, C.uintptr_t(constructor))
+	case 1:
+		C.constructor1(base, C.uintptr_t(constructor), args[0])
+	case 2:
+		C.constructor2(base, C.uintptr_t(constructor), args[0],
+			args[1])
+	case 3:
+		C.constructor3(base, C.uintptr_t(constructor), args[0],
+			args[1], args[2])
+	case 4:
+		C.constructor4(base, C.uintptr_t(constructor), args[0],
+			args[1], args[2], args[3])
 	default:
 		panic("too many arguments")
 	}

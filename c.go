@@ -419,6 +419,41 @@ var (
 	classDB cClassLibrary
 )
 
+const cPadAlign = 16 // keep in sync with Godot PAD_ALIGN #define.
+
+// Godot's internal "copy on write" vector.
+type cVector[T any] struct {
+	write uintptr
+	data  *T
+}
+
+func (vec *cVector[T]) from(src []T) {
+	var zero T
+
+	// need to allocate the slice in Godot memory and copy the data over.
+	// Godot vector memory has a cPadAlign header where the length and
+	// reference counting information is stored. Godot should free this
+	// memory when the reference counter is 0.
+
+	block := mem_alloc(uintptr(len(src))*uintptr(unsafe.Sizeof(zero)) + uintptr(cPadAlign))
+	slice := unsafe.Slice((*T)(unsafe.Pointer(uintptr(block)+cPadAlign)), uintptr(len(src)))
+	copy(slice, src)
+	vec.data = &slice[0]
+
+	*(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(vec.data)) - unsafe.Sizeof(uint32(0)))) = uint32(len(src)) // reach in and set the length.
+}
+
+func (vec cVector[T]) slice() []T {
+	return unsafe.Slice(vec.data, vec.len())
+}
+
+func (vec cVector[T]) len() int {
+	if vec.data == nil {
+		return 0
+	}
+	return int(*(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(vec.data)) - unsafe.Sizeof(uint32(0))))) // reach right in to godot/core/templates/cowdata.h
+}
+
 /*
 	These are the GDNative types and each type and they need to be kept in sync
 	with Godot's memory representation of them.
@@ -480,7 +515,11 @@ type (
 	cColor struct {
 		R, G, B, A float32
 	}
-	cName               uintptr
+
+	// equivalent
+	cStringName uintptr
+	cName       string
+
 	cNodePath           uintptr
 	cRID                uint64
 	cObject             uintptr
@@ -488,15 +527,15 @@ type (
 	cSignal             [2]uintptr
 	cDictionary         uintptr
 	cArray              uintptr
-	cPackedByteArray    [2]uintptr
-	cPackedInt32Array   [2]uintptr
-	cPackedInt64Array   [2]uintptr
-	cPackedFloat32Array [2]uintptr
-	cPackedFloat64Array [2]uintptr
-	cPackedStringArray  [2]uintptr
-	cPackedVector2Array [2]uintptr
-	cPackedVector3Array [2]uintptr
-	cPackedColorArray   [2]uintptr
+	cPackedByteArray    = cVector[byte]
+	cPackedInt32Array   = cVector[int32]
+	cPackedInt64Array   = cVector[int64]
+	cPackedFloat32Array = cVector[float32]
+	cPackedFloat64Array = cVector[float64]
+	cPackedStringArray  = cVector[cString]
+	cPackedVector2Array = cVector[cVector2]
+	cPackedVector3Array = cVector[cVector3]
+	cPackedColorArray   = cVector[cColor]
 	cVariant            [24]byte
 )
 
@@ -747,11 +786,11 @@ func (p_src *cVariant) new_copy(r_dest *cVariant) {
 func (p_src *cVariant) destroy(p_self *cVariant) {
 	C.variant_destroy(api, C.GDNativeVariantPtr(p_self))
 }
-func (p_self *cVariant) call(p_method *cName, p_args []cVariant, r_return *cVariant, r_error *cCallError) {
+func (p_self *cVariant) call(p_method *cStringName, p_args []cVariant, r_return *cVariant, r_error *cCallError) {
 	C.variant_call(api, C.GDNativeVariantPtr(p_self), C.GDNativeStringNamePtr(p_method),
 		(*C.GDNativeVariantPtr)(unsafe.Pointer(&p_args[0])), C.GDNativeInt(len(p_args)), C.GDNativeVariantPtr(r_return), r_error)
 }
-func (p_self *cVariant) call_static(p_type cVariantType, p_method *cName, p_args []cVariant, r_return *cVariant, r_error *cCallError) {
+func (p_self *cVariant) call_static(p_type cVariantType, p_method *cStringName, p_args []cVariant, r_return *cVariant, r_error *cCallError) {
 	C.variant_call_static(api, C.GDNativeVariantType(p_type), C.GDNativeStringNamePtr(p_method),
 		(*C.GDNativeVariantPtr)(unsafe.Pointer(&p_args[0])), C.GDNativeInt(len(p_args)), C.GDNativeVariantPtr(r_return), r_error)
 }
@@ -761,7 +800,7 @@ func (p_self *cVariant) evaluate(p_op cVariantOperator, p_b, p_return *cVariant)
 func (p_self *cVariant) set(p_key, p_value *cVariant) (valid bool) {
 	return C.variant_set(api, C.GDNativeVariantPtr(p_self), C.GDNativeVariantPtr(p_key), C.GDNativeVariantPtr(p_value)) != 0
 }
-func (p_self *cVariant) set_named(p_key *cName, p_value *cVariant) (ok bool) {
+func (p_self *cVariant) set_named(p_key *cStringName, p_value *cVariant) (ok bool) {
 	return C.variant_set_named(api, C.GDNativeVariantPtr(p_self), C.GDNativeStringNamePtr(p_key), C.GDNativeVariantPtr(p_value)) != 0
 }
 func (p_self *cVariant) set_keyed(p_key, p_value *cVariant) (ok bool) {
@@ -774,7 +813,7 @@ func (p_self *cVariant) set_indexed(p_index int, p_value *cVariant) (oob, ok boo
 func (p_self *cVariant) get(p_key *cVariant, r_value *cVariant) (ok bool) {
 	return C.variant_get(api, C.GDNativeVariantPtr(p_self), C.GDNativeVariantPtr(p_key), C.GDNativeVariantPtr(r_value)) != 0
 }
-func (p_self *cVariant) get_named(p_key *cName, r_value *cVariant) (ok bool) {
+func (p_self *cVariant) get_named(p_key *cStringName, r_value *cVariant) (ok bool) {
 	return C.variant_get_named(api, C.GDNativeVariantPtr(p_self), C.GDNativeStringNamePtr(p_key), C.GDNativeVariantPtr(r_value)) != 0
 }
 func (p_self *cVariant) get_keyed(p_key *cVariant, r_value *cVariant) (ok bool) {
@@ -864,10 +903,10 @@ func (p_type cVariantType) get_builtin_method(p_method string, hash int64) cBuil
 	return cBuiltInMethod(unsafe.Pointer(C.variant_get_ptr_builtin_method(api, C.GDNativeVariantType(p_type), method, C.GDNativeInt(hash))))
 }
 
-type cConstructor = C.GDNativePtrConstructor
+type cConstructor uintptr
 
 func (p_type cVariantType) get_constructor(p_constructor int32) cConstructor {
-	return C.GDNativePtrConstructor(C.variant_get_ptr_constructor(api, C.GDNativeVariantType(p_type), C.int32_t(p_constructor)))
+	return cConstructor(unsafe.Pointer(C.variant_get_ptr_constructor(api, C.GDNativeVariantType(p_type), C.int32_t(p_constructor))))
 }
 
 type cDestructor uintptr
@@ -1220,7 +1259,7 @@ type PhysicsServer3DExtensionMotionResult struct {
 	CollisionCount          int32
 }
 type ScriptLanguageExtensionProfilingInfo struct {
-	Signature  cName
+	Signature  cStringName
 	Call_count uint64
 	TotalTime  uint64
 	SelfTime   uint64
