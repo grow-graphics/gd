@@ -1,2 +1,2 @@
 all:
-	go build -o ../bin/hello.so -buildmode=c-shared
+	go build -o ../bin/example.so -buildmode=c-shared
