@@ -38,6 +38,8 @@ https://github.com/godotengine/godot/pull/65018
 * Exporting methods to GDScript.
 * Stability.
 * Import Godot Documentation?
+* gd.Context move semantics.
+* go:noescape the C calls.
 
 ## Design Principles
 
@@ -69,7 +71,6 @@ So try to do small calculations and tight loops in Go without calling out to God
 
 Additionally, arguments are passed to Godot as pointers so any function calls
 will cause their arguments to escape to the heap even though they do not esacpe. 
-Hopefully this can be avoided in the future.
 
 (https://github.com/golang/go/issues/27538)
 
@@ -99,4 +100,4 @@ see Go printing things to the console.
 These bindings are not stable, some functions may panic or corrupt memory.
 Consider this package to be in a experimental state until further notice.
 Godot 4.0 has not been officially released and its API is subject to change,
-this means that this package could break at any time.
+this means that this package could break at any time!

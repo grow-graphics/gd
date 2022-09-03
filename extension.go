@@ -231,9 +231,14 @@ func (ext *Extension[Type, Extends]) call(instance uint32, index uint8, args *un
 		}
 	}
 
-	method.Call(buffer)
-
-	// TODO result
+	results := method.Call(buffer)
+	if len(results) > 1 {
+		rtype := rvalue.Type()
+		panic(rtype.String() + "." + rtype.Method(int(index)-1).Name + " returns too many values")
+	}
+	if len(results) == 1 {
+		toResult(results[0].Interface(), result)
+	}
 }
 
 func (ext *Extension[Type, Extends]) methods() []reflect.Method {

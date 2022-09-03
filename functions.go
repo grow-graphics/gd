@@ -795,6 +795,108 @@ func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 	}
 }
 
+func toResult(val any, ptr unsafe.Pointer) {
+	switch v := val.(type) {
+	case struct{}:
+		return
+	case bool:
+		*(*bool)(ptr) = v
+	case *int64:
+		*(*int64)(ptr) = *v
+	case *float64:
+		*(*float64)(ptr) = *v
+	case *cVector2:
+		*(*cVector2)(ptr) = *v
+	case *string:
+		var native = (*cString)(ptr)
+		if *v != "" {
+			native.with_utf8_chars(*v)
+		}
+	case *cPackedStringArray:
+		*(*cPackedStringArray)(ptr) = *v
+	case *cName:
+		var native = (*cStringName)(ptr)
+		var s cString
+		if *v != "" {
+			s.with_utf8_chars(string(*v))
+		}
+		constructorCall(unsafe.Pointer(&native), cVariantTypeStringName.get_constructor(2), unsafe.Pointer(&s))
+		// FIXME does cString need to be freed?
+	case *cNodePath:
+		*(*cNodePath)(ptr) = *v
+	case *cRID:
+		*(*cRID)(ptr) = *v
+	case *cObject:
+		*(*cObject)(ptr) = *v
+	case *cCallable:
+		*(*cCallable)(ptr) = *v
+	case *cSignal:
+		*(*cSignal)(ptr) = *v
+	case *cDictionary:
+		*(*cDictionary)(ptr) = *v
+	case *cArray:
+		*(*cArray)(ptr) = *v
+	case *[]byte:
+		var native = (*cPackedByteArray)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]int32:
+		var native = (*cPackedInt32Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]int64:
+		var native = (*cPackedInt64Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]float32:
+		var native = (*cPackedFloat32Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]float64:
+		var native = (*cPackedFloat64Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]string:
+		var native = (*cPackedStringArray)(ptr)
+
+		var converted []cString
+		for _, s := range *v {
+			var c cString
+			if s != "" {
+				c.with_utf8_chars(s)
+			}
+			converted = append(converted, c)
+		}
+		if len(converted) > 0 {
+			native.from(converted)
+		}
+
+		// FIXME do cStrings need to be freed?
+	case *[]cVector2:
+		var native = (*cPackedVector2Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]cVector3:
+		var native = (*cPackedVector3Array)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	case *[]cColor:
+		var native = (*cPackedColorArray)(ptr)
+		if len(*v) > 0 {
+			native.from(*v)
+		}
+	default:
+		panic("toUnsafe: unsupported type " + reflect.TypeOf(val).String())
+	}
+}
+
 func into(result any, ptr unsafe.Pointer) {
 	switch v := result.(type) {
 	case *struct{}:
