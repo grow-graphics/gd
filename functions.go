@@ -766,7 +766,7 @@ func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 		return unsafe.Pointer(&native), func() {
 			cVariantTypePackedStringArray.get_destructor().call(unsafe.Pointer(&native))
 		}
-	case *[]Vector2:
+	case *[]cVector2:
 		var native cPackedVector2Array
 		if len(*v) > 0 {
 			native.from(*v)
@@ -774,7 +774,7 @@ func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 		return unsafe.Pointer(&native), func() {
 			cVariantTypePackedVector2Array.get_destructor().call(unsafe.Pointer(&native))
 		}
-	case *[]Vector3:
+	case *[]cVector3:
 		var native cPackedVector3Array
 		if len(*v) > 0 {
 			native.from(*v)
@@ -782,7 +782,7 @@ func toUnsafe(val any) (ptr unsafe.Pointer, free func()) {
 		return unsafe.Pointer(&native), func() {
 			cVariantTypePackedVector3Array.get_destructor().call(unsafe.Pointer(&native))
 		}
-	case *[]Color:
+	case *[]cColor:
 		var native cPackedColorArray
 		if len(*v) > 0 {
 			native.from(*v)

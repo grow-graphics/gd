@@ -1,6 +1,7 @@
 # Godot 4.0 Bindings for Go
 
-This package provides an interface for writing Godot 4.0 Extensions in Go.
+This package provides an interface for writing Godot 4.0 Extensions in Go. Currently requires
+https://github.com/godotengine/godot/pull/65018
 
 ```go
     package main
@@ -12,21 +13,23 @@ This package provides an interface for writing Godot 4.0 Extensions in Go.
     // HelloWorld is an extension that prints "Hello World" after it 
     // has been placed into a scene and is ready.
     type HelloWorld struct {
-        Node2D gd.Node2D
+        node gd.Node2D
     }
 
     // NewHelloWorld registers the HelloWorld type as an extension of
     // Godot's Node2D type. It will be available in the Godot editor
-    // and can be added to a scene.
-    var NewHelloWorld = gd.Register(func(hello *HelloWorld) gd.Node2D {
-        hello.Node2D = gd.NewNode2D()
-        return node.Node2D
+    // and can be added to a scene. The Context type is used to track
+    // object lifetimes and any objects that are created against this
+    // context must be freed before the context is cancelled (when the
+    // extended class is destroyed).
+    var NewHelloWorld = gd.Register(func(ctx gd.Context, hello *HelloWorld) gd.Node2D {
+        return gd.NewNode2D(ctx, &hello.node)
     })
 
     // Ready implements the Godot '_ready' interface (virtual method).
     // It will run after the node is added to the scene.
     func (HelloWorld) Ready() {
-        fmt.Printn("Hello World)
+        fmt.Printn("Hello World")
     }
 ```
 
@@ -52,6 +55,11 @@ https://docs.godotengine.org/en/latest/index.html
 Methods and functions always use the equivalent Go types (where possible), 
 so Go strings and slices for example will be copied over to the Godot
 representation of them.
+
+The goal is for all single-threaded Go operations to be memory-safe and
+to have all memory leaks detectable at runtime (they will cause a panic).
+This is achieved with the `gd.Context` type which is responsible for 
+managing memory ownership of any Godot objects used within Go.
 
 ## Performance
 

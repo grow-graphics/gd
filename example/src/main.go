@@ -9,40 +9,46 @@ import (
 func main() {}
 
 type HelloWorld struct {
-	Object gd.Object
+	object gd.Object
+
+	Message string
 }
 
-var NewHelloWorld = gd.Register(func(hello *HelloWorld) gd.Object {
-	hello.Object = gd.NewObject()
-	return hello.Object
+var NewHelloWorld = gd.Register(func(ctx gd.Context, hello *HelloWorld) gd.Object {
+	hello.Message = "Hello World!"
+	return gd.NewObject(ctx, &hello.object)
 })
 
-func (h HelloWorld) Print() {
-	fmt.Println("Hello World!")
+func (h HelloWorld) Print(ctx gd.Context) {
+	fmt.Println(h.Message)
 }
 
-func (h HelloWorld) Echo(s string) {
+func (h HelloWorld) Echo(ctx gd.Context, s string) {
 	fmt.Println(s + " from Go!")
 }
 
 type ExtendedNode struct {
-	Node2D gd.Node2D
+	ctx gd.Context
+
+	node gd.Node2D
 }
 
-var NewExtendedNode = gd.Register(func(node *ExtendedNode) gd.Node2D {
-	node.Node2D = gd.NewNode2D()
-	return node.Node2D
+var NewExtendedNode = gd.Register(func(ctx gd.Context, extended *ExtendedNode) gd.Node2D {
+	extended.ctx = ctx
+	return gd.NewNode2D(ctx, &extended.node)
 })
 
-func (e ExtendedNode) Ready() {
+func (e *ExtendedNode) Ready() {
 	if gd.Engine.IsEditorHint() {
 		fmt.Println(gd.Engine.GetLicenseText())
 		return
 	}
 
-	var obj = gd.NewObject()
+	fmt.Println(e.node.CanvasItem().Node().Object().GetClass())
+
+	var obj = gd.NewObject(e.ctx, nil)
 	fmt.Println(obj.GetClass())
-	defer obj.Free()
+	defer obj.Free(e.ctx)
 
 	//gd.LoadSingletons()
 
@@ -52,15 +58,24 @@ func (e ExtendedNode) Ready() {
 
 	fmt.Println("sin=", gd.Sin(1.5))
 
-	fmt.Println("rotation=", e.Node2D.GetRotation())
-	e.Node2D.SetRotation(3.14)
-	fmt.Println("rotation=", e.Node2D.GetRotation())
+	fmt.Println("rotation=", e.node.GetRotation())
+	e.node.SetRotation(3.14)
+	fmt.Println("rotation=", e.node.GetRotation())
 
-	pos := e.Node2D.GetPosition()
+	pos := e.node.GetPosition()
 
 	fmt.Println("position=", pos)
 
+	pos.X = 100
+
+	e.node.SetPosition(pos)
+	fmt.Println("position=", pos)
+
+	//gd.DisplayServerSingleton(gd.Engine.GetSingleton("DisplayServer"))
+
 	//fmt.Println(godot.Engine.GetSingletonList())
 
-	//godot.DisplayServer.WindowSetCurrentScreen(1, 0)
+	fmt.Println(gd.DisplayServer)
+
+	gd.DisplayServer.WindowSetCurrentScreen(1, 0)
 }

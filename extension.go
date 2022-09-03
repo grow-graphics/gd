@@ -5,6 +5,7 @@ package gd
 import "C"
 
 import (
+	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -26,7 +27,7 @@ func loadExtension(p_interface, p_library, p_init unsafe.Pointer) uint8 {
 
 //export initialize
 func initialize(userdata unsafe.Pointer, level int64) {
-	if level == 3 {
+	if level == 4 {
 		cOnLoad()
 
 		for _, fn := range deferred {
@@ -52,6 +53,7 @@ func free_instance_func(userdata, instance uintptr) {
 func get_virtual_index(userdata uintptr, p_name *C.char) uint8 {
 	name := C.GoString(p_name)
 	method, ok := extensions[extensionID(userdata)-1].lookup(name)
+	fmt.Println("lookup", name, ok)
 	if !ok {
 		return 0
 	}
@@ -107,7 +109,7 @@ type extensionInterface interface {
 
 var extensions []extensionInterface
 
-type ExtensionLoader[Type any, Extends Class] func(*Type) Extends
+type ExtensionLoader[Type any, Extends Class] func(Context, *Type) Extends
 
 func Register[Type any, Extends Class](fn ExtensionLoader[Type, Extends]) *Extension[Type, Extends] {
 	var zero Type
@@ -159,13 +161,23 @@ func nextExtensionID() uint32 {
 
 type instanceOf[Type any] struct {
 	alive bool
+	alloc *uint32
 	value Type
+}
+
+func (i *instanceOf[T]) context() Context {
+	if i.alloc == nil {
+		i.alloc = new(uint32)
+	}
+	return Context{
+		counter: i.alloc,
+	}
 }
 
 func (ext *Extension[Type, Extends]) lookup(name string) (reflect.Method, bool) {
 	var zero Type
 	var core Extends
-	return core.virtual(reflect.TypeOf(zero), name)
+	return core.virtual(reflect.PtrTo(reflect.TypeOf(zero)), name)
 }
 
 func (ext *Extension[Type, Extends]) create() cObject {
@@ -188,14 +200,20 @@ func (ext *Extension[Type, Extends]) create() cObject {
 	instance := &ext.slice[id.index-1]
 	instance.alive = true
 
-	obj := ext.loader(&instance.value).owner()
+	obj := ext.loader(instance.context(), &instance.value).owner()
 	obj.set_instance(ext.class, id.pack())
 
 	return obj
 }
 
 func (ext *Extension[Type, Extends]) delete(id instanceID) {
-	ext.slice[id.index-1].alive = false
+	var zero Type
+	instance := &ext.slice[id.index-1]
+	*instance.alloc--
+	if *instance.alloc != 0 {
+		panic(reflect.TypeOf(zero).String() + " is leaking memory")
+	}
+	instance.alive = false
 }
 
 func (ext *Extension[Type, Extends]) call(instance uint32, index uint8, args *unsafe.Pointer, result unsafe.Pointer) {
@@ -224,39 +242,4 @@ func (ext *Extension[Type, Extends]) methods() []reflect.Method {
 		methods = append(methods, ext.ptype.Method(i))
 	}
 	return methods
-}
-
-func LoadSingletons() {
-	Performance.obj = global_get_singleton(`Performance`)
-	TextServerManager.obj = global_get_singleton(`TextServerManager`)
-	NavigationMeshGenerator.obj = global_get_singleton(`NavigationMeshGenerator`)
-	ProjectSettings.obj = global_get_singleton(`ProjectSettings`)
-	IP.obj = global_get_singleton(`IP`)
-	Geometry2D.obj = global_get_singleton(`Geometry2D`)
-	Geometry3D.obj = global_get_singleton(`Geometry3D`)
-	ResourceLoader.obj = global_get_singleton(`ResourceLoader`)
-	ResourceSaver.obj = global_get_singleton(`ResourceSaver`)
-	OS.obj = global_get_singleton(`OS`)
-	Engine.obj = global_get_singleton(`Engine`)
-	ClassDB.obj = global_get_singleton(`ClassDB`)
-	Marshalls.obj = global_get_singleton(`Marshalls`)
-	TranslationServer.obj = global_get_singleton(`TranslationServer`)
-	Input.obj = global_get_singleton(`Input`)
-	InputMap.obj = global_get_singleton(`InputMap`)
-	EngineDebugger.obj = global_get_singleton(`EngineDebugger`)
-	Time.obj = global_get_singleton(`Time`)
-	NativeExtensionManager.obj = global_get_singleton(`NativeExtensionManager`)
-	ResourceUID.obj = global_get_singleton(`ResourceUID`)
-	WorkerThreadPool.obj = global_get_singleton(`WorkerThreadPool`)
-	JavaClassWrapper.obj = global_get_singleton(`JavaClassWrapper`)
-	JavaScript.obj = global_get_singleton(`JavaScript`)
-	DisplayServer.obj = global_get_singleton(`DisplayServer`)
-	RenderingServer.obj = global_get_singleton(`RenderingServer`)
-	AudioServer.obj = global_get_singleton(`AudioServer`)
-	PhysicsServer2D.obj = global_get_singleton(`PhysicsServer2D`)
-	PhysicsServer3D.obj = global_get_singleton(`PhysicsServer3D`)
-	NavigationServer2D.obj = global_get_singleton(`NavigationServer2D`)
-	NavigationServer3D.obj = global_get_singleton(`NavigationServer3D`)
-	XRServer.obj = global_get_singleton(`XRServer`)
-	CameraServer.obj = global_get_singleton(`CameraServer`)
 }

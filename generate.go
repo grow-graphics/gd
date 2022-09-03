@@ -41,9 +41,38 @@ type Method struct {
 	} `json:"arguments,omitempty"`
 }
 
+type Class struct {
+	Name           string   `json:"name"`
+	IsRefcounted   bool     `json:"is_refcounted"`
+	IsInstantiable bool     `json:"is_instantiable"`
+	Inherits       string   `json:"inherits,omitempty"`
+	APIType        string   `json:"api_type"`
+	Enums          []Enum   `json:"enums,omitempty"`
+	Methods        []Method `json:"methods,omitempty"`
+	Signals        []struct {
+		Name      string `json:"name"`
+		Arguments []struct {
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Meta string `json:"meta"`
+		} `json:"arguments,omitempty"`
+	} `json:"signals,omitempty"`
+	Properties []struct {
+		Type   string `json:"type"`
+		Name   string `json:"name"`
+		Setter string `json:"setter"`
+		Getter string `json:"getter"`
+		Index  int    `json:"index"`
+	} `json:"properties,omitempty"`
+	Constants []struct {
+		Name  string `json:"name"`
+		Value int    `json:"value"`
+	} `json:"constants,omitempty"`
+}
+
 /*
-	Specification of the Godot Extension API.
-	Created with https://mholt.github.io/json-to-go/
+Specification of the Godot Extension API.
+Created with https://mholt.github.io/json-to-go/
 */
 type Specification struct {
 	Header struct {
@@ -127,34 +156,7 @@ type Specification struct {
 		} `json:"constants,omitempty"`
 		Enums []Enum `json:"enums,omitempty"`
 	} `json:"builtin_classes"`
-	Classes []struct {
-		Name           string   `json:"name"`
-		IsRefcounted   bool     `json:"is_refcounted"`
-		IsInstantiable bool     `json:"is_instantiable"`
-		Inherits       string   `json:"inherits,omitempty"`
-		APIType        string   `json:"api_type"`
-		Enums          []Enum   `json:"enums,omitempty"`
-		Methods        []Method `json:"methods,omitempty"`
-		Signals        []struct {
-			Name      string `json:"name"`
-			Arguments []struct {
-				Name string `json:"name"`
-				Type string `json:"type"`
-				Meta string `json:"meta"`
-			} `json:"arguments,omitempty"`
-		} `json:"signals,omitempty"`
-		Properties []struct {
-			Type   string `json:"type"`
-			Name   string `json:"name"`
-			Setter string `json:"setter"`
-			Getter string `json:"getter"`
-			Index  int    `json:"index"`
-		} `json:"properties,omitempty"`
-		Constants []struct {
-			Name  string `json:"name"`
-			Value int    `json:"value"`
-		} `json:"constants,omitempty"`
-	} `json:"classes"`
+	Classes    []Class `json:"classes"`
 	Singletons []struct {
 		Name string `json:"name"`
 		Type string `json:"type"`
@@ -462,7 +464,27 @@ func generate() error {
 		}
 	}
 
+	var classDB = make(map[string]Class)
 	for _, class := range spec.Classes {
+		classDB[class.Name] = class
+	}
+
+	var isRefCounted func(class Class) bool
+	isRefCounted = func(class Class) bool {
+		if class.Name == "RefCounted" {
+			return true
+		}
+		if class.Name == "Object" {
+			return false
+		}
+		return isRefCounted(classDB[class.Inherits])
+	}
+
+	for _, class := range spec.Classes {
+		if class.Name == "RefCounted" {
+			continue
+		}
+
 		for _, enum := range class.Enums {
 			genEnum(code, class.Name, enum)
 		}
@@ -474,10 +496,12 @@ func generate() error {
 		class.Name = convertClass(class.Name)
 
 		fmt.Fprintln(code)
-		fmt.Fprintf(code, "type %v struct{_%v struct{}; obj cObject }\n", class.Name, class.Name)
-		fmt.Fprintf(code, `func New%v() (gdClass %v) { gdClass.obj = classDB.construct_object(gdClass.class()); return }`+"\n", class.Name, class.Name)
-		fmt.Fprintf(code, `func (gdClass %v) Free() { gdClass.obj.destroy() }`+"\n", class.Name)
-		fmt.Fprintf(code, `func (gdClass %v) owner() cObject { return gdClass.obj }`+"\n", class.Name)
+		if class.Name != "Object" {
+			fmt.Fprintf(code, "type %[1]v struct{self *%[1]v; obj safeObject }\n", class.Name)
+		}
+		fmt.Fprintf(code, `func New%[1]v(ctx Context, at *%[1]v) %[1]v { if at == nil { at = new(%[1]v) }; at.obj.new(ctx, at.class(), %v); return *at }`+"\n", class.Name, isRefCounted(class))
+		fmt.Fprintf(code, `func (gdClass %v) Free(ctx Context) { gdClass.obj.free(ctx) }`+"\n", class.Name)
+		fmt.Fprintf(code, `func (gdClass %v) owner() cObject { return gdClass.obj.get() }`+"\n", class.Name)
 		fmt.Fprintf(code, `func (%v) class() string { return "%v\000" }`+"\n", class.Name, class.Name)
 		fmt.Fprintln(code)
 		if class.Inherits != "" {
@@ -555,7 +579,7 @@ func generate() error {
 			} else {
 				fmt.Fprintf(code, "return ")
 			}
-			fmt.Fprintf(code, "methodCall[%v](gdClass.obj, method%v[%d]", result, class.Name, i)
+			fmt.Fprintf(code, "methodCall[%v](gdClass.obj.get(), method%v[%d]", result, class.Name, i)
 			for _, arg := range method.Arguments {
 				fmt.Fprint(code, ", ")
 				fmt.Fprintf(code, "&%v", fixReserved(arg.Name))
@@ -570,7 +594,7 @@ func generate() error {
 	fmt.Fprintf(code, `func init() {`)
 	fmt.Fprintf(code, "\tcOnLoad = func() {\n")
 	for _, singleton := range spec.Singletons {
-		fmt.Fprintf(code, "%v.obj = global_get_singleton(`%v`)\n", singleton.Type, singleton.Name)
+		fmt.Fprintf(code, "%v.obj.hold(global_get_singleton(`%v`))\n", singleton.Type, singleton.Name)
 	}
 	for i, utility := range spec.UtilityFunctions {
 		fmt.Fprintf(code, "\t\t"+`utilities[%d] = get_utility_function("%v\000", %v)`+"\n", i, utility.Name, utility.Hash)
