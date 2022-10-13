@@ -6,7 +6,7 @@ else
 		TARGET = example.so
 	endif
 	ifeq ($(UNAME_S),Darwin)
-		TARGET = example.dynlib
+		TARGET = example.framework
 	endif
    
 endif
