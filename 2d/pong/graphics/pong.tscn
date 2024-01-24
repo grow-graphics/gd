@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://jlfslyfbhid5"]
+
+[ext_resource type="Texture2D" uid="uid://dvrb8efddt0aa" path="res://paddle.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://drgpdyyomyqpl" path="res://separator.png" id="6"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(8, 32)
+
+[sub_resource type="RectangleShape2D" id="2"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="3"]
+size = Vector2(20, 400)
+
+[sub_resource type="RectangleShape2D" id="4"]
+size = Vector2(640, 20)
+
+[node name="Pong" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 640.0
+offset_bottom = 400.0
+color = Color(0.141176, 0.152941, 0.164706, 1)
+
+[node name="Left" type="PongPaddle" parent="."]
+modulate = Color(0, 1, 1, 1)
+position = Vector2(67.6285, 192.594)
+
+[node name="Sprite2D" type="Sprite2D" parent="Left"]
+texture = ExtResource("2")
+
+[node name="Collision" type="CollisionShape2D" parent="Left"]
+shape = SubResource("1")
+
+[node name="Right" type="PongPaddle" parent="."]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(563.815, 188.919)
+
+[node name="Sprite2D" type="Sprite2D" parent="Right"]
+texture = ExtResource("2")
+
+[node name="Collision" type="CollisionShape2D" parent="Right"]
+shape = SubResource("1")
+
+[node name="Ball" type="PongBall" parent="."]
+position = Vector2(320.5, 191.124)
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+texture = ExtResource("5")
+
+[node name="Collision" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("2")
+
+[node name="Separator" type="Sprite2D" parent="."]
+position = Vector2(320, 200)
+texture = ExtResource("6")
+
+[node name="LeftWall" type="PongWall" parent="."]
+position = Vector2(-10, 200)
+
+[node name="Collision" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("3")
+
+[node name="RightWall" type="PongWall" parent="."]
+position = Vector2(650, 200)
+
+[node name="Collision" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("3")
+
+[node name="Ceiling" type="PongCeilingFloor" parent="."]
+position = Vector2(320, -10)
+
+[node name="Collision" type="CollisionShape2D" parent="Ceiling"]
+shape = SubResource("4")
+
+[node name="Floor" type="PongCeilingFloor" parent="."]
+position = Vector2(320, 410)
+bouncedirection = -1
+
+[node name="Collision" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("4")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(320, 200)
+current = true
+
+[connection signal="area_entered" from="Left" to="Left" method="_on_area_entered"]
+[connection signal="area_entered" from="Right" to="Right" method="_on_area_entered"]
+[connection signal="area_entered" from="LeftWall" to="LeftWall" method="_on_wall_area_entered"]
+[connection signal="area_entered" from="RightWall" to="RightWall" method="_on_wall_area_entered"]
+[connection signal="area_entered" from="Ceiling" to="Ceiling" method="_on_area_entered"]
+[connection signal="area_entered" from="Floor" to="Floor" method="_on_area_entered"]

@@ -1,0 +1,91 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmhmiv43fqo4c"]
+
+[ext_resource type="Texture2D" uid="uid://clowikjgl4yq1" path="res://ball.png" id="1_xpe2u"]
+[ext_resource type="Texture2D" uid="uid://dvrb8efddt0aa" path="res://paddle.png" id="2_phxl5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rxf0k"]
+size = Vector2(72, 643)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o0pew"]
+size = Vector2(57, 643.75)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_278jq"]
+radius = 19.105
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_t2ctf"]
+radius = 4.0
+height = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y0abv"]
+size = Vector2(1150, 51)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8rkxe"]
+size = Vector2(1152.5, 51)
+
+[node name="Node" type="Node2D"]
+
+[node name="PongWall" type="PongWall" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongWall"]
+position = Vector2(-38, 323)
+shape = SubResource("RectangleShape2D_rxf0k")
+
+[node name="PongWall2" type="PongWall" parent="."]
+position = Vector2(1126, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongWall2"]
+position = Vector2(57, 320.125)
+shape = SubResource("RectangleShape2D_o0pew")
+
+[node name="PongBall" type="PongBall" parent="."]
+position = Vector2(540, 310)
+
+[node name="Sprite2D" type="Sprite2D" parent="PongBall"]
+scale = Vector2(4, 4)
+texture = ExtResource("1_xpe2u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongBall"]
+shape = SubResource("CircleShape2D_278jq")
+
+[node name="Player1" type="PongPaddle" parent="."]
+BallDirection = 1.0
+position = Vector2(85, 319)
+scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player1"]
+texture = ExtResource("2_phxl5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player1"]
+shape = SubResource("CapsuleShape2D_t2ctf")
+
+[node name="Player2" type="PongPaddle" parent="."]
+BallDirection = -1.0
+position = Vector2(1066, 317)
+scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player2"]
+texture = ExtResource("2_phxl5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player2"]
+shape = SubResource("CapsuleShape2D_t2ctf")
+
+[node name="PongCeilingFloor" type="PongCeilingFloor" parent="."]
+BounceDirection = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongCeilingFloor"]
+position = Vector2(579, -26.5)
+shape = SubResource("RectangleShape2D_y0abv")
+
+[node name="PongCeilingFloor2" type="PongCeilingFloor" parent="."]
+BounceDirection = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PongCeilingFloor2"]
+position = Vector2(574.75, 673.5)
+shape = SubResource("RectangleShape2D_8rkxe")
+
+[connection signal="area_entered" from="PongWall" to="PongWall" method="OnAreaEntered"]
+[connection signal="area_entered" from="PongWall2" to="PongWall2" method="OnAreaEntered"]
+[connection signal="area_entered" from="Player1" to="Player1" method="OnAreaEntered"]
+[connection signal="area_entered" from="Player2" to="Player2" method="OnAreaEntered"]
+[connection signal="area_entered" from="PongCeilingFloor" to="PongCeilingFloor" method="OnAreaEntered"]
+[connection signal="area_entered" from="PongCeilingFloor2" to="PongCeilingFloor2" method="OnAreaEntered"]

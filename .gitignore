@@ -1,0 +1,4 @@
+go.work
+*.godot*
+*library.so
+*library.gdextension
