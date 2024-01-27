@@ -5,7 +5,7 @@ import (
 	"grow.graphics/gd/gdextension"
 )
 
-const DefaultBallSpeed = 200
+const DefaultBallSpeed = 500
 
 type PongBall struct {
 	gd.Class[PongBall, gd.Area2D] `gd:"PongBall"`
@@ -20,7 +20,7 @@ type PongBall struct {
 
 func (b *PongBall) Ready(gd.Context) {
 	b.speed = DefaultBallSpeed
-	b.Direction = gd.Vector2{-1, 0}
+	b.Direction = gd.Const(gd.Vector2.LEFT)
 	b.initialPosition = b.Super().AsNode2D().GetPosition()
 }
 
@@ -32,12 +32,12 @@ func (b *PongBall) Process(_ gd.Context, delta gd.Float) {
 	node2d := b.Super().AsNode2D()
 
 	b.speed += delta * 2
-	node2d.SetPosition(node2d.GetPosition().Add(b.Direction.ScaledBy(b.speed * delta)))
+	node2d.SetPosition(node2d.GetPosition().Add(b.Direction.Mulf(b.speed * delta)))
 }
 
 func (b *PongBall) Reset() {
 	node2d := b.Super().AsNode2D()
-	b.Direction = gd.Vector2{-1, 0}
+	b.Direction = gd.Const(gd.Vector2.LEFT)
 	node2d.SetPosition(b.initialPosition)
 	b.speed = DefaultBallSpeed
 }
@@ -50,7 +50,7 @@ type PongCeilingFloor struct {
 
 func (cf *PongCeilingFloor) OnAreaEntered(godot gd.Context, area gd.Area2D) {
 	if ball, ok := gd.As[*PongBall](godot, area); ok {
-		ball.Direction = (ball.Direction.Add(gd.Vector2{0, float32(cf.BounceDirection)})).Normalized()
+		ball.Direction = gd.Vector2.Add(ball.Direction, gd.NewVector2(0, gd.Float(cf.BounceDirection))).Normalized()
 	}
 }
 
@@ -65,11 +65,11 @@ type PongPaddle struct {
 	BallDirection gd.Float
 	up, down      gd.StringName
 
-	screenSizeY float32
+	screenSizeY gd.Float
 }
 
 func (p *PongPaddle) Ready(godot gd.Context) {
-	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size[1]
+	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size.Y()
 	var n = p.Super().AsNode().GetName(godot).String()
 	p.up = p.Pin().StringName(n + "_move_up")
 	p.down = p.Pin().StringName(n + "_move_down")
@@ -82,14 +82,14 @@ func (p *PongPaddle) Process(godot gd.Context, delta gd.Float) {
 	node2d := p.Super().AsNode2D()
 	var input = p.input.GetActionStrength(p.down, false) - p.input.GetActionStrength(p.up, false)
 	var position = node2d.GetPosition()
-	position[1] = gd.Clamp(position[1]+float32(input*PaddleMoveSpeed*delta), 16, p.screenSizeY-16)
+	position.SetY(gd.Float(gd.Clamp(gd.Float(position[1])+input*PaddleMoveSpeed*delta, 16, gd.Float(p.screenSizeY-16))))
 	node2d.SetPosition(position)
 
 }
 
 func (p *PongPaddle) OnAreaEntered(godot gd.Context, area gd.Area2D) {
 	if ball, ok := gd.As[*PongBall](godot, area); ok {
-		ball.Direction = (gd.Vector2{float32(p.BallDirection), float32(godot.Randf()*2 - 1)}).Normalized()
+		ball.Direction = (gd.NewVector2(p.BallDirection, godot.Randf()*2-1)).Normalized()
 	}
 }
 
