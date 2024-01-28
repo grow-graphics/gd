@@ -1,12 +1,6 @@
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
-grow.graphics/gd v0.0.0-20240119112333-96a6d91467d0 h1:v72zDsgSAYtINK5mdNzUHeRH6cic3uIZCtNhOsKje1U=
-grow.graphics/gd v0.0.0-20240119112333-96a6d91467d0/go.mod h1:q+nuhaM1X/TTpup8cE6yGh0vD8Er7jGnDQD/2Qf76Ck=
-grow.graphics/gd v0.0.0-20240124003306-cd2b18fa5637 h1:/ZsVnc53/2NL9uWSUgoRfKv6ZSAWr99FQGrKlIZ6OhQ=
-grow.graphics/gd v0.0.0-20240124003306-cd2b18fa5637/go.mod h1:9SpVXKwoF+9J6Oa83Hdp30o/ohGZwLaJzBM9OsJMsY0=
 grow.graphics/gd v0.0.0-20240126043942-10ef48d2a50b h1:FlPwahLlLs8N7Wfp6nrlmTZgIqYAqNw8LpmxJtdT7aE=
 grow.graphics/gd v0.0.0-20240126043942-10ef48d2a50b/go.mod h1:9SpVXKwoF+9J6Oa83Hdp30o/ohGZwLaJzBM9OsJMsY0=
-runtime.link v0.0.0-20240118214634-cbb342b24acf h1:rffyZuYDRy1TrZ7gRLdlmrv1W6/c1K7yxzoNoy77ogo=
-runtime.link v0.0.0-20240118214634-cbb342b24acf/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
 runtime.link v0.0.0-20240121080927-e61cba9606da h1:oqyMrwoXxWqB+wypvhb4HUssAya/FGy5KxWiDkj21FU=
 runtime.link v0.0.0-20240121080927-e61cba9606da/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
