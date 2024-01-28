@@ -14,8 +14,6 @@ type PongBall struct {
 
 	speed           gd.Float
 	initialPosition gd.Vector2
-
-	engine gd.Engine
 }
 
 func (b *PongBall) Ready(gd.Context) {
@@ -25,12 +23,7 @@ func (b *PongBall) Ready(gd.Context) {
 }
 
 func (b *PongBall) Process(_ gd.Context, delta gd.Float) {
-	if b.engine.IsEditorHint() {
-		return
-	}
-
 	node2d := b.Super().AsNode2D()
-
 	b.speed += delta * 2
 	node2d.SetPosition(node2d.GetPosition().Add(b.Direction.Mulf(b.speed * delta)))
 }
@@ -59,8 +52,7 @@ const PaddleMoveSpeed = 200
 type PongPaddle struct {
 	gd.Class[PongPaddle, gd.Area2D] `gd:"PongPaddle"`
 
-	input  gd.Input
-	engine gd.Engine
+	input gd.Input
 
 	BallDirection gd.Float
 	up, down      gd.StringName
@@ -76,9 +68,6 @@ func (p *PongPaddle) Ready(godot gd.Context) {
 }
 
 func (p *PongPaddle) Process(godot gd.Context, delta gd.Float) {
-	if p.engine.IsEditorHint() {
-		return
-	}
 	node2d := p.Super().AsNode2D()
 	var input = p.input.GetActionStrength(p.down, false) - p.input.GetActionStrength(p.up, false)
 	var position = node2d.GetPosition()
