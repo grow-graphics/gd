@@ -2,7 +2,7 @@ module grow.graphics/eg
 
 go 1.21.0
 
-require grow.graphics/gd v0.0.0-20240302115347-3481897a68b7
+require grow.graphics/gd v0.0.0-20240305055224-b0130e35c9f7
 
 require (
 	grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 // indirect

@@ -52,8 +52,6 @@ const PaddleMoveSpeed = 200
 type PongPaddle struct {
 	gd.Class[PongPaddle, gd.Area2D] `gd:"PongPaddle"`
 
-	input gd.Input
-
 	BallDirection gd.Float
 	up, down      gd.StringName
 
@@ -69,7 +67,7 @@ func (p *PongPaddle) Ready(godot gd.Context) {
 
 func (p *PongPaddle) Process(godot gd.Context, delta gd.Float) {
 	node2d := p.Super().AsNode2D()
-	var input = p.input.GetActionStrength(p.down, false) - p.input.GetActionStrength(p.up, false)
+	var input = gd.Input(godot).GetActionStrength(p.down, false) - gd.Input(godot).GetActionStrength(p.up, false)
 	var position = node2d.GetPosition()
 	position.SetY(gd.Float(gd.Clamp(gd.Float(position[1])+input*PaddleMoveSpeed*delta, 16, gd.Float(p.screenSizeY-16))))
 	node2d.SetPosition(position)
@@ -85,8 +83,6 @@ func (p *PongPaddle) OnAreaEntered(godot gd.Context, area gd.Area2D) {
 type PongWall struct {
 	gd.Class[PongWall, gd.Area2D] `gd:"PongWall"`
 }
-
-func (w *PongWall) Hello(gd.Context) {}
 
 func (w *PongWall) OnAreaEntered(godot gd.Context, area gd.Area2D) {
 	if ball, ok := gd.As[*PongBall](godot, area); ok {
