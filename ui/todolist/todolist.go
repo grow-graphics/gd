@@ -21,9 +21,10 @@ func (h *TodoList) Ready(godot gd.Context) {
 
 func (h *TodoList) OnButtonPressed(godot gd.Context) {
 	label := gd.Create(h.List.AsPointer().Pin(), new(gd.Label))
-	text := h.Task.GetText(godot)
-	label.SetText(text)
+	label.SetText(h.Task.GetText(godot))
 	h.List.AsNode().AddChild(label.AsNode(), false, 0)
+	// we have given ownership of the label to Godot, we we need to end the
+	// lifetime within Go (so that it doesn't get freed automatically).
 	mmm.End(label.AsPointer())
 }
 
