@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bmhmiv43fqo4c"]
+
+[node name="Node" type="TodoList"]
+
+[node name="Task" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 430.0
+offset_top = 223.0
+offset_right = 606.0
+offset_bottom = 268.0
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 610.0
+offset_top = 221.0
+offset_right = 704.0
+offset_bottom = 269.0
+text = "Add
+"
+
+[node name="List" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_left = 363.0
+offset_top = 286.0
+offset_right = 831.0
+offset_bottom = 629.0
