@@ -12,6 +12,8 @@ grow.graphics/gd v0.0.0-20240518044401-729439c9f538 h1:LO1YJMosVv6hDb/W6crASlGkM
 grow.graphics/gd v0.0.0-20240518044401-729439c9f538/go.mod h1:Th76I46tO+kNwbEk8Kp2/TrutwIjYRTZEq1qGC/DWR0=
 grow.graphics/gd v0.0.0-20240519002512-53438c7d35d5 h1:N/d3pIyDgUZoMGQZJ3/7Bh/hyeUkcgvEp/VT24laFDA=
 grow.graphics/gd v0.0.0-20240519002512-53438c7d35d5/go.mod h1:oBVOuw7lQrKQqM3MoBFa+/0NncuvUGtQ6A5cHXeWxdQ=
+grow.graphics/gd v0.0.0-20240519042503-77f5c1c6725c h1:W7y3gjAI7yimSajZN8LFfSLw5B+ZkUN+R0mfL9yw52w=
+grow.graphics/gd v0.0.0-20240519042503-77f5c1c6725c/go.mod h1:oBVOuw7lQrKQqM3MoBFa+/0NncuvUGtQ6A5cHXeWxdQ=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
 grow.graphics/xy v0.0.0-20240129002912-5a525950a952 h1:R1G0S3qugiSbdKLm9rhk74nTZnjQSqalqeP7kyMj8d0=
