@@ -10,7 +10,7 @@ type Player struct {
 	Speed      gd.Int     // How fast the player will move (pixels/sec).
 	ScreenSize gd.Vector2 // Size of the game window.
 
-	Hit gd.Signal[func()] `gd:"hit"`
+	Hit gd.SignalAs[func()] `gd:"hit"`
 
 	AnimatedSprite2D gd.AnimatedSprite2D
 	CollisionShape3D gd.CollisionShape3D

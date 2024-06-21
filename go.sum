@@ -14,6 +14,10 @@ grow.graphics/gd v0.0.0-20240519002512-53438c7d35d5 h1:N/d3pIyDgUZoMGQZJ3/7Bh/hy
 grow.graphics/gd v0.0.0-20240519002512-53438c7d35d5/go.mod h1:oBVOuw7lQrKQqM3MoBFa+/0NncuvUGtQ6A5cHXeWxdQ=
 grow.graphics/gd v0.0.0-20240519042503-77f5c1c6725c h1:W7y3gjAI7yimSajZN8LFfSLw5B+ZkUN+R0mfL9yw52w=
 grow.graphics/gd v0.0.0-20240519042503-77f5c1c6725c/go.mod h1:oBVOuw7lQrKQqM3MoBFa+/0NncuvUGtQ6A5cHXeWxdQ=
+grow.graphics/gd v0.0.0-20240617053130-08a23a427a08 h1:DkrW8SVkzMRJFEE6OPIKPGZ3cW8g89u2MwjAl8upv64=
+grow.graphics/gd v0.0.0-20240617053130-08a23a427a08/go.mod h1:fpZMwYwl0J3EN19bAB6+fLBRgLay1bWsn+vXL14ogOE=
+grow.graphics/gd v0.0.0-20240621210912-65385949944f h1:tGvA6TFLZlgx0l5oLEZy/NS4JI/cx2jZJVhIn9/Cdck=
+grow.graphics/gd v0.0.0-20240621210912-65385949944f/go.mod h1:fpZMwYwl0J3EN19bAB6+fLBRgLay1bWsn+vXL14ogOE=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
 grow.graphics/xy v0.0.0-20240129002912-5a525950a952 h1:R1G0S3qugiSbdKLm9rhk74nTZnjQSqalqeP7kyMj8d0=
@@ -26,3 +30,5 @@ runtime.link v0.0.0-20240513040912-fa84cb01d1ec h1:uetPAy4jSy+x41DZZFUexSEr7Bf32
 runtime.link v0.0.0-20240513040912-fa84cb01d1ec/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
 runtime.link v0.0.0-20240519001043-33982d8d5497 h1:zxC0NC3nM32uR9yx25YB66VgaFLVBcpeIn0yEIdT+k4=
 runtime.link v0.0.0-20240519001043-33982d8d5497/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
+runtime.link v0.0.0-20240525075419-2bae5ef92c8f h1:j6o3zA2olSwmyiQWMBImRyPTAx2JvfrZWb5UjwHT8dg=
+runtime.link v0.0.0-20240525075419-2bae5ef92c8f/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=

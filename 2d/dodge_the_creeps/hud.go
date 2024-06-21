@@ -14,7 +14,7 @@ type HUD struct {
 	StartButton  gd.Button
 	ScoreLabel   gd.Label
 
-	StartGame gd.Signal[func()] `gd:"start_game"`
+	StartGame gd.SignalAs[func()] `gd:"start_game"`
 }
 
 func (h *HUD) AsNode() gd.Node { return h.Super().AsNode() }
