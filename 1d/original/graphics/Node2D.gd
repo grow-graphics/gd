@@ -1,6 +1,7 @@
 extends Node2D
 
 var hello: HelloWorld = HelloWorld.new()
+var myclass: MyClassWithConstants = MyClassWithConstants.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

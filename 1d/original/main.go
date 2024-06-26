@@ -44,13 +44,27 @@ func (r *Rotator) Process(_ gd.Context, delta gd.Float) {
 type StartedSignalEmitter struct {
 	gd.Class[StartedSignalEmitter, gd.Node]
 
-	started gd.Signal[func()]
+	started gd.SignalAs[func()]
 }
 
 func (r *StartedSignalEmitter) Ready(gd.Context) {
 	if r.started.Emit != nil {
 		r.started.Emit()
 	}
+}
+
+type MyClassWithConstants struct {
+	gd.Class[MyClassWithConstants, gd.Node2D]
+}
+
+func (*MyClassWithConstants) OnRegister(godot gd.Context) {
+	godot.Register(gd.Enum[MyClassWithConstants, int]{
+		Name: "MyEnum",
+		Values: map[string]int{
+			"Value1": 1,
+			"Value2": 2,
+		},
+	})
 }
 
 /*
@@ -112,4 +126,5 @@ func main() {
 	gd.Register[ExtendedNode](godot)
 	gd.Register[Rotator](godot)
 	gd.Register[StartedSignalEmitter](godot)
+	gd.Register[MyClassWithConstants](godot)
 }
