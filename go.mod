@@ -4,7 +4,7 @@ go 1.22.0
 
 toolchain go1.22.3
 
-require grow.graphics/gd v0.0.0-20240626070358-7bef01cc6332
+require grow.graphics/gd v0.0.0-20240630001121-4bd3f1aa7b7b
 
 require (
 	golang.org/x/text v0.15.0 // indirect
