@@ -12,7 +12,7 @@ type HelloWorld struct {
 }
 
 // Initialize implements the Godot MainLoop _initialize interface (virtual function).
-func (h *HelloWorld) Initialize(godot gd.Context) {
+func (h *HelloWorld) Initialize() {
 	fmt.Println("Hello World from Go!")
 }
 

@@ -9,6 +9,9 @@ func _ready():
 	
 	print(hello.Arch())
 	
+	var bar = hello.GetBar("Hello Bar")
+	print(bar.Message)
+	
 	$ExtendedNode.StringField = "Hello Property from Godot -> Go -> Godot"
 	print($ExtendedNode.StringField)
 	
@@ -20,6 +23,7 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		hello.free()
+		myclass.free()
 		pass
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.

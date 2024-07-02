@@ -22,10 +22,16 @@ grow.graphics/gd v0.0.0-20240626070358-7bef01cc6332 h1:tq4qwpMSRiJqbW4NFTt9FV0iY
 grow.graphics/gd v0.0.0-20240626070358-7bef01cc6332/go.mod h1:fpZMwYwl0J3EN19bAB6+fLBRgLay1bWsn+vXL14ogOE=
 grow.graphics/gd v0.0.0-20240630001121-4bd3f1aa7b7b h1:cyqX5EK7h9q5VgwNODyjiFxy4chLv//m5eRQH6A6EsA=
 grow.graphics/gd v0.0.0-20240630001121-4bd3f1aa7b7b/go.mod h1:fpZMwYwl0J3EN19bAB6+fLBRgLay1bWsn+vXL14ogOE=
+grow.graphics/gd v0.0.0-20240702064838-365e90dbb53f h1:CJbeqYariJJfzo2FoGKtCbDpftK70wldj3HKahWMqMU=
+grow.graphics/gd v0.0.0-20240702064838-365e90dbb53f/go.mod h1:2vMeRlpLRUxiyUISsiUD+L/KvjDimu61tmLArNujzUQ=
+grow.graphics/rd v0.0.0-20240701120228-0b457a30999c h1:VtG7PMMjbsPQGUKweKBg2hba1je+HK+1eeKcprNjBxw=
+grow.graphics/rd v0.0.0-20240701120228-0b457a30999c/go.mod h1:8qibAy09XvHuKhgokyrfhWK36mazPBH8J95J9BDhY/c=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
 grow.graphics/xy v0.0.0-20240129002912-5a525950a952 h1:R1G0S3qugiSbdKLm9rhk74nTZnjQSqalqeP7kyMj8d0=
 grow.graphics/xy v0.0.0-20240129002912-5a525950a952/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
+grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9 h1:7DTN0CCvKzohFhaeb1vNC1XackvyL4u1UwQDBzQixJo=
+grow.graphics/xy v0.0.0-20240603021049-7427233fc3a9/go.mod h1:JwNaWFtFaeSmvp34kveQhSGN8dNowvLlz55K/c9bs1E=
 runtime.link v0.0.0-20240428070921-e0d9b4c402dc h1:nOF5WNAID+upQfYiSzq6uLp9mTiq8YQmitM3yaeHr/8=
 runtime.link v0.0.0-20240428070921-e0d9b4c402dc/go.mod h1:FmhED1a2pghGm3hqbiieLDDgqq5kI+ZMiQr6rxu0jc8=
 runtime.link v0.0.0-20240510041921-494aa7fd7f63 h1:nFAphGy0qjlYCBdEwRGyAheJMd1bZTfn9/8HSnvFAnA=
@@ -36,3 +42,5 @@ runtime.link v0.0.0-20240519001043-33982d8d5497 h1:zxC0NC3nM32uR9yx25YB66VgaFLVB
 runtime.link v0.0.0-20240519001043-33982d8d5497/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
 runtime.link v0.0.0-20240525075419-2bae5ef92c8f h1:j6o3zA2olSwmyiQWMBImRyPTAx2JvfrZWb5UjwHT8dg=
 runtime.link v0.0.0-20240525075419-2bae5ef92c8f/go.mod h1:/uYnCQF/lqkRLLSGKNtaDAJuc0sEKOH5ftxy7QKtODg=
+runtime.link v0.0.0-20240701115931-4e64a1336202 h1:YHHZC2oE5AJPjxzQ7mvJm/I9O1SlF9mZEMcS2Ka/DU0=
+runtime.link v0.0.0-20240701115931-4e64a1336202/go.mod h1:lV/Nllw9AHBUtQk69IfNc0ovSmd4AFFUt2W6Su3rDVQ=

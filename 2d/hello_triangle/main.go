@@ -15,13 +15,13 @@ type HelloTriangle struct {
 	triangle gd.RID
 }
 
-func (app *HelloTriangle) Initialize(godot gd.Context) {
-	RS := gd.RenderingServer(godot)
+func (app *HelloTriangle) Initialize() {
+	RS := gd.RenderingServer(app.Temporary)
 	app.viewport = RS.ViewportCreate()
 
-	DS := gd.DisplayServer(godot)
-	DS.WindowSetWindowEventCallback(godot.Callable(app.OnWindowInputEvent), 0)
-	DS.WindowSetTitle(godot.String("Hello Triangle"), 0)
+	DS := gd.DisplayServer(app.Temporary)
+	DS.WindowSetWindowEventCallback(app.Temporary.Callable(app.OnWindowInputEvent), 0)
+	DS.WindowSetTitle(app.Temporary.String("Hello Triangle"), 0)
 
 	size := DS.WindowGetSize(0)
 
@@ -38,26 +38,26 @@ func (app *HelloTriangle) Initialize(godot gd.Context) {
 	RS.ViewportAttachCanvas(app.viewport, app.canvas)
 }
 
-func (app *HelloTriangle) OnWindowInputEvent(godot gd.Context, event gd.DisplayServerWindowEvent) {
+func (app *HelloTriangle) OnWindowInputEvent(event gd.DisplayServerWindowEvent) {
 	switch event {
 	case gd.DisplayServerWindowEventCloseRequest:
 		app.closing = true
 	}
 }
 
-func (app *HelloTriangle) Process(godot gd.Context, delta gd.Float) gd.Bool {
-	RS := gd.RenderingServer(godot)
-	DS := gd.DisplayServer(godot)
+func (app *HelloTriangle) Process(delta gd.Float) gd.Bool {
+	RS := gd.RenderingServer(app.Temporary)
+	DS := gd.DisplayServer(app.Temporary)
 	size := DS.WindowGetSize(0)
 	RS.ViewportSetSize(app.viewport, size.X(), size.Y())
 	RS.ViewportAttachToScreen(app.viewport, gd.NewRect2(0, 0, gd.Float(size.X()), gd.Float(size.Y())), 0)
 	RS.CanvasItemClear(app.triangle)
-	var points = godot.PackedVector2Array()
+	var points = app.Temporary.PackedVector2Array()
 	points.Append(gd.NewVector2(0, 0))
 	points.Append(gd.NewVector2(gd.Float(size.X()), 0))
 	points.Append(gd.NewVector2(gd.Float(size.X())/2, gd.Float(size.Y())))
 
-	var colors = godot.PackedColorArray()
+	var colors = app.Temporary.PackedColorArray()
 	colors.Append(gd.Color{1, 0, 0, 1})
 	colors.Append(gd.Color{0, 1, 0, 1})
 	colors.Append(gd.Color{0, 0, 1, 1})

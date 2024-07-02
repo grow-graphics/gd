@@ -30,14 +30,14 @@ var PlayerAnimations struct {
 	Up gd.StringName
 }
 
-func (p *Player) Ready(gd.Context) {
+func (p *Player) Ready() {
 	p.Speed = 400
 	p.ScreenSize = p.Super().AsCanvasItem().GetViewportRect().Size
 	p.Super().AsCanvasItem().Hide()
 }
 
-func (p *Player) Process(godot gd.Context, delta gd.Float) {
-	Input := gd.Input(godot)
+func (p *Player) Process(delta gd.Float) {
+	Input := gd.Input(p.Temporary)
 
 	var velocity gd.Vector2
 	if Input.IsActionPressed(PlayerControls.MoveRight, false) {
@@ -72,15 +72,15 @@ func (p *Player) Process(godot gd.Context, delta gd.Float) {
 	}
 }
 
-func (p *Player) Start(godot gd.Context, pos gd.Vector2) {
+func (p *Player) Start(pos gd.Vector2) {
 	p.Super().AsNode2D().SetPosition(pos)
 	p.Super().AsCanvasItem().Show()
 	p.CollisionShape3D.SetDisabled(false)
 }
 
-func (p *Player) OnPlayerBodyEntered(godot gd.Context, body gd.Node) {
+func (p *Player) OnPlayerBodyEntered(body gd.Node) {
 	p.Super().AsCanvasItem().Hide()
 	p.CollisionShape3D.SetDisabled(true)
 	p.Hit.Emit()
-	p.CollisionShape3D.AsObject().SetDeferred(godot.StringName("disabled"), godot.Variant(true))
+	p.CollisionShape3D.AsObject().SetDeferred(p.Temporary.StringName("disabled"), p.Temporary.Variant(true))
 }

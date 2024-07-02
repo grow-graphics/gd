@@ -16,13 +16,13 @@ type PongBall struct {
 	initialPosition gd.Vector2
 }
 
-func (b *PongBall) Ready(gd.Context) {
+func (b *PongBall) Ready() {
 	b.speed = DefaultBallSpeed
 	b.Direction = gd.Const(gd.Vector2.LEFT)
 	b.initialPosition = b.Super().AsNode2D().GetPosition()
 }
 
-func (b *PongBall) Process(_ gd.Context, delta gd.Float) {
+func (b *PongBall) Process(delta gd.Float) {
 	node2d := b.Super().AsNode2D()
 	b.speed += delta * 2
 	node2d.SetPosition(node2d.GetPosition().Add(b.Direction.Mulf(b.speed * delta)))
@@ -41,8 +41,8 @@ type PongCeilingFloor struct {
 	BounceDirection gd.Int
 }
 
-func (cf *PongCeilingFloor) OnAreaEntered(godot gd.Context, area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](godot, area); ok {
+func (cf *PongCeilingFloor) OnAreaEntered(area gd.Area2D) {
+	if ball, ok := gd.As[*PongBall](cf.Temporary, area); ok {
 		ball.Direction = gd.Vector2.Add(ball.Direction, gd.NewVector2(0, gd.Float(cf.BounceDirection))).Normalized()
 	}
 }
@@ -58,16 +58,16 @@ type PongPaddle struct {
 	screenSizeY gd.Float
 }
 
-func (p *PongPaddle) Ready(godot gd.Context) {
+func (p *PongPaddle) Ready() {
 	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size.Y()
-	var n = p.Super().AsNode().GetName(godot).String()
+	var n = p.Super().AsNode().GetName(p.Temporary).String()
 	p.up = p.Pin().StringName(n + "_move_up")
 	p.down = p.Pin().StringName(n + "_move_down")
 }
 
-func (p *PongPaddle) Process(godot gd.Context, delta gd.Float) {
+func (p *PongPaddle) Process(delta gd.Float) {
 	node2d := p.Super().AsNode2D()
-	var input = gd.Input(godot).GetActionStrength(p.down, false) - gd.Input(godot).GetActionStrength(p.up, false)
+	var input = gd.Input(p.Temporary).GetActionStrength(p.down, false) - gd.Input(p.Temporary).GetActionStrength(p.up, false)
 	var position = node2d.GetPosition()
 	position.SetY(gd.Float(gd.Clamp(gd.Float(position[1])+input*PaddleMoveSpeed*delta, 16, gd.Float(p.screenSizeY-16))))
 	node2d.SetPosition(position)

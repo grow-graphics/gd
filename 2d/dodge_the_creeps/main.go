@@ -33,39 +33,39 @@ type Main struct {
 	score gd.Int
 }
 
-func (m *Main) GameOver(godot gd.Context) {
+func (m *Main) GameOver() {
 	m.ScoreTimer.Stop()
 	m.MobTimer.Stop()
-	m.HUD.ShowGameOver(godot)
+	m.HUD.ShowGameOver()
 	m.Music.Stop()
 	m.DeathSound.Play(0)
 }
 
-func (m *Main) NewGame(godot gd.Context) {
+func (m *Main) NewGame() {
 	m.score = 0
-	m.Player.Start(godot, m.StartPosition.AsNode2D().GetPosition())
+	m.Player.Start(m.StartPosition.AsNode2D().GetPosition())
 	m.StartTimer.Start(0)
 
-	m.HUD.UpdateScore(godot, m.score)
-	m.HUD.ShowMessage(godot, godot.String("Get Ready!"))
+	m.HUD.UpdateScore(m.score)
+	m.HUD.ShowMessage(m.Temporary.String("Get Ready!"))
 
 	//m.Super().GetTree(godot).CallGroup(godot.StringName("mobs"), godot.StringName("queue_free"))
 	m.Music.Play(0)
 }
 
-func (m *Main) OnScoreTimerTimeout(godot gd.Context) {
+func (m *Main) OnScoreTimerTimeout() {
 	m.score++
-	m.HUD.UpdateScore(godot, m.score)
+	m.HUD.UpdateScore(m.score)
 }
 
-func (m *Main) OnStartTimerTimeout(godot gd.Context) {
+func (m *Main) OnStartTimerTimeout() {
 	m.MobTimer.Start(0)
 	m.ScoreTimer.Start(0)
 }
 
-func (m *Main) OnMobTimerTimeout(godot gd.Context) {
+func (m *Main) OnMobTimerTimeout() {
 	// Create a new instance of the Mob scene.
-	mob, ok := gd.As[gd.RigidBody2D](godot, m.MobScene.Instantiate(godot, 0))
+	mob, ok := gd.As[gd.RigidBody2D](m.Temporary, m.MobScene.Instantiate(m.Temporary, 0))
 	if !ok {
 		fmt.Println("failed to cast!")
 		return
@@ -81,11 +81,11 @@ func (m *Main) OnMobTimerTimeout(godot gd.Context) {
 	mob.AsNode2D().SetPosition(m.MobPath.MobSpawnLocation.AsNode2D().GetPosition())
 
 	// Add some randomness to the direction.
-	direction += godot.RandfRange(-gd.Pi/4, gd.Pi/4)
+	direction += m.Temporary.RandfRange(-gd.Pi/4, gd.Pi/4)
 	mob.AsNode2D().SetRotation(direction)
 
 	// Choose the velocity.
-	var velocity = gd.NewVector2(godot.RandfRange(150, 250), 0)
+	var velocity = gd.NewVector2(m.Temporary.RandfRange(150, 250), 0)
 	mob.SetLinearVelocity(velocity.Rotated(gd.Radians(direction)))
 
 	m.Super().AddChild(mob.AsNode(), true, 0)

@@ -14,13 +14,13 @@ type TodoList struct {
 	List gd.VBoxContainer
 }
 
-func (h *TodoList) Ready(godot gd.Context) {
-	h.Button.AsObject().Connect(godot.StringName("pressed"), godot.Callable(h.OnButtonPressed), 0)
+func (h *TodoList) Ready() {
+	h.Button.AsObject().Connect(h.Temporary.StringName("pressed"), h.Temporary.Callable(h.OnButtonPressed), 0)
 }
 
-func (h *TodoList) OnButtonPressed(godot gd.Context) {
-	label := gd.Create(godot, new(gd.Label))
-	label.SetText(h.Task.GetText(godot))
+func (h *TodoList) OnButtonPressed() {
+	label := gd.Create(h.Temporary, new(gd.Label))
+	label.SetText(h.Task.GetText(h.Temporary))
 	h.List.AsNode().AddChild(label.AsNode(), false, 0)
 }
 

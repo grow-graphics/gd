@@ -14,12 +14,12 @@ type HelloName struct {
 	Button gd.Button
 }
 
-func (h *HelloName) Ready(godot gd.Context) {
-	h.Button.AsObject().Connect(godot.StringName("pressed"), godot.Callable(h.OnButtonPressed), 0)
+func (h *HelloName) Ready() {
+	h.Button.AsObject().Connect(h.Temporary.StringName("pressed"), h.Temporary.Callable(h.OnButtonPressed), 0)
 }
 
-func (h *HelloName) OnButtonPressed(godot gd.Context) {
-	h.Text.SetText(godot.String("Hello " + h.Name.GetText(godot).String()))
+func (h *HelloName) OnButtonPressed() {
+	h.Text.SetText(h.Temporary.String("Hello " + h.Name.GetText(h.Temporary).String()))
 }
 
 func main() {
