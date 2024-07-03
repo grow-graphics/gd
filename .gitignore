@@ -2,3 +2,4 @@ go.work
 *.godot*
 *.so
 *library.gdextension
+go.work.sum
