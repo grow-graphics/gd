@@ -17,10 +17,10 @@ type Main struct {
 func (app *Main) Initialize() {
 	app.RD = gd.RenderingDevice(app.KeepAlive)
 
-	fmt.Println(app.RD.GetDeviceName())
-	fmt.Println(app.RD.GetDeviceVendorName())
+	fmt.Println(app.RD.DeviceName())
+	fmt.Println(app.RD.DeviceVendor())
 
-	fmt.Println("VRAM: ", app.RD.GetMemoryUsage(rd.MemoryTotal))
+	fmt.Println("VRAM: ", app.RD.MemoryUsage(rd.MemoryTotal))
 }
 
 func main() {
