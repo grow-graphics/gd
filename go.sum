@@ -26,10 +26,14 @@ grow.graphics/gd v0.0.0-20240702064838-365e90dbb53f h1:CJbeqYariJJfzo2FoGKtCbDpf
 grow.graphics/gd v0.0.0-20240702064838-365e90dbb53f/go.mod h1:2vMeRlpLRUxiyUISsiUD+L/KvjDimu61tmLArNujzUQ=
 grow.graphics/gd v0.0.0-20240706094714-73cb8c4f5bb6 h1:7dW9iH8ZIibIMiCJT5QPu5b2hAYMtjx6qOzSVVQJVtk=
 grow.graphics/gd v0.0.0-20240706094714-73cb8c4f5bb6/go.mod h1:PmU/uX96lBSBi4ZuXx1QfGy9BGvnu2e+IMZEGvzhIvI=
+grow.graphics/gd v0.0.0-20240706100351-36c3a7c07552 h1:uYgj9JQ9pxIH8WFC2P88MoAEctiswz/5LK6oxO5JUME=
+grow.graphics/gd v0.0.0-20240706100351-36c3a7c07552/go.mod h1:YIro2OTXyx0JxuQs5Ng2KwXCttL0Dm37Tlna1yLQL9o=
 grow.graphics/rd v0.0.0-20240701120228-0b457a30999c h1:VtG7PMMjbsPQGUKweKBg2hba1je+HK+1eeKcprNjBxw=
 grow.graphics/rd v0.0.0-20240701120228-0b457a30999c/go.mod h1:8qibAy09XvHuKhgokyrfhWK36mazPBH8J95J9BDhY/c=
 grow.graphics/rd v0.0.0-20240706094613-3d9dff8fad7a h1:G16its0/k+miqXlEiWBEbcFcaWES5hb26ShlwEUQ+SI=
 grow.graphics/rd v0.0.0-20240706094613-3d9dff8fad7a/go.mod h1:ps76FV2OK6KgSPiPPDWEXpEAsBCrpYxF8g4RU3REhRo=
+grow.graphics/rd v0.0.0-20240706100320-00baa9f2a15d h1:+pZ325kp76tdP6LaFZGbvvILzT0JEHTBsqWsGaDickw=
+grow.graphics/rd v0.0.0-20240706100320-00baa9f2a15d/go.mod h1:LTLElyAX7gsYU8EPr4JW/CWIaEN6TuB6X4mcdkgV4ys=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4 h1:oCxs27eH3FW15+xGaAVsLSp6S9hbZL51sLoSGp5cqIk=
 grow.graphics/uc v0.0.0-20240128001120-57fde712a2f4/go.mod h1:rNkUY9tOrmdnN9bjAJkmK8fKT0u6qftXOXitETbIlzo=
 grow.graphics/xy v0.0.0-20240129002912-5a525950a952 h1:R1G0S3qugiSbdKLm9rhk74nTZnjQSqalqeP7kyMj8d0=
@@ -50,3 +54,5 @@ runtime.link v0.0.0-20240701115931-4e64a1336202 h1:YHHZC2oE5AJPjxzQ7mvJm/I9O1SlF
 runtime.link v0.0.0-20240701115931-4e64a1336202/go.mod h1:lV/Nllw9AHBUtQk69IfNc0ovSmd4AFFUt2W6Su3rDVQ=
 runtime.link v0.0.0-20240703051215-df8d9e173c4e h1:AX3rf02nIAo4KBKoKTNt27jsekcGnQXGWwlmCu1m7Uw=
 runtime.link v0.0.0-20240703051215-df8d9e173c4e/go.mod h1:lV/Nllw9AHBUtQk69IfNc0ovSmd4AFFUt2W6Su3rDVQ=
+runtime.link v0.0.0-20240706100251-1b46cf7b6783 h1:qEDa6njRTmbyn+byX214X8rUgJrm+MPLzCLnQEflEiE=
+runtime.link v0.0.0-20240706100251-1b46cf7b6783/go.mod h1:lV/Nllw9AHBUtQk69IfNc0ovSmd4AFFUt2W6Su3rDVQ=
