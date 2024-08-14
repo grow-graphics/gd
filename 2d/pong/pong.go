@@ -74,9 +74,9 @@ func (p *PongPaddle) Process(delta gd.Float) {
 
 }
 
-func (p *PongPaddle) OnAreaEntered(godot gd.Context, area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](godot, area); ok {
-		ball.Direction = (gd.NewVector2(p.BallDirection, godot.Randf()*2-1)).Normalized()
+func (p *PongPaddle) OnAreaEntered(area gd.Area2D) {
+	if ball, ok := gd.As[*PongBall](p.Temporary, area); ok {
+		ball.Direction = (gd.NewVector2(p.BallDirection, p.Temporary.Randf()*2-1)).Normalized()
 	}
 }
 
@@ -84,8 +84,8 @@ type PongWall struct {
 	gd.Class[PongWall, gd.Area2D] `gd:"PongWall"`
 }
 
-func (w *PongWall) OnAreaEntered(godot gd.Context, area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](godot, area); ok {
+func (w *PongWall) OnAreaEntered(area gd.Area2D) {
+	if ball, ok := gd.As[*PongBall](w.Temporary, area); ok {
 		ball.Reset()
 	}
 }
