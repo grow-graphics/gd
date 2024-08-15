@@ -34,6 +34,8 @@ grow.graphics/gd v0.0.0-20240710064531-edc03e71dbe9 h1:xHDWtIrurs7XYLYWdfRm+HBge
 grow.graphics/gd v0.0.0-20240710064531-edc03e71dbe9/go.mod h1:H9uYnpIy5KYN3wnnDrWWu3pNwo+eSnwcBe3MG8dZUys=
 grow.graphics/gd v0.0.0-20240814175500-7e943fbb23e0 h1:QC1UyduDdweXlZyz8SHn7mhR0m/3AMmafcE6b1pcu8Y=
 grow.graphics/gd v0.0.0-20240814175500-7e943fbb23e0/go.mod h1:2XqsIQrFPtQ2NemYzIK55+/Tzg89zwglWO/UwRhuQeE=
+grow.graphics/gd v0.0.0-20240815211716-bd28d856b353 h1:gdsJz/MSacNX6RCEoiNYJXRzpAZtdutYxIfCCoV9dqc=
+grow.graphics/gd v0.0.0-20240815211716-bd28d856b353/go.mod h1:2XqsIQrFPtQ2NemYzIK55+/Tzg89zwglWO/UwRhuQeE=
 grow.graphics/rd v0.0.0-20240701120228-0b457a30999c h1:VtG7PMMjbsPQGUKweKBg2hba1je+HK+1eeKcprNjBxw=
 grow.graphics/rd v0.0.0-20240701120228-0b457a30999c/go.mod h1:8qibAy09XvHuKhgokyrfhWK36mazPBH8J95J9BDhY/c=
 grow.graphics/rd v0.0.0-20240706094613-3d9dff8fad7a h1:G16its0/k+miqXlEiWBEbcFcaWES5hb26ShlwEUQ+SI=
