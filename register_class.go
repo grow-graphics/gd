@@ -54,26 +54,31 @@ If the Struct implements an OnRegister(Lifetime) method, it will
 be called on a temporary instance when the class is registered.
 */
 func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
-	var classType = reflect.TypeOf([0]Struct{}).Elem()
-	var superType = reflect.TypeOf([0]Parent{}).Elem()
+	classType := reflect.TypeFor[Struct]()
+	superType := reflect.TypeFor[Parent]()
 	if classType.Kind() != reflect.Struct || classType.Name() == "" {
 		panic("gdextension.RegisterClass: Class type must be a named struct")
 	}
 
 	// Support 'gd' tag for renaming the class within Godot.
-	var rename = classNameOf(classType)
+	rename := classNameOf(classType)
 
-	var tool = false
-	switch {
-	case superType.Implements(reflect.TypeOf([0]interface{ AsScript() Script }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsEditorPlugin() EditorPlugin }{}).Elem()),
-		superType.Implements(reflect.TypeOf([0]interface{ AsScriptLanguage() ScriptLanguage }{}).Elem()),
-		classType.Implements(reflect.TypeOf([0]Tool{}).Elem()):
+	var parent Parent
+	super := any(parent)
+	tool := false
+	switch super.(type) {
+	case interface{ AsScript() Script },
+		interface{ AsEditorPlugin() EditorPlugin },
+		interface{ AsScriptLanguage() ScriptLanguage },
+		Tool:
 		tool = true
 	}
 
-	var className = godot.StringName(rename)
-	var superName = godot.StringName(strings.TrimPrefix(superType.Name(), "class"))
+	className := godot.StringName(rename)
+	superName := godot.StringName(strings.TrimPrefix(superType.Name(), "class"))
+
+	var cls Struct
+	clsPtr := &cls
 
 	godot.API.ClassDB.RegisterClass(godot.API.ExtensionToken, className, superName,
 		&classImplementation{
@@ -82,7 +87,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 			Godot: godot.API,
 			Type:  classType,
 			Tool:  tool,
-			Value: reflect.New(classType).Interface().(gd.ExtensionClass),
+			Value: any(clsPtr).(gd.ExtensionClass),
 		})
 	unregister := func() {
 		godot.API.ClassDB.UnregisterClass(godot.API.ExtensionToken, className)
@@ -92,9 +97,7 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	registerSignals(godot, className, classType)
 	registerMethods(godot, className, classType)
 
-	if superType.Implements(reflect.TypeOf([0]interface {
-		AsMainLoop() MainLoop
-	}{}).Elem()) {
+	if _, ok := super.(interface{ AsMainLoop() MainLoop }); ok {
 		main_loop_type := godot.String("application/run/main_loop_type")
 		ProjectSettings(godot).SetInitialValue(main_loop_type, godot.Variant(className))
 		ProjectSettings(godot).SetSetting(main_loop_type, godot.Variant(className))
@@ -103,9 +106,9 @@ func Register[Struct gd.Extends[Parent], Parent gd.IsClass](godot Lifetime) {
 	type onRegister interface {
 		OnRegister(godot Lifetime)
 	}
-	if reflect.PointerTo(classType).Implements(reflect.TypeOf([0]onRegister{}).Elem()) {
-		impl := reflect.New(classType).Interface().(onRegister)
-		impl.OnRegister(godot)
+	registerer, ok := any(clsPtr).(onRegister)
+	if ok {
+		registerer.OnRegister(godot)
 	}
 }
 
