@@ -1,85 +1,90 @@
 package main
 
 import (
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+	"graphics.gd/objects/DisplayServer"
+	"graphics.gd/objects/MainLoop"
+	"graphics.gd/objects/RenderingServer"
+	"graphics.gd/objects/Resource"
+	"graphics.gd/startup"
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Rect2i"
+	"graphics.gd/variant/Vector2"
 )
 
 type HelloTriangle struct {
-	gd.Class[HelloTriangle, gd.MainLoop]
+	defined.Object[HelloTriangle, MainLoop.Instance]
 
-	viewport gd.RID
-	closing  gd.Bool
+	viewport Resource.ID
+	closing  bool
 
-	canvas   gd.RID
-	triangle gd.RID
+	canvas   Resource.ID
+	triangle Resource.ID
 }
 
 func (app *HelloTriangle) Initialize() {
-	RS := gd.RenderingServer(app.Temporary)
-	app.viewport = RS.ViewportCreate()
+	app.viewport = RenderingServer.ViewportCreate()
 
-	DS := gd.DisplayServer(app.Temporary)
-	DS.WindowSetWindowEventCallback(app.Temporary.Callable(app.OnWindowInputEvent), 0)
-	DS.WindowSetTitle(app.Temporary.String("Hello Triangle"), 0)
+	DisplayServer.WindowSetWindowEventCallback(app.OnWindowInputEvent)
+	DisplayServer.WindowSetRectChangedCallback(app.OnResize)
+	DisplayServer.WindowSetTitle("Hello Triangle")
 
-	size := DS.WindowGetSize(0)
+	size := DisplayServer.WindowGetSize()
 
-	RS.ViewportAttachToScreen(app.viewport, gd.NewRect2(0, 0, gd.Float(size.X()), gd.Float(size.Y())), 0)
-	RS.ViewportSetClearMode(app.viewport, gd.RenderingServerViewportClearAlways)
-	RS.ViewportSetActive(app.viewport, true)
-	RS.ViewportSetSize(app.viewport, size.X(), size.Y())
+	RenderingServer.Advanced().ViewportAttachToScreen(app.viewport, Rect2.New(0, 0, size.X, size.Y), 0)
+	RenderingServer.ViewportSetClearMode(app.viewport, RenderingServer.ViewportClearAlways)
+	RenderingServer.ViewportSetActive(app.viewport, true)
+	RenderingServer.ViewportSetSize(app.viewport, int(size.X), int(size.Y))
 
-	app.canvas = RS.CanvasCreate()
-	app.triangle = RS.CanvasItemCreate()
+	app.canvas = RenderingServer.CanvasCreate()
+	app.triangle = RenderingServer.CanvasItemCreate()
 
-	RS.CanvasItemSetParent(app.triangle, app.canvas)
+	RenderingServer.CanvasItemSetParent(app.triangle, app.canvas)
+	RenderingServer.ViewportAttachCanvas(app.viewport, app.canvas)
 
-	RS.ViewportAttachCanvas(app.viewport, app.canvas)
 }
 
-func (app *HelloTriangle) OnWindowInputEvent(event gd.DisplayServerWindowEvent) {
+func (app *HelloTriangle) OnWindowInputEvent(event DisplayServer.WindowEvent) {
 	switch event {
-	case gd.DisplayServerWindowEventCloseRequest:
+	case DisplayServer.WindowEventCloseRequest:
 		app.closing = true
 	}
 }
 
-func (app *HelloTriangle) Process(delta gd.Float) gd.Bool {
-	RS := gd.RenderingServer(app.Temporary)
-	DS := gd.DisplayServer(app.Temporary)
-	size := DS.WindowGetSize(0)
-	RS.ViewportSetSize(app.viewport, size.X(), size.Y())
-	RS.ViewportAttachToScreen(app.viewport, gd.NewRect2(0, 0, gd.Float(size.X()), gd.Float(size.Y())), 0)
-	RS.CanvasItemClear(app.triangle)
-	var points = app.Temporary.PackedVector2Array()
-	points.Append(gd.NewVector2(0, 0))
-	points.Append(gd.NewVector2(gd.Float(size.X()), 0))
-	points.Append(gd.NewVector2(gd.Float(size.X())/2, gd.Float(size.Y())))
+func (app *HelloTriangle) OnResize(rect Rect2i.PositionSize) {
+	size := DisplayServer.WindowGetSize()
 
-	var colors = app.Temporary.PackedColorArray()
-	colors.Append(gd.Color{1, 0, 0, 1})
-	colors.Append(gd.Color{0, 1, 0, 1})
-	colors.Append(gd.Color{0, 0, 1, 1})
+	RenderingServer.CanvasItemClear(app.triangle)
+	var points = []Vector2.XY{
+		Vector2.New(0, 0),
+		Vector2.New(size.X, 0),
+		Vector2.New(size.X/2, size.Y),
+	}
+	var colors = []Color.RGBA{
+		{1, 0, 0, 1},
+		{0, 1, 0, 1},
+		{0, 0, 1, 1},
+	}
+	RenderingServer.CanvasItemAddPolygon(app.triangle, points, colors)
+}
 
-	RS.CanvasItemAddPolygon(app.triangle, points, colors, gd.PackedVector2Array{}, 0)
+func (app *HelloTriangle) Process(dt Float.X) bool {
+	size := DisplayServer.WindowGetSize()
+	RenderingServer.ViewportSetSize(app.viewport, int(size.X), int(size.Y))
+	RenderingServer.Advanced().ViewportAttachToScreen(app.viewport, Rect2.New(0, 0, size.X, size.Y), 0)
 	return app.closing
 }
 
-func (app *HelloTriangle) PhysicsProcess(godot gd.Context, delta gd.Float) gd.Bool {
-	return app.closing
-}
+func (app *HelloTriangle) PhysicsProcess(dt Float.X) bool { return app.closing }
 
-func (app *HelloTriangle) Finalize(godot gd.Context) {
-	RS := gd.RenderingServer(godot)
-	RS.FreeRid(app.viewport)
-	RS.FreeRid(app.canvas)
-	RS.FreeRid(app.triangle)
+func (app *HelloTriangle) Finalize() {
+	RenderingServer.FreeRid(app.viewport)
+	RenderingServer.FreeRid(app.canvas)
+	RenderingServer.FreeRid(app.triangle)
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if ok {
-		gd.Register[HelloTriangle](godot)
-	}
+	startup.MainLoop[HelloTriangle]()
 }

@@ -4,33 +4,44 @@ import (
 	"fmt"
 	"math/rand"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+	"graphics.gd/objects"
+	"graphics.gd/objects/AudioStreamPlayer"
+	"graphics.gd/objects/Marker2D"
+	"graphics.gd/objects/Node"
+	"graphics.gd/objects/PackedScene"
+	"graphics.gd/objects/Path2D"
+	"graphics.gd/objects/PathFollow2D"
+	"graphics.gd/objects/RigidBody2D"
+	"graphics.gd/objects/Timer"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Vector2"
 )
 
 type Main struct {
-	gd.Class[Main, gd.Node] `gd:"DodgeTheCreeps"`
+	defined.Object[Main, Node.Instance] `gd:"DodgeTheCreeps"`
 
-	MobScene gd.PackedScene
+	MobScene PackedScene.Instance
 
-	MobTimer      gd.Timer
-	ScoreTimer    gd.Timer
-	StartTimer    gd.Timer
+	MobTimer      Timer.Instance
+	ScoreTimer    Timer.Instance
+	StartTimer    Timer.Instance
 	Player        *Player
-	StartPosition gd.Marker2D
+	StartPosition Marker2D.Instance
 
-	Music      gd.AudioStreamPlayer
-	DeathSound gd.AudioStreamPlayer
+	Music      AudioStreamPlayer.Instance
+	DeathSound AudioStreamPlayer.Instance
 
 	HUD *HUD
 
 	MobPath struct {
-		gd.Path2D
+		Path2D.Instance
 
-		MobSpawnLocation gd.PathFollow2D
+		MobSpawnLocation PathFollow2D.Instance
 	}
 
-	score gd.Int
+	score int
 }
 
 func (m *Main) GameOver() {
@@ -38,19 +49,19 @@ func (m *Main) GameOver() {
 	m.MobTimer.Stop()
 	m.HUD.ShowGameOver()
 	m.Music.Stop()
-	m.DeathSound.Play(0)
+	m.DeathSound.Play()
 }
 
 func (m *Main) NewGame() {
 	m.score = 0
-	m.Player.Start(m.StartPosition.AsNode2D().GetPosition())
-	m.StartTimer.Start(0)
+	m.Player.Start(m.StartPosition.AsNode2D().Position())
+	m.StartTimer.Start()
 
 	m.HUD.UpdateScore(m.score)
-	m.HUD.ShowMessage(m.Temporary.String("Get Ready!"))
+	m.HUD.ShowMessage("Get Ready!")
 
 	//m.Super().GetTree(godot).CallGroup(godot.StringName("mobs"), godot.StringName("queue_free"))
-	m.Music.Play(0)
+	m.Music.Play()
 }
 
 func (m *Main) OnScoreTimerTimeout() {
@@ -59,53 +70,48 @@ func (m *Main) OnScoreTimerTimeout() {
 }
 
 func (m *Main) OnStartTimerTimeout() {
-	m.MobTimer.Start(0)
-	m.ScoreTimer.Start(0)
+	m.MobTimer.Start()
+	m.ScoreTimer.Start()
 }
 
 func (m *Main) OnMobTimerTimeout() {
 	// Create a new instance of the Mob scene.
-	mob, ok := gd.As[gd.RigidBody2D](m.Temporary, m.MobScene.Instantiate(m.Temporary, 0))
+	mob, ok := objects.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
 	if !ok {
 		fmt.Println("failed to cast!")
 		return
 	}
 
 	// Choose a random location on Path2D.
-	m.MobPath.MobSpawnLocation.SetProgressRatio(rand.Float64())
+	m.MobPath.MobSpawnLocation.SetProgressRatio(Float.X(rand.Float64()))
 
 	// Set the mob's direction perpendicular to the path direction.
-	direction := m.MobPath.MobSpawnLocation.AsNode2D().GetRotation() + gd.Pi/2
+	direction := Angle.Radians(m.MobPath.MobSpawnLocation.AsNode2D().Rotation()) + Angle.Pi/2
 
 	// Set the mob's position to a random location.
-	mob.AsNode2D().SetPosition(m.MobPath.MobSpawnLocation.AsNode2D().GetPosition())
+	mob.AsNode2D().SetPosition(m.MobPath.MobSpawnLocation.AsNode2D().Position())
 
 	// Add some randomness to the direction.
-	direction += m.Temporary.RandfRange(-gd.Pi/4, gd.Pi/4)
-	mob.AsNode2D().SetRotation(direction)
+	direction += Angle.Radians(Float.RandomBetween(-Float.X(Angle.Pi/4), Float.X(Angle.Pi/4)))
+	mob.AsNode2D().SetRotation(Float.X(direction))
 
 	// Choose the velocity.
-	var velocity = gd.NewVector2(m.Temporary.RandfRange(150, 250), 0)
-	mob.SetLinearVelocity(velocity.Rotated(gd.Radians(direction)))
+	var velocity = Vector2.New(Float.RandomBetween(150, 250), 0)
+	mob.SetLinearVelocity(Vector2.Rotated(velocity, direction))
 
-	m.Super().AddChild(mob.AsNode(), true, 0)
+	m.Super().AddChild(mob.AsNode())
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		return
-	}
+	PlayerControls.MoveRight = ("move_right")
+	PlayerControls.MoveLeft = ("move_left")
+	PlayerControls.MoveDown = ("move_down")
+	PlayerControls.MoveUp = ("move_up")
+	PlayerAnimations.Walk = ("right")
+	PlayerAnimations.Up = ("up")
 
-	PlayerControls.MoveRight = godot.StringName("move_right")
-	PlayerControls.MoveLeft = godot.StringName("move_left")
-	PlayerControls.MoveDown = godot.StringName("move_down")
-	PlayerControls.MoveUp = godot.StringName("move_up")
-	PlayerAnimations.Walk = godot.StringName("right")
-	PlayerAnimations.Up = godot.StringName("up")
-
-	gd.Register[HUD](godot)
-	gd.Register[Player](godot)
-	gd.Register[Mob](godot)
-	gd.Register[Main](godot)
+	defined.InEditor[HUD]()
+	defined.InEditor[Player]()
+	defined.InEditor[Mob]()
+	defined.InEditor[Main]()
 }

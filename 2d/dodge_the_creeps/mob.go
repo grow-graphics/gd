@@ -3,19 +3,23 @@ package main
 import (
 	"math/rand"
 
-	"grow.graphics/gd"
+	"graphics.gd/defined"
+	"graphics.gd/objects/AnimatedSprite2D"
+	"graphics.gd/objects/RigidBody2D"
+	"graphics.gd/objects/SpriteFrames"
+	"graphics.gd/variant/StringName"
 )
 
 type Mob struct {
-	gd.Class[Mob, gd.RigidBody2D] `gd:"DodgeTheCreepsMob"`
+	defined.Object[Mob, RigidBody2D.Instance] `gd:"DodgeTheCreepsMob"`
 
-	AnimatedSprite2D gd.AnimatedSprite2D
+	AnimatedSprite2D AnimatedSprite2D.Instance
 }
 
 func (m *Mob) Ready() {
-	mobTypes := m.AnimatedSprite2D.GetSpriteFrames(m.Temporary).GetAnimationNames(m.Temporary)
-	pick := int64(rand.Int() % int(mobTypes.Size()))
-	m.AnimatedSprite2D.Play(mobTypes.Index(m.Temporary, pick).StringName(m.Temporary), 1, false)
+	mobTypes := SpriteFrames.Instance(m.AnimatedSprite2D.SpriteFrames()).GetAnimationNames()
+	pick := int64(rand.Int() % len(mobTypes))
+	AnimatedSprite2D.Advanced(m.AnimatedSprite2D).Play(StringName.New(mobTypes[pick]), 1, false)
 }
 
 func (m *Mob) OnVisibleOnScreenNotifier2DScreenExited() { m.Super().AsNode().QueueFree() }

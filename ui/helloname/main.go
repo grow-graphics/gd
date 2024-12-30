@@ -1,31 +1,32 @@
 package main
 
 import (
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+
+	"graphics.gd/objects/Button"
+	"graphics.gd/objects/Label"
+	"graphics.gd/objects/Node2D"
+	"graphics.gd/objects/TextEdit"
+
+	_ "graphics.gd/startup"
 )
 
 type HelloName struct {
-	gd.Class[HelloName, gd.Node2D]
+	defined.Object[HelloName, Node2D.Instance]
 
-	Name gd.TextEdit
-	Text gd.Label
-
-	Button gd.Button
+	Name   TextEdit.Instance
+	Text   Label.Instance
+	Button Button.Instance
 }
 
 func (h *HelloName) Ready() {
-	h.Button.AsObject().Connect(h.Temporary.StringName("pressed"), h.Temporary.Callable(h.OnButtonPressed), 0)
+	h.Button.AsBaseButton().OnPressed(h.OnButtonPressed)
 }
 
 func (h *HelloName) OnButtonPressed() {
-	h.Text.SetText(h.Temporary.String("Hello " + h.Name.GetText(h.Temporary).String()))
+	h.Text.SetText("Hello " + h.Name.Text())
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		return
-	}
-	gd.Register[HelloName](godot)
+	defined.InEditor[HelloName]()
 }

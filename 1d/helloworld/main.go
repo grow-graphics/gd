@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	_ "grow.graphics/gd/gdextension"
+	_ "graphics.gd/gdextension"
 )
 
 func main() {

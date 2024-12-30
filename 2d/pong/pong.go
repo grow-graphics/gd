@@ -1,102 +1,103 @@
 package main
 
 import (
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+	"graphics.gd/objects"
+	"graphics.gd/objects/Area2D"
+	"graphics.gd/objects/Input"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Vector2"
+
+	_ "graphics.gd/startup"
 )
 
 const DefaultBallSpeed = 500
 
 type PongBall struct {
-	gd.Class[PongBall, gd.Area2D] `gd:"PongBall"`
+	defined.Object[PongBall, Area2D.Instance] `gd:"PongBall"`
 
-	Direction gd.Vector2
+	Direction Vector2.XY
 
-	speed           gd.Float
-	initialPosition gd.Vector2
+	speed           Float.X
+	initialPosition Vector2.XY
 }
 
 func (b *PongBall) Ready() {
 	b.speed = DefaultBallSpeed
-	b.Direction = gd.Const(gd.Vector2.LEFT)
-	b.initialPosition = b.Super().AsNode2D().GetPosition()
+	b.Direction = Vector2.Left
+	b.initialPosition = b.Super().AsNode2D().Position()
 }
 
-func (b *PongBall) Process(delta gd.Float) {
+func (b *PongBall) Process(delta Float.X) {
 	node2d := b.Super().AsNode2D()
 	b.speed += delta * 2
-	node2d.SetPosition(node2d.GetPosition().Add(b.Direction.Mulf(b.speed * delta)))
+	node2d.SetPosition(Vector2.Add(node2d.Position(), Vector2.MulX(b.Direction, b.speed*delta)))
 }
 
 func (b *PongBall) Reset() {
 	node2d := b.Super().AsNode2D()
-	b.Direction = gd.Const(gd.Vector2.LEFT)
+	b.Direction = Vector2.Left
 	node2d.SetPosition(b.initialPosition)
 	b.speed = DefaultBallSpeed
 }
 
 type PongCeilingFloor struct {
-	gd.Class[PongCeilingFloor, gd.Area2D] `gd:"PongCeilingFloor"`
+	defined.Object[PongCeilingFloor, Area2D.Instance] `gd:"PongCeilingFloor"`
 
-	BounceDirection gd.Int
+	BounceDirection int
 }
 
-func (cf *PongCeilingFloor) OnAreaEntered(area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](cf.Temporary, area); ok {
-		ball.Direction = gd.Vector2.Add(ball.Direction, gd.NewVector2(0, gd.Float(cf.BounceDirection))).Normalized()
+func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
+	if ball, ok := objects.As[*PongBall](area); ok {
+		ball.Direction = Vector2.Normalized(Vector2.Add(ball.Direction, Vector2.XY{0, Float.X(cf.BounceDirection)}))
 	}
 }
 
 const PaddleMoveSpeed = 200
 
 type PongPaddle struct {
-	gd.Class[PongPaddle, gd.Area2D] `gd:"PongPaddle"`
+	defined.Object[PongPaddle, Area2D.Instance] `gd:"PongPaddle"`
 
-	BallDirection gd.Float
-	up, down      gd.StringName
+	BallDirection Float.X
+	up, down      string
 
-	screenSizeY gd.Float
+	screenSizeY Float.X
 }
 
 func (p *PongPaddle) Ready() {
-	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size.Y()
-	var n = p.Super().AsNode().GetName(p.Temporary).String()
-	p.up = p.Pin().StringName(n + "_move_up")
-	p.down = p.Pin().StringName(n + "_move_down")
+	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size.Y
+	var n = p.Super().AsNode().Name()
+	p.up = n + "_move_up"
+	p.down = n + "_move_down"
 }
 
-func (p *PongPaddle) Process(delta gd.Float) {
+func (p *PongPaddle) Process(delta Float.X) {
 	node2d := p.Super().AsNode2D()
-	var input = gd.Input(p.Temporary).GetActionStrength(p.down, false) - gd.Input(p.Temporary).GetActionStrength(p.up, false)
-	var position = node2d.GetPosition()
-	position.SetY(gd.Float(gd.Clamp(gd.Float(position[1])+input*PaddleMoveSpeed*delta, 16, gd.Float(p.screenSizeY-16))))
+	var input = Input.GetActionStrength(p.down) - Input.GetActionStrength(p.up)
+	var position = node2d.Position()
+	position.Y = Float.Clamp(position.Y+input*PaddleMoveSpeed*delta, 16, p.screenSizeY-16)
 	node2d.SetPosition(position)
-
 }
 
-func (p *PongPaddle) OnAreaEntered(area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](p.Temporary, area); ok {
-		ball.Direction = (gd.NewVector2(p.BallDirection, p.Temporary.Randf()*2-1)).Normalized()
+func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
+	if ball, ok := objects.As[*PongBall](area); ok {
+		ball.Direction = Vector2.Normalized(Vector2.New(p.BallDirection, Float.RandomBetween(-1, 1)))
 	}
 }
 
 type PongWall struct {
-	gd.Class[PongWall, gd.Area2D] `gd:"PongWall"`
+	defined.Object[PongWall, Area2D.Instance] `gd:"PongWall"`
 }
 
-func (w *PongWall) OnAreaEntered(area gd.Area2D) {
-	if ball, ok := gd.As[*PongBall](w.Temporary, area); ok {
+func (w *PongWall) OnAreaEntered(area Area2D.Instance) {
+	if ball, ok := objects.As[*PongBall](area); ok {
 		ball.Reset()
 	}
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		panic("could not link to godot")
-	}
-	gd.Register[PongBall](godot)
-	gd.Register[PongCeilingFloor](godot)
-	gd.Register[PongPaddle](godot)
-	gd.Register[PongWall](godot)
+	defined.InEditor[PongBall]()
+	defined.InEditor[PongCeilingFloor]()
+	defined.InEditor[PongPaddle]()
+	defined.InEditor[PongWall]()
 }

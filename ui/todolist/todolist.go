@@ -1,33 +1,35 @@
 package main
 
 import (
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+	"graphics.gd/objects/Button"
+	"graphics.gd/objects/Control"
+	"graphics.gd/objects/Label"
+	"graphics.gd/objects/TextEdit"
+	"graphics.gd/objects/VBoxContainer"
+
+	_ "graphics.gd/startup"
 )
 
 type TodoList struct {
-	gd.Class[TodoList, gd.Control]
+	defined.Object[TodoList, Control.Instance]
 
-	Task   gd.TextEdit
-	Button gd.Button
+	Task   TextEdit.Instance
+	Button Button.Instance
 
-	List gd.VBoxContainer
+	List VBoxContainer.Instance
 }
 
 func (h *TodoList) Ready() {
-	h.Button.AsObject().Connect(h.Temporary.StringName("pressed"), h.Temporary.Callable(h.OnButtonPressed), 0)
+	h.Button.AsBaseButton().OnPressed(h.OnButtonPressed)
 }
 
 func (h *TodoList) OnButtonPressed() {
-	label := gd.Create(h.Temporary, new(gd.Label))
-	label.SetText(h.Task.GetText(h.Temporary))
-	h.List.AsNode().AddChild(label.AsNode(), false, 0)
+	label := Label.New()
+	label.SetText(h.Task.Text())
+	h.List.AsNode().AddChild(label.AsNode())
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		return
-	}
-	gd.Register[TodoList](godot)
+	defined.InEditor[TodoList]()
 }

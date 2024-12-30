@@ -4,8 +4,17 @@ import (
 	"fmt"
 	"runtime"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	gd "graphics.gd"
+	"graphics.gd/defined"
+	"graphics.gd/objects"
+	"graphics.gd/objects/Engine"
+	"graphics.gd/objects/Node"
+	"graphics.gd/objects/Node2D"
+	"graphics.gd/objects/Sprite2D"
+	"graphics.gd/startup"
+	"graphics.gd/variant"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Float"
 )
 
 /*
@@ -13,73 +22,70 @@ HelloWorld is a simple extension to demonstrate how to export
 Go methods so that they can be used in scripts.
 */
 type HelloWorld struct {
-	gd.Class[HelloWorld, gd.Object]
+	defined.Object[HelloWorld, objects.Instance]
 }
 
 // Print prints "Hello World"
-func (h *HelloWorld) Print() {
-	fmt.Println("Hello World")
-}
+func (h *HelloWorld) Print() { fmt.Println("Hello World") }
 
 // Echo prints the given string, signalling that it
 // was printed by Go code.
-func (h *HelloWorld) Echo(s gd.String) {
-	fmt.Println(s.String() + " from Go!")
-}
+func (h *HelloWorld) Echo(s gd.String) { fmt.Println(s.String() + " from Go!") }
 
 // Arch returns the current GOARCH value.
-func (h *HelloWorld) Arch() gd.String {
-	return h.Temporary.String(runtime.GOARCH)
-}
+func (h *HelloWorld) Arch() string { return runtime.GOARCH }
 
-func (h *HelloWorld) GetBar(message gd.String) gd.Object {
-	var result = gd.Create(h.Temporary, new(Bar))
-	result.Message = message.Copy(result.KeepAlive)
-	return result.AsObject()
+func (h *HelloWorld) GetBar(message string) *Bar {
+	return &Bar{
+		Message: message,
+	}
 }
 
 type Rotator struct {
-	gd.Class[Rotator, gd.Sprite2D]
+	defined.Object[Rotator, Sprite2D.Instance]
+
+	Map map[string]int
 }
 
-func (r *Rotator) Process(delta gd.Float) {
+func (r *Rotator) Process(delta Float.X) {
 	node2D := r.Super().AsNode2D()
-	node2D.SetRotation(node2D.GetRotation() + delta)
+	node2D.SetRotation(node2D.Rotation() + delta)
 }
 
 type StartedSignalEmitter struct {
-	gd.Class[StartedSignalEmitter, gd.Node]
+	defined.Object[StartedSignalEmitter, Node.Instance]
 
-	started gd.SignalAs[func()]
+	started chan<- struct{}
 }
 
 func (r *StartedSignalEmitter) Ready() {
-	if r.started.Emit != nil {
-		r.started.Emit()
+	select {
+	case r.started <- struct{}{}:
+	default:
 	}
 }
 
 type MyClassWithConstants struct {
-	gd.Class[MyClassWithConstants, gd.Node2D]
+	defined.Object[MyClassWithConstants, Node2D.Instance]
 }
 
-func (*MyClassWithConstants) OnRegister(godot gd.Context) {
-	godot.Register(gd.Enum[MyClassWithConstants, int]{
+func (*MyClassWithConstants) OnRegister() {
+	/*gdextension.Register(gd.Enum[MyClassWithConstants, int]{
 		Name: "MyEnum",
 		Values: map[string]int{
 			"Value1": 1,
 			"Value2": 2,
 		},
-	})
+	})*/
 }
 
 /*
 ExtendedNode demonstrates how to call the methods of builtin objects.
 */
 type ExtendedNode struct {
-	gd.Class[ExtendedNode, gd.Node2D]
+	defined.Object[ExtendedNode, Node2D.Instance]
 
-	StringField gd.String
+	StringField string
 }
 
 func (e *ExtendedNode) Ready() {
@@ -87,57 +93,45 @@ func (e *ExtendedNode) Ready() {
 
 	node := e.Super()
 
-	fmt.Println("class:", node.AsObject().GetClass(e.Temporary).String())
+	fmt.Println("class:", node.AsObject().GetClass().String())
 
-	var obj = gd.Create(e.Temporary, new(gd.Object))
-	fmt.Println(obj.GetClass(e.Temporary).String())
+	var obj = objects.New()
+	fmt.Println(obj.GetClass().String())
 
-	fmt.Println(gd.Engine(e.Temporary).GetSingletonList(e.Temporary))
+	fmt.Println(Engine.GetSingletonList())
 	fmt.Println("Scene is ready!")
 
-	fmt.Println("sin=", e.Temporary.Sin(1.5))
+	fmt.Println("sin=", Angle.Sin(1.5))
 
-	fmt.Println("rotation=", node.GetRotation())
+	fmt.Println("rotation=", node.Rotation())
 	node.SetRotation(3.14)
-	fmt.Println("rotation=", node.GetRotation())
+	fmt.Println("rotation=", node.Rotation())
 
-	pos := node.GetPosition()
+	pos := node.Position()
 
 	fmt.Println("position=", pos)
 
-	pos[0] = 100
+	pos.X = 100
 
 	node.SetPosition(pos)
 	fmt.Println("position=", pos)
 
-	variant := e.Temporary.Variant(node)
-	result, err := variant.Call(e.Temporary, e.Temporary.StringName("get_position"))
-	if err != nil {
-		fmt.Println("error:", err)
-	} else {
-		fmt.Println("result:", result.Interface(e.Temporary))
-	}
+	v := variant.New(node)
+	fmt.Printf("result: %[1]T %[1]v\n", variant.Call(v, "get_position"))
 }
 
 type Bar struct {
-	gd.Class[Bar, gd.Object]
-
-	Message gd.String
+	Message string
 }
 
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		return
-	}
-	fmt.Println("Godot Version is: ", godot.Version())
-	fmt.Println("Extension: ", godot.GetLibraryPath())
-	gd.Register[HelloWorld](godot)
-	gd.Register[Bar](godot)
-	gd.Register[ExtendedNode](godot)
-	gd.Register[Rotator](godot)
-	gd.Register[StartedSignalEmitter](godot)
-	gd.Register[MyClassWithConstants](godot)
+	fmt.Println("Engine Version is: ", gd.Version())
+	fmt.Println("Extension: ", startup.LibraryPath())
+	defined.InEditor[HelloWorld]()
+	defined.InEditor[ExtendedNode]()
+	defined.InEditor[Rotator]()
+	defined.InEditor[StartedSignalEmitter]()
+	defined.InEditor[MyClassWithConstants]()
 }

@@ -9,8 +9,8 @@ func _ready():
 	
 	print(hello.Arch())
 	
-	var bar = hello.GetBar("Hello Bar")
-	print(bar.Message)
+	#var bar = hello.GetBar("Hello Bar")
+	#print(bar.Message)
 	
 	$ExtendedNode.StringField = "Hello Property from Godot -> Go -> Godot"
 	print($ExtendedNode.StringField)

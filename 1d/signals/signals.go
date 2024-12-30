@@ -3,12 +3,14 @@ package main
 import (
 	"time"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	gd "graphics.gd"
+	"graphics.gd/defined"
+
+	_ "graphics.gd/startup"
 )
 
 type Signals struct {
-	gd.Class[Signals, gd.Object]
+	defined.Object[Signals, gd.Object]
 
 	Something chan<- struct{} `gd:"something"`
 }
@@ -21,8 +23,5 @@ func (s *Signals) DoSomething() {
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if ok {
-		gd.Register[Signals](godot)
-	}
+	defined.InEditor[Signals]()
 }

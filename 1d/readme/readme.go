@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
+	"graphics.gd/defined"
+	"graphics.gd/objects/SceneTree"
+	"graphics.gd/startup"
 )
 
 type HelloWorld struct {
-	gd.Class[HelloWorld, gd.SceneTree]
+	defined.Object[HelloWorld, SceneTree.Instance]
 }
 
 // Initialize implements the Godot MainLoop _initialize interface (virtual function).
@@ -17,9 +18,5 @@ func (h *HelloWorld) Initialize() {
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if !ok {
-		return
-	}
-	gd.Register[HelloWorld](godot)
+	startup.MainLoop[HelloWorld]()
 }

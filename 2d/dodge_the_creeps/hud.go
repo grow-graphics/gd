@@ -3,49 +3,56 @@ package main
 import (
 	"fmt"
 
-	"grow.graphics/gd"
+	"graphics.gd/defined"
+	"graphics.gd/objects/Button"
+	"graphics.gd/objects/CanvasLayer"
+	"graphics.gd/objects/Label"
+	"graphics.gd/objects/Node"
+	"graphics.gd/objects/SceneTree"
+	"graphics.gd/objects/SceneTreeTimer"
+	"graphics.gd/objects/Timer"
 )
 
 type HUD struct {
-	gd.Class[HUD, gd.CanvasLayer] `gd:"DodgeTheCreepsHUD"`
+	defined.Object[HUD, CanvasLayer.Instance] `gd:"DodgeTheCreepsHUD"`
 
-	Message      gd.Label
-	MessageTimer gd.Timer
-	StartButton  gd.Button
-	ScoreLabel   gd.Label
+	Message      Label.Instance
+	MessageTimer Timer.Instance
+	StartButton  Button.Instance
+	ScoreLabel   Label.Instance
 
-	StartGame gd.SignalAs[func()] `gd:"start_game"`
+	StartGame chan<- struct{} `gd:"start_game"`
 }
 
-func (h *HUD) AsNode() gd.Node { return h.Super().AsNode() }
+func (h *HUD) AsNode() Node.Instance { return h.Super().AsNode() }
 
-func (h *HUD) ShowMessage(text gd.String) {
+func (h *HUD) ShowMessage(text string) {
 	h.Message.SetText(text)
 	h.Message.AsCanvasItem().Show()
-	h.MessageTimer.Start(0)
+	h.MessageTimer.Start()
 }
 
 func (h *HUD) ShowGameOver() {
-	h.ShowMessage(h.Temporary.String("Game Over"))
-	h.MessageTimer.AsObject().Connect(h.Temporary.StringName("timeout"), h.Temporary.Callable(h.showTitle), 0)
+	h.ShowMessage("Game Over")
+	h.MessageTimer.OnTimeout(h.ShowTitle)
 }
 
-func (h *HUD) showTitle() {
-	h.Message.SetText(h.Temporary.String("Dodge the Creeps!"))
+func (h *HUD) ShowTitle() {
+	h.Message.SetText("Dodge the Creeps!")
 	h.Message.AsCanvasItem().Show()
-	timer := h.Super().AsNode().GetTree(h.Temporary).CreateTimer(h.Temporary, 1, false, false, false)
-	timer.AsObject().Connect(h.Temporary.StringName("timeout"), h.Temporary.Callable(h.showStartButton), 0)
+	var timer SceneTreeTimer.Instance = SceneTree.Instance(h.Super().AsNode().GetTree()).CreateTimer(1)
+	timer.OnTimeout(h.ShowStartButton)
 }
 
-func (h *HUD) showStartButton() { h.StartButton.AsCanvasItem().Show() }
+func (h *HUD) ShowStartButton() { h.StartButton.AsCanvasItem().Show() }
 
-func (h *HUD) UpdateScore(score gd.Int) {
-	h.ScoreLabel.SetText(h.Temporary.String(fmt.Sprint(score)))
+func (h *HUD) UpdateScore(score int) {
+	h.ScoreLabel.SetText(fmt.Sprint(score))
 }
 
 func (h *HUD) OnStartButtonPressed() {
 	h.StartButton.AsCanvasItem().Hide()
-	h.StartGame.Emit()
+	h.StartGame <- struct{}{}
 }
 
 func (h *HUD) OnMessageTimerTimeout() {

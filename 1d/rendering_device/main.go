@@ -3,29 +3,26 @@ package main
 import (
 	"fmt"
 
-	"grow.graphics/gd"
-	"grow.graphics/gd/gdextension"
-	"grow.graphics/rd"
+	"graphics.gd/defined"
+	"graphics.gd/objects/RenderingDevice"
+	"graphics.gd/objects/RenderingServer"
+	"graphics.gd/objects/SceneTree"
+	"graphics.gd/startup"
 )
 
 type Main struct {
-	gd.Class[Main, gd.SceneTree]
-
-	RD rd.Interface
+	defined.Object[Main, SceneTree.Instance]
 }
 
 func (app *Main) Initialize() {
-	app.RD = gd.RenderingDevice(app.KeepAlive)
+	var RD RenderingDevice.Instance = RenderingServer.GetRenderingDevice()
 
-	fmt.Println(app.RD.DeviceName())
-	fmt.Println(app.RD.DeviceVendor())
+	fmt.Println(RD.GetDeviceName())
+	fmt.Println(RD.GetDeviceVendorName())
 
-	fmt.Println("VRAM: ", app.RD.MemoryUsage(rd.MemoryTotal))
+	fmt.Println("VRAM: ", RD.GetMemoryUsage(RenderingDevice.MemoryTotal))
 }
 
 func main() {
-	godot, ok := gdextension.Link()
-	if ok {
-		gd.Register[Main](godot)
-	}
+	startup.MainLoop[Main]()
 }
