@@ -17,12 +17,12 @@ import (
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector2"
+
+	_ "graphics.gd/startup"
 )
 
 type Main struct {
 	defined.Object[Main, Node.Instance] `gd:"DodgeTheCreeps"`
-
-	MobScene PackedScene.Instance
 
 	MobTimer      Timer.Instance
 	ScoreTimer    Timer.Instance
@@ -40,6 +40,8 @@ type Main struct {
 
 		MobSpawnLocation PathFollow2D.Instance
 	}
+
+	MobScene PackedScene.Instance
 
 	score int
 }

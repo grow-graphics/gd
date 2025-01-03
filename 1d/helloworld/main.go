@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	_ "graphics.gd/gdextension"
+	_ "graphics.gd/startup"
 )
 
 func main() {
