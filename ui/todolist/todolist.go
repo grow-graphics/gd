@@ -7,8 +7,7 @@ import (
 	"graphics.gd/objects/Label"
 	"graphics.gd/objects/TextEdit"
 	"graphics.gd/objects/VBoxContainer"
-
-	_ "graphics.gd/startup"
+	"graphics.gd/startup"
 )
 
 type TodoList struct {
@@ -32,4 +31,5 @@ func (h *TodoList) OnButtonPressed() {
 
 func main() {
 	defined.InEditor[TodoList]()
+	startup.Engine()
 }

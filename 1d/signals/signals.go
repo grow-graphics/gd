@@ -5,8 +5,7 @@ import (
 
 	gd "graphics.gd"
 	"graphics.gd/defined"
-
-	_ "graphics.gd/startup"
+	"graphics.gd/startup"
 )
 
 type Signals struct {
@@ -24,4 +23,5 @@ func (s *Signals) DoSomething() {
 
 func main() {
 	defined.InEditor[Signals]()
+	startup.Engine()
 }

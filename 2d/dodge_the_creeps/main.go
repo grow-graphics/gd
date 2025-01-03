@@ -14,11 +14,10 @@ import (
 	"graphics.gd/objects/PathFollow2D"
 	"graphics.gd/objects/RigidBody2D"
 	"graphics.gd/objects/Timer"
+	"graphics.gd/startup"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector2"
-
-	_ "graphics.gd/startup"
 )
 
 type Main struct {
@@ -116,4 +115,5 @@ func main() {
 	defined.InEditor[Player]()
 	defined.InEditor[Mob]()
 	defined.InEditor[Main]()
+	startup.Engine()
 }

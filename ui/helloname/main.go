@@ -2,13 +2,12 @@ package main
 
 import (
 	"graphics.gd/defined"
+	"graphics.gd/startup"
 
 	"graphics.gd/objects/Button"
 	"graphics.gd/objects/Label"
 	"graphics.gd/objects/Node2D"
 	"graphics.gd/objects/TextEdit"
-
-	_ "graphics.gd/startup"
 )
 
 type HelloName struct {
@@ -29,4 +28,5 @@ func (h *HelloName) OnButtonPressed() {
 
 func main() {
 	defined.InEditor[HelloName]()
+	startup.Engine()
 }

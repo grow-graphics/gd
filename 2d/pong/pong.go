@@ -5,6 +5,7 @@ import (
 	"graphics.gd/objects"
 	"graphics.gd/objects/Area2D"
 	"graphics.gd/objects/Input"
+	"graphics.gd/startup"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector2"
 
@@ -100,4 +101,5 @@ func main() {
 	defined.InEditor[PongCeilingFloor]()
 	defined.InEditor[PongPaddle]()
 	defined.InEditor[PongWall]()
+	startup.Engine()
 }

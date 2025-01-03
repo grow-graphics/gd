@@ -127,11 +127,14 @@ type Bar struct {
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	fmt.Println("Engine Version is: ", gd.Version())
-	fmt.Println("Extension: ", startup.LibraryPath())
 	defined.InEditor[HelloWorld]()
 	defined.InEditor[ExtendedNode]()
 	defined.InEditor[Rotator]()
 	defined.InEditor[StartedSignalEmitter]()
 	defined.InEditor[MyClassWithConstants]()
+
+	fmt.Println("Engine Version is: ", gd.Version())
+	fmt.Println("Extension: ", startup.LibraryPath())
+	startup.Engine()
+	fmt.Println("Shutting Down...")
 }

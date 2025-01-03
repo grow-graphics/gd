@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 
-	_ "graphics.gd/startup"
+	"graphics.gd/startup"
 )
 
 func main() {
+	startup.Wait()
 	fmt.Println("Hello, World!")
 }
