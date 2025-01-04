@@ -3,18 +3,18 @@ package main
 import (
 	"fmt"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects/Button"
-	"graphics.gd/objects/CanvasLayer"
-	"graphics.gd/objects/Label"
-	"graphics.gd/objects/Node"
-	"graphics.gd/objects/SceneTree"
-	"graphics.gd/objects/SceneTreeTimer"
-	"graphics.gd/objects/Timer"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Button"
+	"graphics.gd/classdb/CanvasLayer"
+	"graphics.gd/classdb/Label"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/SceneTree"
+	"graphics.gd/classdb/SceneTreeTimer"
+	"graphics.gd/classdb/Timer"
 )
 
 type HUD struct {
-	defined.Object[HUD, CanvasLayer.Instance] `gd:"DodgeTheCreepsHUD"`
+	classdb.Extension[HUD, CanvasLayer.Instance] `gd:"DodgeTheCreepsHUD"`
 
 	Message      Label.Instance
 	MessageTimer Timer.Instance

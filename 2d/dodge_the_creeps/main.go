@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"math/rand"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects"
-	"graphics.gd/objects/AudioStreamPlayer"
-	"graphics.gd/objects/Marker2D"
-	"graphics.gd/objects/Node"
-	"graphics.gd/objects/PackedScene"
-	"graphics.gd/objects/Path2D"
-	"graphics.gd/objects/PathFollow2D"
-	"graphics.gd/objects/RigidBody2D"
-	"graphics.gd/objects/Timer"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/AudioStreamPlayer"
+	"graphics.gd/classdb/Marker2D"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/PackedScene"
+	"graphics.gd/classdb/Path2D"
+	"graphics.gd/classdb/PathFollow2D"
+	"graphics.gd/classdb/RigidBody2D"
+	"graphics.gd/classdb/Timer"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Float"
@@ -21,7 +20,7 @@ import (
 )
 
 type Main struct {
-	defined.Object[Main, Node.Instance] `gd:"DodgeTheCreeps"`
+	classdb.Extension[Main, Node.Instance] `gd:"DodgeTheCreeps"`
 
 	MobTimer      Timer.Instance
 	ScoreTimer    Timer.Instance
@@ -77,7 +76,7 @@ func (m *Main) OnStartTimerTimeout() {
 
 func (m *Main) OnMobTimerTimeout() {
 	// Create a new instance of the Mob scene.
-	mob, ok := objects.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
+	mob, ok := classdb.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
 	if !ok {
 		fmt.Println("failed to cast!")
 		return
@@ -111,9 +110,9 @@ func main() {
 	PlayerAnimations.Walk = ("right")
 	PlayerAnimations.Up = ("up")
 
-	defined.InEditor[HUD]()
-	defined.InEditor[Player]()
-	defined.InEditor[Mob]()
-	defined.InEditor[Main]()
+	classdb.Register[HUD]()
+	classdb.Register[Player]()
+	classdb.Register[Mob]()
+	classdb.Register[Main]()
 	startup.Engine()
 }

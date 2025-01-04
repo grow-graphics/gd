@@ -1,17 +1,17 @@
 package main
 
 import (
-	"graphics.gd/defined"
-	"graphics.gd/objects/Button"
-	"graphics.gd/objects/Control"
-	"graphics.gd/objects/Label"
-	"graphics.gd/objects/TextEdit"
-	"graphics.gd/objects/VBoxContainer"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Button"
+	"graphics.gd/classdb/Control"
+	"graphics.gd/classdb/Label"
+	"graphics.gd/classdb/TextEdit"
+	"graphics.gd/classdb/VBoxContainer"
 	"graphics.gd/startup"
 )
 
 type TodoList struct {
-	defined.Object[TodoList, Control.Instance]
+	classdb.Extension[TodoList, Control.Instance]
 
 	Task   TextEdit.Instance
 	Button Button.Instance
@@ -30,6 +30,6 @@ func (h *TodoList) OnButtonPressed() {
 }
 
 func main() {
-	defined.InEditor[TodoList]()
+	classdb.Register[TodoList]()
 	startup.Engine()
 }

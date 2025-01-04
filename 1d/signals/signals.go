@@ -3,13 +3,13 @@ package main
 import (
 	"time"
 
-	gd "graphics.gd"
-	"graphics.gd/defined"
+	"graphics.gd/classdb"
 	"graphics.gd/startup"
+	"graphics.gd/variant/Object"
 )
 
 type Signals struct {
-	defined.Object[Signals, gd.Object]
+	classdb.Extension[Signals, Object.Instance]
 
 	Something chan<- struct{} `gd:"something"`
 }
@@ -22,6 +22,6 @@ func (s *Signals) DoSomething() {
 }
 
 func main() {
-	defined.InEditor[Signals]()
+	classdb.Register[Signals]()
 	startup.Engine()
 }

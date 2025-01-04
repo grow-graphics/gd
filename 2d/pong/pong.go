@@ -1,10 +1,9 @@
 package main
 
 import (
-	"graphics.gd/defined"
-	"graphics.gd/objects"
-	"graphics.gd/objects/Area2D"
-	"graphics.gd/objects/Input"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Area2D"
+	"graphics.gd/classdb/Input"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Vector2"
@@ -15,7 +14,7 @@ import (
 const DefaultBallSpeed = 500
 
 type PongBall struct {
-	defined.Object[PongBall, Area2D.Instance] `gd:"PongBall"`
+	classdb.Extension[PongBall, Area2D.Instance] `gd:"PongBall"`
 
 	Direction Vector2.XY
 
@@ -43,13 +42,13 @@ func (b *PongBall) Reset() {
 }
 
 type PongCeilingFloor struct {
-	defined.Object[PongCeilingFloor, Area2D.Instance] `gd:"PongCeilingFloor"`
+	classdb.Extension[PongCeilingFloor, Area2D.Instance] `gd:"PongCeilingFloor"`
 
 	BounceDirection int
 }
 
 func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := objects.As[*PongBall](area); ok {
+	if ball, ok := classdb.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.Add(ball.Direction, Vector2.XY{0, Float.X(cf.BounceDirection)}))
 	}
 }
@@ -57,7 +56,7 @@ func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
 const PaddleMoveSpeed = 200
 
 type PongPaddle struct {
-	defined.Object[PongPaddle, Area2D.Instance] `gd:"PongPaddle"`
+	classdb.Extension[PongPaddle, Area2D.Instance] `gd:"PongPaddle"`
 
 	BallDirection Float.X
 	up, down      string
@@ -81,25 +80,25 @@ func (p *PongPaddle) Process(delta Float.X) {
 }
 
 func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := objects.As[*PongBall](area); ok {
+	if ball, ok := classdb.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.New(p.BallDirection, Float.RandomBetween(-1, 1)))
 	}
 }
 
 type PongWall struct {
-	defined.Object[PongWall, Area2D.Instance] `gd:"PongWall"`
+	classdb.Extension[PongWall, Area2D.Instance] `gd:"PongWall"`
 }
 
 func (w *PongWall) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := objects.As[*PongBall](area); ok {
+	if ball, ok := classdb.As[*PongBall](area); ok {
 		ball.Reset()
 	}
 }
 
 func main() {
-	defined.InEditor[PongBall]()
-	defined.InEditor[PongCeilingFloor]()
-	defined.InEditor[PongPaddle]()
-	defined.InEditor[PongWall]()
+	classdb.Register[PongBall]()
+	classdb.Register[PongCeilingFloor]()
+	classdb.Register[PongPaddle]()
+	classdb.Register[PongWall]()
 	startup.Engine()
 }

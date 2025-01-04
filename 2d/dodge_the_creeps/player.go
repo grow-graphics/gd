@@ -2,12 +2,12 @@ package main
 
 import (
 	gd "graphics.gd"
-	"graphics.gd/defined"
-	"graphics.gd/objects/AnimatedSprite2D"
-	"graphics.gd/objects/Area2D"
-	"graphics.gd/objects/CollisionShape3D"
-	"graphics.gd/objects/Input"
-	"graphics.gd/objects/Node"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/AnimatedSprite2D"
+	"graphics.gd/classdb/Area2D"
+	"graphics.gd/classdb/CollisionShape3D"
+	"graphics.gd/classdb/Input"
+	"graphics.gd/classdb/Node"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/StringName"
@@ -15,7 +15,7 @@ import (
 )
 
 type Player struct {
-	defined.Object[Player, Area2D.Instance] `gd:"DodgeTheCreepsPlayer"`
+	classdb.Extension[Player, Area2D.Instance] `gd:"DodgeTheCreepsPlayer"`
 
 	Speed      gd.Int     // How fast the player will move (pixels/sec).
 	ScreenSize gd.Vector2 // Size of the game window.

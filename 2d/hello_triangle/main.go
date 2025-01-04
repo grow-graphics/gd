@@ -1,11 +1,11 @@
 package main
 
 import (
-	"graphics.gd/defined"
-	"graphics.gd/objects/DisplayServer"
-	"graphics.gd/objects/MainLoop"
-	"graphics.gd/objects/RenderingServer"
-	"graphics.gd/objects/Resource"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/DisplayServer"
+	"graphics.gd/classdb/MainLoop"
+	"graphics.gd/classdb/RenderingServer"
+	"graphics.gd/classdb/Resource"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
@@ -15,7 +15,7 @@ import (
 )
 
 type HelloTriangle struct {
-	defined.Object[HelloTriangle, MainLoop.Instance]
+	classdb.Extension[HelloTriangle, MainLoop.Instance]
 
 	viewport Resource.ID
 	closing  bool

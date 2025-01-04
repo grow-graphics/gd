@@ -3,15 +3,15 @@ package main
 import (
 	"math/rand"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects/AnimatedSprite2D"
-	"graphics.gd/objects/RigidBody2D"
-	"graphics.gd/objects/SpriteFrames"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/AnimatedSprite2D"
+	"graphics.gd/classdb/RigidBody2D"
+	"graphics.gd/classdb/SpriteFrames"
 	"graphics.gd/variant/StringName"
 )
 
 type Mob struct {
-	defined.Object[Mob, RigidBody2D.Instance] `gd:"DodgeTheCreepsMob"`
+	classdb.Extension[Mob, RigidBody2D.Instance] `gd:"DodgeTheCreepsMob"`
 
 	AnimatedSprite2D AnimatedSprite2D.Instance
 }

@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects/RenderingDevice"
-	"graphics.gd/objects/RenderingServer"
-	"graphics.gd/objects/SceneTree"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/RenderingDevice"
+	"graphics.gd/classdb/RenderingServer"
+	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/startup"
 )
 
 type Main struct {
-	defined.Object[Main, SceneTree.Instance]
+	classdb.Extension[Main, SceneTree.Instance]
 }
 
 func (app *Main) Initialize() {

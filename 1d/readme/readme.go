@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 
-	"graphics.gd/defined"
-	"graphics.gd/objects/SceneTree"
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/startup"
 )
 
 type HelloWorld struct {
-	defined.Object[HelloWorld, SceneTree.Instance]
+	classdb.Extension[HelloWorld, SceneTree.Instance]
 }
 
 // Initialize implements the Godot MainLoop _initialize interface (virtual function).

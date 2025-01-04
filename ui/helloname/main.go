@@ -1,17 +1,17 @@
 package main
 
 import (
-	"graphics.gd/defined"
+	"graphics.gd/classdb"
 	"graphics.gd/startup"
 
-	"graphics.gd/objects/Button"
-	"graphics.gd/objects/Label"
-	"graphics.gd/objects/Node2D"
-	"graphics.gd/objects/TextEdit"
+	"graphics.gd/classdb/Button"
+	"graphics.gd/classdb/Label"
+	"graphics.gd/classdb/Node2D"
+	"graphics.gd/classdb/TextEdit"
 )
 
 type HelloName struct {
-	defined.Object[HelloName, Node2D.Instance]
+	classdb.Extension[HelloName, Node2D.Instance]
 
 	Name   TextEdit.Instance
 	Text   Label.Instance
@@ -27,6 +27,6 @@ func (h *HelloName) OnButtonPressed() {
 }
 
 func main() {
-	defined.InEditor[HelloName]()
+	classdb.Register[HelloName]()
 	startup.Engine()
 }
