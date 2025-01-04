@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmhmiv43fqo4c"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3w8fh"]
-
-[node name="Node" type="TextureRect"]
-texture = SubResource("NoiseTexture2D_3w8fh")
