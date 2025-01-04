@@ -1,7 +1,6 @@
 package main
 
 import (
-	gd "graphics.gd"
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AnimatedSprite2D"
 	"graphics.gd/classdb/Area2D"
@@ -17,8 +16,8 @@ import (
 type Player struct {
 	classdb.Extension[Player, Area2D.Instance] `gd:"DodgeTheCreepsPlayer"`
 
-	Speed      gd.Int     // How fast the player will move (pixels/sec).
-	ScreenSize gd.Vector2 // Size of the game window.
+	Speed      int        // How fast the player will move (pixels/sec).
+	ScreenSize Vector2.XY // Size of the game window.
 
 	Hit chan<- struct{} `gd:"hit"`
 
@@ -47,7 +46,7 @@ func (p *Player) Ready() {
 }
 
 func (p *Player) Process(delta Float.X) {
-	var velocity gd.Vector2
+	var velocity Vector2.XY
 	if Input.IsActionPressed(PlayerControls.MoveRight) {
 		velocity.X += 1
 	}
@@ -80,7 +79,7 @@ func (p *Player) Process(delta Float.X) {
 	}
 }
 
-func (p *Player) Start(pos gd.Vector2) {
+func (p *Player) Start(pos Vector2.XY) {
 	p.Super().AsNode2D().SetPosition(pos)
 	p.Super().AsCanvasItem().Show()
 	p.CollisionShape3D.SetDisabled(false)

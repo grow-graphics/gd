@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"runtime"
 
-	gd "graphics.gd"
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/GDExtension"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node2D"
 	"graphics.gd/classdb/Sprite2D"
@@ -30,7 +30,7 @@ func (h *HelloWorld) Print() { fmt.Println("Hello World") }
 
 // Echo prints the given string, signalling that it
 // was printed by Go code.
-func (h *HelloWorld) Echo(s gd.String) { fmt.Println(s.String() + " from Go!") }
+func (h *HelloWorld) Echo(s string) { fmt.Println(s + " from Go!") }
 
 // Arch returns the current GOARCH value.
 func (h *HelloWorld) Arch() string { return runtime.GOARCH }
@@ -133,8 +133,8 @@ func main() {
 	classdb.Register[StartedSignalEmitter]()
 	classdb.Register[MyClassWithConstants]()
 
-	fmt.Println("Engine Version is: ", gd.Version())
-	fmt.Println("Extension: ", startup.LibraryPath())
+	fmt.Println("Engine Version is: ", Engine.Version())
+	fmt.Println("Extension: ", GDExtension.LibraryPath())
 	startup.Engine()
 	fmt.Println("Shutting Down...")
 }
