@@ -89,5 +89,5 @@ func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
 	p.Super().AsCanvasItem().Hide()
 	p.CollisionShape3D.SetDisabled(true)
 	p.Hit <- struct{}{}
-	p.CollisionShape3D.AsObject().SetDeferred(StringName.New("disabled"), variant.New(true))
+	p.CollisionShape3D.AsObject()[0].SetDeferred(StringName.New("disabled"), variant.New(true))
 }

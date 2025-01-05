@@ -22,7 +22,7 @@ HelloWorld is a simple extension to demonstrate how to export
 Go methods so that they can be used in scripts.
 */
 type HelloWorld struct {
-	classdb.Extension[HelloWorld, classdb.Object]
+	classdb.Extension[HelloWorld, Object.Instance]
 }
 
 // Print prints "Hello World"
@@ -93,7 +93,7 @@ func (e *ExtendedNode) Ready() {
 
 	node := e.Super()
 
-	fmt.Println("class:", node.AsObject().GetClass().String())
+	fmt.Println("class:", Object.Instance(node.AsObject()).String())
 
 	var obj = Object.New()
 	fmt.Println(obj.ClassName())
