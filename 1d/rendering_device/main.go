@@ -3,15 +3,14 @@ package main
 import (
 	"fmt"
 
-	"graphics.gd/classdb"
+	"graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/RenderingDevice"
 	"graphics.gd/classdb/RenderingServer"
-	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/startup"
 )
 
 type Main struct {
-	classdb.Extension[Main, SceneTree.Instance]
+	MainLoop.Implementation
 }
 
 func (app *Main) Initialize() {
@@ -24,5 +23,5 @@ func (app *Main) Initialize() {
 }
 
 func main() {
-	startup.MainLoop[Main]()
+	startup.MainLoop(new(Main))
 }
