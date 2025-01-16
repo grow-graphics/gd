@@ -9,11 +9,12 @@ import (
 )
 
 func main() {
-	startup.Wait()
+	startup.Loader()
 	hello := Label.New()
 	hello.AsControl().SetAnchorsPreset(Control.PresetFullRect)
 	hello.SetHorizontalAlignment(Label.HorizontalAlignmentCenter)
 	hello.SetVerticalAlignment(Label.VerticalAlignmentCenter)
 	hello.SetText("Hello, World!")
 	SceneTree.Add(hello)
+	startup.Engine()
 }

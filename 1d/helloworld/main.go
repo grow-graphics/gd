@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
-	startup.Wait()
+	startup.Loader()
 	fmt.Println("Hello, World!")
+	startup.Engine()
 }
