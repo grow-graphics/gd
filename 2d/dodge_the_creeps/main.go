@@ -103,10 +103,6 @@ func (m *Main) OnMobTimerTimeout() {
 }
 
 func main() {
-	//PlayerControls.MoveRight = ("move_right")
-	//PlayerControls.MoveLeft = ("move_left")
-	//PlayerControls.MoveDown = ("move_down")
-	//PlayerControls.MoveUp = ("move_up")
 	PlayerControls.MoveRight = ("ui_right")
 	PlayerControls.MoveLeft = ("ui_left")
 	PlayerControls.MoveDown = ("ui_down")
