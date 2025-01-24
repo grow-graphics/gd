@@ -2,7 +2,7 @@ module grow.graphics/eg
 
 go 1.23.2
 
-require graphics.gd v0.0.0-20250106002323-e0f7095af53f
+require graphics.gd v0.0.0-20250124115056-2303f91c6548
 
 require (
 	golang.org/x/text v0.15.0 // indirect

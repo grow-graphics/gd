@@ -7,8 +7,9 @@ import (
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Sprite2D"
 	"graphics.gd/shaders"
+	"graphics.gd/shaders/bool"
+	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/rgba"
-	"graphics.gd/shaders/vec1"
 	"graphics.gd/shaders/vec2"
 	"graphics.gd/shaders/vec4"
 	"graphics.gd/startup"
@@ -36,8 +37,8 @@ func (uniform MyFirstShader) Fragment(vert shaders.CanvasItemVertexAttributes) s
 
 func (MyFirstShader) Material(vert shaders.CanvasItemVertexAttributes) MyFirstMaterial {
 	// smooth back and forth between pink and blue
-	step := vec1.Modf(vert.Global.Time, vec1.New(2.0))
-	step = vec1.If(vec1.Gt(step, vec1.New(1.0)), vec1.Sub(vec1.New(2.0), step), step)
+	step := float.Mod(vert.Global.Time, 2.0)
+	step = bool.Mix(step, float.Sub(2.0, step), float.Gt(step, 1.0))
 	return MyFirstMaterial{
 		Color: rgba.New(step, 0.6, 0.9, 1.0),
 	}
