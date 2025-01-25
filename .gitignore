@@ -5,3 +5,4 @@ go.work
 *library.gdextension
 go.work.sum
 /2d/hello_triangle/graphics/main.tscn
+*export_presets.cfg
