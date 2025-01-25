@@ -2,7 +2,7 @@ module grow.graphics/eg
 
 go 1.23.2
 
-require graphics.gd v0.0.0-20250124115056-2303f91c6548
+require graphics.gd v0.0.0-20250125110705-ceef0a31b7c8
 
 require (
 	github.com/tetratelabs/wazero v1.8.2 // indirect

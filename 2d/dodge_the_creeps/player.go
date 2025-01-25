@@ -7,9 +7,8 @@ import (
 	"graphics.gd/classdb/CollisionShape3D"
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/Node"
-	"graphics.gd/variant"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/StringName"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -89,5 +88,7 @@ func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
 	p.Super().AsCanvasItem().Hide()
 	p.CollisionShape3D.SetDisabled(true)
 	p.Hit <- struct{}{}
-	p.CollisionShape3D.AsObject()[0].SetDeferred(StringName.New("disabled"), variant.New(true))
+	Callable.Defer(Callable.New(func() {
+		p.CollisionShape3D.SetDisabled(true)
+	}))
 }

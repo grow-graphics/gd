@@ -117,7 +117,7 @@ func (e *ExtendedNode) Ready() {
 	fmt.Println("position=", pos)
 
 	v := variant.New(node)
-	fmt.Printf("result: %[1]T %[1]v\n", variant.Call(v, "get_position"))
+	fmt.Printf("result: %[1]T %[1]v\n", v.Call("Position"))
 }
 
 type Bar struct {
