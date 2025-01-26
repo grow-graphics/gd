@@ -3,9 +3,9 @@ package main
 import (
 	"graphics.gd/classdb/DisplayServer"
 	"graphics.gd/classdb/RenderingServer"
-	"graphics.gd/classdb/Resource"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Color"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Rect2"
 	"graphics.gd/variant/Rect2i"
 	"graphics.gd/variant/Vector2"
@@ -13,9 +13,9 @@ import (
 
 var (
 	closing  bool
-	viewport Resource.ID
-	canvas   Resource.ID
-	triangle Resource.ID
+	viewport RID.Viewport
+	canvas   RID.Canvas
+	triangle RID.CanvasItem
 )
 
 func onWindowInputEvent(event DisplayServer.WindowEvent) {
@@ -46,7 +46,7 @@ func main() {
 	frames := startup.Rendering()
 
 	viewport = RenderingServer.ViewportCreate()
-	defer RenderingServer.FreeRid(viewport)
+	defer RenderingServer.FreeRid(RID.Any(viewport))
 
 	DisplayServer.WindowSetWindowEventCallback(onWindowInputEvent)
 	DisplayServer.WindowSetRectChangedCallback(onResize)
@@ -54,17 +54,17 @@ func main() {
 
 	size := DisplayServer.WindowGetSize()
 
-	RenderingServer.Advanced().ViewportAttachToScreen(viewport, Rect2.New(0, 0, size.X, size.Y), 0)
+	RenderingServer.Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.New(0, 0, size.X, size.Y), 0)
 	RenderingServer.ViewportSetClearMode(viewport, RenderingServer.ViewportClearAlways)
 	RenderingServer.ViewportSetActive(viewport, true)
 	RenderingServer.ViewportSetSize(viewport, int(size.X), int(size.Y))
 
 	canvas = RenderingServer.CanvasCreate()
 	triangle = RenderingServer.CanvasItemCreate()
-	defer RenderingServer.FreeRid(canvas)
-	defer RenderingServer.FreeRid(triangle)
+	defer RenderingServer.FreeRid(RID.Any(canvas))
+	defer RenderingServer.FreeRid(RID.Any(triangle))
 
-	RenderingServer.CanvasItemSetParent(triangle, canvas)
+	RenderingServer.CanvasItemSetParent(triangle, RID.CanvasItem(canvas))
 	RenderingServer.ViewportAttachCanvas(viewport, canvas)
 
 	onResize(Rect2i.New(0, 0, size.X, size.Y))
@@ -72,7 +72,7 @@ func main() {
 	for range frames {
 		size := DisplayServer.WindowGetSize()
 		RenderingServer.ViewportSetSize(viewport, int(size.X), int(size.Y))
-		RenderingServer.Advanced().ViewportAttachToScreen(viewport, Rect2.New(0, 0, size.X, size.Y), 0)
+		RenderingServer.Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.New(0, 0, size.X, size.Y), 0)
 		if closing {
 			break
 		}
