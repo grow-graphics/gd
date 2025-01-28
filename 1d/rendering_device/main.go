@@ -15,6 +15,10 @@ type Main struct {
 
 func (app *Main) Initialize() {
 	var RD RenderingDevice.Instance = RenderingServer.GetRenderingDevice()
+	if RD == RenderingDevice.Nil {
+		fmt.Println("no RenderingDevice available on this platform!")
+		return
+	}
 
 	fmt.Println(RD.GetDeviceName())
 	fmt.Println(RD.GetDeviceVendorName())
