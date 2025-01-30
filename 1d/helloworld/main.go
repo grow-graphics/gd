@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	startup.Loader()
+	startup.LoadingScene()
 	fmt.Println("Hello, World!")
-	startup.Engine()
+	startup.Scene()
 }

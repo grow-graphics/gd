@@ -114,5 +114,5 @@ func main() {
 	classdb.Register[Player]()
 	classdb.Register[Mob]()
 	classdb.Register[Main]()
-	startup.Engine()
+	startup.Scene()
 }

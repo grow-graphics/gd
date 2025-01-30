@@ -23,5 +23,5 @@ func (s *Signals) DoSomething() {
 
 func main() {
 	classdb.Register[Signals]()
-	startup.Engine()
+	startup.Scene()
 }

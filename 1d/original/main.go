@@ -135,6 +135,6 @@ func main() {
 
 	fmt.Println("Engine Version is: ", Engine.Version())
 	fmt.Println("Extension: ", GDExtension.LibraryPath())
-	startup.Engine()
+	startup.Scene()
 	fmt.Println("Shutting Down...")
 }

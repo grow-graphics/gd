@@ -50,7 +50,7 @@ func (MyFirstShader) Lighting(matl MyFirstMaterial) vec4.RGBA {
 
 func main() {
 	classdb.Register[MyFirstShader]()
-	startup.Loader()
+	startup.LoadingScene()
 	sprite := Sprite2D.New()
 	image := Image.CreateEmpty(512, 512, false, Image.FormatRgba8)
 	sprite.SetTexture(ImageTexture.Instance(ImageTexture.CreateFromImage(image)).AsTexture2D())
@@ -58,5 +58,5 @@ func main() {
 	shaders.Compile(&material)
 	sprite.AsCanvasItem().SetMaterial(material.Super().AsMaterial())
 	SceneTree.Add(sprite)
-	startup.Engine()
+	startup.Scene()
 }

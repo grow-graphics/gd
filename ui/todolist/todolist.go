@@ -31,5 +31,5 @@ func (h *TodoList) OnButtonPressed() {
 
 func main() {
 	classdb.Register[TodoList]()
-	startup.Engine()
+	startup.Scene()
 }

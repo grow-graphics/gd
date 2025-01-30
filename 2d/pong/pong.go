@@ -100,5 +100,5 @@ func main() {
 	classdb.Register[PongCeilingFloor]()
 	classdb.Register[PongPaddle]()
 	classdb.Register[PongWall]()
-	startup.Engine()
+	startup.Scene()
 }

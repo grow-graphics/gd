@@ -28,5 +28,5 @@ func (h *HelloName) OnButtonPressed() {
 
 func main() {
 	classdb.Register[HelloName]()
-	startup.Engine()
+	startup.Scene()
 }

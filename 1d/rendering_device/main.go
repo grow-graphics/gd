@@ -14,6 +14,8 @@ type Main struct {
 }
 
 func (app *Main) Initialize() {
+	fmt.Println(RenderingServer.GetVideoAdapterName())
+
 	var RD RenderingDevice.Instance = RenderingServer.GetRenderingDevice()
 	if RD == RenderingDevice.Nil {
 		fmt.Println("no RenderingDevice available on this platform!")
