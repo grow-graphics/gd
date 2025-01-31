@@ -2,19 +2,29 @@ package main
 
 import (
 	"graphics.gd/shaders"
+	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/rgba"
-	"graphics.gd/shaders/vec4"
+	"graphics.gd/shaders/vec2"
 )
+
+type MyFirstShader struct {
+	shaders.Type2D
+
+	Offset vec2.XY `gd:"offset"`
+}
+
+func (MyFirstShader) Material(vert shaders.Fragment2D) shaders.Material2D {
+	// smooth back and forth between pink and blue
+	step := float.Mod(vert.Time, 2.0)
+	step = bool.Mix(step, float.Sub(2.0, step), float.Gt(step, 1.0))
+	return shaders.Material2D{
+		Color: rgba.New(step, 0.6, 0.9, 1.0),
+	}
+}
 
 type MyFirstShader2D struct {
 	shaders.Type2D
-}
-
-func (uniform MyFirstShader2D) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
-	return shaders.Fragment2D{
-		Position: vertex.Position,
-	}
 }
 
 func (uniform MyFirstShader2D) Material(vertex shaders.Fragment2D) shaders.Material2D {
@@ -23,17 +33,8 @@ func (uniform MyFirstShader2D) Material(vertex shaders.Fragment2D) shaders.Mater
 	}
 }
 
-func (uniform MyFirstShader2D) Lighting(material shaders.Material2D) vec4.RGBA { return material.Color }
-
 type MyFirstShader2D_UV struct {
 	shaders.Type2D
-}
-
-func (uniform MyFirstShader2D_UV) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
-	return shaders.Fragment2D{
-		Position: vertex.Position,
-		UV:       vertex.UV,
-	}
 }
 
 func (uniform MyFirstShader2D_UV) Material(fragment shaders.Fragment2D) shaders.Material2D {
@@ -42,19 +43,8 @@ func (uniform MyFirstShader2D_UV) Material(fragment shaders.Fragment2D) shaders.
 	}
 }
 
-func (uniform MyFirstShader2D_UV) Lighting(material shaders.Material2D) vec4.RGBA {
-	return material.Color
-}
-
 type MyFirstShader2D_Texture struct {
 	shaders.Type2D
-}
-
-func (uniform MyFirstShader2D_Texture) Fragment(vertex shaders.Vertex2D) shaders.Fragment2D {
-	return shaders.Fragment2D{
-		Position: vertex.Position,
-		UV:       vertex.UV,
-	}
 }
 
 func (uniform MyFirstShader2D_Texture) Material(fragment shaders.Fragment2D) shaders.Material2D {
@@ -63,8 +53,4 @@ func (uniform MyFirstShader2D_Texture) Material(fragment shaders.Fragment2D) sha
 	return shaders.Material2D{
 		Color: color,
 	}
-}
-
-func (uniform MyFirstShader2D_Texture) Lighting(material shaders.Material2D) vec4.RGBA {
-	return material.Color
 }
