@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmhmiv43fqo4c"]
+
+[ext_resource type="MyResource" uid="uid://dcqd4mwnpscwh" path="res://new_my_resource.tres" id="1_135vo"]
+
+[node name="Node" type="MyNode"]
+Resource = ExtResource("1_135vo")
