@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Button"
 	"graphics.gd/classdb/Control"
@@ -36,22 +34,22 @@ type MyFirstMaterial struct {
 	Color vec4.RGBA `gd:"COLOR"`
 }
 
-func (uniform MyFirstShader) Fragment(vert shaders.CanvasItemVertexAttributes) shaders.CanvasItemVertexAttributes {
-	return shaders.CanvasItemVertexAttributes{
+func (uniform MyFirstShader) Fragment(vert shaders.Vertex2D) shaders.Fragment2D {
+	return shaders.Fragment2D{
 		Position: vec2.Add(vert.Position, vec2.New(10.0, 0.1)),
 	}
 }
 
-func (MyFirstShader) Material(vert shaders.CanvasItemVertexAttributes) MyFirstMaterial {
+func (MyFirstShader) Material(vert shaders.Fragment2D) shaders.Material2D {
 	// smooth back and forth between pink and blue
-	step := float.Mod(vert.Global.Time, 2.0)
+	step := float.Mod(vert.Time, 2.0)
 	step = bool.Mix(step, float.Sub(2.0, step), float.Gt(step, 1.0))
-	return MyFirstMaterial{
+	return shaders.Material2D{
 		Color: rgba.New(step, 0.6, 0.9, 1.0),
 	}
 }
 
-func (MyFirstShader) Lighting(matl MyFirstMaterial) vec4.RGBA {
+func (MyFirstShader) Lighting(matl shaders.Material2D) vec4.RGBA {
 	return matl.Color
 }
 
@@ -63,7 +61,6 @@ func main() {
 	size := DisplayServer.WindowGetSize()
 
 	sprite.SetTexture(Resource.Load[Texture2D.Instance]("res://icon.png"))
-	fmt.Println(Vector2.New(size.X/2, size.Y/2))
 	sprite.AsNode2D().SetPosition(Vector2.New(size.X/2, size.Y/2))
 	sprite.AsNode2D().SetScale(Vector2.New(5, 5))
 
