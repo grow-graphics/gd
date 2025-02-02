@@ -13,7 +13,7 @@ _data = {
 point_count = 5
 
 [node name="Main" type="DodgeTheCreeps"]
-MobScene = ExtResource("1_hvs18")
+mob_scene = ExtResource("1_hvs18")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -43,7 +43,6 @@ curve = SubResource("1")
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="HUD" parent="." instance=ExtResource("4")]
-start_game = Signal()
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5")
@@ -51,8 +50,8 @@ stream = ExtResource("5")
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6")
 
-[connection signal="hit" from="Player" to="." method="GameOver"]
-[connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
-[connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimerTimeout"]
-[connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
-[connection signal="start_game" from="HUD" to="." method="NewGame"]
+[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="on_start_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

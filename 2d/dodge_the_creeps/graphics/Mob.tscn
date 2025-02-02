@@ -62,4 +62,4 @@ shape = SubResource("2")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibleOnScreenNotifier2DScreenExited"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="on_visible_on_screen_notifier_2_d_screen_exited"]

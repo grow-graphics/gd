@@ -9,7 +9,6 @@ action = &"start_game"
 events = [SubResource("InputEventAction_fopy7")]
 
 [node name="HUD" type="DodgeTheCreepsHUD"]
-start_game = Signal()
 
 [node name="ScoreLabel" type="Label" parent="."]
 anchors_preset = 10
@@ -56,5 +55,5 @@ text = "Start"
 [node name="MessageTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
-[connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
+[connection signal="pressed" from="StartButton" to="." method="on_start_button_pressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="on_message_timer_timeout"]

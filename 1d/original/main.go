@@ -65,20 +65,6 @@ func (r *StartedSignalEmitter) Ready() {
 	}
 }
 
-type MyClassWithConstants struct {
-	classdb.Extension[MyClassWithConstants, Node2D.Instance]
-}
-
-func (*MyClassWithConstants) OnRegister() {
-	/*gdextension.Register(gd.Enum[MyClassWithConstants, int]{
-		Name: "MyEnum",
-		Values: map[string]int{
-			"Value1": 1,
-			"Value2": 2,
-		},
-	})*/
-}
-
 /*
 ExtendedNode demonstrates how to call the methods of builtin objects.
 */
@@ -131,7 +117,6 @@ func main() {
 	classdb.Register[ExtendedNode]()
 	classdb.Register[Rotator]()
 	classdb.Register[StartedSignalEmitter]()
-	classdb.Register[MyClassWithConstants]()
 
 	fmt.Println("Engine Version is: ", Engine.Version())
 	fmt.Println("Extension: ", GDExtension.LibraryPath())

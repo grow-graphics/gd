@@ -72,4 +72,4 @@ speed_scale = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
-[connection signal="body_entered" from="." to="." method="OnPlayerBodyEntered"]
+[connection signal="body_entered" from="." to="." method="on_player_body_entered"]
