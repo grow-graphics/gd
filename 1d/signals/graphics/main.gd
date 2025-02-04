@@ -4,11 +4,10 @@ var a = Signals.new()
 
 func _ready():
 	a.connect("something", handle_sig)
-	a.DoSomething()
+	a.do_something()
 
 func handle_sig():
-	print("yay")
-
+	print("something happened")
 
 func _exit_tree():
 	a.free()
