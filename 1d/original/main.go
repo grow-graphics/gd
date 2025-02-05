@@ -107,6 +107,8 @@ func (e *ExtendedNode) Ready() {
 }
 
 type Bar struct {
+	classdb.Extension[Bar, Object.Instance]
+
 	Message string
 }
 

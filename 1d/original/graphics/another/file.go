@@ -1,5 +1,0 @@
-package script
-
-func Something() {
-
-}
