@@ -25,6 +25,15 @@ type HelloWorld struct {
 	classdb.Extension[HelloWorld, Object.Instance]
 }
 
+func NewHelloWorld() *HelloWorld {
+	fmt.Println("NewHelloWorld!")
+	return &HelloWorld{}
+}
+
+func Static() string {
+	return "static method call"
+}
+
 // Print prints "Hello World"
 func (h *HelloWorld) Print() { fmt.Println("Hello World") }
 
@@ -35,7 +44,7 @@ func (h *HelloWorld) Echo(s string) { fmt.Println(s + " from Go!") }
 // Arch returns the current GOARCH value.
 func (h *HelloWorld) Arch() string { return runtime.GOARCH }
 
-func (h *HelloWorld) GetBar(message string) *Bar {
+func (h *HelloWorld) Bar(message string) *Bar {
 	return &Bar{
 		Message: message,
 	}
@@ -115,10 +124,13 @@ type Bar struct {
 // main init function, where the extensions are exported so that
 // they are available to the engine.
 func main() {
-	classdb.Register[HelloWorld]()
+	classdb.Register[HelloWorld](NewHelloWorld, Static, map[string]any{
+		"get_bar": (*HelloWorld).Bar,
+	})
 	classdb.Register[ExtendedNode]()
 	classdb.Register[Rotator]()
 	classdb.Register[StartedSignalEmitter]()
+	classdb.Register[Bar]()
 
 	fmt.Println("Engine Version is: ", Engine.Version())
 	fmt.Println("Extension: ", GDExtension.LibraryPath())

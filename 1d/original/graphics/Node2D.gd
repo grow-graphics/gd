@@ -7,6 +7,7 @@ func _ready():
 	hello.print()
 
 	print(hello.arch())
+	print(hello.static())
 
 	var bar = hello.get_bar("Hello Bar")
 	print(bar.message)
