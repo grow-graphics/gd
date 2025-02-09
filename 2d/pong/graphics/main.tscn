@@ -83,9 +83,9 @@ BounceDirection = -1
 position = Vector2(574.75, 673.5)
 shape = SubResource("RectangleShape2D_8rkxe")
 
-[connection signal="area_entered" from="PongWall" to="PongWall" method="OnAreaEntered"]
-[connection signal="area_entered" from="PongWall2" to="PongWall2" method="OnAreaEntered"]
-[connection signal="area_entered" from="Player1" to="Player1" method="OnAreaEntered"]
-[connection signal="area_entered" from="Player2" to="Player2" method="OnAreaEntered"]
-[connection signal="area_entered" from="PongCeilingFloor" to="PongCeilingFloor" method="OnAreaEntered"]
-[connection signal="area_entered" from="PongCeilingFloor2" to="PongCeilingFloor2" method="OnAreaEntered"]
+[connection signal="area_entered" from="PongWall" to="PongWall" method="on_area_entered"]
+[connection signal="area_entered" from="PongWall2" to="PongWall2" method="on_area_entered"]
+[connection signal="area_entered" from="Player1" to="Player1" method="on_area_entered"]
+[connection signal="area_entered" from="Player2" to="Player2" method="on_area_entered"]
+[connection signal="area_entered" from="PongCeilingFloor" to="PongCeilingFloor" method="on_area_entered"]
+[connection signal="area_entered" from="PongCeilingFloor2" to="PongCeilingFloor2" method="on_area_entered"]
