@@ -8,5 +8,7 @@ graphics.gd v0.0.0-20250209091648-5fa07e4a338e h1:OzKWqPuBdcdVoH6yZ6Ivo7hKDB8Zxn
 graphics.gd v0.0.0-20250209091648-5fa07e4a338e/go.mod h1:x8ASzWbPC1gH+o3uSuRgygbWr5oQdrIaQcbTKdeIFEc=
 graphics.gd v0.0.0-20250210060435-d66332a7d3da h1:4NxyXN7I5eDphmFK0xr54ogTvZfJ1ki6qfY96IuS0mk=
 graphics.gd v0.0.0-20250210060435-d66332a7d3da/go.mod h1:x8ASzWbPC1gH+o3uSuRgygbWr5oQdrIaQcbTKdeIFEc=
+graphics.gd v0.0.0-20250211091757-547950749530 h1:g0bcVHRGrdv2w6jSsjY+cExODtRdLF3URQ0Ws2ASKNY=
+graphics.gd v0.0.0-20250211091757-547950749530/go.mod h1:x8ASzWbPC1gH+o3uSuRgygbWr5oQdrIaQcbTKdeIFEc=
 runtime.link v0.0.0-20250131052539-992a5f0be9db h1:pmEAAhIKeeisn2bXh43ZSULNXsrveRC/iDxBLoc0RC8=
 runtime.link v0.0.0-20250131052539-992a5f0be9db/go.mod h1:bs9lT/R79BfIAGcCHrCWiEdDec5nUNSBBjDmAvAsasU=
