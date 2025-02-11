@@ -132,6 +132,7 @@ func main() {
 	classdb.Register[StartedSignalEmitter]()
 	classdb.Register[Bar]()
 
+	startup.LoadingScene()
 	fmt.Println("Engine Version is: ", Engine.Version())
 	fmt.Println("Extension: ", GDExtension.LibraryPath())
 	startup.Scene()
