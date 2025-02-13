@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bywptem1jb35a"]
+
+[node name="Explanations" type="RichTextLabel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -370.0
+offset_right = -10.0
+offset_bottom = -730.0
+size_flags_vertical = 4
+mouse_filter = 2
+bbcode_enabled = true
+text = "This example shows how to apply the State programming pattern in GDscript, including Hierarchical States, and a pushdown automaton.
+
+States are common in games. You can use the pattern to:
+
+1. Separate each behavior and transitions between behaviors, thus make scripts shorter and easier to manage
+2. Respect the Single Responsibility Principle. Each State object represents one action
+3. Improve your code's structure. Look at the scene tree and FileSystem tab: without looking at the code, you'll know what the Player can or cannot do.
+
+You can read more about States in the excellent Game Programming Patterns ebook."

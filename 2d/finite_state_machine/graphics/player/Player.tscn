@@ -1,0 +1,79 @@
+[gd_scene load_steps=19 format=3 uid="uid://bpdyvy2681m3i"]
+
+[ext_resource type="Texture2D" uid="uid://eds33w28pilu" path="res://player/shadow.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://ds53oxkqrcumd" path="res://player/body.png" id="10"]
+[ext_resource type="PackedScene" uid="uid://cdacdp11r3jua" path="res://player/weapon/Sword.tscn" id="13"]
+
+[sub_resource type="Animation" id="1"]
+
+[sub_resource type="Animation" id="2"]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyPivot/Body:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="3"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vi1hn"]
+_data = {
+"idle": SubResource("1"),
+"stagger": SubResource("2"),
+"walk": SubResource("3")
+}
+
+[node name="Player" type="FiniteStateMachinePlayer"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vi1hn")
+}
+
+[node name="Shadow" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.361098)
+position = Vector2(0, -4)
+texture = ExtResource("9")
+
+[node name="BodyPivot" type="Marker2D" parent="."]
+
+[node name="Body" type="Sprite2D" parent="BodyPivot"]
+position = Vector2(0, -58)
+texture = ExtResource("10")
+
+[node name="BulletSpawn" type="Node2D" parent="BodyPivot"]
+position = Vector2(0, -58)
+
+[node name="CooldownTimer" type="Timer" parent="BodyPivot/BulletSpawn"]
+wait_time = 0.2
+one_shot = true
+
+[node name="WeaponPivot" type="Marker2D" parent="BodyPivot"]
+position = Vector2(0, -58)
+
+[node name="Offset" type="Marker2D" parent="BodyPivot/WeaponPivot"]
+position = Vector2(110, 0)
+
+[node name="Sword" parent="BodyPivot/WeaponPivot/Offset" instance=ExtResource("13")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-20, 0, -20, -20, 20, -20, 20, 0)
+
+[node name="StateNameDisplayer" type="Label" parent="."]
+offset_left = -109.0
+offset_top = -180.0
+offset_right = 110.0
+offset_bottom = -143.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "Idle"
+horizontal_alignment = 1
+uppercase = true
