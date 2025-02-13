@@ -42,5 +42,5 @@ position = Vector2(280, 440)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SecretDetector"]
 shape = SubResource("RectangleShape2D_a2gec")
 
-[connection signal="body_entered" from="SecretDetector" to="Secret" method="_on_secret_detector_body_entered"]
-[connection signal="body_exited" from="SecretDetector" to="Secret" method="_on_secret_detector_body_exited"]
+[connection signal="body_entered" from="SecretDetector" to="Secret" method="on_secret_detector_body_entered"]
+[connection signal="body_exited" from="SecretDetector" to="Secret" method="on_secret_detector_body_exited"]
