@@ -91,6 +91,7 @@ func (b *Bullet) PhysicsProcess(delta Float.X) {
 	root := Window.Instance(SceneTree.Instance(b.Super().AsNode().GetTree()).Root())
 	if !Rect2.HasPoint(root.AsViewport().GetVisibleRect(), b.Super().AsNode2D().Position()) {
 		b.Super().AsNode().QueueFree()
+		return
 	}
 	var motion = Vector2.MulX(b.direction, b.speed*delta)
 	var collision = b.Super().AsPhysicsBody2D().MoveAndCollide(motion)
