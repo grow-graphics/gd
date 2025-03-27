@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://j4nc13akhgva"]
+
+[ext_resource type="PackedScene" uid="uid://ciohp0157xfv3" path="res://Box/BoxVisuals/DestroyedBox.glb" id="1_ovk58"]
+
+[node name="DestroyedBox" type="DestroyedBox" groups=["damageables", "targeteables"]]
+
+[node name="Model" instance=ExtResource("1_ovk58") parent="."]
+
+[node name="crate_001" parent="Model" index="0"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true
+
+[node name="crate_002" parent="Model" index="1"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true
+
+[node name="crate_003" parent="Model" index="2"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true
+
+[node name="crate_004" parent="Model" index="3"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true
+
+[node name="crate_005" parent="Model" index="4"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true
+
+[node name="crate_006" parent="Model" index="5"]
+visible = false
+collision_layer = 0
+collision_mask = 0
+sleeping = true
+freeze = true

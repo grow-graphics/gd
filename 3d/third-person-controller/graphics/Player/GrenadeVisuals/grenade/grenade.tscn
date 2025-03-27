@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3765dge2xh0"]
+
+[ext_resource type="PackedScene" uid="uid://bmg4l7oil4aeu" path="res://Player/GrenadeVisuals/grenade/grenade.glb" id="1_2hras"]
+[ext_resource type="Script" uid="uid://bjcvntggp2iq8" path="res://Player/GrenadeVisuals/grenade/grenade.gd" id="2_ldjuw"]
+[ext_resource type="Material" uid="uid://bqiflyx3ow1ul" path="res://Player/GrenadeVisuals/grenade/grenade.material" id="3_wctyh"]
+
+[sub_resource type="Animation" id="Animation_afydg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("grenade_mesh:surface_material_override/0:emission_energy_multiplier")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+
+[sub_resource type="Animation" id="Animation_cxnel"]
+resource_name = "wave"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("grenade_mesh:surface_material_override/0:emission_energy_multiplier")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.8, 1.5, 0.8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_icflb"]
+_data = {
+&"RESET": SubResource("Animation_afydg"),
+&"wave": SubResource("Animation_cxnel")
+}
+
+[node name="grenade" instance=ExtResource("1_2hras")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+script = ExtResource("2_ldjuw")
+
+[node name="grenade_mesh" parent="." index="0"]
+surface_material_override/0 = ExtResource("3_wctyh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_icflb")
+}

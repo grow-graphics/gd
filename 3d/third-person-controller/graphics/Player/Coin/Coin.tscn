@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://c54mpt43fs4wc"]
+
+[ext_resource type="PackedScene" uid="uid://cqw64w6kb0fyg" path="res://Player/Coin/CoinVisuals/CoinModel.tscn" id="1_ajpkd"]
+[ext_resource type="AudioStream" uid="uid://dxv00m8q7huw5" path="res://Player/Coin/Audio/completetask_0.mp3" id="3_bn2wr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5al5l"]
+radius = 0.731329
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_a0qvt"]
+radius = 5.0
+
+[node name="Coin" type="Coin"]
+collision_layer = 0
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+lock_rotation = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439197, 0)
+shape = SubResource("SphereShape3D_5al5l")
+
+[node name="Coin" parent="." instance=ExtResource("1_ajpkd")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0.679386, 0)
+
+[node name="CollectAudio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_bn2wr")
+volume_db = 1.0
+
+[node name="PlayerDetectionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerDetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.697551, 0)
+shape = SubResource("SphereShape3D_a0qvt")

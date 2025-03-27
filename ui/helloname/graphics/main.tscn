@@ -8,15 +8,13 @@ offset_top = 227.0
 offset_right = 641.0
 offset_bottom = 265.0
 
-[node name="Text" type="Label" parent="."]
-offset_left = 445.0
-offset_top = 277.0
-offset_right = 615.0
-offset_bottom = 300.0
-
 [node name="Button" type="Button" parent="."]
 offset_left = 650.0
 offset_top = 228.0
 offset_right = 712.0
 offset_bottom = 268.0
 text = "Press"
+
+[node name="Text" type="Label" parent="."]
+
+[node name="HelloName" type="HelloName" parent="."]
