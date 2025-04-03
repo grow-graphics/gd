@@ -255,7 +255,7 @@ func (state playerMoving) Update(p *Player, delta Float.X) {
 		return
 	}
 	p.update_look_direction(direction)
-	if Input.IsActionPressed("run") {
+	if Input.IsActionPressed("run", false) {
 		p.speed = p.max_run_speed
 	} else {
 		p.speed = p.max_walk_speed

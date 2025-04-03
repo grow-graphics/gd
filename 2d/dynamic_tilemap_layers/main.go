@@ -28,7 +28,7 @@ type Player struct {
 }
 
 func (p *Player) Ready() {
-	p.gravity = Float.X(ProjectSettings.GetSetting("physics/2d/default_gravity").(int64))
+	p.gravity = Float.X(ProjectSettings.GetSetting("physics/2d/default_gravity", 500).(int64))
 }
 
 func (p *Player) PhysicsProcess(delta Float.X) {
@@ -48,7 +48,7 @@ func (p *Player) PhysicsProcess(delta Float.X) {
 	// TODO: Rename velocity to linear_velocity in the rest of the script.
 	p.Super().MoveAndSlide()
 	// Check for jumping. is_on_floor() must be called after movement code.
-	if p.Super().IsOnFloor() && Input.IsActionJustPressed("jump") {
+	if p.Super().IsOnFloor() && Input.IsActionJustPressed("jump", false) {
 		velocity.Y = -JumpSpeed
 	}
 	p.Super().SetVelocity(velocity)

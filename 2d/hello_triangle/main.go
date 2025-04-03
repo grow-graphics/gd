@@ -26,7 +26,7 @@ func onWindowInputEvent(event DisplayServer.WindowEvent) {
 }
 
 func onResize(rect Rect2i.PositionSize) {
-	size := DisplayServer.WindowGetSize()
+	size := DisplayServer.WindowGetSize(0)
 
 	RenderingServer.CanvasItemClear(triangle)
 	var points = []Vector2.XY{
@@ -39,7 +39,7 @@ func onResize(rect Rect2i.PositionSize) {
 		{0, 1, 0, 1},
 		{0, 0, 1, 1},
 	}
-	RenderingServer.CanvasItemAddPolygon(triangle, points, colors)
+	RenderingServer.CanvasItemAddPolygon(triangle, points, colors, nil, 0)
 }
 
 func main() {
@@ -48,11 +48,11 @@ func main() {
 	viewport = RenderingServer.ViewportCreate()
 	defer RenderingServer.FreeRid(RID.Any(viewport))
 
-	DisplayServer.WindowSetWindowEventCallback(onWindowInputEvent)
-	DisplayServer.WindowSetRectChangedCallback(onResize)
-	DisplayServer.WindowSetTitle("Hello Triangle")
+	DisplayServer.WindowSetWindowEventCallback(onWindowInputEvent, 0)
+	DisplayServer.WindowSetRectChangedCallback(onResize, 0)
+	DisplayServer.WindowSetTitle("Hello Triangle", 0)
 
-	size := DisplayServer.WindowGetSize()
+	size := DisplayServer.WindowGetSize(0)
 
 	RenderingServer.Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.New(0, 0, size.X, size.Y), 0)
 	RenderingServer.ViewportSetClearMode(viewport, RenderingServer.ViewportClearAlways)
@@ -70,7 +70,7 @@ func main() {
 	onResize(Rect2i.New(0, 0, size.X, size.Y))
 
 	for range frames {
-		size := DisplayServer.WindowGetSize()
+		size := DisplayServer.WindowGetSize(0)
 		RenderingServer.ViewportSetSize(viewport, int(size.X), int(size.Y))
 		RenderingServer.Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.New(0, 0, size.X, size.Y), 0)
 		if closing {

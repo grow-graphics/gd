@@ -73,7 +73,7 @@ func (p *PongPaddle) Ready() {
 
 func (p *PongPaddle) Process(delta Float.X) {
 	node2d := p.Super().AsNode2D()
-	var input = Input.GetActionStrength(p.down) - Input.GetActionStrength(p.up)
+	var input = Input.GetActionStrength(p.down, false) - Input.GetActionStrength(p.up, false)
 	var position = node2d.Position()
 	position.Y = Float.Clamp(position.Y+input*PaddleMoveSpeed*delta, 16, p.screenSizeY-16)
 	node2d.SetPosition(position)

@@ -46,16 +46,16 @@ func (p *Player) Ready() {
 
 func (p *Player) Process(delta Float.X) {
 	var velocity Vector2.XY
-	if Input.IsActionPressed(PlayerControls.MoveRight) {
+	if Input.IsActionPressed(PlayerControls.MoveRight, false) {
 		velocity.X += 1
 	}
-	if Input.IsActionPressed(PlayerControls.MoveLeft) {
+	if Input.IsActionPressed(PlayerControls.MoveLeft, false) {
 		velocity.X -= 1
 	}
-	if Input.IsActionPressed(PlayerControls.MoveDown) {
+	if Input.IsActionPressed(PlayerControls.MoveDown, false) {
 		velocity.Y += 1
 	}
-	if Input.IsActionPressed(PlayerControls.MoveUp) {
+	if Input.IsActionPressed(PlayerControls.MoveUp, false) {
 		velocity.Y -= 1
 	}
 	if Vector2.Length(velocity) > 0 {

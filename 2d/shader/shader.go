@@ -20,7 +20,7 @@ func main() {
 	startup.LoadingScene()
 	sprite := startup.Pin(Sprite2D.New())
 
-	size := DisplayServer.WindowGetSize()
+	size := DisplayServer.WindowGetSize(0)
 
 	sprite.SetTexture(Resource.Load[Texture2D.Instance]("res://icon.png"))
 	sprite.AsNode2D().SetPosition(Vector2.New(size.X/2, size.Y/2))

@@ -11,6 +11,7 @@ func main() {
 	classdb.Register[Coin]()
 	classdb.Register[FullScreen](NewFullScreenHandler)
 	classdb.Register[DestroyedBox](NewDestroyedBox)
+	classdb.Register[CameraMode](NewCameraMode)
 	startup.LoadingScene()
 	SceneTree.Add(NewFullScreenHandler())
 	startup.Scene()

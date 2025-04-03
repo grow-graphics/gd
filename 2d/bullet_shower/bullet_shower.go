@@ -54,7 +54,7 @@ func (b *Bullets) Ready() {
 			),
 		}
 		PhysicsServer2D.BodySetSpace(bullet.Body, RID.Space2D(World2D.Instance(Node2D.AsCanvasItem().GetWorld2d()).Space()))
-		PhysicsServer2D.BodyAddShape(bullet.Body, b.shape)
+		PhysicsServer2D.BodyAddShape(bullet.Body, b.shape, false)
 		PhysicsServer2D.BodySetCollisionMask(bullet.Body, 0)
 		var transform = Transform2D.New()
 		transform.Origin = bullet.Position
