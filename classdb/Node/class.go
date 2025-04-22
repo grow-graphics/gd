@@ -3296,11 +3296,11 @@ func (self Instance) OnTreeExited(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnChildEnteredTree(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnChildEnteredTree(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnChildExitingTree(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnChildExitingTree(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
 }
 
@@ -3308,11 +3308,11 @@ func (self Instance) OnChildOrderChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnReplacingBy(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnReplacingBy(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnEditorDescriptionChanged(cb func(node [1]gdclass.Node)) {
+func (self Instance) OnEditorDescriptionChanged(cb func(node Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
 }
 
