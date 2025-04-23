@@ -40,7 +40,7 @@ func (h *HUD) ShowGameOver() {
 func (h *HUD) ShowTitle() {
 	h.Message.SetText("Dodge the Creeps!")
 	h.Message.AsCanvasItem().Show()
-	var timer SceneTreeTimer.Instance = SceneTree.Instance(h.Super().AsNode().GetTree()).CreateTimer(1)
+	var timer SceneTreeTimer.Instance = SceneTree.Get(h.Super().AsNode()).CreateTimer(1)
 	timer.OnTimeout(h.ShowStartButton)
 }
 

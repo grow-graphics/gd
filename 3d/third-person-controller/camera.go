@@ -93,7 +93,7 @@ func (cm *CameraMode) Process(dt Float.X) {
 }
 
 func (cm *CameraMode) toggle_camera_mode() {
-	var tree = SceneTree.Instance(cm.Super().AsNode().GetTree())
+	var tree = SceneTree.Get(cm.Super().AsNode())
 	if cm.Super().Visible() {
 		tree.SetPaused(false)
 		cm.cachedCamera.SetCurrent(false)
@@ -106,7 +106,7 @@ func (cm *CameraMode) toggle_camera_mode() {
 		}
 	} else {
 		tree.SetPaused(true)
-		cm.cachedCamera = Viewport.Instance(cm.Super().AsNode().GetViewport()).GetCamera3d()
+		cm.cachedCamera = Viewport.Get(cm.Super().AsNode()).GetCamera3d()
 		cm.camera = Camera3D.New()
 		cm.Super().AsNode().AddChild(cm.camera.AsNode())
 		cm.camera.SetCurrent(true)

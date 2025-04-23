@@ -9,7 +9,6 @@ import (
 	"graphics.gd/classdb/KinematicCollision2D"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Shape2D"
-	"graphics.gd/classdb/Window"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Color"
@@ -88,7 +87,7 @@ func (b *Bullet) Ready() {
 }
 
 func (b *Bullet) PhysicsProcess(delta Float.X) {
-	root := Window.Instance(SceneTree.Instance(b.Super().AsNode().GetTree()).Root())
+	root := SceneTree.Get(b.Super().AsNode()).Root()
 	if !Rect2.HasPoint(root.AsViewport().GetVisibleRect(), b.Super().AsNode2D().Position()) {
 		b.Super().AsNode().QueueFree()
 		return

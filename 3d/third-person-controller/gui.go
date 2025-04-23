@@ -33,7 +33,7 @@ type DemoPage struct {
 }
 
 func (page *DemoPage) Ready() {
-	var tree SceneTree.Instance = page.Super().AsNode().GetTree()
+	var tree = SceneTree.Get(page.Super().AsNode())
 	tree.SetPaused(true)
 	page.demoMouseMode = Input.MouseMode()
 	//page.ResumeButton.AsBaseButton().OnPressed(page.resume_demo)

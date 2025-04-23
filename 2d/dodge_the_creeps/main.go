@@ -61,7 +61,7 @@ func (m *Main) NewGame() {
 	m.HUD.UpdateScore(m.score)
 	m.HUD.ShowMessage("Get Ready!")
 
-	SceneTree.Instance(m.Super().GetTree()).CallGroup("mobs", "queue_free")
+	SceneTree.Get(m.Super()).CallGroup("mobs", "queue_free")
 	m.Music.Play()
 }
 

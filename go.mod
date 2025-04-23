@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.8.6
-	graphics.gd v0.0.0-20250423094557-6ce7d6a3726d
+	graphics.gd v0.0.0-20250423210521-a807301dfb56
 )
 
 require (

@@ -116,14 +116,14 @@ func (coin *Coin) SpawnWithDelay(delay Float.X) {
 	var pos = Vector3.MulX(dir, Float.RandomBetween(CoinMinLaunchRange, CoinMaxLaunchRange))
 	pos.Y = height
 	coin.Super().ApplyCentralImpulse(pos)
-	var timer SceneTreeTimer.Instance = SceneTree.Instance.CreateTimer(coin.Super().AsNode().GetTree(), delay)
+	var timer SceneTreeTimer.Instance = SceneTree.Get(coin.Super().AsNode()).CreateTimer(delay)
 	timer.OnTimeout(func() {
 		coin.Super().AsCollisionObject3D().SetCollisionLayer(3)
 	})
 	coin.PlayerDetectionArea.OnBodyEntered(coin.OnBodyEntered)
 }
 
-func (coin *Coin) OnBodyEntered(body classdb.Node3D) {
+func (coin *Coin) OnBodyEntered(body Node3D.Instance) {
 	if player, ok := Object.As[*Player](Node3D.Instance(body)); ok {
 		coin.SetTarget(player)
 	}

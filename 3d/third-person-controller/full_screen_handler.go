@@ -34,7 +34,7 @@ func (fs FullScreen) Input(event InputEvent.Instance) {
 		}
 	} else {
 		if key, ok := Object.As[InputEventKey.Instance](event); ok && event.IsPressed() && key.Keycode() == InputEventKey.KeyF11 {
-			var window Window.Instance = SceneTree.Instance(fs.Super().GetTree()).Root()
+			var window Window.Instance = SceneTree.Get(fs.Super()).Root()
 			if window.Mode() == Window.ModeFullscreen {
 				window.SetMode(Window.ModeWindowed)
 			} else {
