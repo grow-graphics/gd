@@ -12,6 +12,7 @@ import (
 	"graphics.gd/classdb/Path2D"
 	"graphics.gd/classdb/PathFollow2D"
 	"graphics.gd/classdb/RigidBody2D"
+	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Timer"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Angle"
@@ -60,7 +61,7 @@ func (m *Main) NewGame() {
 	m.HUD.UpdateScore(m.score)
 	m.HUD.ShowMessage("Get Ready!")
 
-	//m.Super().GetTree(godot).CallGroup(godot.StringName("mobs"), godot.StringName("queue_free"))
+	SceneTree.Instance(m.Super().GetTree()).CallGroup("mobs", "queue_free")
 	m.Music.Play()
 }
 
