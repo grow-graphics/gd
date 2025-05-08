@@ -1,6 +1,7 @@
 package main
 
 import (
+	"graphics.gd/shaders"
 	"graphics.gd/shaders/bool"
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/pipeline/CanvasItem"
@@ -16,7 +17,7 @@ type MyFirstShader struct {
 
 func (MyFirstShader) Material(vert CanvasItem.Fragment) CanvasItem.Material {
 	// smooth back and forth between pink and blue
-	step := float.Mod(CanvasItem.Time, 2.0)
+	step := float.Mod(shaders.Time, 2.0)
 	step = bool.Mix(step, float.Sub(2.0, step), float.Gt(step, 1.0))
 	return CanvasItem.Material{
 		Color: rgba.New(step, 0.6, 0.9, 1.0),
