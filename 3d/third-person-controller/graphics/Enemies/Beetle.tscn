@@ -1,6 +1,5 @@
 [gd_scene load_steps=11 format=3 uid="uid://oxyn25v5khuk"]
 
-[ext_resource type="Script" uid="uid://b5gcy5xqey62w" path="res://Enemies/Beetle.gd" id="1_mefon"]
 [ext_resource type="PackedScene" uid="uid://cxt8d0d4ift6" path="res://Enemies/beetle_bot/beetlebot_skin.tscn" id="2_1wpkj"]
 [ext_resource type="AudioStream" uid="uid://c66nnoqtanfw2" path="res://Enemies/Sounds/robot_defeat.wav" id="3_w5eam"]
 
@@ -101,14 +100,13 @@ radius = 0.489449
 [sub_resource type="BoxShape3D" id="BoxShape3D_bm81s"]
 size = Vector3(1.4, 0.2, 1.4)
 
-[node name="GroundEnemy" type="RigidBody3D" groups=["damageables", "targeteables"]]
+[node name="GroundEnemy" type="Beetle" groups=["damageables", "targeteables"]]
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
 gravity_scale = 0.0
 continuous_cd = true
 lock_rotation = true
-script = ExtResource("1_mefon")
 
 [node name="ReactionLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8034, 0)

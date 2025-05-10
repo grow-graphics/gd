@@ -1,6 +1,5 @@
 [gd_scene load_steps=13 format=3 uid="uid://okmv1cbta83x"]
 
-[ext_resource type="Script" uid="uid://b8uealcod2w7m" path="res://Enemies/smoke_puff/smoke_puff.gd" id="1_3ltu4"]
 [ext_resource type="PackedScene" uid="uid://n5v4vlr80bj8" path="res://Enemies/smoke_puff/smoke_ball.glb" id="3_gsgkx"]
 [ext_resource type="Material" uid="uid://cnvmsr64tkgyn" path="res://Enemies/smoke_puff/smoke_ball_middle_mat.tres" id="3_wa5gb"]
 [ext_resource type="Shader" uid="uid://uvq0g3f2vige" path="res://Enemies/smoke_puff/smoke_ball.gdshader" id="4_bh8q1"]
@@ -318,9 +317,8 @@ _data = {
 &"poof": SubResource("Animation_2s7xh")
 }
 
-[node name="smoke_puff" type="Node3D"]
+[node name="smoke_puff" type="SmokePuff"]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
-script = ExtResource("1_3ltu4")
 
 [node name="smoke_ball" parent="." instance=ExtResource("3_gsgkx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)

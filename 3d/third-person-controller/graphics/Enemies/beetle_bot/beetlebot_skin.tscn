@@ -1,6 +1,5 @@
 [gd_scene load_steps=41 format=3 uid="uid://cxt8d0d4ift6"]
 
-[ext_resource type="Script" uid="uid://dmawxnj2pybuh" path="res://Enemies/beetle_bot/beetlebot_skin.gd" id="1_1smde"]
 [ext_resource type="PackedScene" uid="uid://dbqoj8oam1dsg" path="res://Enemies/beetle_bot/beetle_bot_fused.glb" id="1_r7amh"]
 [ext_resource type="Shader" uid="uid://cy61peva1c7ay" path="res://Player/face_mat.gdshader" id="3_p37mm"]
 [ext_resource type="Material" uid="uid://h2e57pyy6lu4" path="res://Enemies/beetle_bot/materials/beetlebot_lights_mat.tres" id="4_4158y"]
@@ -2144,8 +2143,7 @@ nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_mavgj")
 nodes/StateMachine/position = Vector2(60, 140)
 node_connections = [&"output", 0, &"StateMachine"]
 
-[node name="BeetlebotSkin" type="Node3D"]
-script = ExtResource("1_1smde")
+[node name="BeetlebotSkin" type="BeetleRenderer"]
 _force_loop = PackedStringArray("Bob", "walk")
 
 [node name="beetle_bot" parent="." instance=ExtResource("1_r7amh")]
@@ -2222,6 +2220,6 @@ parameters/StateMachine/PowerOff/Add2/add_amount = 1.0
 one_shot = true
 autostart = true
 
-[connection signal="timeout" from="SecondaryActionTimer" to="." method="_on_secondary_action_timer_timeout"]
+[connection signal="timeout" from="SecondaryActionTimer" to="." method="on_secondary_action_timer_timeout"]
 
 [editable path="beetle_bot"]

@@ -3,6 +3,7 @@ package main
 import (
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Node3D"
+	"graphics.gd/variant/Vector3"
 )
 
 type Player struct {
@@ -14,3 +15,7 @@ func (p Player) AsNode3D() Node3D.Instance {
 }
 
 func (p Player) CollectCoin() {}
+
+func (p Player) Damage(impact_point Vector3.XYZ, velocity Vector3.XYZ) {
+	// Handle damage logic here
+}

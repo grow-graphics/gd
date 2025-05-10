@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://bguebyvtegnv8"]
+[gd_scene load_steps=5 format=3 uid="uid://bguebyvtegnv8"]
 
-[ext_resource type="Script" uid="uid://coldovkrwy5lt" path="res://Player/Bullet.gd" id="1_8b555"]
 [ext_resource type="PackedScene" uid="uid://5ttf446nggra" path="res://Player/BulletVisuals/BulletModel.tscn" id="2_68e7a"]
 [ext_resource type="AudioStream" uid="uid://c7w6ecthdjbuk" path="res://Player/Sounds/lasershot-102078.wav" id="3_3vyow"]
 
@@ -11,8 +10,7 @@ point_count = 3
 [sub_resource type="SphereShape3D" id="SphereShape3D_qbh4s"]
 radius = 0.1
 
-[node name="Bullet" type="Node3D"]
-script = ExtResource("1_8b555")
+[node name="Bullet" type="Bullet"]
 scale_decay = SubResource("Curve_2sbfy")
 distance_limit = 6.0
 
@@ -30,3 +28,5 @@ transform = Transform3D(1, 0, 0, 0, 0.835184, 0.549971, 0, -0.549971, 0.835184, 
 [node name="ProjectileSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_3vyow")
 volume_db = 1.0
+
+[node name="Area3D" type="Area3D" parent="."]

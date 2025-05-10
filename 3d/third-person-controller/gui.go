@@ -43,7 +43,9 @@ func (page *DemoPage) Ready() {
 	page.demoMouseMode = Input.MouseMode()
 	Input.SetMouseMode(Input.MouseModeVisible)
 	page.ResumeButton.AsBaseButton().OnPressed(page.resume_demo)
-	page.ExitButton.AsBaseButton().OnPressed(tree.Quit)
+	page.ExitButton.AsBaseButton().OnPressed(func() {
+		SceneTree.Get(page.Super()).Quit()
+	})
 	page.KeyboardButton.AsBaseButton().OnPressed(func() {
 		page.change_instruction(InstructionTypes.Keyboard)
 	})

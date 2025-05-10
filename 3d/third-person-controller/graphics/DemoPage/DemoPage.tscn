@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cnj0t3ad178q6"]
+[gd_scene load_steps=31 format=3 uid="uid://cnj0t3ad178q6"]
 
 [ext_resource type="Shader" uid="uid://dt2d3nvtyavjt" path="res://DemoPage/Assets/BlurShader.gdshader" id="2_07raf"]
 [ext_resource type="Texture2D" uid="uid://3fxtm3u8im2" path="res://DemoPage/Assets/gdquest_logo_white.svg" id="3_n7elw"]
@@ -505,28 +505,28 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="DiscordButton" type="DemoLinkButton" parent="CanvasLayer/DemoPageRoot/HBoxContainer"]
+link = "https://discord.gg/BDe4y6Z4cf"
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("24_2yjb0")
 ignore_texture_size = true
 stretch_mode = 5
-link = "https://discord.gg/BDe4y6Z4cf"
 
 [node name="TwitterButton" type="DemoLinkButton" parent="CanvasLayer/DemoPageRoot/HBoxContainer"]
+link = "https://twitter.com/NathanGDQuest"
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("26_jj2ra")
 ignore_texture_size = true
 stretch_mode = 5
-link = "https://twitter.com/NathanGDQuest"
 
 [node name="ItchButton" type="DemoLinkButton" parent="CanvasLayer/DemoPageRoot/HBoxContainer"]
+link = "https://gdquest.itch.io/"
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("27_mjmj1")
 ignore_texture_size = true
 stretch_mode = 5
-link = "https://gdquest.itch.io/"

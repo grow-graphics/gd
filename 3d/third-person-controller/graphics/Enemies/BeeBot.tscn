@@ -1,6 +1,5 @@
 [gd_scene load_steps=16 format=3 uid="uid://rn45gytkk6tv"]
 
-[ext_resource type="Script" uid="uid://ue3m2tcjidq7" path="res://Enemies/BeeBot.gd" id="1_eehkx"]
 [ext_resource type="PackedScene" uid="uid://4nwp6xgihjc7" path="res://Enemies/BeeBot/bee_root.tscn" id="2_btoc7"]
 [ext_resource type="AudioStream" uid="uid://c66nnoqtanfw2" path="res://Enemies/Sounds/robot_defeat.wav" id="3_1gs12"]
 
@@ -169,11 +168,10 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_pl7mw"]
 size = Vector3(0.1, 0.5, 1)
 
-[node name="FlyingEnemy" type="RigidBody3D" groups=["damageables", "targeteables"]]
+[node name="FlyingEnemy" type="BeeBot" groups=["damageables", "targeteables"]]
 gravity_scale = 0.0
 continuous_cd = true
 sleeping = true
-script = ExtResource("1_eehkx")
 
 [node name="ReactionLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23854, 0)
