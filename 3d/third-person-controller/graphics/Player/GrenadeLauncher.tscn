@@ -1,6 +1,5 @@
 [gd_scene load_steps=6 format=3 uid="uid://b2ew46dlu7u7x"]
 
-[ext_resource type="Script" uid="uid://dpsikr4cxqbsa" path="res://Player/GrenadeLauncher.gd" id="1_n50mh"]
 [ext_resource type="Material" uid="uid://dus6jtbfyqwj8" path="res://Player/GrenadeVisuals/aim_material.tres" id="2_qr0pg"]
 [ext_resource type="Material" uid="uid://b6h7p7jogt6ep" path="res://Player/GrenadeVisuals/trajectory_material.tres" id="3_s7dm5"]
 
@@ -9,8 +8,7 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_22ctb"]
 radius = 0.25
 
-[node name="GrenadeLauncher" type="Node3D"]
-script = ExtResource("1_n50mh")
+[node name="GrenadeLauncher" type="GrenadeLauncher"]
 gravity = 16.0
 
 [node name="SnapMesh" type="Node3D" parent="."]

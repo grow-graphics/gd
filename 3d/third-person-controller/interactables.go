@@ -124,7 +124,7 @@ func (coin *Coin) SpawnWithDelay(delay Float.X) {
 }
 
 func (coin *Coin) OnBodyEntered(body Node3D.Instance) {
-	if player, ok := Object.As[*Player](Node3D.Instance(body)); ok {
+	if player, ok := Object.As[*DemoPlayer](Node3D.Instance(body)); ok {
 		coin.SetTarget(player)
 	}
 }

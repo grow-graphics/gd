@@ -79,17 +79,25 @@ type BeeBot struct {
 	alive       bool
 }
 
+func NewBeeBot() *BeeBot {
+	return &BeeBot{
+		ShootTimer:  1.5,
+		BulletSpeed: 6,
+		CoinsCount:  5,
+	}
+}
+
 func (bee *BeeBot) Ready() {
 	bee.alive = true
 	bee.DetectionArea.OnBodyEntered(func(body Node3D.Instance) {
-		if player, ok := Object.As[*Player](body); ok {
+		if player, ok := Object.As[*DemoPlayer](body); ok {
 			bee.shoot_count = 0
-			bee.target = player.Super().ID()
+			bee.target = player.Super().AsNode3D().ID()
 			bee.ReactionAnimationPlayer.PlayNamed("found_player")
 		}
 	})
 	bee.DetectionArea.OnBodyExited(func(body Node3D.Instance) {
-		if Object.Is[*Player](body) {
+		if Object.Is[*DemoPlayer](body) {
 			bee.target = 0
 			bee.ReactionAnimationPlayer.PlayNamed("lost_player")
 		}
@@ -208,13 +216,13 @@ type Beetle struct {
 func (b *Beetle) Ready() {
 	b.alive = true
 	b.DetectionArea.OnBodyEntered(func(body Node3D.Instance) {
-		if player, ok := Object.As[*Player](body); ok {
-			b.target = player.Super().ID()
+		if player, ok := Object.As[*DemoPlayer](body); ok {
+			b.target = player.Super().AsNode3D().ID()
 			b.ReactionAnimationPlayer.PlayNamed("found_player")
 		}
 	})
 	b.DetectionArea.OnBodyExited(func(body Node3D.Instance) {
-		if Object.Is[*Player](body) {
+		if Object.Is[*DemoPlayer](body) {
 			b.target = 0
 			b.ReactionAnimationPlayer.PlayNamed("lost_player")
 		}
@@ -242,7 +250,7 @@ func (b *Beetle) PhysicsProcess(delta Float.X) {
 			var collision = b.Super().AsPhysicsBody3D().MoveAndCollide(Vector3.MulX(direction, delta*3))
 			if collision != KinematicCollision3D.Nil {
 				var collider = collision.GetCollider()
-				if player, ok := Object.As[*Player](collider); ok {
+				if player, ok := Object.As[*DemoPlayer](collider); ok {
 					var impact_point = Vector3.Sub(b.Super().AsNode3D().GlobalPosition(), player.Super().AsNode3D().GlobalPosition())
 					var force = Vector3.Neg(impact_point)
 					force.Y = 0.5

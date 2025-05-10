@@ -1,6 +1,5 @@
 [gd_scene load_steps=18 format=3 uid="uid://c0mo8tek77du4"]
 
-[ext_resource type="Script" uid="uid://b46rm4qdx4m7d" path="res://Player/CharacterSkin.gd" id="2_cp6td"]
 [ext_resource type="PackedScene" uid="uid://db7wkegkjmixy" path="res://Player/model/gdbot.glb" id="2_v8h3f"]
 [ext_resource type="Material" uid="uid://dh42cdejchkr3" path="res://Player/model/materials/face_mat.tres" id="3_fvn82"]
 [ext_resource type="AnimationNodeBlendTree" uid="uid://ctycm6blx4sw4" path="res://Player/model/character_blend_tree.tres" id="3_hscum"]
@@ -1828,10 +1827,10 @@ tracks/51/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
-"method": &"_step"
+"method": &"step"
 }, {
 "args": [],
-"method": &"_step"
+"method": &"step"
 }]
 }
 
@@ -2575,9 +2574,8 @@ _data = {
 &"simple_blink": ExtResource("4_5i6m7")
 }
 
-[node name="CharacterSkin" type="Node3D" node_paths=PackedStringArray("main_animation_player")]
+[node name="CharacterSkin" type="CharacterSkin" node_paths=PackedStringArray("main_animation_player")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
-script = ExtResource("2_cp6td")
 main_animation_player = NodePath("gdbot/AnimationPlayer")
 
 [node name="gdbot" parent="." instance=ExtResource("2_v8h3f")]
