@@ -315,6 +315,7 @@ func (p *DemoPlayer) orient_character_to_direction(direction Vector3.XYZ, delta 
 	var model_scale = Basis.Scale(p.RotationRoot.Transform().Basis)
 	var transform = p.RotationRoot.Transform()
 	transform.Basis = Basis.Scaled(Quaternion.AsBasis(Quaternion.Slerp(Basis.AsQuaternion(transform.Basis), rotation_basis, delta*p.RotationSpeed)), model_scale)
+	p.RotationRoot.SetTransform(transform)
 }
 
 func (p *DemoPlayer) register_input_actions() {
