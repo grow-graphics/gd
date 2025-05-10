@@ -12,6 +12,8 @@ func main() {
 	classdb.Register[FullScreen](NewFullScreenHandler)
 	classdb.Register[DestroyedBox](NewDestroyedBox)
 	classdb.Register[CameraMode](NewCameraMode)
+	classdb.Register[DemoPage]()
+	classdb.Register[DemoLinkButton]()
 	startup.LoadingScene()
 	SceneTree.Add(NewFullScreenHandler())
 	startup.Scene()
