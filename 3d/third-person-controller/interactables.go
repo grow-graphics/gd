@@ -8,6 +8,7 @@ import (
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/PackedScene"
+	"graphics.gd/classdb/PhysicsServer3D"
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/RigidBody3D"
 	"graphics.gd/classdb/SceneTree"
@@ -18,6 +19,7 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Vector3"
 )
 
@@ -29,6 +31,7 @@ var DestroyedBoxScene = Resource.Load[PackedScene.Is[Node3D.Instance]]("res://Bo
 type CoinCollector interface {
 	Node3D.Any
 	CollectCoin()
+	Body3D() RID.Body3D
 }
 
 type DestroyedBox struct {
@@ -104,6 +107,9 @@ type Coin struct {
 
 	initial_tween_position Vector3.XYZ
 	target                 CoinCollector
+
+	timer_fired  bool
+	sound_played bool
 }
 
 func (coin *Coin) AsNode() Node.Instance { return coin.Super().AsNode() }
@@ -119,6 +125,10 @@ func (coin *Coin) SpawnWithDelay(delay Float.X) {
 	var timer SceneTreeTimer.Instance = SceneTree.Get(coin.Super().AsNode()).CreateTimer(delay)
 	timer.OnTimeout(func() {
 		coin.Super().AsCollisionObject3D().SetCollisionLayer(3)
+		coin.timer_fired = true
+		if coin.sound_played {
+			coin.Super().AsNode().QueueFree()
+		}
 	})
 	coin.PlayerDetectionArea.OnBodyEntered(coin.OnBodyEntered)
 }
@@ -130,19 +140,20 @@ func (coin *Coin) OnBodyEntered(body Node3D.Instance) {
 }
 
 func (coin *Coin) SetTarget(target CoinCollector) {
+	PhysicsServer3D.BodyAddCollisionException(coin.Super().AsCollisionObject3D().GetRid(), target.Body3D())
 	if coin.target == nil {
 		coin.Super().SetSleeping(true)
 		coin.Super().SetFreeze(true)
 		coin.initial_tween_position = coin.Super().AsNode3D().GlobalPosition()
 		coin.target = target
 		var tween Tween.Instance = coin.target.AsNode3D().AsNode().CreateTween()
-		tween.TweenMethod(coin.follow, 0, 1, 0.5)
+		tween.TweenMethod(coin.follow, 0.0, 1.0, 0.5)
 		tween.TweenCallback(coin.collect)
 	}
 }
 
 func (coin *Coin) follow(offset any) {
-	coin.Super().AsNode3D().SetGlobalPosition(Vector3.Lerp(coin.initial_tween_position, coin.target.AsNode3D().GlobalPosition(), offset.(Float.X)))
+	coin.Super().AsNode3D().SetGlobalPosition(Vector3.Lerp(coin.initial_tween_position, coin.target.AsNode3D().GlobalPosition(), offset.(float64)))
 }
 
 func (coin *Coin) collect() {
@@ -151,6 +162,9 @@ func (coin *Coin) collect() {
 	coin.target.CollectCoin()
 	coin.Super().AsNode3D().Hide()
 	coin.CollectAudio.OnFinished(func() {
-		coin.Super().AsNode().QueueFree()
+		coin.sound_played = true
+		if coin.timer_fired {
+			coin.Super().AsNode().QueueFree()
+		}
 	})
 }

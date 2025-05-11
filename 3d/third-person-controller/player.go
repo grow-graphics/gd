@@ -39,6 +39,7 @@ import (
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
 	"graphics.gd/variant/Quaternion"
+	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/Transform3D"
 	"graphics.gd/variant/Vector2"
@@ -204,13 +205,13 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	if is_attacking {
 		switch p.equippedWeapon {
 		case WeaponTypes.Default:
-			if is_aiming && !p.Super().IsOnFloor() {
+			if is_aiming && p.Super().IsOnFloor() {
 				if p.shootCooldownTick > p.ShootCooldown {
 					p.shootCooldownTick = 0
 					p.shoot()
-				} else if is_just_attacking {
-					p.attack()
 				}
+			} else if is_just_attacking {
+				p.attack()
 			}
 		case WeaponTypes.Grenade:
 			if p.grenadeCooldownTick > p.GrenadeCooldown {
@@ -266,6 +267,10 @@ func (p *DemoPlayer) shoot() {
 func (p *DemoPlayer) resetPosition() {
 	tansform := p.Super().AsNode3D().Transform()
 	tansform.Origin = p.startPosition
+}
+
+func (p *DemoPlayer) Body3D() RID.Body3D {
+	return p.Super().AsCollisionObject3D().GetRid()
 }
 
 func (p *DemoPlayer) CollectCoin() {
@@ -404,8 +409,8 @@ func (p *CameraController) UnhandledInput(event InputEvent.Instance) {
 	p.mouse_input = Object.Is[InputEventMouseMotion.Instance](event) && Input.MouseMode() == Input.MouseModeCaptured
 	if p.mouse_input {
 		event := Object.To[InputEventMouseMotion.Instance](event)
-		p.rotation_input = event.AsInputEventMouseMotion().Relative().X * p.MouseSensitivity
-		p.tilt_input = event.AsInputEventMouseMotion().Relative().Y * p.MouseSensitivity
+		p.rotation_input = -event.AsInputEventMouseMotion().Relative().X * p.MouseSensitivity
+		p.tilt_input = -event.AsInputEventMouseMotion().Relative().Y * p.MouseSensitivity
 	}
 }
 
@@ -413,14 +418,17 @@ func (p *CameraController) Process(delta Float.X) {
 	if p.anchor == nil {
 		return
 	}
-	p.rotation_input += Input.GetActionStrength("camera_left", false) - Input.GetActionStrength("camera_right", false)
-	p.tilt_input += Input.GetActionStrength("camera_up", false) - Input.GetActionStrength("camera_down", false)
+	p.rotation_input += Input.GetActionRawStrength("camera_left", false) - Input.GetActionRawStrength("camera_right", false)
+	p.tilt_input += Input.GetActionRawStrength("camera_up", false) - Input.GetActionRawStrength("camera_down", false)
 	if p.InvertMouseY {
 		p.tilt_input *= -1
 	}
 	if p.CameraRaycast.IsColliding() {
 		p.aim_target = p.CameraRaycast.GetCollisionPoint()
-		p.aim_collider = Node.ID(p.CameraRaycast.GetCollider().ID())
+		collider := p.CameraRaycast.GetCollider()
+		if collider != Object.Nil {
+			p.aim_collider = Node.ID(collider.ID())
+		}
 	} else {
 		p.aim_target = Transform3D.Transform(p.CameraRaycast.TargetPosition(), p.CameraRaycast.AsNode3D().GlobalTransform())
 		p.aim_collider = 0
