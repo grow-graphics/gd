@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"graphics.gd/classdb/MainLoop"
+	"graphics.gd/classdb/Rendering"
 	"graphics.gd/classdb/RenderingDevice"
 	"graphics.gd/classdb/RenderingServer"
 	"graphics.gd/startup"
@@ -25,7 +26,7 @@ func (app *Main) Initialize() {
 	fmt.Println(RD.GetDeviceName())
 	fmt.Println(RD.GetDeviceVendorName())
 
-	fmt.Println("VRAM: ", RD.GetMemoryUsage(RenderingDevice.MemoryTotal))
+	fmt.Println("VRAM: ", RD.GetMemoryUsage(Rendering.MemoryTotal))
 }
 
 func main() {

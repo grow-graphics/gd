@@ -43,7 +43,7 @@ func (cm *CameraMode) Ready() {
 func (cm *CameraMode) Input(event InputEvent.Instance) {
 	if event, ok := Object.As[InputEventKey.Instance](event); ok {
 		if event.AsInputEvent().IsPressed() && !event.AsInputEvent().IsEcho() {
-			if event.Keycode() == InputEventKey.KeyF10 {
+			if event.Keycode() == Input.KeyF10 {
 				cm.toggle_camera_mode()
 			}
 		}

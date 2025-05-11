@@ -322,19 +322,19 @@ func (p *DemoPlayer) orient_character_to_direction(direction Vector3.XYZ, delta 
 
 func (p *DemoPlayer) register_input_actions() {
 	var InputActions = map[string]any{
-		"move_left":    InputEventKey.KeyA,
-		"move_right":   InputEventKey.KeyD,
-		"move_up":      InputEventKey.KeyW,
-		"move_down":    InputEventKey.KeyS,
-		"jump":         InputEventKey.KeySpace,
-		"attack":       InputEventMouseButton.MouseButtonLeft,
-		"aim":          InputEventMouseButton.MouseButtonRight,
-		"swap_weapons": InputEventKey.KeyTab,
-		"pause":        InputEventKey.KeyEscape,
-		"camera_left":  InputEventKey.KeyQ,
-		"camera_right": InputEventKey.KeyE,
-		"camera_up":    InputEventKey.KeyR,
-		"camera_down":  InputEventKey.KeyF,
+		"move_left":    Input.KeyA,
+		"move_right":   Input.KeyD,
+		"move_up":      Input.KeyW,
+		"move_down":    Input.KeyS,
+		"jump":         Input.KeySpace,
+		"attack":       Input.MouseButtonLeft,
+		"aim":          Input.MouseButtonRight,
+		"swap_weapons": Input.KeyTab,
+		"pause":        Input.KeyEscape,
+		"camera_left":  Input.KeyQ,
+		"camera_right": Input.KeyE,
+		"camera_up":    Input.KeyR,
+		"camera_down":  Input.KeyF,
 	}
 	for action, control := range InputActions {
 		if InputMap.HasAction(action) {
@@ -342,11 +342,11 @@ func (p *DemoPlayer) register_input_actions() {
 		}
 		InputMap.AddAction(action)
 		switch control := control.(type) {
-		case InputEventKey.Key:
+		case Input.Key:
 			var input_key = InputEventKey.New()
 			input_key.SetKeycode(control)
 			InputMap.ActionAddEvent(action, input_key.AsInputEvent())
-		case InputEventMouseButton.MouseButton:
+		case Input.MouseButton:
 			var input_mouse = InputEventMouseButton.New()
 			input_mouse.SetButtonIndex(control)
 			InputMap.ActionAddEvent(action, input_mouse.AsInputEvent())

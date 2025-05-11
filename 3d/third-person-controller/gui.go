@@ -8,6 +8,7 @@ import (
 	"graphics.gd/classdb/InputEvent"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/OS"
+	"graphics.gd/classdb/PropertyTweener"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/TextureButton"
 	"graphics.gd/variant/Color"
@@ -61,7 +62,7 @@ func (page *DemoPage) Ready() {
 func (page *DemoPage) resume_demo() {
 	SceneTree.Get(page.AsNode()).SetPaused(false)
 	var tween = page.AsNode().CreateTween()
-	tween.TweenProperty(page.DemoPageRoot.AsObject(), "modulate", Color.Transparent, 0.3)
+	PropertyTweener.Make(tween, page.DemoPageRoot.AsObject(), "modulate", Color.Transparent, 0.3)
 	tween.TweenCallback(page.DemoPageRoot.AsCanvasItem().Hide)
 	Input.SetMouseMode(page.demoMouseMode)
 }
@@ -102,7 +103,7 @@ func (page *DemoPage) pause_demo() {
 	SceneTree.Get(page.AsNode()).SetPaused(true)
 	page.DemoPageRoot.AsCanvasItem().Show()
 	var tween = page.AsNode().CreateTween()
-	tween.TweenProperty(page.DemoPageRoot.AsObject(), "modulate", Color.X11.White, 0.3)
+	PropertyTweener.Make(tween, page.DemoPageRoot.AsObject(), "modulate", Color.X11.White, 0.3)
 	Input.SetMouseMode(Input.MouseModeVisible)
 }
 

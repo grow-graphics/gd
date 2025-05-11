@@ -4,6 +4,7 @@ import (
 	"graphics.gd/classdb/Area3D"
 	"graphics.gd/classdb/AudioStreamPlayer3D"
 	"graphics.gd/classdb/CollisionShape3D"
+	"graphics.gd/classdb/MethodTweener"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/PackedScene"
@@ -144,7 +145,7 @@ func (coin *Coin) SetTarget(target CoinCollector) {
 		coin.initial_tween_position = coin.AsNode3D().GlobalPosition()
 		coin.target = target
 		var tween Tween.Instance = coin.target.AsNode3D().AsNode().CreateTween()
-		tween.TweenMethod(coin.follow, 0.0, 1.0, 0.5)
+		MethodTweener.Make(tween, Callable.New(coin.follow), 0.0, 1.0, 0.5)
 		tween.TweenCallback(coin.collect)
 	}
 }

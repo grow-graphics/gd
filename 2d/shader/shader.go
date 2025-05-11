@@ -5,6 +5,7 @@ import (
 	"graphics.gd/classdb/Button"
 	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/DisplayServer"
+	"graphics.gd/classdb/GUI"
 	"graphics.gd/classdb/Material"
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/SceneTree"
@@ -30,22 +31,22 @@ func main() {
 		func() Material.Instance {
 			material := MyFirstShader2D_Texture{}
 			shaders.Compile(&material)
-			return material.Super().AsMaterial()
+			return material.AsMaterial()
 		},
 		func() Material.Instance {
 			material := MyFirstShader{}
 			shaders.Compile(&material)
-			return material.Super().AsMaterial()
+			return material.AsMaterial()
 		},
 		func() Material.Instance {
 			material := MyFirstShader2D{}
 			shaders.Compile(&material)
-			return material.Super().AsMaterial()
+			return material.AsMaterial()
 		},
 		func() Material.Instance {
 			material := MyFirstShader2D_UV{}
 			shaders.Compile(&material)
-			return material.Super().AsMaterial()
+			return material.AsMaterial()
 		},
 	}
 	var index int
@@ -54,7 +55,7 @@ func main() {
 	button := Button.New()
 	button.SetText("Switch Shader")
 	button.AsControl().SetAnchorsAndOffsetsPreset(Control.PresetCenterBottom)
-	button.SetAlignment(Button.HorizontalAlignmentCenter)
+	button.SetAlignment(GUI.HorizontalAlignmentCenter)
 	buttonSize := button.AsControl().Size()
 	button.AsControl().SetPosition(Vector2.New(-buttonSize.X/2, -100))
 

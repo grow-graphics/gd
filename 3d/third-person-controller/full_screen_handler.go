@@ -28,7 +28,7 @@ func (fs FullScreen) Input(event InputEvent.Instance) {
 			Input.SetMouseMode(Input.MouseModeCaptured)
 		}
 	} else {
-		if key, ok := Object.As[InputEventKey.Instance](event); ok && event.IsPressed() && key.Keycode() == InputEventKey.KeyF11 {
+		if key, ok := Object.As[InputEventKey.Instance](event); ok && event.IsPressed() && key.Keycode() == Input.KeyF11 {
 			var window Window.Instance = SceneTree.Get(fs.AsNode()).Root()
 			if window.Mode() == Window.ModeFullscreen {
 				window.SetMode(Window.ModeWindowed)
