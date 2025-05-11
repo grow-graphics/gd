@@ -1,11 +1,9 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/AnimationPlayer"
 	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/InputEvent"
-	"graphics.gd/classdb/Node"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Float"
@@ -15,7 +13,7 @@ import (
 const MaxComboCount = 3
 
 type Sword struct {
-	classdb.Extension[Sword, Area2D.Instance] `gd:"FiniteStateMachineSword"`
+	Area2D.Extension[Sword] `gd:"FiniteStateMachineSword"`
 
 	AttackFinished  Signal.Any `gd:"attack_finished()"`
 	AnimationPlayer AnimationPlayer.Instance
@@ -26,8 +24,6 @@ type Sword struct {
 	combo_count           int
 	attack_current        Combo
 }
-
-func (sword *Sword) AsNode() Node.Instance { return sword.Super().AsNode() }
 
 type Combo struct {
 	Damage    int
@@ -79,13 +75,13 @@ func (sword *Sword) changeState(state SwordState) {
 	case SwordStates.Idle:
 		sword.combo_count = 0
 		sword.AnimationPlayer.Stop()
-		sword.Super().AsCanvasItem().SetVisible(false)
-		sword.Super().SetMonitoring(false)
+		sword.AsCanvasItem().SetVisible(false)
+		sword.AsArea2D().SetMonitoring(false)
 	case SwordStates.Attack:
 		sword.attack_current = Combos[sword.combo_count-1]
 		sword.AnimationPlayer.PlayNamed(sword.attack_current.Animation)
-		sword.Super().AsCanvasItem().SetVisible(true)
-		sword.Super().SetMonitoring(true)
+		sword.AsCanvasItem().SetVisible(true)
+		sword.AsArea2D().SetMonitoring(true)
 	}
 	sword.state = state
 }

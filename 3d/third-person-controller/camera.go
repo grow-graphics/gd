@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Camera3D"
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/InputEvent"
@@ -19,7 +18,7 @@ import (
 )
 
 type CameraMode struct {
-	classdb.Extension[CameraMode, Node3D.Instance]
+	Node3D.Extension[CameraMode]
 
 	CameraSpeed      Float.X
 	MouseSensitivity Float.X
@@ -37,8 +36,8 @@ func (cm *CameraMode) Ready() {
 	if OS.IsDebugBuild() {
 		cm.enabled = true
 	}
-	cm.Super().AsNode().SetProcess(cm.enabled)
-	cm.Super().AsNode().SetProcessInput(cm.enabled)
+	cm.AsNode().SetProcess(cm.enabled)
+	cm.AsNode().SetProcessInput(cm.enabled)
 }
 
 func (cm *CameraMode) Input(event InputEvent.Instance) {
@@ -52,7 +51,7 @@ func (cm *CameraMode) Input(event InputEvent.Instance) {
 }
 
 func (cm *CameraMode) Process(dt Float.X) {
-	if !cm.Super().Visible() {
+	if !cm.AsNode3D().Visible() {
 		return
 	}
 	var movement = Vector3.Zero
@@ -93,12 +92,12 @@ func (cm *CameraMode) Process(dt Float.X) {
 }
 
 func (cm *CameraMode) toggle_camera_mode() {
-	var tree = SceneTree.Get(cm.Super().AsNode())
-	if cm.Super().Visible() {
+	var tree = SceneTree.Get(cm.AsNode())
+	if cm.AsNode3D().Visible() {
 		tree.SetPaused(false)
 		cm.cachedCamera.SetCurrent(false)
 		cm.camera.AsNode().QueueFree()
-		cm.Super().Hide()
+		cm.AsNode3D().Hide()
 		for _, node := range tree.GetNodesInGroup("camera_mode_toggle") {
 			if node3d, ok := Object.As[Node3D.Instance](Node.Instance(node)); ok {
 				node3d.Show()
@@ -106,13 +105,13 @@ func (cm *CameraMode) toggle_camera_mode() {
 		}
 	} else {
 		tree.SetPaused(true)
-		cm.cachedCamera = Viewport.Get(cm.Super().AsNode()).GetCamera3d()
+		cm.cachedCamera = Viewport.Get(cm.AsNode()).GetCamera3d()
 		cm.camera = Camera3D.New()
-		cm.Super().AsNode().AddChild(cm.camera.AsNode())
+		cm.AsNode().AddChild(cm.camera.AsNode())
 		cm.camera.SetCurrent(true)
-		cm.Super().Show()
+		cm.AsNode3D().Show()
 		cm.camera.SetFov(cm.cachedCamera.Fov())
-		cm.Super().SetGlobalTransform(cm.cachedCamera.AsNode3D().GlobalTransform())
+		cm.AsNode3D().SetGlobalTransform(cm.cachedCamera.AsNode3D().GlobalTransform())
 		for _, node := range tree.GetNodesInGroup("camera_mode_toggle") {
 			if node3d, ok := Object.As[Node3D.Instance](Node.Instance(node)); ok {
 				node3d.Hide()

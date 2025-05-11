@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Area3D"
 	"graphics.gd/classdb/AudioStreamPlayer3D"
 	"graphics.gd/classdb/Curve"
@@ -13,7 +12,7 @@ import (
 )
 
 type Bullet struct {
-	classdb.Extension[Bullet, Node3D.Instance] `gd:"Bullet"`
+	Node3D.Extension[Bullet] `gd:"Bullet"`
 
 	ScaleDecay    Curve.Instance
 	DistanceLimit Float.X
@@ -36,10 +35,6 @@ func NewBullet() *Bullet {
 	}
 }
 
-func (b *Bullet) AsNode() Node.Instance {
-	return b.Super().AsNode()
-}
-
 func (b *Bullet) Ready() {
 	b.Area3D.OnBodyEntered(func(body Node3D.Instance) {
 		if body.ID() == Node3D.ID(b.Shooter) {
@@ -51,17 +46,17 @@ func (b *Bullet) Ready() {
 		}
 		body.AsNode().QueueFree()
 	})
-	b.Super().LookAt(Vector3.Add(b.Super().GlobalPosition(), b.Velocity))
+	b.AsNode3D().LookAt(Vector3.Add(b.AsNode3D().GlobalPosition(), b.Velocity))
 	b.AliveLimit = b.DistanceLimit / Vector3.Length(b.Velocity)
 	b.ProjectileSound.SetPitchScale(Float.RandomlyDistributed(1.0, 0.1))
 	b.ProjectileSound.Play()
 }
 
 func (b *Bullet) Process(delta Float.X) {
-	b.Super().SetGlobalPosition(Vector3.Add(b.Super().GlobalPosition(), Vector3.MulX(b.Velocity, delta)))
+	b.AsNode3D().SetGlobalPosition(Vector3.Add(b.AsNode3D().GlobalPosition(), Vector3.MulX(b.Velocity, delta)))
 	b.TimeAlive += delta
 	b.Visuals.SetScale(Vector3.MulX(Vector3.One, b.ScaleDecay.Sample(b.TimeAlive)))
 	if b.TimeAlive > b.AliveLimit {
-		b.Super().AsNode().QueueFree()
+		b.AsNode().QueueFree()
 	}
 }

@@ -3,18 +3,16 @@ package main
 import (
 	"fmt"
 
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Button"
 	"graphics.gd/classdb/CanvasLayer"
 	"graphics.gd/classdb/Label"
-	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/SceneTreeTimer"
 	"graphics.gd/classdb/Timer"
 )
 
 type HUD struct {
-	classdb.Extension[HUD, CanvasLayer.Instance] `gd:"DodgeTheCreepsHUD"`
+	CanvasLayer.Extension[HUD] `gd:"DodgeTheCreepsHUD"`
 
 	Message      Label.Instance
 	MessageTimer Timer.Instance
@@ -23,8 +21,6 @@ type HUD struct {
 
 	StartGame chan<- struct{} `gd:"start_game"`
 }
-
-func (h *HUD) AsNode() Node.Instance { return h.Super().AsNode() }
 
 func (h *HUD) ShowMessage(text string) {
 	h.Message.SetText(text)
@@ -40,7 +36,7 @@ func (h *HUD) ShowGameOver() {
 func (h *HUD) ShowTitle() {
 	h.Message.SetText("Dodge the Creeps!")
 	h.Message.AsCanvasItem().Show()
-	var timer SceneTreeTimer.Instance = SceneTree.Get(h.Super().AsNode()).CreateTimer(1)
+	var timer SceneTreeTimer.Instance = SceneTree.Get(h.AsNode()).CreateTimer(1)
 	timer.OnTimeout(h.ShowStartButton)
 }
 

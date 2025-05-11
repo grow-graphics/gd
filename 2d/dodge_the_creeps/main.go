@@ -21,7 +21,7 @@ import (
 )
 
 type Main struct {
-	classdb.Extension[Main, Node.Instance] `gd:"DodgeTheCreeps"`
+	Node.Extension[Main] `gd:"DodgeTheCreeps"`
 
 	MobTimer      Timer.Instance
 	ScoreTimer    Timer.Instance
@@ -61,7 +61,7 @@ func (m *Main) NewGame() {
 	m.HUD.UpdateScore(m.score)
 	m.HUD.ShowMessage("Get Ready!")
 
-	SceneTree.Get(m.Super()).CallGroup("mobs", "queue_free")
+	SceneTree.Get(m.AsNode()).CallGroup("mobs", "queue_free")
 	m.Music.Play()
 }
 
@@ -100,7 +100,7 @@ func (m *Main) OnMobTimerTimeout() {
 	var velocity = Vector2.New(Float.RandomBetween(150, 250), 0)
 	mob.SetLinearVelocity(Vector2.Rotated(velocity, direction))
 
-	m.Super().AddChild(mob.AsNode())
+	m.AsNode().AddChild(mob.AsNode())
 }
 
 func main() {

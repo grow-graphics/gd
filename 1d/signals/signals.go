@@ -10,7 +10,7 @@ import (
 )
 
 type Signals struct {
-	classdb.Extension[Signals, Object.Instance]
+	Object.Extension[Signals]
 
 	Something chan<- struct{} `gd:"something"`
 

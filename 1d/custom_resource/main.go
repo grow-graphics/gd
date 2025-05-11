@@ -8,13 +8,13 @@ import (
 )
 
 type MyResource struct {
-	classdb.Extension[MyResource, Resource.Instance]
+	Resource.Extension[MyResource]
 
 	Value string
 }
 
 type MyNode struct {
-	classdb.Extension[MyNode, Node.Instance]
+	Node.Extension[MyNode]
 
 	Resource *MyResource
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type HelloName struct {
-	classdb.Extension[HelloName, Node2D.Instance]
+	Node2D.Extension[HelloName]
 
 	Name   TextEdit.Instance
 	Text   Label.Instance

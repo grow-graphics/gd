@@ -54,12 +54,12 @@ type WeaponType Enum.Int[struct {
 var WeaponTypes = Enum.Values[WeaponType]()
 
 type DemoPlayer struct {
-	classdb.Extension[DemoPlayer, CharacterBody3D.Instance] `gd:"DemoPlayer"`
+	CharacterBody3D.Extension[DemoPlayer] `gd:"DemoPlayer"`
 
 	WeaponSwitched Signal.Solo[string] `gd:"weapon_switched(weapon_name)"`
 
 	MoveSpeed Float.X `
-		Character maximum run speed on the ground.`
+		is the maximum run speed on the ground.`
 	BulletSpeed         Float.X
 	AttackImpulse       Float.X
 	Acceleration        Float.X
@@ -118,17 +118,13 @@ func NewDemoPlayer() *DemoPlayer {
 	}
 }
 
-func (p *DemoPlayer) AsNode3D() Node3D.Instance {
-	return p.Super().AsNode3D()
-}
-
 func (p *DemoPlayer) Ready() {
-	p.startPosition = p.Super().AsNode3D().GlobalTransform().Origin
+	p.startPosition = p.AsNode3D().GlobalTransform().Origin
 	p.shootCooldownTick = p.ShootCooldown
 	p.grenadeCooldownTick = p.GrenadeCooldown
 	Input.SetMouseMode(Input.MouseModeCaptured)
 	p.CameraController.Setup(p)
-	p.GrenadeAimController.Super().SetVisible(false)
+	p.GrenadeAimController.AsNode3D().SetVisible(false)
 	p.WeaponSwitched.Emit(p.equippedWeapon.String())
 	if !InputMap.HasAction("move_left") {
 		p.register_input_actions()
@@ -145,15 +141,15 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 			p.groundHeight = max(p.groundHeight, collision_result.Point.Y)
 		}
 	} else {
-		p.groundHeight = p.Super().AsNode3D().GlobalPosition().Y + p.GroundShapecast.TargetPosition().Y
+		p.groundHeight = p.AsNode3D().GlobalPosition().Y + p.GroundShapecast.TargetPosition().Y
 	}
-	if p.Super().AsNode3D().GlobalPosition().Y < p.groundHeight {
-		p.groundHeight = p.Super().AsNode3D().GlobalPosition().Y
+	if p.AsNode3D().GlobalPosition().Y < p.groundHeight {
+		p.groundHeight = p.AsNode3D().GlobalPosition().Y
 	}
 	if Input.IsActionJustPressed("swap_weapons", false) {
 		if p.equippedWeapon == WeaponTypes.Default {
 			p.equippedWeapon = WeaponTypes.Grenade
-			p.GrenadeAimController.Super().SetVisible(true)
+			p.GrenadeAimController.AsNode3D().SetVisible(true)
 		} else {
 			p.equippedWeapon = WeaponTypes.Default
 		}
@@ -162,20 +158,20 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	var is_attacking = Input.IsActionPressed("attack", false) && !p.AttackAnimationPlayer.IsPlaying()
 	var is_just_attacking = Input.IsActionJustPressed("attack", false)
 	var is_just_jumping = Input.IsActionJustPressed("jump", false)
-	var is_aiming = Input.IsActionPressed("aim", false) && p.Super().IsOnFloor()
-	var is_air_boosting = Input.IsActionPressed("jump", false) && !p.Super().IsOnFloor() && p.Super().Velocity().Y > 0
-	var is_just_on_floor = p.Super().IsOnFloor() && !p.isOnFloorBuffer
-	p.isOnFloorBuffer = p.Super().IsOnFloor()
+	var is_aiming = Input.IsActionPressed("aim", false) && p.AsCharacterBody3D().IsOnFloor()
+	var is_air_boosting = Input.IsActionPressed("jump", false) && !p.AsCharacterBody3D().IsOnFloor() && p.AsCharacterBody3D().Velocity().Y > 0
+	var is_just_on_floor = p.AsCharacterBody3D().IsOnFloor() && !p.isOnFloorBuffer
+	p.isOnFloorBuffer = p.AsCharacterBody3D().IsOnFloor()
 	p.moveDirection = p.get_camera_oriented_input()
 	if Vector3.Length(p.moveDirection) > 0.2 {
 		p.lastStrongDirection = Vector3.Normalized(p.moveDirection)
 	}
 	if is_aiming {
-		p.lastStrongDirection = Vector3.Normalized(Basis.Transform(Vector3.Back, p.CameraController.Super().GlobalTransform().Basis))
+		p.lastStrongDirection = Vector3.Normalized(Basis.Transform(Vector3.Back, p.CameraController.AsNode3D().GlobalTransform().Basis))
 	}
 	p.orient_character_to_direction(p.lastStrongDirection, delta)
-	var y_velocity = p.Super().Velocity().Y
-	var velocity = p.Super().Velocity()
+	var y_velocity = p.AsCharacterBody3D().Velocity().Y
+	var velocity = p.AsCharacterBody3D().Velocity()
 	velocity.Y = 0
 	velocity = Vector3.Lerp(velocity, Vector3.MulX(p.moveDirection, p.MoveSpeed), p.Acceleration*delta)
 	if Vector3.Length(p.moveDirection) == 0 && Vector3.Length(velocity) < p.StoppingSpeed {
@@ -188,7 +184,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	} else if is_air_boosting {
 		velocity.Y += p.JumpAdditionalForce * delta
 	}
-	p.Super().SetVelocity(velocity)
+	p.AsCharacterBody3D().SetVelocity(velocity)
 	if is_aiming {
 		p.CameraController.SetPivot(CameraPivots.OverShoulder)
 		p.GrenadeAimController.ThrowDirection = Quaternion.Rotate(Vector3.Forward, p.CameraController.Camera.AsNode3D().Quaternion())
@@ -197,7 +193,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	} else {
 		p.CameraController.SetPivot(CameraPivots.ThirdPerson)
 		p.GrenadeAimController.ThrowDirection = p.lastStrongDirection
-		p.GrenadeAimController.FromLookPosition = p.Super().AsNode3D().GlobalPosition()
+		p.GrenadeAimController.FromLookPosition = p.AsNode3D().GlobalPosition()
 		p.UI.AimReticle.AsCanvasItem().SetVisible(false)
 	}
 	p.shootCooldownTick += delta
@@ -205,7 +201,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	if is_attacking {
 		switch p.equippedWeapon {
 		case WeaponTypes.Default:
-			if is_aiming && p.Super().IsOnFloor() {
+			if is_aiming && p.AsCharacterBody3D().IsOnFloor() {
 				if p.shootCooldownTick > p.ShootCooldown {
 					p.shootCooldownTick = 0
 					p.shoot()
@@ -224,7 +220,7 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 		p.CharacterSkin.Jump()
 	} else if is_just_on_floor && velocity.Y < 0 {
 		p.CharacterSkin.Fall()
-	} else if p.Super().IsOnFloor() {
+	} else if p.AsCharacterBody3D().IsOnFloor() {
 		var xz_velocity = Vector3.New(velocity.X, 0, velocity.Z)
 		if Vector3.Length(xz_velocity) > p.StoppingSpeed {
 			p.CharacterSkin.SetMoving(true)
@@ -236,41 +232,42 @@ func (p *DemoPlayer) PhysicsProcess(delta Float.X) {
 	if is_just_on_floor {
 		p.LandingSound.Play()
 	}
-	var position_before = p.Super().AsNode3D().GlobalPosition()
-	p.Super().MoveAndSlide()
-	var position_after = p.Super().AsNode3D().GlobalPosition()
+	var position_before = p.AsNode3D().GlobalPosition()
+	p.AsCharacterBody3D().MoveAndSlide()
+	var position_after = p.AsNode3D().GlobalPosition()
 	var delta_position = Vector3.Sub(position_after, position_before)
 	if Vector3.Length(delta_position) < Float.Epsilon && Vector3.Length(velocity) > Float.Epsilon {
-		position := p.Super().AsNode3D().GlobalPosition()
-		p.Super().AsNode3D().SetGlobalPosition(Vector3.Add(position, Vector3.MulX(p.Super().GetWallNormal(), 0.1)))
+		position := p.AsNode3D().GlobalPosition()
+		p.AsNode3D().SetGlobalPosition(Vector3.Add(position, Vector3.MulX(p.AsCharacterBody3D().GetWallNormal(), 0.1)))
 	}
 }
 
 func (p *DemoPlayer) attack() {
 	p.AttackAnimationPlayer.PlayNamed("Attack")
 	p.CharacterSkin.Punch()
-	p.Super().SetVelocity(Basis.Transform(Vector3.MulX(Vector3.Back, p.AttackImpulse), p.CameraController.Super().GlobalTransform().Basis))
+	p.AsCharacterBody3D().SetVelocity(Basis.Transform(Vector3.MulX(Vector3.Back, p.AttackImpulse), p.CameraController.AsNode3D().GlobalTransform().Basis))
 }
 
 func (p *DemoPlayer) shoot() {
 	var bullet = BulletScene.Instantiate()
-	bullet.Shooter = p.Super().AsNode().ID()
-	var origin = Vector3.Add(p.Super().AsNode3D().GlobalPosition(), Vector3.Up)
+	bullet.Shooter = p.AsNode().ID()
+	var origin = Vector3.Add(p.AsNode3D().GlobalPosition(), Vector3.Up)
 	var aim_target = p.CameraController.GetAimTarget()
 	var aim_direction = Vector3.Normalized(Vector3.Sub(aim_target, origin))
 	bullet.Velocity = Vector3.MulX(aim_direction, p.BulletSpeed)
 	bullet.DistanceLimit = 14
-	p.Super().AsNode().AddChild(bullet.AsNode())
-	bullet.Super().SetGlobalPosition(origin)
+	p.AsNode().AddChild(bullet.AsNode())
+	bullet.AsNode3D().SetGlobalPosition(origin)
 }
 
-func (p *DemoPlayer) resetPosition() {
-	tansform := p.Super().AsNode3D().Transform()
+func (p *DemoPlayer) ResetPosition() {
+	tansform := p.AsNode3D().Transform()
 	tansform.Origin = p.startPosition
+	p.AsNode3D().SetTransform(tansform)
 }
 
 func (p *DemoPlayer) Body3D() RID.Body3D {
-	return p.Super().AsCollisionObject3D().GetRid()
+	return p.AsCollisionObject3D().GetRid()
 }
 
 func (p *DemoPlayer) CollectCoin() {
@@ -283,8 +280,8 @@ func (p *DemoPlayer) loseCoins() {
 	p.coins -= lost_coins
 	for range lost_coins {
 		var coin = CoinScene.Instantiate()
-		p.Super().AsNode().AddChild(coin.AsNode())
-		coin.Super().AsNode3D().SetGlobalPosition(p.Super().AsNode3D().GlobalPosition())
+		p.AsNode().AddChild(coin.AsNode())
+		coin.AsNode3D().SetGlobalPosition(p.AsNode3D().GlobalPosition())
 		coin.SpawnWithDelay(1.5)
 	}
 	Object.Call(p.UI.CoinsContainer, "update_coins_amount", p.coins)
@@ -298,7 +295,7 @@ func (p *DemoPlayer) get_camera_oriented_input() Vector3.XYZ {
 	var input = Vector3.Zero
 	input.X = -raw_input.X * Float.Sign(1.0-raw_input.Y*raw_input.Y/2)
 	input.Z = -raw_input.Y * Float.Sign(1.0-raw_input.X*raw_input.X/2)
-	input = Basis.Transform(input, p.CameraController.Super().GlobalTransform().Basis)
+	input = Basis.Transform(input, p.CameraController.AsNode3D().GlobalTransform().Basis)
 	input.Y = 0
 	return input
 }
@@ -310,7 +307,7 @@ func (p *DemoPlayer) play_foot_step_sound() {
 
 func (p *DemoPlayer) Damage(impact_point Vector3.XYZ, force Vector3.XYZ) {
 	force.Y = Float.Abs(force.Y)
-	p.Super().SetVelocity(Vector3.LengthLimited(force, p.MaxThrowbackForce))
+	p.AsCharacterBody3D().SetVelocity(Vector3.LengthLimited(force, p.MaxThrowbackForce))
 	p.loseCoins()
 }
 
@@ -365,7 +362,7 @@ type CameraPivot Enum.Int[struct {
 var CameraPivots = Enum.Values[CameraPivot]()
 
 type CameraController struct {
-	classdb.Extension[CameraController, Node3D.Instance] `gd:"CameraController"`
+	Node3D.Extension[CameraController] `gd:"CameraController"`
 
 	PlayerPath          Path.ToNode
 	InvertMouseY        bool
@@ -401,10 +398,6 @@ func NewCameraController() *CameraController {
 	}
 }
 
-func (p *CameraController) AsNode() Node.Instance {
-	return p.Super().AsNode()
-}
-
 func (p *CameraController) UnhandledInput(event InputEvent.Instance) {
 	p.mouse_input = Object.Is[InputEventMouseMotion.Instance](event) && Input.MouseMode() == Input.MouseModeCaptured
 	if p.mouse_input {
@@ -435,13 +428,13 @@ func (p *CameraController) Process(delta Float.X) {
 	}
 	var target_position = Vector3.Add(p.anchor.AsNode3D().GlobalPosition(), p.offset)
 	target_position.Y = Float.Lerp(p.anchor.AsNode3D().GlobalPosition().Y, p.anchor.groundHeight, 0.1)
-	p.Super().SetGlobalPosition(target_position)
+	p.AsNode3D().SetGlobalPosition(target_position)
 	p.euler_rotation.X += Angle.Radians(p.tilt_input * delta)
 	p.euler_rotation.X = Float.Clamp(p.euler_rotation.X, p.TiltLowerLimit, p.TiltUpperLimit)
 	p.euler_rotation.Y += Angle.Radians(p.rotation_input * delta)
-	transform := p.Super().Transform()
+	transform := p.AsNode3D().Transform()
 	transform.Basis = Basis.Euler(p.euler_rotation, Angle.OrderYXZ)
-	p.Super().SetTransform(transform)
+	p.AsNode3D().SetTransform(transform)
 	if pivot, ok := p.pivot.Instance(); ok {
 		p.Camera.AsNode3D().SetGlobalTransform(pivot.GlobalTransform())
 	}
@@ -454,14 +447,14 @@ func (p *CameraController) Process(delta Float.X) {
 
 func (p *CameraController) Setup(player *DemoPlayer) {
 	p.anchor = player
-	p.Super().SetGlobalTransform(p.anchor.Super().AsNode3D().GlobalTransform())
-	p.offset = Vector3.Sub(p.Super().GlobalTransform().Origin, player.Super().AsNode3D().GlobalTransform().Origin)
+	p.AsNode3D().SetGlobalTransform(p.anchor.AsNode3D().AsNode3D().GlobalTransform())
+	p.offset = Vector3.Sub(p.AsNode3D().GlobalTransform().Origin, player.AsNode3D().GlobalTransform().Origin)
 	p.SetPivot(CameraPivots.ThirdPerson)
 	if pivot, ok := p.pivot.Instance(); ok {
 		p.Camera.AsNode3D().SetGlobalTransform(Transform3D.Lerp(p.Camera.AsNode3D().GlobalTransform(), pivot.GlobalTransform(), 0.1))
 	}
-	p.CameraSpringArm.AddExcludedObject(player.Super().AsCollisionObject3D().GetRid())
-	p.CameraRaycast.AddExceptionRid(player.Super().AsCollisionObject3D().GetRid())
+	p.CameraSpringArm.AddExcludedObject(player.AsCollisionObject3D().GetRid())
+	p.CameraRaycast.AddExceptionRid(player.AsCollisionObject3D().GetRid())
 }
 
 func (p *CameraController) SetPivot(pivot CameraPivot) {
@@ -491,7 +484,7 @@ func (p *CameraController) GetAimCollider() Node.Instance {
 var GrenadeScene = Resource.Load[PackedScene.Is[CharacterBody3D.Instance]]("res://Player/Grenade.tscn")
 
 type GrenadeLauncher struct {
-	classdb.Extension[GrenadeLauncher, Node3D.Instance] `gd:"GrenadeLauncher"`
+	Node3D.Extension[GrenadeLauncher] `gd:"GrenadeLauncher"`
 
 	MinThrowDistance Float.X
 	MaxThrowDistance Float.X
@@ -509,10 +502,6 @@ type GrenadeLauncher struct {
 	timeToLand    Float.X
 }
 
-func (launcher *GrenadeLauncher) AsNode() Node.Instance {
-	return launcher.Super().AsNode()
-}
-
 func NewGrenadeLauncher() *GrenadeLauncher {
 	return &GrenadeLauncher{
 		MinThrowDistance: 7,
@@ -522,18 +511,18 @@ func NewGrenadeLauncher() *GrenadeLauncher {
 }
 
 func (weapon *GrenadeLauncher) PhysicsProcess(delta Float.X) {
-	if weapon.Super().Visible() {
+	if weapon.AsNode3D().Visible() {
 		weapon.update_throw_velocity()
 		weapon.draw_throw_path()
 	}
 }
 
 func (weapon *GrenadeLauncher) ThrowGrenade() bool {
-	if !weapon.Super().Visible() {
+	if !weapon.AsNode3D().Visible() {
 		return false
 	}
 	var grenade = GrenadeScene.Instantiate()
-	weapon.Super().AsNode().GetParent().AddChild(grenade.AsNode())
+	weapon.AsNode().GetParent().AddChild(grenade.AsNode())
 	grenade.AsNode3D().SetGlobalPosition(weapon.LaunchPoint.AsNode3D().GlobalPosition())
 	Object.Call(grenade, "throw", weapon.throwVelocity)
 	parent := Object.To[CharacterBody3D.Instance](grenade.AsNode().GetParent())
@@ -619,7 +608,7 @@ func (weapon *GrenadeLauncher) draw_throw_path() {
 }
 
 type CharacterSkin struct {
-	classdb.Extension[CharacterSkin, Node3D.Instance] `gd:"CharacterSkin"`
+	Node3D.Extension[CharacterSkin] `gd:"CharacterSkin"`
 
 	Stepped Signal.Void `gd:"stepped()"`
 
@@ -639,10 +628,6 @@ func NewCharacterSkin() *CharacterSkin {
 
 func (skin *CharacterSkin) state_machine() AnimationNodeStateMachinePlayback.Instance {
 	return Object.Get(skin.AnimationTree, "parameters/StateMachine/playback").(classdb.AnimationNodeStateMachinePlayback)
-}
-
-func (skin *CharacterSkin) AsNode() Node.Instance {
-	return skin.Super().AsNode()
 }
 
 func (skin *CharacterSkin) Moving() bool {

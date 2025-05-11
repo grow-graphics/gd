@@ -14,7 +14,7 @@ import (
 const DefaultBallSpeed = 500
 
 type PongBall struct {
-	classdb.Extension[PongBall, Area2D.Instance] `gd:"PongBall"`
+	Area2D.Extension[PongBall] `gd:"PongBall"`
 
 	Direction Vector2.XY
 
@@ -25,24 +25,24 @@ type PongBall struct {
 func (b *PongBall) Ready() {
 	b.speed = DefaultBallSpeed
 	b.Direction = Vector2.Left
-	b.initialPosition = b.Super().AsNode2D().Position()
+	b.initialPosition = b.AsNode2D().Position()
 }
 
 func (b *PongBall) Process(delta Float.X) {
-	node2d := b.Super().AsNode2D()
+	node2d := b.AsNode2D()
 	b.speed += delta * 2
 	node2d.SetPosition(Vector2.Add(node2d.Position(), Vector2.MulX(b.Direction, b.speed*delta)))
 }
 
 func (b *PongBall) Reset() {
-	node2d := b.Super().AsNode2D()
+	node2d := b.AsNode2D()
 	b.Direction = Vector2.Left
 	node2d.SetPosition(b.initialPosition)
 	b.speed = DefaultBallSpeed
 }
 
 type PongCeilingFloor struct {
-	classdb.Extension[PongCeilingFloor, Area2D.Instance] `gd:"PongCeilingFloor"`
+	Area2D.Extension[PongCeilingFloor] `gd:"PongCeilingFloor"`
 
 	BounceDirection int
 }
@@ -56,7 +56,7 @@ func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
 const PaddleMoveSpeed = 200
 
 type PongPaddle struct {
-	classdb.Extension[PongPaddle, Area2D.Instance] `gd:"PongPaddle"`
+	Area2D.Extension[PongPaddle] `gd:"PongPaddle"`
 
 	BallDirection Float.X
 	up, down      string
@@ -65,14 +65,14 @@ type PongPaddle struct {
 }
 
 func (p *PongPaddle) Ready() {
-	p.screenSizeY = p.Super().AsCanvasItem().GetViewportRect().Size.Y
-	var n = p.Super().AsNode().Name()
+	p.screenSizeY = p.AsCanvasItem().GetViewportRect().Size.Y
+	var n = p.AsNode().Name()
 	p.up = n + "_move_up"
 	p.down = n + "_move_down"
 }
 
 func (p *PongPaddle) Process(delta Float.X) {
-	node2d := p.Super().AsNode2D()
+	node2d := p.AsNode2D()
 	var input = Input.GetActionStrength(p.down, false) - Input.GetActionStrength(p.up, false)
 	var position = node2d.Position()
 	position.Y = Float.Clamp(position.Y+input*PaddleMoveSpeed*delta, 16, p.screenSizeY-16)
@@ -86,7 +86,7 @@ func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
 }
 
 type PongWall struct {
-	classdb.Extension[PongWall, Area2D.Instance] `gd:"PongWall"`
+	Area2D.Extension[PongWall] `gd:"PongWall"`
 }
 
 func (w *PongWall) OnAreaEntered(area Area2D.Instance) {

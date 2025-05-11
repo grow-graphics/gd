@@ -22,7 +22,7 @@ HelloWorld is a simple extension to demonstrate how to export
 Go methods so that they can be used in scripts.
 */
 type HelloWorld struct {
-	classdb.Extension[HelloWorld, Object.Instance]
+	Object.Extension[HelloWorld]
 }
 
 func NewHelloWorld() *HelloWorld {
@@ -51,18 +51,18 @@ func (h *HelloWorld) Bar(message string) *Bar {
 }
 
 type Rotator struct {
-	classdb.Extension[Rotator, Sprite2D.Instance]
+	Sprite2D.Extension[Rotator]
 
 	Map map[string]int
 }
 
 func (r *Rotator) Process(delta Float.X) {
-	node2D := r.Super().AsNode2D()
+	node2D := r.AsNode2D()
 	node2D.SetRotation(node2D.Rotation() + delta)
 }
 
 type StartedSignalEmitter struct {
-	classdb.Extension[StartedSignalEmitter, Node.Instance]
+	Node.Extension[StartedSignalEmitter]
 
 	started chan<- struct{}
 }
@@ -78,7 +78,7 @@ func (r *StartedSignalEmitter) Ready() {
 ExtendedNode demonstrates how to call the methods of builtin objects.
 */
 type ExtendedNode struct {
-	classdb.Extension[ExtendedNode, Node2D.Instance]
+	Node2D.Extension[ExtendedNode]
 
 	StringField string
 }
@@ -86,7 +86,7 @@ type ExtendedNode struct {
 func (e *ExtendedNode) Ready() {
 	fmt.Println("Ready!")
 
-	node := e.Super()
+	node := e.AsNode2D()
 
 	fmt.Println("class:", Object.Instance(node.AsObject()).String())
 
@@ -116,7 +116,7 @@ func (e *ExtendedNode) Ready() {
 }
 
 type Bar struct {
-	classdb.Extension[Bar, Object.Instance]
+	Object.Extension[Bar]
 
 	Message string
 }

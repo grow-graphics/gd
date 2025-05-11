@@ -34,14 +34,14 @@ type Bullet struct {
 }
 
 type Bullets struct {
-	classdb.Extension[Bullets, Node2D.Instance] `gd:"BulletShower"`
+	Node2D.Extension[Bullets] `gd:"BulletShower"`
 
 	bullets [BulletCount]Bullet
 	shape   RID.Shape2D
 }
 
 func (b *Bullets) Ready() {
-	Node2D := b.Super()
+	Node2D := b.AsNode2D()
 	b.shape = PhysicsServer2D.CircleShapeCreate()
 	PhysicsServer2D.ShapeSetData(b.shape, 8)
 	for i := range b.bullets {
@@ -64,12 +64,12 @@ func (b *Bullets) Ready() {
 }
 
 func (b *Bullets) Process(delta Float.X) {
-	b.Super().AsCanvasItem().QueueRedraw()
+	b.AsCanvasItem().QueueRedraw()
 }
 
 func (b *Bullets) PhysicsProcess(delta Float.X) {
 	var transform = Transform2D.New()
-	var offset = b.Super().AsCanvasItem().GetViewportRect().Size.X
+	var offset = b.AsCanvasItem().GetViewportRect().Size.X
 	for i := range b.bullets {
 		var bullet = &b.bullets[i]
 		bullet.Position.X -= bullet.Speed * delta
@@ -84,7 +84,7 @@ func (b *Bullets) PhysicsProcess(delta Float.X) {
 func (b *Bullets) Draw() {
 	var offset = Vector2.MulX(Vector2.Neg(bullet_image.AsTexture2D().GetSize()), 0.5)
 	for _, bullet := range b.bullets {
-		b.Super().AsCanvasItem().DrawTexture(bullet_image.AsTexture2D(), Vector2.Add(bullet.Position, offset))
+		b.AsCanvasItem().DrawTexture(bullet_image.AsTexture2D(), Vector2.Add(bullet.Position, offset))
 	}
 }
 
@@ -97,7 +97,7 @@ func (b *Bullets) ExitTree() {
 }
 
 type Player struct {
-	classdb.Extension[Player, Area2D.Instance] `gd:"BulletShowerPlayer"`
+	Area2D.Extension[Player] `gd:"BulletShowerPlayer"`
 
 	Sprite AnimatedSprite2D.Instance `gd:"AnimatedSprite2D"`
 
@@ -110,7 +110,7 @@ func (p *Player) Ready() {
 
 func (p *Player) Input(event InputEvent.Instance) {
 	if event, ok := classdb.As[InputEventMouseMotion.Instance](event); ok {
-		p.Super().AsNode2D().SetPosition(event.AsInputEventMouse().Position())
+		p.AsNode2D().SetPosition(event.AsInputEventMouse().Position())
 	}
 }
 

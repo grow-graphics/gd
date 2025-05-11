@@ -7,7 +7,7 @@ import (
 )
 
 type Summator struct {
-	classdb.Extension[Summator, RefCounted.Instance]
+	RefCounted.Extension[Summator]
 
 	count int
 }

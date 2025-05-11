@@ -68,7 +68,7 @@ func (BasicStateFor[T]) Update(*T, Float.X)                  {}
 func (BasicStateFor[T]) OnAnimationFinished(*T, string)      {}
 
 type Bullet struct {
-	classdb.Extension[Bullet, CharacterBody2D.Instance] `gd:"FiniteStateMachineBullet"`
+	CharacterBody2D.Extension[Bullet] `gd:"FiniteStateMachineBullet"`
 
 	CollisionShape2D CollisionShape2D.Instance
 
@@ -83,25 +83,25 @@ func NewBullet() *Bullet {
 }
 
 func (b *Bullet) Ready() {
-	b.Super().AsCanvasItem().SetTopLevel(true)
+	b.AsCanvasItem().SetTopLevel(true)
 }
 
 func (b *Bullet) PhysicsProcess(delta Float.X) {
-	root := SceneTree.Get(b.Super().AsNode()).Root()
-	if !Rect2.HasPoint(root.AsViewport().GetVisibleRect(), b.Super().AsNode2D().Position()) {
-		b.Super().AsNode().QueueFree()
+	root := SceneTree.Get(b.AsNode()).Root()
+	if !Rect2.HasPoint(root.AsViewport().GetVisibleRect(), b.AsNode2D().Position()) {
+		b.AsNode().QueueFree()
 		return
 	}
 	var motion = Vector2.MulX(b.direction, b.speed*delta)
-	var collision = b.Super().AsPhysicsBody2D().MoveAndCollide(motion)
+	var collision = b.AsPhysicsBody2D().MoveAndCollide(motion)
 	if collision != KinematicCollision2D.Nil {
-		b.Super().AsNode().QueueFree()
+		b.AsNode().QueueFree()
 	}
 }
 
 func (b *Bullet) Draw() {
 	circle, _ := classdb.As[CircleShape2D.Instance](Shape2D.Instance(b.CollisionShape2D.Shape()))
-	b.Super().AsCanvasItem().DrawCircle(Vector2.Zero, circle.Radius(), Color.X11.White)
+	b.AsCanvasItem().DrawCircle(Vector2.Zero, circle.Radius(), Color.X11.White)
 }
 
 func main() {

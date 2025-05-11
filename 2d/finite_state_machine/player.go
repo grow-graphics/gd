@@ -23,7 +23,7 @@ import (
 var bullet PackedScene.Instance = Resource.Load[PackedScene.Instance]("res://player/weapon/Bullet.tscn")
 
 type Player struct {
-	classdb.Extension[Player, CharacterBody2D.Instance] `gd:"FiniteStateMachinePlayer"`
+	CharacterBody2D.Extension[Player] `gd:"FiniteStateMachinePlayer"`
 
 	AnimationPlayer    AnimationPlayer.Instance
 	StateNameDisplayer Label.Instance
@@ -131,9 +131,9 @@ func (p *Player) UnhandledInput(event InputEvent.Instance) {
 		}
 		gun.CooldownTimer.Start()
 		b, _ := classdb.As[*Bullet](Node.Instance(bullet.Instantiate()))
-		b.Super().AsNode2D().SetPosition(gun.AsNode2D().GlobalPosition())
+		b.AsNode2D().SetPosition(gun.AsNode2D().GlobalPosition())
 		b.direction = p.look_direction
-		gun.AsNode().AddChild(b.Super().AsNode())
+		gun.AsNode().AddChild(b.AsNode())
 	}
 	if event.IsActionPressed("attack") {
 		switch p.state.Current().(type) {
@@ -185,7 +185,7 @@ func (playerJumping) Enter(p *Player) {
 		} else {
 			p.max_horizontal_speed = p.base_max_horizontal_speed
 		}
-		p.enter_jump_velocity = p.Super().Velocity()
+		p.enter_jump_velocity = p.AsCharacterBody2D().Velocity()
 	}
 	var input_direction = p.get_input_direction()
 	p.update_look_direction(input_direction)
@@ -215,8 +215,8 @@ func (playerJumping) Update(p *Player, delta Float.X) {
 	var steering_velocity = Vector2.MulX(
 		Vector2.Normalized(Vector2.Sub(target_velocity, p.horizontal_velocity)), p.air_steering_power)
 	p.horizontal_velocity = Vector2.Add(p.horizontal_velocity, steering_velocity)
-	p.Super().SetVelocity(p.horizontal_velocity)
-	p.Super().MoveAndSlide()
+	p.AsCharacterBody2D().SetVelocity(p.horizontal_velocity)
+	p.AsCharacterBody2D().MoveAndSlide()
 	p.vertical_speed -= p.gravity * delta
 	p.jump_height += p.vertical_speed * delta
 	p.jump_height = max(0, p.jump_height)
@@ -240,7 +240,7 @@ func (playerIdle) Update(p *Player, delta Float.X) {
 }
 func (playerMoving) Enter(p *Player) {
 	p.speed = 0
-	p.Super().SetVelocity(Vector2.Zero)
+	p.AsCharacterBody2D().SetVelocity(Vector2.Zero)
 	var input_direction = p.get_input_direction()
 	p.update_look_direction(input_direction)
 	p.AnimationPlayer.PlayNamed("walk")
@@ -260,8 +260,8 @@ func (state playerMoving) Update(p *Player, delta Float.X) {
 	} else {
 		p.speed = p.max_walk_speed
 	}
-	p.Super().SetVelocity(Vector2.MulX(Vector2.Normalized(direction), p.speed))
-	p.Super().MoveAndSlide()
+	p.AsCharacterBody2D().SetVelocity(Vector2.MulX(Vector2.Normalized(direction), p.speed))
+	p.AsCharacterBody2D().MoveAndSlide()
 }
 func (playerOnTheGround) HandleInput(p *Player, event InputEvent.Instance) {
 	if event.IsActionPressed("jump") {

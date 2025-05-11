@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/AnimatedSprite2D"
 	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/CollisionShape3D"
@@ -13,7 +12,7 @@ import (
 )
 
 type Player struct {
-	classdb.Extension[Player, Area2D.Instance] `gd:"DodgeTheCreepsPlayer"`
+	Area2D.Extension[Player] `gd:"DodgeTheCreepsPlayer"`
 
 	Speed      int        // How fast the player will move (pixels/sec).
 	ScreenSize Vector2.XY // Size of the game window.
@@ -23,8 +22,6 @@ type Player struct {
 	AnimatedSprite2D AnimatedSprite2D.Instance
 	CollisionShape3D CollisionShape3D.Instance
 }
-
-func (p *Player) AsNode() Node.Instance { return p.Super().AsNode() }
 
 var PlayerControls struct {
 	MoveRight,
@@ -40,8 +37,8 @@ var PlayerAnimations struct {
 
 func (p *Player) Ready() {
 	p.Speed = 400
-	p.ScreenSize = p.Super().AsCanvasItem().GetViewportRect().Size
-	p.Super().AsCanvasItem().Hide()
+	p.ScreenSize = p.AsCanvasItem().GetViewportRect().Size
+	p.AsCanvasItem().Hide()
 }
 
 func (p *Player) Process(delta Float.X) {
@@ -64,10 +61,10 @@ func (p *Player) Process(delta Float.X) {
 	} else {
 		p.AnimatedSprite2D.Stop()
 	}
-	position := p.Super().AsNode2D().Position()
+	position := p.AsNode2D().Position()
 	position = Vector2.Add(position, Vector2.MulX(velocity, delta))
 	Vector2.Clamp(position, Vector2.Zero, p.ScreenSize)
-	p.Super().AsNode2D().SetPosition(position)
+	p.AsNode2D().SetPosition(position)
 	if velocity.X != 0 {
 		p.AnimatedSprite2D.SetAnimation(PlayerAnimations.Walk)
 		p.AnimatedSprite2D.SetFlipV(false)
@@ -79,13 +76,13 @@ func (p *Player) Process(delta Float.X) {
 }
 
 func (p *Player) Start(pos Vector2.XY) {
-	p.Super().AsNode2D().SetPosition(pos)
-	p.Super().AsCanvasItem().Show()
+	p.AsNode2D().SetPosition(pos)
+	p.AsCanvasItem().Show()
 	p.CollisionShape3D.SetDisabled(false)
 }
 
 func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
-	p.Super().AsCanvasItem().Hide()
+	p.AsCanvasItem().Hide()
 	p.CollisionShape3D.SetDisabled(true)
 	p.Hit <- struct{}{}
 	Callable.Defer(Callable.New(func() {

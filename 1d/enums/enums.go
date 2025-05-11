@@ -8,7 +8,7 @@ import (
 )
 
 type MyNode struct {
-	classdb.Extension[MyNode, Node.Instance]
+	Node.Extension[MyNode]
 
 	Animal Animal `gd:"animal"`
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Button"
 	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/GridContainer"
@@ -24,7 +23,7 @@ type InstructionType Enum.Int[struct {
 var InstructionTypes = Enum.Values[InstructionType]()
 
 type DemoPage struct {
-	classdb.Extension[DemoPage, Node.Instance] `gd:"DemoPage"`
+	Node.Extension[DemoPage] `gd:"DemoPage"`
 
 	DemoPageRoot          Control.Instance       `gd:"CanvasLayer/DemoPageRoot"`
 	ResumeButton          Button.Instance        `gd:"CanvasLayer/DemoPageRoot/Content/MarginContainer/Buttons/Resume"`
@@ -38,13 +37,13 @@ type DemoPage struct {
 }
 
 func (page *DemoPage) Ready() {
-	var tree = SceneTree.Get(page.Super())
+	var tree = SceneTree.Get(page.AsNode())
 	tree.SetPaused(true)
 	page.demoMouseMode = Input.MouseMode()
 	Input.SetMouseMode(Input.MouseModeVisible)
 	page.ResumeButton.AsBaseButton().OnPressed(page.resume_demo)
 	page.ExitButton.AsBaseButton().OnPressed(func() {
-		SceneTree.Get(page.Super()).Quit()
+		SceneTree.Get(page.AsNode()).Quit()
 	})
 	page.KeyboardButton.AsBaseButton().OnPressed(func() {
 		page.change_instruction(InstructionTypes.Keyboard)
@@ -60,8 +59,8 @@ func (page *DemoPage) Ready() {
 }
 
 func (page *DemoPage) resume_demo() {
-	SceneTree.Get(page.Super()).SetPaused(false)
-	var tween = page.Super().CreateTween()
+	SceneTree.Get(page.AsNode()).SetPaused(false)
+	var tween = page.AsNode().CreateTween()
 	tween.TweenProperty(page.DemoPageRoot.AsObject(), "modulate", Color.Transparent, 0.3)
 	tween.TweenCallback(page.DemoPageRoot.AsCanvasItem().Hide)
 	Input.SetMouseMode(page.demoMouseMode)
@@ -90,7 +89,7 @@ func (page *DemoPage) change_instruction(itype InstructionType) {
 
 func (page *DemoPage) Input(event InputEvent.Instance) {
 	if event.IsActionPressed("pause") && !event.IsEcho() {
-		if SceneTree.Get(page.Super()).Paused() {
+		if SceneTree.Get(page.AsNode()).Paused() {
 			page.resume_demo()
 		} else {
 			page.pause_demo()
@@ -100,21 +99,21 @@ func (page *DemoPage) Input(event InputEvent.Instance) {
 
 func (page *DemoPage) pause_demo() {
 	page.demoMouseMode = Input.MouseMode()
-	SceneTree.Get(page.Super()).SetPaused(true)
+	SceneTree.Get(page.AsNode()).SetPaused(true)
 	page.DemoPageRoot.AsCanvasItem().Show()
-	var tween = page.Super().CreateTween()
+	var tween = page.AsNode().CreateTween()
 	tween.TweenProperty(page.DemoPageRoot.AsObject(), "modulate", Color.X11.White, 0.3)
 	Input.SetMouseMode(Input.MouseModeVisible)
 }
 
 type DemoLinkButton struct {
-	classdb.Extension[DemoLinkButton, TextureButton.Instance] `gd:"DemoLinkButton"`
+	TextureButton.Extension[DemoLinkButton] `gd:"DemoLinkButton"`
 
 	Link string
 }
 
 func (button *DemoLinkButton) Ready() {
-	button.Super().AsBaseButton().OnPressed(func() {
+	button.AsBaseButton().OnPressed(func() {
 		OS.ShellOpen(button.Link)
 	})
 }

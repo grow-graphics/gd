@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Area3D"
 	"graphics.gd/classdb/AudioStreamPlayer3D"
 	"graphics.gd/classdb/CollisionShape3D"
@@ -35,7 +34,7 @@ type CoinCollector interface {
 }
 
 type DestroyedBox struct {
-	classdb.Extension[DestroyedBox, Node3D.Instance] `gd:"DestroyedBox"`
+	Node3D.Extension[DestroyedBox] `gd:"DestroyedBox"`
 
 	Model Node3D.Instance
 
@@ -65,7 +64,7 @@ func (box *DestroyedBox) Ready() {
 }
 
 type Box struct {
-	classdb.Extension[Box, RigidBody3D.Instance] `gd:"Box"`
+	RigidBody3D.Extension[Box] `gd:"Box"`
 
 	DestroySound     AudioStreamPlayer3D.Instance
 	CollisionShape3D CollisionShape3D.Instance
@@ -74,19 +73,19 @@ type Box struct {
 func (box *Box) Damage(_, _ Vector3.XYZ) {
 	for range CoinsCount {
 		var coin *Coin = CoinScene.Instantiate()
-		Node.Instance.AddChild(box.Super().AsNode().GetParent(), coin.Super().AsNode())
-		coin.Super().AsNode3D().SetGlobalPosition(box.Super().AsNode3D().GlobalPosition())
+		Node.Instance.AddChild(box.AsNode().GetParent(), coin.AsNode())
+		coin.AsNode3D().SetGlobalPosition(box.AsNode3D().GlobalPosition())
 		coin.Spawn()
 	}
 	var destroyed_box = DestroyedBoxScene.Instantiate()
-	box.Super().AsNode().AddChild(destroyed_box.AsNode())
-	destroyed_box.SetGlobalPosition(box.Super().AsNode3D().GlobalPosition())
+	box.AsNode().AddChild(destroyed_box.AsNode())
+	destroyed_box.SetGlobalPosition(box.AsNode3D().GlobalPosition())
 	Callable.Defer(Callable.New(func() {
 		box.CollisionShape3D.SetDisabled(true)
 	}))
 	box.DestroySound.Play()
 	box.DestroySound.OnFinished(func() {
-		box.Super().AsNode().QueueFree()
+		box.AsNode().QueueFree()
 	})
 }
 
@@ -100,7 +99,7 @@ const (
 )
 
 type Coin struct {
-	classdb.Extension[Coin, RigidBody3D.Instance] `gd:"Coin"`
+	RigidBody3D.Extension[Coin] `gd:"Coin"`
 
 	CollectAudio        AudioStreamPlayer3D.Instance
 	PlayerDetectionArea Area3D.Instance
@@ -112,8 +111,6 @@ type Coin struct {
 	sound_played bool
 }
 
-func (coin *Coin) AsNode() Node.Instance { return coin.Super().AsNode() }
-
 func (coin *Coin) Spawn() { coin.SpawnWithDelay(0.5) }
 
 func (coin *Coin) SpawnWithDelay(delay Float.X) {
@@ -121,13 +118,13 @@ func (coin *Coin) SpawnWithDelay(delay Float.X) {
 	var dir = Vector3.Rotated(Vector3.Forward, Vector3.Up, Angle.Radians(Float.Random()))
 	var pos = Vector3.MulX(dir, Float.RandomBetween(CoinMinLaunchRange, CoinMaxLaunchRange))
 	pos.Y = height
-	coin.Super().ApplyCentralImpulse(pos)
-	var timer SceneTreeTimer.Instance = SceneTree.Get(coin.Super().AsNode()).CreateTimer(delay)
+	coin.AsRigidBody3D().ApplyCentralImpulse(pos)
+	var timer SceneTreeTimer.Instance = SceneTree.Get(coin.AsNode()).CreateTimer(delay)
 	timer.OnTimeout(func() {
-		coin.Super().AsCollisionObject3D().SetCollisionLayer(3)
+		coin.AsCollisionObject3D().SetCollisionLayer(3)
 		coin.timer_fired = true
 		if coin.sound_played {
-			coin.Super().AsNode().QueueFree()
+			coin.AsNode().QueueFree()
 		}
 	})
 	coin.PlayerDetectionArea.OnBodyEntered(coin.OnBodyEntered)
@@ -140,11 +137,11 @@ func (coin *Coin) OnBodyEntered(body Node3D.Instance) {
 }
 
 func (coin *Coin) SetTarget(target CoinCollector) {
-	PhysicsServer3D.BodyAddCollisionException(coin.Super().AsCollisionObject3D().GetRid(), target.Body3D())
+	PhysicsServer3D.BodyAddCollisionException(coin.AsCollisionObject3D().GetRid(), target.Body3D())
 	if coin.target == nil {
-		coin.Super().SetSleeping(true)
-		coin.Super().SetFreeze(true)
-		coin.initial_tween_position = coin.Super().AsNode3D().GlobalPosition()
+		coin.AsRigidBody3D().SetSleeping(true)
+		coin.AsRigidBody3D().SetFreeze(true)
+		coin.initial_tween_position = coin.AsNode3D().GlobalPosition()
 		coin.target = target
 		var tween Tween.Instance = coin.target.AsNode3D().AsNode().CreateTween()
 		tween.TweenMethod(coin.follow, 0.0, 1.0, 0.5)
@@ -153,18 +150,18 @@ func (coin *Coin) SetTarget(target CoinCollector) {
 }
 
 func (coin *Coin) follow(offset any) {
-	coin.Super().AsNode3D().SetGlobalPosition(Vector3.Lerp(coin.initial_tween_position, coin.target.AsNode3D().GlobalPosition(), offset.(float64)))
+	coin.AsNode3D().SetGlobalPosition(Vector3.Lerp(coin.initial_tween_position, coin.target.AsNode3D().GlobalPosition(), offset.(float64)))
 }
 
 func (coin *Coin) collect() {
 	coin.CollectAudio.SetPitchScale(Float.RandomlyDistributed(1.0, 0.1))
 	coin.CollectAudio.Play()
 	coin.target.CollectCoin()
-	coin.Super().AsNode3D().Hide()
+	coin.AsNode3D().Hide()
 	coin.CollectAudio.OnFinished(func() {
 		coin.sound_played = true
 		if coin.timer_fired {
-			coin.Super().AsNode().QueueFree()
+			coin.AsNode().QueueFree()
 		}
 	})
 }

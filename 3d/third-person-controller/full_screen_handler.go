@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/InputEvent"
 	"graphics.gd/classdb/InputEventKey"
@@ -14,17 +13,13 @@ import (
 )
 
 type FullScreen struct {
-	classdb.Extension[FullScreen, Node.Instance] `gd:"FullScreenHandler"`
+	Node.Extension[FullScreen] `gd:"FullScreenHandler"`
 }
 
 func NewFullScreenHandler() *FullScreen {
 	handler := new(FullScreen)
-	handler.Super().SetProcessMode(Node.ProcessModeAlways)
+	handler.AsNode().SetProcessMode(Node.ProcessModeAlways)
 	return handler
-}
-
-func (fs FullScreen) AsNode() Node.Instance {
-	return fs.Super().AsNode()
 }
 
 func (fs FullScreen) Input(event InputEvent.Instance) {
@@ -34,7 +29,7 @@ func (fs FullScreen) Input(event InputEvent.Instance) {
 		}
 	} else {
 		if key, ok := Object.As[InputEventKey.Instance](event); ok && event.IsPressed() && key.Keycode() == InputEventKey.KeyF11 {
-			var window Window.Instance = SceneTree.Get(fs.Super()).Root()
+			var window Window.Instance = SceneTree.Get(fs.AsNode()).Root()
 			if window.Mode() == Window.ModeFullscreen {
 				window.SetMode(Window.ModeWindowed)
 			} else {

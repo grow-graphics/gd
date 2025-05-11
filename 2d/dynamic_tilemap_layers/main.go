@@ -22,7 +22,7 @@ const (
 )
 
 type Player struct {
-	classdb.Extension[Player, CharacterBody2D.Instance] `gd:"DynamicTilemapLayersPlayer"`
+	CharacterBody2D.Extension[Player] `gd:"DynamicTilemapLayersPlayer"`
 
 	gravity Float.X
 }
@@ -35,7 +35,7 @@ func (p *Player) PhysicsProcess(delta Float.X) {
 	var (
 		walk = WalkForce * (Input.GetAxis("move_left", "move_right")) // Horizontal movement code. First, get the player's input.
 	)
-	velocity := p.Super().Velocity()
+	velocity := p.AsCharacterBody2D().Velocity()
 	if Float.Abs(walk) < WalkForce*0.2 { //  Slow down the player if they're not trying to move.
 		velocity.X = Float.MoveToward(velocity.X, 0, StopForce*delta) // The velocity, slowed down a bit, and then reassigned.
 	} else {
@@ -46,16 +46,16 @@ func (p *Player) PhysicsProcess(delta Float.X) {
 	// Move based on the velocity and snap to the ground.
 	// TODO: This information should be set to the CharacterBody properties instead of arguments: snap, Vector2.DOWN, Vector2.UP
 	// TODO: Rename velocity to linear_velocity in the rest of the script.
-	p.Super().MoveAndSlide()
+	p.AsCharacterBody2D().MoveAndSlide()
 	// Check for jumping. is_on_floor() must be called after movement code.
-	if p.Super().IsOnFloor() && Input.IsActionJustPressed("jump", false) {
+	if p.AsCharacterBody2D().IsOnFloor() && Input.IsActionJustPressed("jump", false) {
 		velocity.Y = -JumpSpeed
 	}
-	p.Super().SetVelocity(velocity)
+	p.AsCharacterBody2D().SetVelocity(velocity)
 }
 
 type Level struct {
-	classdb.Extension[Level, TileMapLayer.Instance] `gd:"DynamicTilemapLayersLevel"`
+	TileMapLayer.Extension[Level] `gd:"DynamicTilemapLayersLevel"`
 
 	player_in_secret bool
 	layer_alpha      Float.X
@@ -68,23 +68,23 @@ func NewLevel() *Level {
 }
 
 func (level *Level) Ready() {
-	level.Super().AsNode().SetProcess(false)
+	level.AsNode().SetProcess(false)
 }
 
 func (level *Level) Process(delta Float.X) {
 	if level.player_in_secret {
 		if level.layer_alpha > 0.3 {
 			level.layer_alpha = Float.MoveToward(level.layer_alpha, 0.3, delta)
-			level.Super().AsCanvasItem().SetSelfModulate(Color.RGBA{1, 1, 1, level.layer_alpha})
+			level.AsCanvasItem().SetSelfModulate(Color.RGBA{1, 1, 1, level.layer_alpha})
 		} else {
-			level.Super().AsNode().SetProcess(false)
+			level.AsNode().SetProcess(false)
 		}
 	} else {
 		if level.layer_alpha < 1 {
 			level.layer_alpha = Float.MoveToward(level.layer_alpha, 1, delta)
-			level.Super().AsCanvasItem().SetSelfModulate(Color.RGBA{1, 1, 1, level.layer_alpha})
+			level.AsCanvasItem().SetSelfModulate(Color.RGBA{1, 1, 1, level.layer_alpha})
 		} else {
-			level.Super().AsNode().SetProcess(false)
+			level.AsNode().SetProcess(false)
 		}
 	}
 }
@@ -100,7 +100,7 @@ func (level *Level) OnSecretDetectorBodyEntered(body Node2D.Instance) {
 		return
 	}
 	level.player_in_secret = true
-	level.Super().AsNode().SetProcess(true)
+	level.AsNode().SetProcess(true)
 }
 
 func (level *Level) OnSecretDetectorBodyExited(body Node2D.Instance) {
@@ -108,7 +108,7 @@ func (level *Level) OnSecretDetectorBodyExited(body Node2D.Instance) {
 		return
 	}
 	level.player_in_secret = false
-	level.Super().AsNode().SetProcess(true)
+	level.AsNode().SetProcess(true)
 }
 
 func main() {

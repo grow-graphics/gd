@@ -11,7 +11,7 @@ import (
 )
 
 type TodoList struct {
-	classdb.Extension[TodoList, Control.Instance]
+	Control.Extension[TodoList]
 
 	Task   TextEdit.Instance
 	Button Button.Instance

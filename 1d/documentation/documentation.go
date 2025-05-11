@@ -7,7 +7,7 @@ import (
 )
 
 type ClassWithDocumentation struct {
-	classdb.Extension[ClassWithDocumentation, Object.Instance] `gd:"ClassWithDocumentation"
+	Object.Extension[ClassWithDocumentation] `gd:"ClassWithDocumentation"
 		serves as an example of how to document a class in Go code.`
 
 	MyField int `gd:"my_field"
