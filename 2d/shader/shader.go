@@ -11,13 +11,15 @@ import (
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Sprite2D"
 	"graphics.gd/classdb/Texture2D"
-	"graphics.gd/shaders"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Vector2"
 )
 
 func main() {
 	classdb.Register[MyFirstShader]()
+	classdb.Register[MyFirstShader2D]()
+	classdb.Register[MyFirstShader2D_Texture]()
+	classdb.Register[MyFirstShader2D_UV]()
 	startup.LoadingScene()
 	sprite := startup.Pin(Sprite2D.New())
 
@@ -27,30 +29,14 @@ func main() {
 	sprite.AsNode2D().SetPosition(Vector2.New(size.X/2, size.Y/2))
 	sprite.AsNode2D().SetScale(Vector2.New(5, 5))
 
-	var materials = []func() Material.Instance{
-		func() Material.Instance {
-			material := MyFirstShader2D_Texture{}
-			shaders.Compile(&material)
-			return material.AsMaterial()
-		},
-		func() Material.Instance {
-			material := MyFirstShader{}
-			shaders.Compile(&material)
-			return material.AsMaterial()
-		},
-		func() Material.Instance {
-			material := MyFirstShader2D{}
-			shaders.Compile(&material)
-			return material.AsMaterial()
-		},
-		func() Material.Instance {
-			material := MyFirstShader2D_UV{}
-			shaders.Compile(&material)
-			return material.AsMaterial()
-		},
+	var materials = []Material.Any{
+		new(MyFirstShader2D_Texture),
+		new(MyFirstShader),
+		new(MyFirstShader2D),
+		new(MyFirstShader2D_UV),
 	}
 	var index int
-	sprite.AsCanvasItem().SetMaterial(materials[index]())
+	sprite.AsCanvasItem().SetMaterial(materials[index].AsMaterial())
 
 	button := Button.New()
 	button.SetText("Switch Shader")
@@ -62,7 +48,7 @@ func main() {
 	button.AsBaseButton().OnPressed(func() {
 		index++
 		index %= len(materials)
-		sprite.AsCanvasItem().SetMaterial(materials[index]())
+		sprite.AsCanvasItem().SetMaterial(materials[index].AsMaterial())
 	})
 	SceneTree.Add(sprite)
 	SceneTree.Add(button)

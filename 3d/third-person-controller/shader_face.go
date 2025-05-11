@@ -13,7 +13,7 @@ import (
 )
 
 type FaceShader struct {
-	Spatial.Shader
+	Spatial.Shader[FaceShader]
 
 	FaceTexture       texture.Sampler2D[vec4.XYZW] `gd:",filter_nearest,repeat_disable"`
 	Intensity         float.X
@@ -33,9 +33,9 @@ func NewFaceShader() *FaceShader {
 
 func (s *FaceShader) Material(frag Spatial.Fragment) Spatial.Material {
 	var scaled_uv = vec2.Div(vec2.Mul(vec2.Round(frag.UV), s.PixelSize), s.PixelSize)
-	var face_red = float.Sub(1.0, s.FaceTexture.Texture(vec2.Add(s.ScreenRedOffset, scaled_uv)).X)
-	var face_green = float.Sub(1.0, s.FaceTexture.Texture(vec2.Add(s.ScreenGreenOffset, scaled_uv)).Y)
-	var face_blue = float.Sub(1.0, s.FaceTexture.Texture(vec2.Add(s.ScreenBlueOffset, scaled_uv)).Z)
+	var face_red = float.Sub(1.0, s.FaceTexture.Sample(vec2.Add(s.ScreenRedOffset, scaled_uv)).X)
+	var face_green = float.Sub(1.0, s.FaceTexture.Sample(vec2.Add(s.ScreenGreenOffset, scaled_uv)).Y)
+	var face_blue = float.Sub(1.0, s.FaceTexture.Sample(vec2.Add(s.ScreenBlueOffset, scaled_uv)).Z)
 	var grid_2d = vec2.Sin(vec2.Mul(vec2.Fract(vec2.Add(vec2.Mul(frag.UV, s.PixelSize), 0.5)), 3.14))
 	var grid = float.Mul(grid_2d.X, grid_2d.Y)
 	var iris = vec3.RGB{

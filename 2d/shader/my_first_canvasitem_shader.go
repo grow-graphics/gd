@@ -10,7 +10,7 @@ import (
 )
 
 type MyFirstShader struct {
-	CanvasItem.Shader
+	CanvasItem.Shader[MyFirstShader]
 
 	Offset vec2.XY `gd:"offset"`
 }
@@ -25,7 +25,7 @@ func (MyFirstShader) Material(vert CanvasItem.Fragment) CanvasItem.Material {
 }
 
 type MyFirstShader2D struct {
-	CanvasItem.Shader
+	CanvasItem.Shader[MyFirstShader2D]
 }
 
 func (uniform MyFirstShader2D) Material(vertex CanvasItem.Fragment) CanvasItem.Material {
@@ -35,7 +35,7 @@ func (uniform MyFirstShader2D) Material(vertex CanvasItem.Fragment) CanvasItem.M
 }
 
 type MyFirstShader2D_UV struct {
-	CanvasItem.Shader
+	CanvasItem.Shader[MyFirstShader2D_UV]
 }
 
 func (uniform MyFirstShader2D_UV) Material(fragment CanvasItem.Fragment) CanvasItem.Material {
@@ -45,11 +45,11 @@ func (uniform MyFirstShader2D_UV) Material(fragment CanvasItem.Fragment) CanvasI
 }
 
 type MyFirstShader2D_Texture struct {
-	CanvasItem.Shader
+	CanvasItem.Shader[MyFirstShader2D_Texture]
 }
 
 func (uniform MyFirstShader2D_Texture) Material(fragment CanvasItem.Fragment) CanvasItem.Material {
-	color := fragment.Texture().Texture(fragment.UV)
+	color := fragment.Texture().Sample(fragment.UV)
 	color.B = float.New(1.0)
 	return CanvasItem.Material{
 		Color: color,
