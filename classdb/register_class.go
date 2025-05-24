@@ -25,6 +25,7 @@ import (
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
+	"graphics.gd/docgen"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/pointers"
@@ -251,6 +252,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 	class.Name = classNameString
 	class.Inherits = inherits
 	class.Version = "4.0"
+	pkgDocs, docsOk := docgen.LoadFor(rtype)
 	extractDocTag := func(tag reflect.StructTag) string {
 		_, docs, _ := strings.Cut(string(tag), "\n")
 		docs = strings.Replace(docs, "\t", "", -1)
@@ -269,12 +271,29 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		class.BriefDescription = brief
 		class.Description = whole
 	}
+	if docsOk {
+		classDocs := pkgDocs.GetTypeDoc(rtype).Doc
+		if classDocs != "" {
+			class.Description = classDocs
+			class.BriefDescription = strings.Split(classDocs, "\n")[0]
+		}
+	}
+	ungroupedFields := make([]reflect.StructField, 0)
+	groupedFields := map[string][]reflect.StructField{}
 	for _, field := range reflect.VisibleFields(rtype) {
-		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
+		groupName := field.Tag.Get("gdGroup")
+		if groupName == "" {
+			ungroupedFields = append(ungroupedFields, field)
 			continue
 		}
+		groupedFields[groupName] = append(groupedFields[groupName], field)
+	}
+	registerField := func(field reflect.StructField) {
+		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
+			return
+		}
 		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
-			continue
+			return
 		}
 		name := String.ToSnakeCase(field.Name)
 		if field.Tag.Get("gd") != "" {
@@ -289,7 +308,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 				signal.Description = extractDoc(docs)
 			}
 			class.Signals = append(class.Signals, signal)
-			continue
+			return
 		}
 		ptype, ok := propertyOf(className, field)
 		if ok {
@@ -302,9 +321,29 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
+			if docsOk {
+				doc := pkgDocs.GetTypeDoc(rtype).GetFieldDoc(field).Doc
+				if doc != "" {
+					member.Description = doc
+				}
+			}
 			member.Type = ptype.Type.String()
 			class.Members = append(class.Members, member)
 			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
+		}
+	}
+	for _, field := range ungroupedFields {
+		registerField(field)
+	}
+	for groupName, fields := range groupedFields {
+		gd.Global.ClassDB.RegisterClassPropertyGroup(
+			gd.Global.ExtensionToken,
+			className,
+			gd.NewString(groupName),
+			gd.NewString(""),
+		)
+		for _, field := range fields {
+			registerField(field)
 		}
 	}
 	rtype = reflect.PointerTo(rtype)
@@ -319,6 +358,12 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		var method xmlMethod
 		method.Name = name
 		method.Description = extractDoc(docs[name])
+		if docsOk {
+			doc := pkgDocs.GetTypeDoc(rtype).GetMethodDoc(rtype.Method(i)).Doc
+			if doc != "" {
+				method.Description = doc
+			}
+		}
 		class.Methods = append(class.Methods, method)
 	}
 	gd.NewCallable(func() {
