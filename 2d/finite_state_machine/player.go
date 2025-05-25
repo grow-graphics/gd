@@ -159,7 +159,7 @@ func (p *Player) get_input_direction() Vector2.XY {
 func (p *Player) update_look_direction(direction Vector2.XY) {
 	if direction != Vector2.Zero && p.look_direction != direction {
 		p.look_direction = direction
-		p.BodyPivot.WeaponPivot.AsNode2D().SetRotation(Float.X(Vector2.AngleRadians(direction)))
+		p.BodyPivot.WeaponPivot.AsNode2D().SetRotation(Vector2.AngleRadians(direction))
 		switch direction {
 		case Vector2.Up:
 			p.BodyPivot.WeaponPivot.AsCanvasItem().SetZIndex(p.z_index_start - 1)

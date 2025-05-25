@@ -48,7 +48,7 @@ texture = ExtResource("1_xpe2u")
 shape = SubResource("CircleShape2D_278jq")
 
 [node name="Player1" type="PongPaddle" parent="."]
-BallDirection = 1.0
+ball_direction = 1.0
 position = Vector2(85, 319)
 scale = Vector2(2, 2)
 
@@ -59,7 +59,7 @@ texture = ExtResource("2_phxl5")
 shape = SubResource("CapsuleShape2D_t2ctf")
 
 [node name="Player2" type="PongPaddle" parent="."]
-BallDirection = -1.0
+ball_direction = -1.0
 position = Vector2(1066, 317)
 scale = Vector2(2, 2)
 
@@ -70,14 +70,14 @@ texture = ExtResource("2_phxl5")
 shape = SubResource("CapsuleShape2D_t2ctf")
 
 [node name="PongCeilingFloor" type="PongCeilingFloor" parent="."]
-BounceDirection = 1
+bounce_direction = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PongCeilingFloor"]
 position = Vector2(579, -26.5)
 shape = SubResource("RectangleShape2D_y0abv")
 
 [node name="PongCeilingFloor2" type="PongCeilingFloor" parent="."]
-BounceDirection = -1
+bounce_direction = -1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PongCeilingFloor2"]
 position = Vector2(574.75, 673.5)

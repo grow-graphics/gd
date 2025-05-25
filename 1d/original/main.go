@@ -58,7 +58,7 @@ type Rotator struct {
 
 func (r *Rotator) Process(delta Float.X) {
 	node2D := r.AsNode2D()
-	node2D.SetRotation(node2D.Rotation() + delta)
+	node2D.SetRotation(node2D.Rotation() + Angle.Radians(delta))
 }
 
 type StartedSignalEmitter struct {

@@ -35,6 +35,7 @@ import (
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Enum"
+	"graphics.gd/variant/Euler"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
@@ -386,7 +387,7 @@ type CameraController struct {
 	mouse_input        bool
 	offset             Vector3.XYZ
 	anchor             *DemoPlayer
-	euler_rotation     Angle.Euler3D
+	euler_rotation     Euler.Radians
 }
 
 func NewCameraController() *CameraController {
@@ -433,7 +434,7 @@ func (p *CameraController) Process(delta Float.X) {
 	p.euler_rotation.X = Float.Clamp(p.euler_rotation.X, p.TiltLowerLimit, p.TiltUpperLimit)
 	p.euler_rotation.Y += Angle.Radians(p.rotation_input * delta)
 	transform := p.AsNode3D().Transform()
-	transform.Basis = Basis.Euler(p.euler_rotation, Angle.OrderYXZ)
+	transform.Basis = Basis.FromEuler(p.euler_rotation, Angle.OrderYXZ)
 	p.AsNode3D().SetTransform(transform)
 	if pivot, ok := p.pivot.Instance(); ok {
 		p.Camera.AsNode3D().SetGlobalTransform(pivot.GlobalTransform())
@@ -533,7 +534,7 @@ func (weapon *GrenadeLauncher) ThrowGrenade() bool {
 func (weapon *GrenadeLauncher) update_throw_velocity() {
 	var camera = Viewport.Get(weapon.AsNode()).GetCamera3d()
 	var up_ratio = Float.Clamp(max(camera.AsNode3D().Rotation().X+0.5, -0.4)*2, 0, 1)
-	var base_throw_distance = Float.Lerp(weapon.MinThrowDistance, weapon.MaxThrowDistance, up_ratio)
+	var base_throw_distance = Float.Lerp(weapon.MinThrowDistance, weapon.MaxThrowDistance, Float.X(up_ratio))
 	var throw_distance = base_throw_distance
 	var global_camera_look_position = Vector3.Add(weapon.FromLookPosition, Vector3.MulX(weapon.ThrowDirection, throw_distance))
 	weapon.Raycast.SetTargetPosition(Vector3.Sub(global_camera_look_position, weapon.Raycast.AsNode3D().GlobalPosition()))

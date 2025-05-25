@@ -94,7 +94,7 @@ func (m *Main) OnMobTimerTimeout() {
 
 	// Add some randomness to the direction.
 	direction += Angle.Radians(Float.RandomBetween(-Float.X(Angle.Pi/4), Float.X(Angle.Pi/4)))
-	mob.AsNode2D().SetRotation(Float.X(direction))
+	mob.AsNode2D().SetRotation(direction)
 
 	// Choose the velocity.
 	var velocity = Vector2.New(Float.RandomBetween(150, 250), 0)

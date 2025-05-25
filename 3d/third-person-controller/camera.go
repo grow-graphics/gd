@@ -80,7 +80,7 @@ func (cm *CameraMode) Process(dt Float.X) {
 	euler_rotation.X += tilt_input * Angle.Radians(dt)
 	euler_rotation.X = Float.Clamp(euler_rotation.X, -Angle.Pi+0.01, Angle.Pi-0.01)
 	euler_rotation.Y += rotation_input * Angle.Radians(dt)
-	global_transform.Basis = Basis.Euler(euler_rotation, Angle.OrderYXZ)
+	global_transform.Basis = Basis.FromEuler(euler_rotation, Angle.OrderYXZ)
 	cm.camera.AsNode3D().SetGlobalTransform(global_transform)
 	global_position := cm.camera.AsNode3D().GlobalPosition()
 	cm.camera.AsNode3D().SetGlobalPosition(

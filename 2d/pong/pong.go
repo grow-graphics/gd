@@ -55,10 +55,11 @@ func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
 
 const PaddleMoveSpeed = 200
 
+// PongPaddle is controlled by the players.
 type PongPaddle struct {
 	Area2D.Extension[PongPaddle] `gd:"PongPaddle"`
 
-	BallDirection Float.X
+	BallDirection Float.X // The direction the ball will take when it hits the paddle.
 	up, down      string
 
 	screenSizeY Float.X
@@ -79,6 +80,7 @@ func (p *PongPaddle) Process(delta Float.X) {
 	node2d.SetPosition(position)
 }
 
+// OnAreaEntered should be hooked up to the "area_entered" signal of the PongPaddle node.
 func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
 	if ball, ok := classdb.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.New(p.BallDirection, Float.RandomBetween(-1, 1)))
