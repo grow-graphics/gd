@@ -12,6 +12,10 @@ type ClassWithDocumentation struct {
 
 	MyField int `gd:"my_field"
 		can store an integer value.`
+
+	// AnotherField can also be documented with an ordinary comment when
+	// using the gd command to build the project.
+	AnotherField string `gd:"another_field"`
 }
 
 func (c *ClassWithDocumentation) MyMethod() {}
