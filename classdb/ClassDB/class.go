@@ -144,6 +144,32 @@ func ClassGetApiType(class_ string) APIType { //gd:ClassDB.class_get_api_type
 }
 
 /*
+Overrides the API type of [param class] to [param api]. See [enum ClassDB.APIType].
+[b]Note:[/b] This should only be used with a thorough understanding of its implications.
+*/
+func ClassOverrideApiType(class_ string, api APIType) error { //gd:ClassDB.class_override_api_type
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().ClassOverrideApiType(String.Name(String.New(class_)), api)))
+}
+
+/*
+Returns the currently active API type. See [enum ClassDB.APIType].
+*/
+func GetCurrentApi() APIType { //gd:ClassDB.get_current_api
+	once.Do(singleton)
+	return APIType(Advanced().GetCurrentApi())
+}
+
+/*
+Sets the globally active API type to [param api]. See [enum ClassDB.APIType].
+[b]Note:[/b] This should only be used with a thorough understanding of its implications.
+*/
+func SetCurrentApi(api APIType) { //gd:ClassDB.set_current_api
+	once.Do(singleton)
+	Advanced().SetCurrentApi(api)
+}
+
+/*
 Returns whether [param class] or its ancestry has a signal called [param signal] or not.
 */
 func ClassHasSignal(class_ string, signal string) bool { //gd:ClassDB.class_has_signal
@@ -538,6 +564,48 @@ func (self class) ClassGetApiType(class_ String.Name) APIType { //gd:ClassDB.cla
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Overrides the API type of [param class] to [param api]. See [enum ClassDB.APIType].
+[b]Note:[/b] This should only be used with a thorough understanding of its implications.
+*/
+//go:nosplit
+func (self class) ClassOverrideApiType(class_ String.Name, api APIType) Error.Code { //gd:ClassDB.class_override_api_type
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(class_)))
+	callframe.Arg(frame, api)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_class_override_api_type, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the currently active API type. See [enum ClassDB.APIType].
+*/
+//go:nosplit
+func (self class) GetCurrentApi() APIType { //gd:ClassDB.get_current_api
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[APIType](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_get_current_api, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the globally active API type to [param api]. See [enum ClassDB.APIType].
+[b]Note:[/b] This should only be used with a thorough understanding of its implications.
+*/
+//go:nosplit
+func (self class) SetCurrentApi(api APIType) { //gd:ClassDB.set_current_api
+	var frame = callframe.New()
+	callframe.Arg(frame, api)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ClassDB.Bind_set_current_api, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -1059,8 +1127,6 @@ const (
 	PropertyHintIntIsPointer PropertyHint = 30
 	/*Hints that a property is an [Array] with the stored type specified in the hint string.*/
 	PropertyHintArrayType PropertyHint = 31
-	/*Hints that a property is a [Dictionary] with the stored types specified in the hint string.*/
-	PropertyHintDictionaryType PropertyHint = 38
 	/*Hints that a string property is a locale code. Editing it will show a locale dialog for picking language and country.*/
 	PropertyHintLocaleId PropertyHint = 32
 	/*Hints that a dictionary property is string translation map. Dictionary keys are locale codes and, values are translated strings.*/
@@ -1077,11 +1143,11 @@ const (
 	  "Click me!,ColorRect" - A button with the text "Click me!" and the "ColorRect" icon.
 	  [/codeblock]
 	  [b]Note:[/b] A [Callable] cannot be properly serialized and stored in a file, so it is recommended to use [constant PROPERTY_USAGE_EDITOR] instead of [constant PROPERTY_USAGE_DEFAULT].*/
-	PropertyHintToolButton PropertyHint = 39
+	PropertyHintToolButton PropertyHint = 38
 	/*Hints that a property will be changed on its own after setting, such as [member AudioStreamPlayer.playing] or [member GPUParticles3D.emitting].*/
-	PropertyHintOneshot PropertyHint = 40
+	PropertyHintOneshot PropertyHint = 39
 	/*Represents the size of the [enum PropertyHint] enum.*/
-	PropertyHintMax PropertyHint = 42
+	PropertyHintMax PropertyHint = 41
 )
 
 type PropertyUsageFlags int //gd:PropertyUsageFlags

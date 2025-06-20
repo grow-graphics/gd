@@ -185,22 +185,6 @@ func (self Instance) SetUsageBits(value Rendering.TextureUsageBits) {
 	class(self).SetUsageBits(value)
 }
 
-func (self Instance) IsResolveBuffer() bool {
-	return bool(class(self).GetIsResolveBuffer())
-}
-
-func (self Instance) SetIsResolveBuffer(value bool) {
-	class(self).SetIsResolveBuffer(value)
-}
-
-func (self Instance) IsDiscardable() bool {
-	return bool(class(self).GetIsDiscardable())
-}
-
-func (self Instance) SetIsDiscardable(value bool) {
-	class(self).SetIsDiscardable(value)
-}
-
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDTextureFormat.set_format
 	var frame = callframe.New()
@@ -367,44 +351,6 @@ func (self class) GetUsageBits() Rendering.TextureUsageBits { //gd:RDTextureForm
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Rendering.TextureUsageBits](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_usage_bits, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetIsResolveBuffer(p_member bool) { //gd:RDTextureFormat.set_is_resolve_buffer
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetIsResolveBuffer() bool { //gd:RDTextureFormat.get_is_resolve_buffer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_resolve_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetIsDiscardable(p_member bool) { //gd:RDTextureFormat.set_is_discardable
-	var frame = callframe.New()
-	callframe.Arg(frame, p_member)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_set_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetIsDiscardable() bool { //gd:RDTextureFormat.get_is_discardable
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RDTextureFormat.Bind_get_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

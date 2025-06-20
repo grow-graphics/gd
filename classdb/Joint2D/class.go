@@ -139,6 +139,14 @@ func (self Instance) SetDisableCollision(value bool) {
 	class(self).SetExcludeNodesFromCollision(value)
 }
 
+func (self Instance) DisableMode() DisableMode {
+	return DisableMode(class(self).GetDisableMode())
+}
+
+func (self Instance) SetDisableMode(value DisableMode) {
+	class(self).SetDisableMode(value)
+}
+
 //go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint2D.set_node_a
 	var frame = callframe.New()
@@ -191,6 +199,25 @@ func (self class) GetBias() float64 { //gd:Joint2D.get_bias
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_bias, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDisableMode(mode DisableMode) { //gd:Joint2D.set_disable_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_set_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDisableMode() DisableMode { //gd:Joint2D.get_disable_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[DisableMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint2D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -260,3 +287,13 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Joint2D", func(ptr gd.Object) any { return [1]gdclass.Joint2D{*(*gdclass.Joint2D)(unsafe.Pointer(&ptr))} })
 }
+
+type DisableMode int //gd:Joint2D.DisableMode
+
+const (
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [Joint2D].
+	  Automatically re-added to the physics simulation when the [Node] is processed again with initial transforms for bodies.*/
+	DisableModeRemove DisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
+	DisableModeKeepActive DisableMode = 1
+)

@@ -2058,7 +2058,7 @@ const (
 	/*Key Code mask.*/
 	KeyCodeMask KeyModifierMask = 8388607
 	/*Modifier key mask.*/
-	KeyModifierMaskDefault KeyModifierMask = 2130706432
+	KeyModifierMaskDefault KeyModifierMask = 532676608
 	/*Automatically remapped to [constant KEY_META] on macOS and [constant KEY_CTRL] on other platforms, this mask is never set in the actual events, and should be used for key mapping only.*/
 	KeyMaskCmdOrCtrl KeyModifierMask = 16777216
 	/*Shift key mask.*/

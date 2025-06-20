@@ -90,18 +90,17 @@ var m = MeshInstance3D.new()
 m.mesh = arr_mesh
 [/gdscript]
 [csharp]
-Vector3[] vertices =
-[
+var vertices = new Vector3[]
 
-	new Vector3(0, 1, 0),
-	new Vector3(1, 0, 0),
-	new Vector3(0, 0, 1),
-
-];
+	{
+	    new Vector3(0, 1, 0),
+	    new Vector3(1, 0, 0),
+	    new Vector3(0, 0, 1),
+	};
 
 // Initialize the ArrayMesh.
 var arrMesh = new ArrayMesh();
-Godot.Collections.Array arrays = [];
+var arrays = new Godot.Collections.Array();
 arrays.Resize((int)Mesh.ArrayType.Max);
 arrays[(int)Mesh.ArrayType.Vertex] = vertices;
 

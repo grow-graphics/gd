@@ -356,7 +356,7 @@ const (
 	/*The gradient fill is restricted to the range defined by [member fill_from] to [member fill_to] offsets.*/
 	RepeatNone Repeat = 0
 	/*The texture is filled starting from [member fill_from] to [member fill_to] offsets, repeating the same pattern in both directions.*/
-	RepeatDefault Repeat = 1
+	REPEAT Repeat = 1
 	/*The texture is filled starting from [member fill_from] to [member fill_to] offsets, mirroring the pattern in both directions.*/
 	RepeatMirror Repeat = 2
 )

@@ -99,17 +99,24 @@ func (self Instance) TryWait() bool { //gd:Semaphore.try_wait
 }
 
 /*
-Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
+Lowers the [Semaphore], allowing one more thread in.
 */
 func (self Instance) Post() { //gd:Semaphore.post
-	Advanced(self).Post(int64(1))
+	Advanced(self).Post()
 }
 
 /*
 Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
 */
-func (self Expanded) Post(count int) { //gd:Semaphore.post
-	Advanced(self).Post(int64(count))
+func (self Instance) Post2() { //gd:Semaphore.post2
+	Advanced(self).Post2(int64(1))
+}
+
+/*
+Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
+*/
+func (self Expanded) Post2(count int) { //gd:Semaphore.post2
+	Advanced(self).Post2(int64(count))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -157,14 +164,25 @@ func (self class) TryWait() bool { //gd:Semaphore.try_wait
 }
 
 /*
+Lowers the [Semaphore], allowing one more thread in.
+*/
+//go:nosplit
+func (self class) Post() { //gd:Semaphore.post
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_post, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
 Lowers the [Semaphore], allowing one thread in, or more if [param count] is specified.
 */
 //go:nosplit
-func (self class) Post(count int64) { //gd:Semaphore.post
+func (self class) Post2(count int64) { //gd:Semaphore.post2
 	var frame = callframe.New()
 	callframe.Arg(frame, count)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_post, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Semaphore.Bind_post2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self class) AsSemaphore() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -135,7 +135,7 @@ public partial class MySpecialPlugin : EditorImportPlugin
 
 	    public override string[] _GetRecognizedExtensions()
 	    {
-	        return ["special", "spec"];
+	        return new string[] { "special", "spec" };
 	    }
 
 	    public override string _GetSaveExtension()
@@ -160,14 +160,14 @@ public partial class MySpecialPlugin : EditorImportPlugin
 
 	    public override Godot.Collections.Array<Godot.Collections.Dictionary> _GetImportOptions(string path, int presetIndex)
 	    {
-	        return
-	        [
+	        return new Godot.Collections.Array<Godot.Collections.Dictionary>
+	        {
 	            new Godot.Collections.Dictionary
 	            {
 	                { "name", "myOption" },
 	                { "default_value", false },
-	            },
-	        ];
+	            }
+	        };
 	    }
 
 	    public override Error _Import(string sourceFile, string savePath, Godot.Collections.Dictionary options, Godot.Collections.Array<string> platformVariants, Godot.Collections.Array<string> genFiles)

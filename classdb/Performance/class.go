@@ -520,16 +520,6 @@ const (
 	NavigationEdgeFreeCount Monitor = 32
 	/*Number of active navigation obstacles in the [NavigationServer3D].*/
 	NavigationObstacleCount Monitor = 33
-	/*Number of pipeline compilations that were triggered by the 2D canvas renderer.*/
-	PipelineCompilationsCanvas Monitor = 34
-	/*Number of pipeline compilations that were triggered by loading meshes. These compilations will show up as longer loading times the first time a user runs the game and the pipeline is required.*/
-	PipelineCompilationsMesh Monitor = 35
-	/*Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading an scene the first time a user runs the game and the pipeline is required.*/
-	PipelineCompilationsSurface Monitor = 36
-	/*Number of pipeline compilations that were triggered while drawing the scene. These compilations will show up as stutters during gameplay the first time a user runs the game and the pipeline is required.*/
-	PipelineCompilationsDraw Monitor = 37
-	/*Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.*/
-	PipelineCompilationsSpecialization Monitor = 38
 	/*Represents the size of the [enum Monitor] enum.*/
-	MonitorMax Monitor = 39
+	MonitorMax Monitor = 34
 )

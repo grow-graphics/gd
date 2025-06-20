@@ -624,21 +624,17 @@ func (self Instance) GetWordAtPos(position Vector2.XY) string { //gd:TextEdit.ge
 }
 
 /*
-Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
-If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
-If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
 func (self Instance) GetLineColumnAtPos(position Vector2i.XY) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), true, true))
+	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), true))
 }
 
 /*
-Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
-If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
-If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
-func (self Expanded) GetLineColumnAtPos(position Vector2i.XY, clamp_line bool, clamp_column bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
-	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), clamp_line, clamp_column))
+func (self Expanded) GetLineColumnAtPos(position Vector2i.XY, allow_out_of_bounds bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
+	return Vector2i.XY(Advanced(self).GetLineColumnAtPos(Vector2i.XY(position), allow_out_of_bounds))
 }
 
 /*
@@ -3057,16 +3053,13 @@ func (self class) GetWordAtPos(position Vector2.XY) String.Readable { //gd:TextE
 }
 
 /*
-Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column and [code]y[/code] is the line.
-If [param clamp_line] is [code]false[/code] and [param position] is below the last line, [code]Vector2i(-1, -1)[/code] is returned.
-If [param clamp_column] is [code]false[/code] and [param position] is outside the column range of the line, [code]Vector2i(-1, -1)[/code] is returned.
+Returns the line and column at the given position. In the returned vector, [code]x[/code] is the column, [code]y[/code] is the line. If [param allow_out_of_bounds] is [code]false[/code] and the position is not over the text, both vector values will be set to [code]-1[/code].
 */
 //go:nosplit
-func (self class) GetLineColumnAtPos(position Vector2i.XY, clamp_line bool, clamp_column bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
+func (self class) GetLineColumnAtPos(position Vector2i.XY, allow_out_of_bounds bool) Vector2i.XY { //gd:TextEdit.get_line_column_at_pos
 	var frame = callframe.New()
 	callframe.Arg(frame, position)
-	callframe.Arg(frame, clamp_line)
-	callframe.Arg(frame, clamp_column)
+	callframe.Arg(frame, allow_out_of_bounds)
 	var r_ret = callframe.Ret[Vector2i.XY](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextEdit.Bind_get_line_column_at_pos, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

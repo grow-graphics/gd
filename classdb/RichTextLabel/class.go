@@ -303,7 +303,7 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 func (self Instance) PushMeta(data any) { //gd:RichTextLabel.push_meta
-	Advanced(self).PushMeta(variant.New(data), 1, String.New(""))
+	Advanced(self).PushMeta(variant.New(data), 1)
 }
 
 /*
@@ -311,8 +311,26 @@ Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=som
 If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
-func (self Expanded) PushMeta(data any, underline_mode MetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta
-	Advanced(self).PushMeta(variant.New(data), underline_mode, String.New(tooltip))
+func (self Expanded) PushMeta(data any, underline_mode MetaUnderline) { //gd:RichTextLabel.push_meta
+	Advanced(self).PushMeta(variant.New(data), underline_mode)
+}
+
+/*
+Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=something]{text}[/url][/code], but supports non-[String] metadata types.
+If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
+[b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
+*/
+func (self Instance) PushMetaWithTooltip(data any) { //gd:RichTextLabel.push_meta_with_tooltip
+	Advanced(self).PushMetaWithTooltip(variant.New(data), 1, String.New(""))
+}
+
+/*
+Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=something]{text}[/url][/code], but supports non-[String] metadata types.
+If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
+[b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
+*/
+func (self Expanded) PushMetaWithTooltip(data any, underline_mode MetaUnderline, tooltip string) { //gd:RichTextLabel.push_meta_with_tooltip
+	Advanced(self).PushMetaWithTooltip(variant.New(data), underline_mode, String.New(tooltip))
 }
 
 /*
@@ -377,7 +395,7 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 func (self Instance) SetTableColumnExpand(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand
-	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(1), true)
+	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(1))
 }
 
 /*
@@ -385,8 +403,28 @@ Edits the selected column's expansion options. If [param expand] is [code]true[/
 For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
-func (self Expanded) SetTableColumnExpand(column int, expand bool, ratio int, shrink bool) { //gd:RichTextLabel.set_table_column_expand
-	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(ratio), shrink)
+func (self Expanded) SetTableColumnExpand(column int, expand bool, ratio int) { //gd:RichTextLabel.set_table_column_expand
+	Advanced(self).SetTableColumnExpand(int64(column), expand, int64(ratio))
+}
+
+/*
+[b]Note:[/b] This is a compatibility method to backport adding [param shrink] from 4.4 as a fourth argument.
+Edits the selected column's expansion options. If [param expand] is [code]true[/code], the column expands in proportion to its expansion ratio versus the other columns' ratios.
+For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
+If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
+*/
+func (self Instance) SetTableColumnExpand2(column int, expand bool) { //gd:RichTextLabel.set_table_column_expand2
+	Advanced(self).SetTableColumnExpand2(int64(column), expand, int64(1), true)
+}
+
+/*
+[b]Note:[/b] This is a compatibility method to backport adding [param shrink] from 4.4 as a fourth argument.
+Edits the selected column's expansion options. If [param expand] is [code]true[/code], the column expands in proportion to its expansion ratio versus the other columns' ratios.
+For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
+If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
+*/
+func (self Expanded) SetTableColumnExpand2(column int, expand bool, ratio int, shrink bool) { //gd:RichTextLabel.set_table_column_expand2
+	Advanced(self).SetTableColumnExpand2(int64(column), expand, int64(ratio), shrink)
 }
 
 /*
@@ -1316,13 +1354,28 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 [b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
 */
 //go:nosplit
-func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
+func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline) { //gd:RichTextLabel.push_meta
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
+	callframe.Arg(frame, underline_mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][url=something]{text}[/url][/code], but supports non-[String] metadata types.
+If [member meta_underlined] is [code]true[/code], meta tags display an underline. This behavior can be customized with [param underline_mode].
+[b]Note:[/b] Meta tags do nothing by default when clicked. To assign behavior when clicked, connect [signal meta_clicked] to a function that is called when the meta tag is clicked.
+*/
+//go:nosplit
+func (self class) PushMetaWithTooltip(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta_with_tooltip
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(data)))
 	callframe.Arg(frame, underline_mode)
 	callframe.Arg(frame, pointers.Get(gd.InternalString(tooltip)))
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_push_meta_with_tooltip, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -1410,14 +1463,31 @@ For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width wou
 If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
 */
 //go:nosplit
-func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
+func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64) { //gd:RichTextLabel.set_table_column_expand
+	var frame = callframe.New()
+	callframe.Arg(frame, column)
+	callframe.Arg(frame, expand)
+	callframe.Arg(frame, ratio)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+[b]Note:[/b] This is a compatibility method to backport adding [param shrink] from 4.4 as a fourth argument.
+Edits the selected column's expansion options. If [param expand] is [code]true[/code], the column expands in proportion to its expansion ratio versus the other columns' ratios.
+For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively.
+If [param expand] is [code]false[/code], the column will not contribute to the total ratio.
+*/
+//go:nosplit
+func (self class) SetTableColumnExpand2(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand2
 	var frame = callframe.New()
 	callframe.Arg(frame, column)
 	callframe.Arg(frame, expand)
 	callframe.Arg(frame, ratio)
 	callframe.Arg(frame, shrink)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

@@ -1578,7 +1578,7 @@ DisplayServer.WindowSetMousePassthrough(GetNode<Path2D>("Path2D").Curve.GetBaked
 DisplayServer.WindowSetMousePassthrough(GetNode<Polygon2D>("Polygon2D").Polygon);
 
 // Reset region to default.
-DisplayServer.WindowSetMousePassthrough([]);
+DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
@@ -1611,7 +1611,7 @@ DisplayServer.WindowSetMousePassthrough(GetNode<Path2D>("Path2D").Curve.GetBaked
 DisplayServer.WindowSetMousePassthrough(GetNode<Polygon2D>("Polygon2D").Polygon);
 
 // Reset region to default.
-DisplayServer.WindowSetMousePassthrough([]);
+DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
@@ -2125,7 +2125,7 @@ func WindowCanDrawOptions(window_id Window) bool { //gd:DisplayServer.window_can
 }
 
 /*
-Sets window transient parent. Transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
+Sets window transient parent. Transient window is will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
 [b]Note:[/b] It's recommended to change this value using [member Window.transient] instead.
 [b]Note:[/b] The behavior might be different depending on the platform.
 */
@@ -4536,7 +4536,7 @@ DisplayServer.WindowSetMousePassthrough(GetNode<Path2D>("Path2D").Curve.GetBaked
 DisplayServer.WindowSetMousePassthrough(GetNode<Polygon2D>("Polygon2D").Polygon);
 
 // Reset region to default.
-DisplayServer.WindowSetMousePassthrough([]);
+DisplayServer.WindowSetMousePassthrough(new Vector2[] {});
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
@@ -4956,7 +4956,7 @@ func (self class) WindowCanDraw(window_id int64) bool { //gd:DisplayServer.windo
 }
 
 /*
-Sets window transient parent. Transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
+Sets window transient parent. Transient window is will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
 [b]Note:[/b] It's recommended to change this value using [member Window.transient] instead.
 [b]Note:[/b] The behavior might be different depending on the platform.
 */

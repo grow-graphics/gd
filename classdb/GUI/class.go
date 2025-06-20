@@ -97,9 +97,9 @@ type Orientation int //gd:Orientation
 
 const (
 	/*General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
-	Vertical Orientation = 1
+	VERTICAL Orientation = 1
 	/*General horizontal alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
-	Horizontal Orientation = 0
+	HORIZONTAL Orientation = 0
 )
 
 type VerticalAlignment int //gd:VerticalAlignment

@@ -214,6 +214,23 @@ func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_activ
 }
 
 /*
+Manually advance [param space] forward in [param delta]. This technique can be used for speeding up physics simulations, as seen in advanced rollback-style networking, or for predicting outcomes in scenarios such as hitting a ball in a billiards game.
+[b]Note:[/b] If call this method with an active [param space] from [code]_physics_process()[/code], you should call [method space_flush_queries] afterwards. Otherwise, call [method space_flush_queries] beforehand.
+*/
+func SpaceStep(space RID.Any, delta Float.X) { //gd:PhysicsServer2D.space_step
+	once.Do(singleton)
+	Advanced().SpaceStep(RID.Any(space), float64(delta))
+}
+
+/*
+Flushes [param space]'s queries. It is necessary to call this method after calling [method space_step] with an active space from [code]_physics_process[/code]. Otherwise, call this method before calling [method space_step].
+*/
+func SpaceFlushQueries(space RID.Any) { //gd:PhysicsServer2D.space_flush_queries
+	once.Do(singleton)
+	Advanced().SpaceFlushQueries(RID.Any(space))
+}
+
+/*
 Sets the value of the given space parameter. See [enum SpaceParameter] for the list of available parameters.
 */
 func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
@@ -1025,6 +1042,22 @@ func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 }
 
 /*
+Enable or disable a joint.
+*/
+func JointSetEnabled(joint RID.Any, enabled bool) { //gd:PhysicsServer2D.joint_set_enabled
+	once.Do(singleton)
+	Advanced().JointSetEnabled(RID.Any(joint), enabled)
+}
+
+/*
+Gets joint enable state.
+*/
+func JointIsEnabled(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_enabled
+	once.Do(singleton)
+	return bool(Advanced().JointIsEnabled(RID.Any(joint)))
+}
+
+/*
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
@@ -1182,6 +1215,14 @@ Returns information about the current state of the 2D physics engine. See [enum 
 func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer2D.get_process_info
 	once.Do(singleton)
 	return int(int(Advanced().GetProcessInfo(process_info)))
+}
+
+/*
+Returns information about the current state of [param space]. See [enum ProcessInfo] for a list of available states.
+*/
+func SpaceGetLastProcessInfo(space RID.Any, process_info ProcessInfo) int { //gd:PhysicsServer2D.space_get_last_process_info
+	once.Do(singleton)
+	return int(int(Advanced().SpaceGetLastProcessInfo(RID.Any(space), process_info)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1391,6 +1432,32 @@ func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Manually advance [param space] forward in [param delta]. This technique can be used for speeding up physics simulations, as seen in advanced rollback-style networking, or for predicting outcomes in scenarios such as hitting a ball in a billiards game.
+[b]Note:[/b] If call this method with an active [param space] from [code]_physics_process()[/code], you should call [method space_flush_queries] afterwards. Otherwise, call [method space_flush_queries] beforehand.
+*/
+//go:nosplit
+func (self class) SpaceStep(space RID.Any, delta float64) { //gd:PhysicsServer2D.space_step
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	callframe.Arg(frame, delta)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_step, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Flushes [param space]'s queries. It is necessary to call this method after calling [method space_step] with an active space from [code]_physics_process[/code]. Otherwise, call this method before calling [method space_step].
+*/
+//go:nosplit
+func (self class) SpaceFlushQueries(space RID.Any) { //gd:PhysicsServer2D.space_flush_queries
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_flush_queries, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -2637,6 +2704,33 @@ func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
 }
 
 /*
+Enable or disable a joint.
+*/
+//go:nosplit
+func (self class) JointSetEnabled(joint RID.Any, enabled bool) { //gd:PhysicsServer2D.joint_set_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Gets joint enable state.
+*/
+//go:nosplit
+func (self class) JointIsEnabled(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_joint_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Sets the value of the given joint parameter. See [enum JointParam] for the list of available parameters.
 */
 //go:nosplit
@@ -2874,6 +2968,21 @@ func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsS
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns information about the current state of [param space]. See [enum ProcessInfo] for a list of available states.
+*/
+//go:nosplit
+func (self class) SpaceGetLastProcessInfo(space RID.Any, process_info ProcessInfo) int64 { //gd:PhysicsServer2D.space_get_last_process_info
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	callframe.Arg(frame, process_info)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer2D.Bind_space_get_last_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

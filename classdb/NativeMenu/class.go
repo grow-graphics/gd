@@ -218,7 +218,7 @@ func SetPopupOpenCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu
 
 /*
 Returns global menu open callback.
-b]Note:[/b] This method is implemented only on macOS.
+[b]Note:[/b] This method is implemented only on macOS.
 */
 func GetPopupOpenCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
@@ -1046,7 +1046,7 @@ func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) 
 
 /*
 Returns global menu open callback.
-b]Note:[/b] This method is implemented only on macOS.
+[b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback

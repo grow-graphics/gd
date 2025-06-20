@@ -188,6 +188,10 @@ type Interface interface {
 	//[b]Optional.[/b]
 	//Returns font anti-aliasing mode.
 	FontGetAntialiasing(font_rid RID.Any) TextServer.FontAntialiasing
+	//LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+	FontSetLcdSubpixelLayout(font_rid RID.Any, subpixel_layout TextServer.FontLCDSubpixelLayout)
+	//LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+	FontGetLcdSubpixelLayout(font_rid RID.Any) TextServer.FontLCDSubpixelLayout
 	//[b]Optional.[/b]
 	//If set to [code]true[/code], embedded font bitmap loading is disabled.
 	FontSetDisableEmbeddedBitmaps(font_rid RID.Any, disable_embedded_bitmaps bool)
@@ -793,6 +797,12 @@ func (self implementation) FontSetAntialiasing(font_rid RID.Any, antialiasing Te
 	return
 }
 func (self implementation) FontGetAntialiasing(font_rid RID.Any) (_ TextServer.FontAntialiasing) {
+	return
+}
+func (self implementation) FontSetLcdSubpixelLayout(font_rid RID.Any, subpixel_layout TextServer.FontLCDSubpixelLayout) {
+	return
+}
+func (self implementation) FontGetLcdSubpixelLayout(font_rid RID.Any) (_ TextServer.FontLCDSubpixelLayout) {
 	return
 }
 func (self implementation) FontSetDisableEmbeddedBitmaps(font_rid RID.Any, disable_embedded_bitmaps bool) {
@@ -1594,6 +1604,30 @@ func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid RI
 Returns font anti-aliasing mode.
 */
 func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
+LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (Instance) _font_set_lcd_subpixel_layout(impl func(ptr unsafe.Pointer, font_rid RID.Any, subpixel_layout TextServer.FontLCDSubpixelLayout)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var subpixel_layout = gd.UnsafeGet[TextServer.FontLCDSubpixelLayout](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, font_rid, subpixel_layout)
+	}
+}
+
+/*
+LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (Instance) _font_get_lcd_subpixel_layout(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontLCDSubpixelLayout) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -4899,6 +4933,30 @@ func (class) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.A
 }
 
 /*
+LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (class) _font_set_lcd_subpixel_layout(impl func(ptr unsafe.Pointer, font_rid RID.Any, subpixel_layout TextServer.FontLCDSubpixelLayout)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		var subpixel_layout = gd.UnsafeGet[TextServer.FontLCDSubpixelLayout](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, font_rid, subpixel_layout)
+	}
+}
+
+/*
+LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (class) _font_get_lcd_subpixel_layout(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontLCDSubpixelLayout) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, font_rid)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 [b]Optional.[/b]
 If set to [code]true[/code], embedded font bitmap loading is disabled.
 */
@@ -7793,6 +7851,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_antialiasing)
 	case "_font_get_antialiasing":
 		return reflect.ValueOf(self._font_get_antialiasing)
+	case "_font_set_lcd_subpixel_layout":
+		return reflect.ValueOf(self._font_set_lcd_subpixel_layout)
+	case "_font_get_lcd_subpixel_layout":
+		return reflect.ValueOf(self._font_get_lcd_subpixel_layout)
 	case "_font_set_disable_embedded_bitmaps":
 		return reflect.ValueOf(self._font_set_disable_embedded_bitmaps)
 	case "_font_get_disable_embedded_bitmaps":
@@ -8242,6 +8304,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._font_set_antialiasing)
 	case "_font_get_antialiasing":
 		return reflect.ValueOf(self._font_get_antialiasing)
+	case "_font_set_lcd_subpixel_layout":
+		return reflect.ValueOf(self._font_set_lcd_subpixel_layout)
+	case "_font_get_lcd_subpixel_layout":
+		return reflect.ValueOf(self._font_get_lcd_subpixel_layout)
 	case "_font_set_disable_embedded_bitmaps":
 		return reflect.ValueOf(self._font_set_disable_embedded_bitmaps)
 	case "_font_get_disable_embedded_bitmaps":

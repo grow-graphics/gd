@@ -376,19 +376,11 @@ func MapGetRandomPoint(mapping RID.NavigationMap3D, navigation_layers int, unifo
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query.
 */
-func QueryPath(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
+func QueryPath(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
-}
-
-/*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
-*/
-func QueryPathOptions(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
-	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
+	Advanced().QueryPath(parameters, result)
 }
 
 /*
@@ -1847,14 +1839,13 @@ func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, un
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query.
 */
 //go:nosplit
-func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback Callable.Function) { //gd:NavigationServer3D.query_path
+func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D) { //gd:NavigationServer3D.query_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, pointers.Get(result[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer3D.Bind_query_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

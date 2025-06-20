@@ -244,22 +244,6 @@ func (self Instance) ReadOnly() bool {
 	return bool(class(self).IsReadOnly())
 }
 
-func (self Instance) DrawLabel() bool {
-	return bool(class(self).IsDrawLabel())
-}
-
-func (self Instance) SetDrawLabel(value bool) {
-	class(self).SetDrawLabel(value)
-}
-
-func (self Instance) DrawBackground() bool {
-	return bool(class(self).IsDrawBackground())
-}
-
-func (self Instance) SetDrawBackground(value bool) {
-	class(self).SetDrawBackground(value)
-}
-
 func (self Instance) Checkable() bool {
 	return bool(class(self).IsCheckable())
 }
@@ -378,44 +362,6 @@ func (self class) IsReadOnly() bool { //gd:EditorProperty.is_read_only
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_read_only, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetDrawLabel(draw_label bool) { //gd:EditorProperty.set_draw_label
-	var frame = callframe.New()
-	callframe.Arg(frame, draw_label)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_draw_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) IsDrawLabel() bool { //gd:EditorProperty.is_draw_label
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_draw_label, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetDrawBackground(draw_background bool) { //gd:EditorProperty.set_draw_background
-	var frame = callframe.New()
-	callframe.Arg(frame, draw_background)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_set_draw_background, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) IsDrawBackground() bool { //gd:EditorProperty.is_draw_background
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.EditorProperty.Bind_is_draw_background, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

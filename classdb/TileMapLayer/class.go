@@ -259,27 +259,6 @@ func (self Instance) GetCellTileData(coords Vector2i.XY) TileData.Instance { //g
 }
 
 /*
-Returns [code]true[/code] if the cell at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellFlippedH(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_h
-	return bool(Advanced(self).IsCellFlippedH(Vector2i.XY(coords)))
-}
-
-/*
-Returns [code]true[/code] if the cell at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellFlippedV(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_v
-	return bool(Advanced(self).IsCellFlippedV(Vector2i.XY(coords)))
-}
-
-/*
-Returns [code]true[/code] if the cell at coordinates [param coords] is transposed. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellTransposed(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_transposed
-	return bool(Advanced(self).IsCellTransposed(Vector2i.XY(coords)))
-}
-
-/*
 Returns a [Vector2i] array with the positions of all cells containing a tile. A cell is considered empty if its source identifier equals [code]-1[/code], its atlas coordinate identifier is [code]Vector2(-1, -1)[/code] and its alternative identifier is [code]-1[/code].
 */
 func (self Instance) GetUsedCells() []Vector2i.XY { //gd:TileMapLayer.get_used_cells
@@ -485,14 +464,6 @@ func (self Instance) TileSet() TileSet.Instance {
 
 func (self Instance) SetTileSet(value TileSet.Instance) {
 	class(self).SetTileSet(value)
-}
-
-func (self Instance) OcclusionEnabled() bool {
-	return bool(class(self).IsOcclusionEnabled())
-}
-
-func (self Instance) SetOcclusionEnabled(value bool) {
-	class(self).SetOcclusionEnabled(value)
 }
 
 func (self Instance) YSortOrigin() int {
@@ -724,48 +695,6 @@ func (self class) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { //gd
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellFlippedH(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_h
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellFlippedV(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_v
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell at coordinates [param coords] is transposed. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellTransposed(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_transposed
-	var frame = callframe.New()
-	callframe.Arg(frame, coords)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_cell_transposed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -1169,25 +1098,6 @@ func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:TileMa
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[DebugVisibilityMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_get_collision_visibility_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetOcclusionEnabled(enabled bool) { //gd:TileMapLayer.set_occlusion_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enabled)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_set_occlusion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) IsOcclusionEnabled() bool { //gd:TileMapLayer.is_occlusion_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMapLayer.Bind_is_occlusion_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

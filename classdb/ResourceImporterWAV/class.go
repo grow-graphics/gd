@@ -65,8 +65,7 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 /*
-WAV is an uncompressed format, which can provide higher quality compared to Ogg Vorbis and MP3. It also has the lowest CPU cost to decode. This means high numbers of WAV sounds can be played at the same time, even on low-end devices.
-By default, Godot imports WAV files using the lossy Quite OK Audio compression. You may change this by setting the [member compress/mode] property.
+WAV is an uncompressed format, which can provide higher quality compared to Ogg Vorbis and MP3. It also has the lowest CPU cost to decode. This means high numbers of WAV sounds can be played at the same time, even on low-end deviceS.
 */
 type Instance [1]gdclass.ResourceImporterWAV
 

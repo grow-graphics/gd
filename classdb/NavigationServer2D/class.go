@@ -301,19 +301,11 @@ func MapGetRandomPoint(mapping RID.NavigationMap2D, navigation_layers int, unifo
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query.
 */
-func QueryPath(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance, callback func()) { //gd:NavigationServer2D.query_path
+func QueryPath(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance) { //gd:NavigationServer2D.query_path
 	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
-}
-
-/*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
-*/
-func QueryPathOptions(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance, callback func()) { //gd:NavigationServer2D.query_path
-	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
+	Advanced().QueryPath(parameters, result)
 }
 
 /*
@@ -1542,14 +1534,13 @@ func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, un
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional [param callback] will be called.
+Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query.
 */
 //go:nosplit
-func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D, callback Callable.Function) { //gd:NavigationServer2D.query_path
+func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2D, result [1]gdclass.NavigationPathQueryResult2D) { //gd:NavigationServer2D.query_path
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(parameters[0])[0])
 	callframe.Arg(frame, pointers.Get(result[0])[0])
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.NavigationServer2D.Bind_query_path, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()

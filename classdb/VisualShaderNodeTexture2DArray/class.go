@@ -14,7 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/classdb/TextureLayered"
+import "graphics.gd/classdb/Texture2DArray"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/classdb/VisualShaderNodeSample3D"
 import "graphics.gd/variant/Array"
@@ -102,16 +102,16 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureArray() TextureLayered.Instance {
-	return TextureLayered.Instance(class(self).GetTextureArray())
+func (self Instance) TextureArray() Texture2DArray.Instance {
+	return Texture2DArray.Instance(class(self).GetTextureArray())
 }
 
-func (self Instance) SetTextureArray(value TextureLayered.Instance) {
+func (self Instance) SetTextureArray(value Texture2DArray.Instance) {
 	class(self).SetTextureArray(value)
 }
 
 //go:nosplit
-func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
+func (self class) SetTextureArray(value [1]gdclass.Texture2DArray) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
 	var r_ret = callframe.Nil
@@ -120,11 +120,11 @@ func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:Visual
 }
 
 //go:nosplit
-func (self class) GetTextureArray() [1]gdclass.TextureLayered { //gd:VisualShaderNodeTexture2DArray.get_texture_array
+func (self class) GetTextureArray() [1]gdclass.Texture2DArray { //gd:VisualShaderNodeTexture2DArray.get_texture_array
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret.Get())}
+	var ret = [1]gdclass.Texture2DArray{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2DArray](r_ret.Get())}
 	frame.Free()
 	return ret
 }

@@ -206,12 +206,11 @@ func ConvertName(fnName string) string {
 	if fnName == "type_string" {
 		return "TypeToString"
 	}
-
-	fnName = strings.ToLower(fnName)
-
+	if strings.Contains(fnName, "_") {
+		fnName = strings.ToLower(fnName)
+	}
 	joins := []string{}
-	split := strings.Split(fnName, "_")
-	for _, word := range split {
+	for word := range strings.SplitSeq(fnName, "_") {
 		joins = append(joins, strings.Title(word))
 	}
 	/*if joins[0] == "Get" {

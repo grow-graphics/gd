@@ -656,13 +656,13 @@ func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
 	return RID.MultiMesh(Advanced().MultimeshCreate())
 }
-func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
-	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
+	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format)
 }
-func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
-	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
+	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format)
 }
 
 /*
@@ -817,34 +817,6 @@ Instance transforms are in row-major order. Specifically:
 func MultimeshSetBuffer(multimesh RID.MultiMesh, buffer []float32) { //gd:RenderingServer.multimesh_set_buffer
 	once.Do(singleton)
 	Advanced().MultimeshSetBuffer(RID.Any(multimesh), Packed.New(buffer...))
-}
-
-/*
-Returns the [RenderingDevice] [RID] handle of the [MultiMesh] command buffer. This [RID] is only valid if [code]use_indirect[/code] is set to [code]true[/code] when allocating data through [method multimesh_allocate_data]. It can be used to directly modify the instance count via buffer.
-The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
-Each of the values in the buffer correspond to these options:
-[codeblock lang=text]
-Indexed:
-
-	0 - indexCount;
-	1 - instanceCount;
-	2 - firstIndex;
-	3 - vertexOffset;
-	4 - firstInstance;
-
-Non Indexed:
-
-	0 - vertexCount;
-	1 - instanceCount;
-	2 - firstVertex;
-	3 - firstInstance;
-	4 - unused;
-
-[/codeblock]
-*/
-func MultimeshGetCommandBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
-	once.Do(singleton)
-	return RID.Buffer(Advanced().MultimeshGetCommandBufferRdRid(RID.Any(multimesh)))
 }
 
 /*
@@ -3911,39 +3883,6 @@ func CanvasItemSetUseParentMaterial(item RID.CanvasItem, enabled bool) { //gd:Re
 }
 
 /*
-Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [method CanvasItem.set_instance_shader_parameter].
-*/
-func CanvasItemSetInstanceShaderParameter(instance RID.CanvasItem, parameter string, value any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
-	once.Do(singleton)
-	Advanced().CanvasItemSetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter)), variant.New(value))
-}
-
-/*
-Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
-*/
-func CanvasItemGetInstanceShaderParameter(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
-	once.Do(singleton)
-	return any(Advanced().CanvasItemGetInstanceShaderParameter(RID.Any(instance), String.Name(String.New(parameter))).Interface())
-}
-
-/*
-Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
-*/
-func CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
-	once.Do(singleton)
-	return any(Advanced().CanvasItemGetInstanceShaderParameterDefaultValue(RID.Any(instance), String.Name(String.New(parameter))).Interface())
-}
-
-/*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified canvas item instance.
-The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code], and [code]usage[/code].
-*/
-func CanvasItemGetInstanceShaderParameterList(instance RID.CanvasItem) []PropertyInfo { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
-	once.Do(singleton)
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced().CanvasItemGetInstanceShaderParameterList(RID.Any(instance)))))
-}
-
-/*
 Sets the given [CanvasItem] as visibility notifier. [param area] defines the area of detecting visibility. [param enter_callable] is called when the [CanvasItem] enters the screen, [param exit_callable] is called when the [CanvasItem] exits the screen. If [param enable] is [code]false[/code], the item will no longer function as notifier.
 This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
@@ -4524,8 +4463,7 @@ func HasOsFeature(feature string) bool { //gd:RenderingServer.has_os_feature
 }
 
 /*
-If [param generate] is [code]true[/code], generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
-[b]Note:[/b] You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
+This method is currently unimplemented and does nothing if called with [param generate] set to [code]true[/code].
 */
 func SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
 	once.Do(singleton)
@@ -5540,14 +5478,13 @@ func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_cre
 }
 
 //go:nosplit
-func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
+func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool) { //gd:RenderingServer.multimesh_allocate_data
 	var frame = callframe.New()
 	callframe.Arg(frame, multimesh)
 	callframe.Arg(frame, instances)
 	callframe.Arg(frame, transform_format)
 	callframe.Arg(frame, color_format)
 	callframe.Arg(frame, custom_data_format)
-	callframe.Arg(frame, use_indirect)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -5805,36 +5742,6 @@ func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[floa
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
-}
-
-/*
-Returns the [RenderingDevice] [RID] handle of the [MultiMesh] command buffer. This [RID] is only valid if [code]use_indirect[/code] is set to [code]true[/code] when allocating data through [method multimesh_allocate_data]. It can be used to directly modify the instance count via buffer.
-The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
-Each of the values in the buffer correspond to these options:
-[codeblock lang=text]
-Indexed:
-  0 - indexCount;
-  1 - instanceCount;
-  2 - firstIndex;
-  3 - vertexOffset;
-  4 - firstInstance;
-Non Indexed:
-  0 - vertexCount;
-  1 - instanceCount;
-  2 - firstVertex;
-  3 - firstInstance;
-  4 - unused;
-[/codeblock]
-*/
-//go:nosplit
-func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
-	var frame = callframe.New()
-	callframe.Arg(frame, multimesh)
-	var r_ret = callframe.Ret[RID.Any](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_multimesh_get_command_buffer_rd_rid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
 }
 
 /*
@@ -10735,65 +10642,6 @@ func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { /
 }
 
 /*
-Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [method CanvasItem.set_instance_shader_parameter].
-*/
-//go:nosplit
-func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
-*/
-//go:nosplit
-func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [method CanvasItem.get_instance_shader_parameter].
-*/
-//go:nosplit
-func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
-	var frame = callframe.New()
-	callframe.Arg(frame, instance)
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(parameter)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified canvas item instance.
-The returned dictionary is in PropertyInfo format, with the keys [code]name[/code], [code]class_name[/code], [code]type[/code], [code]hint[/code], [code]hint_string[/code], and [code]usage[/code].
-*/
-//go:nosplit
-func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
-	var frame = callframe.New()
-	callframe.Arg(frame, instance)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
 Sets the given [CanvasItem] as visibility notifier. [param area] defines the area of detecting visibility. [param enter_callable] is called when the [CanvasItem] enters the screen, [param exit_callable] is called when the [CanvasItem] exits the screen. If [param enable] is [code]false[/code], the item will no longer function as notifier.
 This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
@@ -11695,8 +11543,7 @@ func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingSer
 }
 
 /*
-If [param generate] is [code]true[/code], generates debug wireframes for all meshes that are loaded when using the Compatibility renderer. By default, the engine does not generate debug wireframes at runtime, since they slow down loading of assets and take up VRAM.
-[b]Note:[/b] You must call this method before loading any meshes when using the Compatibility renderer, otherwise wireframes will not be used.
+This method is currently unimplemented and does nothing if called with [param generate] set to [code]true[/code].
 */
 //go:nosplit
 func (self class) SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
@@ -12364,14 +12211,8 @@ const (
 	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
 	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
 	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
-	/*Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.
-	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
-	ViewportScaling3dModeMetalfxSpatial ViewportScaling3DMode = 3
-	/*Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use MetalFX at native resolution as a TAA solution.
-	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
-	ViewportScaling3dModeMetalfxTemporal ViewportScaling3DMode = 4
 	/*Represents the size of the [enum ViewportScaling3DMode] enum.*/
-	ViewportScaling3dModeMax ViewportScaling3DMode = 5
+	ViewportScaling3dModeMax ViewportScaling3DMode = 3
 )
 
 type ViewportUpdateMode int //gd:RenderingServer.ViewportUpdateMode
@@ -12533,8 +12374,7 @@ const (
 	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw (represented by brighter colors) means you are wasting performance on drawing pixels that are being hidden behind others.
 	  [b]Note:[/b] When using this debug draw mode, custom shaders will be ignored. This means vertex displacement won't be visible anymore.*/
 	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
-	/*Debug draw draws objects in wireframe.
-	  [b]Note:[/b] [method set_debug_generate_wireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.*/
+	/*Debug draw draws objects in wireframe.*/
 	ViewportDebugDrawWireframe ViewportDebugDraw = 4
 	/*Normal buffer is drawn instead of regular scene so you can see the per-pixel normals that will be used by post-processing effects.*/
 	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
@@ -13173,33 +13013,6 @@ const (
 	RenderingInfoBufferMemUsed RenderingInfo = 4
 	/*Video memory used (in bytes). When using the Forward+ or Mobile renderers, this is always greater than the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED], since there is miscellaneous data not accounted for by those two metrics. When using the Compatibility renderer, this is equal to the sum of [constant RENDERING_INFO_TEXTURE_MEM_USED] and [constant RENDERING_INFO_BUFFER_MEM_USED].*/
 	RenderingInfoVideoMemUsed RenderingInfo = 5
-	/*Number of pipeline compilations that were triggered by the 2D canvas renderer.*/
-	RenderingInfoPipelineCompilationsCanvas RenderingInfo = 6
-	/*Number of pipeline compilations that were triggered by loading meshes. These compilations will show up as longer loading times the first time a user runs the game and the pipeline is required.*/
-	RenderingInfoPipelineCompilationsMesh RenderingInfo = 7
-	/*Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading an scene the first time a user runs the game and the pipeline is required.*/
-	RenderingInfoPipelineCompilationsSurface RenderingInfo = 8
-	/*Number of pipeline compilations that were triggered while drawing the scene. These compilations will show up as stutters during gameplay the first time a user runs the game and the pipeline is required.*/
-	RenderingInfoPipelineCompilationsDraw RenderingInfo = 9
-	/*Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.*/
-	RenderingInfoPipelineCompilationsSpecialization RenderingInfo = 10
-)
-
-type PipelineSource int //gd:RenderingServer.PipelineSource
-
-const (
-	/*Pipeline compilation that was triggered by the 2D canvas renderer.*/
-	PipelineSourceCanvas PipelineSource = 0
-	/*Pipeline compilation that was triggered by loading a mesh.*/
-	PipelineSourceMesh PipelineSource = 1
-	/*Pipeline compilation that was triggered by building the surface cache before rendering the scene.*/
-	PipelineSourceSurface PipelineSource = 2
-	/*Pipeline compilation that was triggered while drawing the scene.*/
-	PipelineSourceDraw PipelineSource = 3
-	/*Pipeline compilation that was triggered to optimize the current scene.*/
-	PipelineSourceSpecialization PipelineSource = 4
-	/*Represents the size of the [enum PipelineSource] enum.*/
-	PipelineSourceMax PipelineSource = 5
 )
 
 type Features int //gd:RenderingServer.Features
@@ -13209,14 +13022,6 @@ const (
 	FeatureMultithreaded Features = 1
 )
 
-type PropertyInfo struct {
-	ClassName  string       `gd:"class_name"`
-	Name       string       `gd:"name"`
-	Hint       int          `gd:"hint"`
-	HintString string       `gd:"hint_string"`
-	Type       reflect.Type `gd:"type"`
-	Usage      int          `gd:"usage"`
-}
 type Surface map[interface{}]interface{}
 type ParticlesEmitFlag int
 

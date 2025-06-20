@@ -636,6 +636,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) ExternalForce() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetExternalForce())
+}
+
+func (self Instance) SetExternalForce(value Vector3.XYZ) {
+	class(self).SetExternalForce(Vector3.XYZ(value))
+}
+
 func (self Instance) SettingCount() int {
 	return int(int(class(self).GetSettingCount()))
 }
@@ -1663,6 +1671,25 @@ func (self class) ClearCollisions(index int64) { //gd:SpringBoneSimulator3D.clea
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_collisions, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
+}
+
+//go:nosplit
+func (self class) SetExternalForce(force Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_external_force
+	var frame = callframe.New()
+	callframe.Arg(frame, force)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_external_force, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetExternalForce() Vector3.XYZ { //gd:SpringBoneSimulator3D.get_external_force
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[Vector3.XYZ](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_external_force, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
 }
 
 /*

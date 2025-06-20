@@ -291,10 +291,6 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
-func (self Instance) CollisionResult() []PhysicsDirectSpaceState3D_RestInfo {
-	return []PhysicsDirectSpaceState3D_RestInfo(gd.ArrayAs[[]PhysicsDirectSpaceState3D_RestInfo](gd.InternalArray(class(self).GetCollisionResult())))
-}
-
 func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
@@ -720,16 +716,6 @@ func (self class) IsCollideWithBodiesEnabled() bool { //gd:ShapeCast3D.is_collid
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_is_collide_with_bodies_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) GetCollisionResult() Array.Any { //gd:ShapeCast3D.get_collision_result
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ShapeCast3D.Bind_get_collision_result, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }

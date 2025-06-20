@@ -77,7 +77,7 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 - To exit edit mode, press [code]ui_text_submit[/code] or [code]ui_cancel[/code] (by default [kbd]Escape[/kbd]) actions.
 - Check [method edit], [method unedit], [method is_editing], and [signal editing_toggled] for more information.
 [b]Important:[/b]
-- Focusing the [LineEdit] with [code]ui_focus_next[/code] (by default [kbd]Tab[/kbd]) or [code]ui_focus_prev[/code] (by default [kbd]Shift + Tab[/kbd]) or [method Control.grab_focus] still enters edit mode (for compatibility).
+- Focusing the [LineEdit] with "ui_focus_next" (default: [kbd]Tab[/kbd]) or "ui_focus_prev" (default: [kbd]Shift + Tab[/kbd]) or [method Control.grab_focus] still enters edit mode (for compatibility).
 [LineEdit] features many built-in shortcuts that are always available ([kbd]Ctrl[/kbd] here maps to [kbd]Cmd[/kbd] on macOS):
 - [kbd]Ctrl + C[/kbd]: Copy
 - [kbd]Ctrl + X[/kbd]: Cut

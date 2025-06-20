@@ -15,6 +15,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/Font"
+import "graphics.gd/classdb/ImageTexture"
 import "graphics.gd/classdb/StyleBox"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/classdb/Theme"
@@ -85,7 +86,7 @@ func singleton() {
 }
 
 /*
-Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and cannot be overridden.
+Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and can be customized from [ProjectSettings].
 */
 func GetDefaultTheme() Theme.Instance { //gd:ThemeDB.get_default_theme
 	once.Do(singleton)
@@ -99,6 +100,108 @@ To set the project theme, see [member ProjectSettings.gui/theme/custom].
 func GetProjectTheme() Theme.Instance { //gd:ThemeDB.get_project_theme
 	once.Do(singleton)
 	return Theme.Instance(Advanced().GetProjectTheme())
+}
+
+/*
+Prevents the default theme from emitting changed. This prevents Nodes using the theme from being updated until [method unfreeze_default_theme] is called.
+*/
+func FreezeDefaultTheme() { //gd:ThemeDB.freeze_default_theme
+	once.Do(singleton)
+	Advanced().FreezeDefaultTheme()
+}
+
+/*
+Emits [signal Resource.changed] if the default theme was already frozen. Also check [method freeze_default_theme].
+*/
+func UnfreezeDefaultTheme() { //gd:ThemeDB.unfreeze_default_theme
+	once.Do(singleton)
+	Advanced().UnfreezeDefaultTheme()
+}
+
+/*
+Returns whether the default theme is frozen.
+*/
+func IsDefaultThemeFrozen() bool { //gd:ThemeDB.is_default_theme_frozen
+	once.Do(singleton)
+	return bool(Advanced().IsDefaultThemeFrozen())
+}
+
+/*
+Add an Icon to the default theme, which will make it change colors and scale when the default theme is changed from [ProjectSettings].
+[param icon_source] should be a valid SVG [String].
+In SVG source "red" and "#0f0" are replaced with font and accent colors when they are changed from [ProjectSettings].
+[b]Note:[/b] Editor plugins need to remove their user icon(s) when unloaded.
+[codeblock]
+func _enter_tree():
+
+	var source = FileAccess.get_file_as_string("res://icon.svg")
+	ThemeDB.add_user_icon("my_icon", source)
+
+func _exit_tree():
+
+	ThemeDB.remove_user_icon("my_icon")
+
+[/codeblock]
+*/
+func AddUserIcon(icon_name string, icon_source string) error { //gd:ThemeDB.add_user_icon
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().AddUserIcon(String.New(icon_name), String.New(icon_source))))
+}
+
+/*
+Removes a user icon that was previously added to the default theme.
+*/
+func RemoveUserIcon(icon_name string) error { //gd:ThemeDB.remove_user_icon
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().RemoveUserIcon(String.New(icon_name))))
+}
+
+/*
+Returns whether the default theme has a user icon with [param icon_name].
+*/
+func HasUserIcon(icon_name string) bool { //gd:ThemeDB.has_user_icon
+	once.Do(singleton)
+	return bool(Advanced().HasUserIcon(String.New(icon_name)))
+}
+
+/*
+Returns a user icon from the default theme.
+*/
+func GetUserIcon(icon_name string) ImageTexture.Instance { //gd:ThemeDB.get_user_icon
+	once.Do(singleton)
+	return ImageTexture.Instance(Advanced().GetUserIcon(String.New(icon_name)))
+}
+
+/*
+Returns a list for all the user icon names.
+*/
+func GetUserIconList() []string { //gd:ThemeDB.get_user_icon_list
+	once.Do(singleton)
+	return []string(Advanced().GetUserIconList().Strings())
+}
+
+/*
+Returns whether the default theme has an internal icon with [param icon_name].
+*/
+func HasIcon(icon_name string) bool { //gd:ThemeDB.has_icon
+	once.Do(singleton)
+	return bool(Advanced().HasIcon(String.New(icon_name)))
+}
+
+/*
+Returns an internal icon from the fallback theme, internal theme icons are the default icons that comes with Blazium.
+*/
+func GetIcon(icon_name string) ImageTexture.Instance { //gd:ThemeDB.get_icon
+	once.Do(singleton)
+	return ImageTexture.Instance(Advanced().GetIcon(String.New(icon_name)))
+}
+
+/*
+Returns a list for all the icon names that are used internally for the default theme.
+*/
+func GetIconList() []string { //gd:ThemeDB.get_icon_list
+	once.Do(singleton)
+	return []string(Advanced().GetIconList().Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -167,7 +270,7 @@ func SetFallbackStylebox(value StyleBox.Instance) {
 }
 
 /*
-Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and cannot be overridden.
+Returns a reference to the default engine [Theme]. This theme resource is responsible for the out-of-the-box look of [Control] nodes and can be customized from [ProjectSettings].
 */
 //go:nosplit
 func (self class) GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
@@ -287,8 +390,221 @@ func (self class) GetFallbackStylebox() [1]gdclass.StyleBox { //gd:ThemeDB.get_f
 	frame.Free()
 	return ret
 }
+
+/*
+Prevents the default theme from emitting changed. This prevents Nodes using the theme from being updated until [method unfreeze_default_theme] is called.
+*/
+//go:nosplit
+func (self class) FreezeDefaultTheme() { //gd:ThemeDB.freeze_default_theme
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_freeze_default_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Emits [signal Resource.changed] if the default theme was already frozen. Also check [method freeze_default_theme].
+*/
+//go:nosplit
+func (self class) UnfreezeDefaultTheme() { //gd:ThemeDB.unfreeze_default_theme
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_unfreeze_default_theme, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns whether the default theme is frozen.
+*/
+//go:nosplit
+func (self class) IsDefaultThemeFrozen() bool { //gd:ThemeDB.is_default_theme_frozen
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_is_default_theme_frozen, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Add an Icon to the default theme, which will make it change colors and scale when the default theme is changed from [ProjectSettings].
+[param icon_source] should be a valid SVG [String].
+In SVG source "red" and "#0f0" are replaced with font and accent colors when they are changed from [ProjectSettings].
+[b]Note:[/b] Editor plugins need to remove their user icon(s) when unloaded.
+[codeblock]
+func _enter_tree():
+    var source = FileAccess.get_file_as_string("res://icon.svg")
+    ThemeDB.add_user_icon("my_icon", source)
+
+func _exit_tree():
+    ThemeDB.remove_user_icon("my_icon")
+[/codeblock]
+*/
+//go:nosplit
+func (self class) AddUserIcon(icon_name String.Readable, icon_source String.Readable) Error.Code { //gd:ThemeDB.add_user_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_source)))
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_add_user_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Removes a user icon that was previously added to the default theme.
+*/
+//go:nosplit
+func (self class) RemoveUserIcon(icon_name String.Readable) Error.Code { //gd:ThemeDB.remove_user_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_remove_user_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether the default theme has a user icon with [param icon_name].
+*/
+//go:nosplit
+func (self class) HasUserIcon(icon_name String.Readable) bool { //gd:ThemeDB.has_user_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_has_user_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a user icon from the default theme.
+*/
+//go:nosplit
+func (self class) GetUserIcon(icon_name String.Readable) [1]gdclass.ImageTexture { //gd:ThemeDB.get_user_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_user_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a list for all the user icon names.
+*/
+//go:nosplit
+func (self class) GetUserIconList() Packed.Strings { //gd:ThemeDB.get_user_icon_list
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_user_icon_list, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns whether the default theme has an internal icon with [param icon_name].
+*/
+//go:nosplit
+func (self class) HasIcon(icon_name String.Readable) bool { //gd:ThemeDB.has_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_has_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns an internal icon from the fallback theme, internal theme icons are the default icons that comes with Blazium.
+*/
+//go:nosplit
+func (self class) GetIcon(icon_name String.Readable) [1]gdclass.ImageTexture { //gd:ThemeDB.get_icon
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(icon_name)))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_icon, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+Returns a list for all the icon names that are used internally for the default theme.
+*/
+//go:nosplit
+func (self class) GetIconList() Packed.Strings { //gd:ThemeDB.get_icon_list
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[gd.PackedPointers](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ThemeDB.Bind_get_icon_list, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.New[gd.PackedStringArray](r_ret.Get()))))
+	frame.Free()
+	return ret
+}
 func OnFallbackChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("fallback_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnThemeChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnIconsChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("icons_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnColorsChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("colors_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnScaleChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("scale_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnMarginChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("margin_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnPaddingChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("padding_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnCornerRadiusChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("corner_radius_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnBorderWidthChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("border_width_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnBorderPaddingChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("border_padding_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnFontColorChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("font_color_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnFontOutlineColorChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("font_outline_color_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnFontOutlineSizeChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("font_outline_size_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnFontSizeChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("font_size_changed"), gd.NewCallable(cb), 0)
+}
+
+func OnFontChanged(cb func()) {
+	self[0].AsObject()[0].Connect(gd.NewStringName("font_changed"), gd.NewCallable(cb), 0)
 }
 
 func (self class) Virtual(name string) reflect.Value {

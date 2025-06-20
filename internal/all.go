@@ -1998,7 +1998,7 @@ print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
 print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
 [/gdscript]
 [csharp]
-string[] fruits = ["Apple", "Orange", "Pear", "Kiwi"];
+var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
 
 // In C#, this method is static.
 GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
@@ -3975,7 +3975,7 @@ print(", ".join(fruits))  # Prints "Apple, Orange, Pear, Kiwi"
 print("---".join(fruits)) # Prints "Apple---Orange---Pear---Kiwi"
 [/gdscript]
 [csharp]
-string[] fruits = ["Apple", "Orange", "Pear", "Kiwi"];
+var fruits = new string[] {"Apple", "Orange", "Pear", "Kiwi"};
 
 // In C#, this method is static.
 GD.Print(string.Join(", ", fruits));  // Prints "Apple, Orange, Pear, Kiwi"
@@ -5825,19 +5825,6 @@ func (self Dictionary) Clear() {
 }
 
 /*
-Assigns elements of another [param dictionary] into the dictionary. Resizes the dictionary to match [param dictionary]. Performs type conversions if the dictionary is typed.
-*/
-//go:nosplit
-func (self Dictionary) Assign(dictionary Dictionary) {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Nil
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.assign(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	frame.Free()
-}
-
-/*
 Sorts the dictionary in-place by key. This can be used to ensure dictionaries with the same contents produce equivalent results when getting the [method keys], getting the [method values], and converting to a string. This is also useful when wanting a JSON representation consistent with what is in memory, and useful for storing on a database that requires dictionaries to be sorted.
 */
 //go:nosplit
@@ -6126,193 +6113,6 @@ func (self Dictionary) GetOrAdd(key Variant, def Variant) Variant {
 }
 
 /*
-Sets the value of the element at the given [param key] to the given [param value]. This is the same as using the [code][][/code] operator ([code]array[index] = value[/code]).
-*/
-//go:nosplit
-func (self Dictionary) Set(key Variant, value Variant) bool {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(key))
-	callframe.Arg(frame, pointers.Get(value))
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.set(p_self.Addr(), frame.Array(0), r_ret.Addr(), 2)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary is typed. Typed dictionaries can only store keys/values of their associated type and provide type safety for the [code][][/code] operator. Methods of typed dictionary still return [Variant].
-*/
-//go:nosplit
-func (self Dictionary) IsTyped() bool {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary's keys are typed.
-*/
-//go:nosplit
-func (self Dictionary) IsTypedKey() bool {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_typed_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary's values are typed.
-*/
-//go:nosplit
-func (self Dictionary) IsTypedValue() bool {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_typed_value(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary is typed the same as [param dictionary].
-*/
-//go:nosplit
-func (self Dictionary) IsSameTyped(dictionary Dictionary) bool {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_same_typed(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary's keys are typed the same as [param dictionary]'s keys.
-*/
-//go:nosplit
-func (self Dictionary) IsSameTypedKey(dictionary Dictionary) bool {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_same_typed_key(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the dictionary's values are typed the same as [param dictionary]'s values.
-*/
-//go:nosplit
-func (self Dictionary) IsSameTypedValue(dictionary Dictionary) bool {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(dictionary))
-	var r_ret = callframe.Ret[bool](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.is_same_typed_value(p_self.Addr(), frame.Array(0), r_ret.Addr(), 1)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the built-in [Variant] type of the typed dictionary's keys as a [enum Variant.Type] constant. If the keys are not typed, returns [constant TYPE_NIL]. See also [method is_typed_key].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedKeyBuiltin() int64 {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_key_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the built-in [Variant] type of the typed dictionary's values as a [enum Variant.Type] constant. If the values are not typed, returns [constant TYPE_NIL]. See also [method is_typed_value].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedValueBuiltin() int64 {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_value_builtin(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the [b]built-in[/b] class name of the typed dictionary's keys, if the built-in [Variant] type is [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed_key] and [method Object.get_class].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedKeyClassName() StringName {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]enginePointer](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_key_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = pointers.New[StringName](r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the [b]built-in[/b] class name of the typed dictionary's values, if the built-in [Variant] type is [constant TYPE_OBJECT]. Otherwise, returns an empty [StringName]. See also [method is_typed_value] and [method Object.get_class].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedValueClassName() StringName {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]enginePointer](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_value_class_name(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = pointers.New[StringName](r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the [Script] instance associated with this typed dictionary's keys, or [code]null[/code] if it does not exist. See also [method is_typed_key].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedKeyScript() Variant {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_key_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = pointers.New[Variant](r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the [Script] instance associated with this typed dictionary's values, or [code]null[/code] if it does not exist. See also [method is_typed_value].
-*/
-//go:nosplit
-func (self Dictionary) GetTypedValueScript() Variant {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	var p_self = callframe.Arg(frame, pointers.Get(self))
-	Global.builtin.Dictionary.get_typed_value_script(p_self.Addr(), frame.Array(0), r_ret.Addr(), 0)
-	var ret = pointers.New[Variant](r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
 Makes the dictionary read-only, i.e. disables modification of the dictionary's contents. Does not apply to nested content, e.g. content of nested dictionaries.
 */
 //go:nosplit
@@ -6572,7 +6372,7 @@ array.fill(2)
 print(array) # Prints [2, 2, 2, 2, 2]
 [/gdscript]
 [csharp]
-Godot.Collections.Array array = [];
+var array = new Godot.Collections.Array();
 array.Resize(5);
 array.Fill(2);
 GD.Print(array); // Prints [2, 2, 2, 2, 2]
@@ -6643,7 +6443,7 @@ Returns a random element from the array. Generates an error and returns [code]nu
 print([1, 2, 3.25, "Hi"].pick_random())
 [/gdscript]
 [csharp]
-Godot.Collections.Array array = [1, 2, 3.25f, "Hi"];
+var array = new Godot.Collections.Array { 1, 2, 3.25f, "Hi" };
 GD.Print(array.PickRandom()); // May print 1, 2, 3.25, or "Hi".
 [/csharp]
 [/codeblocks]
@@ -6763,7 +6563,7 @@ print(["inside", 7].has(7))         # Prints true
 print(["inside", 7].has("7"))       # Prints false
 [/gdscript]
 [csharp]
-Godot.Collections.Array arr = ["inside", 7];
+var arr = new Godot.Collections.Array { "inside", 7 };
 // By C# convention, this method is renamed to `Contains`.
 GD.Print(arr.Contains("inside"));  // Prints True
 GD.Print(arr.Contains("outside")); // Prints False
@@ -6844,7 +6644,7 @@ numbers.sort()
 print(numbers) # Prints [2.5, 5, 8, 10]
 [/gdscript]
 [csharp]
-Godot.Collections.Array numbers = [10, 5, 2.5, 8];
+var numbers = new Godot.Collections.Array { 10, 5, 2.5, 8 };
 numbers.Sort();
 GD.Print(numbers); // Prints [2.5, 5, 8, 10]
 [/csharp]
@@ -7772,7 +7572,7 @@ var array = PackedByteArray([11, 46, 255])
 print(array.hex_encode()) # Prints "0b2eff"
 [/gdscript]
 [csharp]
-byte[] array = [11, 46, 255];
+var array = new byte[] {11, 46, 255};
 GD.Print(array.HexEncode()); // Prints "0b2eff"
 [/csharp]
 [/codeblocks]
@@ -11815,19 +11615,19 @@ add_user_signal("hurt", [
 ])
 [/gdscript]
 [csharp]
-AddUserSignal("Hurt",
-[
+AddUserSignal("Hurt", new Godot.Collections.Array()
+{
     new Godot.Collections.Dictionary()
     {
         { "name", "damage" },
-        { "type", (int)Variant.Type.Int },
+        { "type", (int)Variant.Type.Int }
     },
     new Godot.Collections.Dictionary()
     {
         { "name", "source" },
-        { "type", (int)Variant.Type.Object },
-    },
-]);
+        { "type", (int)Variant.Type.Object }
+    }
+});
 [/csharp]
 [/codeblocks]
 */
@@ -11912,7 +11712,7 @@ node.callv("rotate", [Vector3(1.0, 0.0, 0.0), 1.571])
 [/gdscript]
 [csharp]
 var node = new Node3D();
-node.Callv(Node3D.MethodName.Rotate, [new Vector3(1f, 0f, 0f), 1.571f]);
+node.Callv(Node3D.MethodName.Rotate, new Godot.Collections.Array { new Vector3(1f, 0f, 0f), 1.571f });
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] In C#, [param method] must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the [code]MethodName[/code] class to avoid allocating a new [StringName] on each call.

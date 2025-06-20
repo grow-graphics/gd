@@ -107,7 +107,7 @@ type Any interface {
 type Interface interface {
 	//Called when estimating the cost between a point and the path's ending point.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
-	EstimateCost(from_id Point, end_id Point) Float.X
+	EstimateCost(from_id Point, to_id Point) Float.X
 	//Called when computing the cost between two connected points.
 	//Note that this function is hidden in the default [AStarGrid2D] class.
 	ComputeCost(from_id Point, to_id Point) Float.X
@@ -118,19 +118,19 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)   { return }
+func (self implementation) EstimateCost(from_id Point, to_id Point) (_ Float.X) { return }
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)  { return }
 
 /*
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, end_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
+		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, from_id, end_id)
+		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -395,12 +395,12 @@ func (self Instance) SetDiagonalMode(value DiagonalMode) {
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
-func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, end_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id Vector2i.XY, to_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
-		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
+		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, from_id, end_id)
+		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
 	}
 }

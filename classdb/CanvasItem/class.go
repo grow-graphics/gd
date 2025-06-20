@@ -747,22 +747,6 @@ func (self Instance) GetWorld2d() World2D.Instance { //gd:CanvasItem.get_world_2
 }
 
 /*
-Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
-[b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
-[b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-*/
-func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:CanvasItem.set_instance_shader_parameter
-	Advanced(self).SetInstanceShaderParameter(String.Name(String.New(name)), variant.New(value))
-}
-
-/*
-Get the value of a shader parameter as set on this instance.
-*/
-func (self Instance) GetInstanceShaderParameter(name string) any { //gd:CanvasItem.get_instance_shader_parameter
-	return any(Advanced(self).GetInstanceShaderParameter(String.Name(String.New(name))).Interface())
-}
-
-/*
 If [param enable] is [code]true[/code], this node will receive [constant NOTIFICATION_LOCAL_TRANSFORM_CHANGED] when its local transform changes.
 */
 func (self Instance) SetNotifyLocalTransform(enable bool) { //gd:CanvasItem.set_notify_local_transform
@@ -1936,35 +1920,6 @@ func (self class) GetMaterial() [1]gdclass.Material { //gd:CanvasItem.get_materi
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_material, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret.Get())}
-	frame.Free()
-	return ret
-}
-
-/*
-Set the value of a shader uniform for this instance only ([url=$DOCS_URL/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms]per-instance uniform[/url]). See also [method ShaderMaterial.set_shader_parameter] to assign a uniform on all instances using the same [ShaderMaterial].
-[b]Note:[/b] For a shader uniform to be assignable on a per-instance basis, it [i]must[/i] be defined with [code]instance uniform ...[/code] rather than [code]uniform ...[/code] in the shader code.
-[b]Note:[/b] [param name] is case-sensitive and must match the name of the uniform in the code exactly (not the capitalized name in the inspector).
-*/
-//go:nosplit
-func (self class) SetInstanceShaderParameter(name String.Name, value variant.Any) { //gd:CanvasItem.set_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_set_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Get the value of a shader parameter as set on this instance.
-*/
-//go:nosplit
-func (self class) GetInstanceShaderParameter(name String.Name) variant.Any { //gd:CanvasItem.get_instance_shader_parameter
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
-	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CanvasItem.Bind_get_instance_shader_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }

@@ -664,6 +664,14 @@ func (self Instance) SetSubpixelPositioning(value TextServer.SubpixelPositioning
 	class(self).SetSubpixelPositioning(value)
 }
 
+func (self Instance) LcdSubpixelLayout() TextServer.FontLCDSubpixelLayout {
+	return TextServer.FontLCDSubpixelLayout(class(self).GetLcdSubpixelLayout())
+}
+
+func (self Instance) SetLcdSubpixelLayout(value TextServer.FontLCDSubpixelLayout) {
+	class(self).SetLcdSubpixelLayout(value)
+}
+
 func (self Instance) KeepRoundingRemainders() bool {
 	return bool(class(self).GetKeepRoundingRemainders())
 }
@@ -1069,6 +1077,25 @@ func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[TextServer.SubpixelPositioning](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_subpixel_positioning, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetLcdSubpixelLayout(subpixel_layout TextServer.FontLCDSubpixelLayout) { //gd:FontFile.set_lcd_subpixel_layout
+	var frame = callframe.New()
+	callframe.Arg(frame, subpixel_layout)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_set_lcd_subpixel_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetLcdSubpixelLayout() TextServer.FontLCDSubpixelLayout { //gd:FontFile.get_lcd_subpixel_layout
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[TextServer.FontLCDSubpixelLayout](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FontFile.Bind_get_lcd_subpixel_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

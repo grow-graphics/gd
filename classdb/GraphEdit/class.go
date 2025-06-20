@@ -261,18 +261,27 @@ func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node str
 
 /*
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
-Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
 func (self Instance) ConnectNode(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
+	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port))))
 }
 
 /*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
-func (self Expanded) ConnectNode(from_node string, from_port int, to_node string, to_port int, keep_alive bool) error { //gd:GraphEdit.connect_node
-	return error(gd.ToError(Advanced(self).ConnectNode(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), keep_alive)))
+func (self Instance) ConnectNode2(from_node string, from_port int, to_node string, to_port int) error { //gd:GraphEdit.connect_node2
+	return error(gd.ToError(Advanced(self).ConnectNode2(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), false)))
+}
+
+/*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
+Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
+Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
+*/
+func (self Expanded) ConnectNode2(from_node string, from_port int, to_node string, to_port int, keep_alive bool) error { //gd:GraphEdit.connect_node2
+	return error(gd.ToError(Advanced(self).ConnectNode2(String.Name(String.New(from_node)), int64(from_port), String.Name(String.New(to_node)), int64(to_port), keep_alive)))
 }
 
 /*
@@ -351,6 +360,24 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 */
 func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance Float.X) Connection { //gd:GraphEdit.get_closest_connection_at_point
 	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(max_distance))))
+}
+
+/*
+Returns an [Array] containing a list of all connections for [param node].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+
+	{
+	    from_node: StringName,
+	    from_port: int,
+	    to_node: StringName,
+	    to_port: int
+	}
+
+[/codeblock]
+*/
+func (self Instance) GetConnectionListFromNode(node string) []map[any]any { //gd:GraphEdit.get_connection_list_from_node
+	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.New(node))))))
 }
 
 /*
@@ -816,10 +843,28 @@ func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String
 
 /*
 Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
+*/
+//go:nosplit
+func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64) Error.Code { //gd:GraphEdit.connect_node
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
+	callframe.Arg(frame, from_port)
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(to_node)))
+	callframe.Arg(frame, to_port)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Error.Code(r_ret.Get())
+	frame.Free()
+	return ret
+}
+
+/*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
+Create a connection between the [param from_port] of the [param from_node] [GraphNode] and the [param to_port] of the [param to_node] [GraphNode]. If the connection already exists, no connection is created.
 Connections with [param keep_alive] set to [code]false[/code] may be deleted automatically if invalid during a redraw.
 */
 //go:nosplit
-func (self class) ConnectNode(from_node String.Name, from_port int64, to_node String.Name, to_port int64, keep_alive bool) Error.Code { //gd:GraphEdit.connect_node
+func (self class) ConnectNode2(from_node String.Name, from_port int64, to_node String.Name, to_port int64, keep_alive bool) Error.Code { //gd:GraphEdit.connect_node2
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(from_node)))
 	callframe.Arg(frame, from_port)
@@ -827,7 +872,7 @@ func (self class) ConnectNode(from_node String.Name, from_port int64, to_node St
 	callframe.Arg(frame, to_port)
 	callframe.Arg(frame, keep_alive)
 	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_connect_node2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
@@ -942,6 +987,29 @@ func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance flo
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_closest_connection_at_point, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+Returns an [Array] containing a list of all connections for [param node].
+A connection is represented as a [Dictionary] in the form of:
+[codeblock]
+{
+    from_node: StringName,
+    from_port: int,
+    to_node: StringName,
+    to_port: int
+}
+[/codeblock]
+*/
+//go:nosplit
+func (self class) GetConnectionListFromNode(node String.Name) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list_from_node
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalStringName(node)))
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GraphEdit.Bind_get_connection_list_from_node, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
 }
@@ -1679,7 +1747,7 @@ func (self Instance) OnNodeDeselected(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
 }
 
-func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize)) {
+func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Vector2.XY)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
 }
 

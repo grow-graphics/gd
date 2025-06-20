@@ -240,13 +240,26 @@ Reads a user input as a UTF-8 encoded string from the standard input. This opera
 - If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
 - If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
 - If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
-[b]Note:[/b] This method automatically replaces [code]\r\n[/code] line breaks with [code]\n[/code] and removes them from the end of the string. Use [method read_buffer_from_stdin] to read the unprocessed data.
 [b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
 [b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
-func ReadStringFromStdin(buffer_size int) string { //gd:OS.read_string_from_stdin
+func ReadStringFromStdin() string { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
-	return string(Advanced().ReadStringFromStdin(int64(buffer_size)).String())
+	return string(Advanced().ReadStringFromStdin().String())
+}
+
+/*
+[b]Note:[/b] Compatibility method added from godot 4.4.
+Reads a user input as a UTF-8 encoded string from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+*/
+func ReadStringFromStdin2(buffer_size int) string { //gd:OS.read_string_from_stdin2
+	once.Do(singleton)
+	return string(Advanced().ReadStringFromStdin2(int64(buffer_size)).String())
 }
 
 /*
@@ -299,8 +312,8 @@ var output = []
 var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
+var output = new Godot.Collections.Array();
+int exitCode = OS.Execute("ls", new string[] {"-l", "/tmp"}, output);
 [/csharp]
 [/codeblocks]
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
@@ -310,8 +323,8 @@ var output = []
 OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
+var output = new Godot.Collections.Array();
+OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
@@ -339,8 +352,8 @@ var output = []
 var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
+var output = new Godot.Collections.Array();
+int exitCode = OS.Execute("ls", new string[] {"-l", "/tmp"}, output);
 [/csharp]
 [/codeblocks]
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
@@ -350,8 +363,8 @@ var output = []
 OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
+var output = new Godot.Collections.Array();
+OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
@@ -368,7 +381,6 @@ func ExecuteOptions(path string, arguments []string, output []any, read_stderr b
 
 /*
 Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
-If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
 If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
 - [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
 - [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
@@ -381,25 +393,7 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 func ExecuteWithPipe(path string, arguments []string) Pipe { //gd:OS.execute_with_pipe
 	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), true)))
-}
-
-/*
-Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
-If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
-If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
-- [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
-- [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
-- [code]"pid"[/code] - Process ID as an [int], which you can use to monitor the process (and potentially terminate it with [method kill]).
-[b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
-[b]Note:[/b] To execute a Windows command interpreter built-in command, specify [code]cmd.exe[/code] in [param path], [code]/c[/code] as the first argument, and the desired command as the second argument.
-[b]Note:[/b] To execute a PowerShell built-in command, specify [code]powershell.exe[/code] in [param path], [code]-Command[/code] as the first argument, and the desired command as the second argument.
-[b]Note:[/b] To execute a Unix shell built-in command, specify shell executable name in [param path], [code]-c[/code] as the first argument, and the desired command as the second argument.
-[b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
-*/
-func ExecuteWithPipeOptions(path string, arguments []string, blocking bool) Pipe { //gd:OS.execute_with_pipe
-	once.Do(singleton)
-	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...), blocking)))
+	return Pipe(gd.DictionaryAs[Pipe](Advanced().ExecuteWithPipe(String.New(path), Packed.MakeStrings(arguments...))))
 }
 
 /*
@@ -412,7 +406,7 @@ If the process is successfully created, this method returns its process ID, whic
 var pid = OS.create_process(OS.get_executable_path(), [])
 [/gdscript]
 [csharp]
-var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
+var pid = OS.CreateProcess(OS.GetExecutablePath(), new string[] {});
 [/csharp]
 [/codeblocks]
 See [method execute] if you wish to run an external command and retrieve the results.
@@ -434,7 +428,7 @@ If the process is successfully created, this method returns its process ID, whic
 var pid = OS.create_process(OS.get_executable_path(), [])
 [/gdscript]
 [csharp]
-var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
+var pid = OS.CreateProcess(OS.GetExecutablePath(), new string[] {});
 [/csharp]
 [/codeblocks]
 See [method execute] if you wish to run an external command and retrieve the results.
@@ -984,8 +978,7 @@ func GetTempDir() string { //gd:OS.get_temp_dir
 
 /*
 Returns a string that is unique to the device.
-[b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
-[b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
+[b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, modifies their hardware or user agent. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
 */
 func GetUniqueId() string { //gd:OS.get_unique_id
 	once.Do(singleton)
@@ -1454,16 +1447,34 @@ Reads a user input as a UTF-8 encoded string from the standard input. This opera
 - If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
 - If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
 - If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
-[b]Note:[/b] This method automatically replaces [code]\r\n[/code] line breaks with [code]\n[/code] and removes them from the end of the string. Use [method read_buffer_from_stdin] to read the unprocessed data.
 [b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
 [b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
 */
 //go:nosplit
-func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin
+func (self class) ReadStringFromStdin() String.Readable { //gd:OS.read_string_from_stdin
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+/*
+[b]Note:[/b] Compatibility method added from godot 4.4.
+Reads a user input as a UTF-8 encoded string from the standard input. This operation can be [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread.
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+[b]Note:[/b] This method is implemented on Linux, macOS, and Windows.
+[b]Note:[/b] On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the [code]windows_subsystem=console[/code] flag.
+*/
+//go:nosplit
+func (self class) ReadStringFromStdin2(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin2
 	var frame = callframe.New()
 	callframe.Arg(frame, buffer_size)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_read_string_from_stdin2, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -1540,8 +1551,8 @@ var output = []
 var exit_code = OS.execute("ls", ["-l", "/tmp"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-int exitCode = OS.Execute("ls", ["-l", "/tmp"], output);
+var output = new Godot.Collections.Array();
+int exitCode = OS.Execute("ls", new string[] {"-l", "/tmp"}, output);
 [/csharp]
 [/codeblocks]
 If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
@@ -1551,8 +1562,8 @@ var output = []
 OS.execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output)
 [/gdscript]
 [csharp]
-Godot.Collections.Array output = [];
-OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
+var output = new Godot.Collections.Array();
+OS.Execute("CMD.exe", new string[] {"/C", "cd %TEMP% && dir"}, output);
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] This method is implemented on Android, Linux, macOS, and Windows.
@@ -1579,7 +1590,6 @@ func (self class) Execute(path String.Readable, arguments Packed.Strings, output
 
 /*
 Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in [param path] must exist and be an executable file or macOS [code].app[/code] bundle. The path is resolved based on the current platform. The [param arguments] are used in the given order and separated by a space.
-If [param blocking] is [code]false[/code], created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [method FileAccess.get_error] to check if the last read/write operation was successful.
 If the process cannot be created, this method returns an empty [Dictionary]. Otherwise, this method returns a [Dictionary] with the following keys:
 - [code]"stdio"[/code] - [FileAccess] to access the process stdin and stdout pipes (read/write).
 - [code]"stderr"[/code] - [FileAccess] to access the process stderr pipe (read only).
@@ -1591,11 +1601,10 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 [b]Note:[/b] On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 //go:nosplit
-func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
+func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings) Dictionary.Any { //gd:OS.execute_with_pipe
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(arguments)))
-	callframe.Arg(frame, blocking)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OS.Bind_execute_with_pipe, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret.Get())))
@@ -1613,7 +1622,7 @@ If the process is successfully created, this method returns its process ID, whic
 var pid = OS.create_process(OS.get_executable_path(), [])
 [/gdscript]
 [csharp]
-var pid = OS.CreateProcess(OS.GetExecutablePath(), []);
+var pid = OS.CreateProcess(OS.GetExecutablePath(), new string[] {});
 [/csharp]
 [/codeblocks]
 See [method execute] if you wish to run an external command and retrieve the results.
@@ -2335,8 +2344,7 @@ func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
 
 /*
 Returns a string that is unique to the device.
-[b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, or modifies their hardware. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
-[b]Note:[/b] On Web, returns an empty string and generates an error, as this method cannot be implemented for security reasons.
+[b]Note:[/b] This string may change without notice if the user reinstalls their operating system, upgrades it, modifies their hardware or user agent. This means it should generally not be used to encrypt persistent data, as the data saved before an unexpected ID change would become inaccessible. The returned string may also be falsified using external programs, so do not rely on the string returned by this method for security purposes.
 */
 //go:nosplit
 func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
@@ -2631,11 +2639,11 @@ type StdHandleType int //gd:OS.StdHandleType
 const (
 	/*Standard I/O device is invalid. No data can be received from or sent to these standard I/O devices.*/
 	StdHandleInvalid StdHandleType = 0
-	/*Standard I/O device is a console. This typically occurs when Godot is run from a terminal with no redirection. This is also used for all standard I/O devices when running Godot from the editor, at least on desktop platforms.*/
+	/*Standard I/O device is a console. This typically occurs when Blazium is run from a terminal with no redirection. This is also used for all standard I/O devices when running Blazium from the editor, at least on desktop platforms.*/
 	StdHandleConsole StdHandleType = 1
-	/*Standard I/O device is a regular file. This typically occurs with redirection from a terminal, e.g. [code]godot > stdout.txt[/code], [code]godot < stdin.txt[/code] or [code]godot > stdout_stderr.txt 2>&1[/code].*/
+	/*Standard I/O device is a regular file. This typically occurs with redirection from a terminal, e.g. [code]blazium > stdout.txt[/code], [code]blazium < stdin.txt[/code] or [code]godot > stdout_stderr.txt 2>&1[/code].*/
 	StdHandleFile StdHandleType = 2
-	/*Standard I/O device is a FIFO/pipe. This typically occurs with pipe usage from a terminal, e.g. [code]echo "Hello" | godot[/code].*/
+	/*Standard I/O device is a FIFO/pipe. This typically occurs with pipe usage from a terminal, e.g. [code]echo "Hello" | blazium[/code].*/
 	StdHandlePipe StdHandleType = 3
 	/*Standard I/O device type is unknown.*/
 	StdHandleUnknown StdHandleType = 4

@@ -151,7 +151,6 @@ func _ready():
 	$Viewport.get_texture().get_image().save_png("user://Screenshot.png")
 
 [/codeblock]
-[b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
 func (self Instance) GetTexture() ViewportTexture.Instance { //gd:Viewport.get_texture
 	return ViewportTexture.Instance(Advanced(self).GetTexture())
@@ -1109,7 +1108,6 @@ func _ready():
     await RenderingServer.frame_post_draw
     $Viewport.get_texture().get_image().save_png("user://Screenshot.png")
 [/codeblock]
-[b]Note:[/b] When [member use_hdr_2d] is [code]true[/code] the returned texture will be an HDR image encoded in linear space.
 */
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
@@ -2150,20 +2148,8 @@ const (
 	Scaling3dModeFsr Scaling3DMode = 1
 	/*Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [member Viewport.scaling_3d_scale]. Values less than [code]1.0[/code] will be result in the viewport being upscaled using FSR2. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use FSR2 at native resolution as a TAA solution.*/
 	Scaling3dModeFsr2 Scaling3DMode = 2
-	/*Use the [url=https://developer.apple.com/documentation/metalfx/mtlfxspatialscaler#overview]MetalFX spatial upscaler[/url] for the viewport's 3D buffer.
-	  The amount of scaling can be set using [member scaling_3d_scale].
-	  Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] disables scaling.
-	  More information: [url=https://developer.apple.com/documentation/metalfx]MetalFX[/url].
-	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
-	Scaling3dModeMetalfxSpatial Scaling3DMode = 3
-	/*Use the [url=https://developer.apple.com/documentation/metalfx/mtlfxtemporalscaler#overview]MetalFX temporal upscaler[/url] for the viewport's 3D buffer.
-	  The amount of scaling can be set using [member scaling_3d_scale]. To determine the minimum input scale, use the [method RenderingDevice.limit_get] method with [constant RenderingDevice.LIMIT_METALFX_TEMPORAL_SCALER_MIN_SCALE].
-	  Values less than [code]1.0[/code] will be result in the viewport being upscaled using MetalFX. Values greater than [code]1.0[/code] are not supported and bilinear downsampling will be used instead. A value of [code]1.0[/code] will use MetalFX at native resolution as a TAA solution.
-	  More information: [url=https://developer.apple.com/documentation/metalfx]MetalFX[/url].
-	  [b]Note:[/b] Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.*/
-	Scaling3dModeMetalfxTemporal Scaling3DMode = 4
 	/*Represents the size of the [enum Scaling3DMode] enum.*/
-	Scaling3dModeMax Scaling3DMode = 5
+	Scaling3dModeMax Scaling3DMode = 3
 )
 
 type MSAA int //gd:Viewport.MSAA
@@ -2246,8 +2232,7 @@ const (
 	DebugDrawLighting DebugDraw = 2
 	/*Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw means you are wasting performance on drawing pixels that are being hidden behind others.*/
 	DebugDrawOverdraw DebugDraw = 3
-	/*Objects are displayed as wireframe models.
-	  [b]Note:[/b] [method RenderingServer.set_debug_generate_wireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.*/
+	/*Objects are displayed as wireframe models.*/
 	DebugDrawWireframe DebugDraw = 4
 	/*Objects are displayed without lighting information and their textures replaced by normal mapping.*/
 	DebugDrawNormalBuffer DebugDraw = 5

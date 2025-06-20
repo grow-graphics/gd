@@ -1323,6 +1323,18 @@ func (self BitMap) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&
 
 func (self BitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type BlaziumClient pointers.Trio[BlaziumClient]
+
+func (self BlaziumClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self BlaziumClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self BlaziumClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self BlaziumClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type Bone2D pointers.Trio[Bone2D]
 
 func (self Bone2D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -1562,6 +1574,16 @@ func (self CSGTorus3D) IsAlive(raw [3]uint64) bool {
 func (self CSGTorus3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CSGTorus3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type CSV pointers.Trio[CSV]
+
+func (self CSV) Free()                      { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self CSV) IsAlive(raw [3]uint64) bool { return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw) }
+
+//go:nosplit
+func (self CSV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self CSV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type CallbackTweener pointers.Trio[CallbackTweener]
 
@@ -1974,6 +1996,18 @@ func (self CollisionShape3D) IsAlive(raw [3]uint64) bool {
 func (self CollisionShape3D) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self CollisionShape3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ColorButton pointers.Trio[ColorButton]
+
+func (self ColorButton) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ColorButton) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ColorButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ColorButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ColorPalette pointers.Trio[ColorPalette]
 
@@ -2437,6 +2471,48 @@ func (self DirectionalLight3D) AsObject() [1]Object { return (*(*[1]Object)(unsa
 
 func (self DirectionalLight3D) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type DiscordEmbeddedAppClient pointers.Trio[DiscordEmbeddedAppClient]
+
+func (self DiscordEmbeddedAppClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self DiscordEmbeddedAppClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self DiscordEmbeddedAppClient) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self DiscordEmbeddedAppClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type DiscordEmbeddedAppResponse pointers.Trio[DiscordEmbeddedAppResponse]
+
+func (self DiscordEmbeddedAppResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self DiscordEmbeddedAppResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self DiscordEmbeddedAppResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self DiscordEmbeddedAppResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type DiscordEmbeddedAppResult pointers.Trio[DiscordEmbeddedAppResult]
+
+func (self DiscordEmbeddedAppResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self DiscordEmbeddedAppResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self DiscordEmbeddedAppResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self DiscordEmbeddedAppResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type DisplayServer pointers.Trio[DisplayServer]
 
 func (self DisplayServer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -2448,6 +2524,16 @@ func (self DisplayServer) IsAlive(raw [3]uint64) bool {
 func (self DisplayServer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self DisplayServer) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ENV pointers.Trio[ENV]
+
+func (self ENV) Free()                      { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ENV) IsAlive(raw [3]uint64) bool { return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw) }
+
+//go:nosplit
+func (self ENV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ENV) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ENetConnection pointers.Trio[ENetConnection]
 
@@ -2751,6 +2837,18 @@ func (self EditorFileSystemImportFormatSupportQuery) Virtual(name string) reflec
 	return reflect.Value{}
 }
 
+type EditorHScrollBox pointers.Trio[EditorHScrollBox]
+
+func (self EditorHScrollBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self EditorHScrollBox) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self EditorHScrollBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self EditorHScrollBox) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type EditorImportPlugin pointers.Trio[EditorImportPlugin]
 
 func (self EditorImportPlugin) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -3049,6 +3147,18 @@ func (self EditorScriptPicker) AsObject() [1]Object { return (*(*[1]Object)(unsa
 
 func (self EditorScriptPicker) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type EditorScrollBox pointers.Trio[EditorScrollBox]
+
+func (self EditorScrollBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self EditorScrollBox) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self EditorScrollBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self EditorScrollBox) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type EditorSelection pointers.Trio[EditorSelection]
 
 func (self EditorSelection) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -3148,6 +3258,18 @@ func (self EditorVCSInterface) IsAlive(raw [3]uint64) bool {
 func (self EditorVCSInterface) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self EditorVCSInterface) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type EditorVScrollBox pointers.Trio[EditorVScrollBox]
+
+func (self EditorVScrollBox) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self EditorVScrollBox) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self EditorVScrollBox) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self EditorVScrollBox) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type EncodedObjectAsID pointers.Trio[EncodedObjectAsID]
 
@@ -3340,6 +3462,30 @@ func (self FogVolume) IsAlive(raw [3]uint64) bool {
 func (self FogVolume) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self FogVolume) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type FoldableContainer pointers.Trio[FoldableContainer]
+
+func (self FoldableContainer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self FoldableContainer) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self FoldableContainer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self FoldableContainer) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type FoldableGroup pointers.Trio[FoldableGroup]
+
+func (self FoldableGroup) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self FoldableGroup) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self FoldableGroup) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self FoldableGroup) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Font pointers.Trio[Font]
 
@@ -3826,6 +3972,18 @@ func (self GPUParticlesCollisionSphere3D) AsObject() [1]Object {
 }
 
 func (self GPUParticlesCollisionSphere3D) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type GameServerInfo pointers.Trio[GameServerInfo]
+
+func (self GameServerInfo) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self GameServerInfo) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self GameServerInfo) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self GameServerInfo) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Generic6DOFJoint3D pointers.Trio[Generic6DOFJoint3D]
 
@@ -4579,6 +4737,16 @@ func (self JSONRPC) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(
 
 func (self JSONRPC) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type JWT pointers.Trio[JWT]
+
+func (self JWT) Free()                      { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self JWT) IsAlive(raw [3]uint64) bool { return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw) }
+
+//go:nosplit
+func (self JWT) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self JWT) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type JavaClass pointers.Trio[JavaClass]
 
 func (self JavaClass) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4855,6 +5023,234 @@ func (self LinkButton) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Point
 
 func (self LinkButton) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type LobbyClient pointers.Trio[LobbyClient]
+
+func (self LobbyClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LobbyClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LobbyClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LobbyClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LobbyInfo pointers.Trio[LobbyInfo]
+
+func (self LobbyInfo) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LobbyInfo) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LobbyInfo) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LobbyInfo) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LobbyPeer pointers.Trio[LobbyPeer]
+
+func (self LobbyPeer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LobbyPeer) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LobbyPeer) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LobbyPeer) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LobbyResponse pointers.Trio[LobbyResponse]
+
+func (self LobbyResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LobbyResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LobbyResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LobbyResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LobbyResult pointers.Trio[LobbyResult]
+
+func (self LobbyResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LobbyResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LobbyResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LobbyResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginAccessTokenResponse pointers.Trio[LoginAccessTokenResponse]
+
+func (self LoginAccessTokenResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginAccessTokenResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginAccessTokenResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginAccessTokenResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginAccessTokenResult pointers.Trio[LoginAccessTokenResult]
+
+func (self LoginAccessTokenResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginAccessTokenResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginAccessTokenResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginAccessTokenResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginClient pointers.Trio[LoginClient]
+
+func (self LoginClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginConnectResponse pointers.Trio[LoginConnectResponse]
+
+func (self LoginConnectResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginConnectResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginConnectResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginConnectResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginConnectResult pointers.Trio[LoginConnectResult]
+
+func (self LoginConnectResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginConnectResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginConnectResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginConnectResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginIDResponse pointers.Trio[LoginIDResponse]
+
+func (self LoginIDResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginIDResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginIDResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginIDResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginIDResult pointers.Trio[LoginIDResult]
+
+func (self LoginIDResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginIDResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginIDResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginIDResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginRefreshTokenResponse pointers.Trio[LoginRefreshTokenResponse]
+
+func (self LoginRefreshTokenResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginRefreshTokenResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginRefreshTokenResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginRefreshTokenResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginRefreshTokenResult pointers.Trio[LoginRefreshTokenResult]
+
+func (self LoginRefreshTokenResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginRefreshTokenResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginRefreshTokenResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginRefreshTokenResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginURLResponse pointers.Trio[LoginURLResponse]
+
+func (self LoginURLResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginURLResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginURLResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginURLResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginURLResult pointers.Trio[LoginURLResult]
+
+func (self LoginURLResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginURLResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginURLResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self LoginURLResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginVerifyTokenResponse pointers.Trio[LoginVerifyTokenResponse]
+
+func (self LoginVerifyTokenResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginVerifyTokenResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginVerifyTokenResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginVerifyTokenResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type LoginVerifyTokenResult pointers.Trio[LoginVerifyTokenResult]
+
+func (self LoginVerifyTokenResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self LoginVerifyTokenResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self LoginVerifyTokenResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self LoginVerifyTokenResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type LookAtModifier3D pointers.Trio[LookAtModifier3D]
 
 func (self LookAtModifier3D) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -4926,6 +5322,70 @@ func (self Marshalls) IsAlive(raw [3]uint64) bool {
 func (self Marshalls) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Marshalls) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type MasterServerClient pointers.Trio[MasterServerClient]
+
+func (self MasterServerClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self MasterServerClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self MasterServerClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self MasterServerClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type MasterServerListResponse pointers.Trio[MasterServerListResponse]
+
+func (self MasterServerListResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self MasterServerListResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self MasterServerListResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self MasterServerListResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type MasterServerListResult pointers.Trio[MasterServerListResult]
+
+func (self MasterServerListResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self MasterServerListResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self MasterServerListResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self MasterServerListResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type MasterServerResponse pointers.Trio[MasterServerResponse]
+
+func (self MasterServerResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self MasterServerResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self MasterServerResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self MasterServerResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type MasterServerResult pointers.Trio[MasterServerResult]
+
+func (self MasterServerResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self MasterServerResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self MasterServerResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self MasterServerResult) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Material pointers.Trio[Material]
 
@@ -6070,6 +6530,42 @@ func (self PCKPacker) IsAlive(raw [3]uint64) bool {
 func (self PCKPacker) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self PCKPacker) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type POGRClient pointers.Trio[POGRClient]
+
+func (self POGRClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self POGRClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self POGRClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self POGRClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type POGRResponse pointers.Trio[POGRResponse]
+
+func (self POGRResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self POGRResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self POGRResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self POGRResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type POGRResult pointers.Trio[POGRResult]
+
+func (self POGRResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self POGRResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self POGRResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self POGRResult) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type PackedDataContainer pointers.Trio[PackedDataContainer]
 
@@ -7669,6 +8165,18 @@ func (self ResourceImporterBitMap) AsObject() [1]Object {
 
 func (self ResourceImporterBitMap) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type ResourceImporterCSV pointers.Trio[ResourceImporterCSV]
+
+func (self ResourceImporterCSV) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ResourceImporterCSV) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ResourceImporterCSV) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ResourceImporterCSV) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type ResourceImporterCSVTranslation pointers.Trio[ResourceImporterCSVTranslation]
 
 func (self ResourceImporterCSVTranslation) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -7973,6 +8481,78 @@ func (self RootMotionView) AsObject() [1]Object { return (*(*[1]Object)(unsafe.P
 
 func (self RootMotionView) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type SQLite pointers.Trio[SQLite]
+
+func (self SQLite) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLite) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLite) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLite) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SQLiteAccess pointers.Trio[SQLiteAccess]
+
+func (self SQLiteAccess) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLiteAccess) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLiteAccess) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLiteAccess) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SQLiteColumnSchema pointers.Trio[SQLiteColumnSchema]
+
+func (self SQLiteColumnSchema) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLiteColumnSchema) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLiteColumnSchema) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLiteColumnSchema) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SQLiteDatabase pointers.Trio[SQLiteDatabase]
+
+func (self SQLiteDatabase) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLiteDatabase) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLiteDatabase) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLiteDatabase) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SQLiteQuery pointers.Trio[SQLiteQuery]
+
+func (self SQLiteQuery) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLiteQuery) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLiteQuery) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLiteQuery) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SQLiteQueryResult pointers.Trio[SQLiteQueryResult]
+
+func (self SQLiteQueryResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SQLiteQueryResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SQLiteQueryResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self SQLiteQueryResult) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type SceneMultiplayer pointers.Trio[SceneMultiplayer]
 
 func (self SceneMultiplayer) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -8120,6 +8700,42 @@ func (self ScriptLanguageExtension) AsObject() [1]Object {
 }
 
 func (self ScriptLanguageExtension) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ScriptedLobbyClient pointers.Trio[ScriptedLobbyClient]
+
+func (self ScriptedLobbyClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ScriptedLobbyClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ScriptedLobbyClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ScriptedLobbyClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ScriptedLobbyResponse pointers.Trio[ScriptedLobbyResponse]
+
+func (self ScriptedLobbyResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ScriptedLobbyResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ScriptedLobbyResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ScriptedLobbyResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ScriptedLobbyResult pointers.Trio[ScriptedLobbyResult]
+
+func (self ScriptedLobbyResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ScriptedLobbyResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ScriptedLobbyResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ScriptedLobbyResult) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ScrollBar pointers.Trio[ScrollBar]
 
@@ -8324,6 +8940,20 @@ func (self Shortcut) IsAlive(raw [3]uint64) bool {
 func (self Shortcut) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self Shortcut) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type SixWayLightingMaterial pointers.Trio[SixWayLightingMaterial]
+
+func (self SixWayLightingMaterial) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self SixWayLightingMaterial) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self SixWayLightingMaterial) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self SixWayLightingMaterial) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Skeleton2D pointers.Trio[Skeleton2D]
 
@@ -8844,6 +9474,18 @@ func (self StatusIndicator) IsAlive(raw [3]uint64) bool {
 func (self StatusIndicator) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self StatusIndicator) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type Steam pointers.Trio[Steam]
+
+func (self Steam) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self Steam) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self Steam) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self Steam) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type StreamPeer pointers.Trio[StreamPeer]
 
@@ -9397,6 +10039,18 @@ func (self ThemeDB) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(
 
 func (self ThemeDB) Virtual(name string) reflect.Value { return reflect.Value{} }
 
+type ThirdPartyClient pointers.Trio[ThirdPartyClient]
+
+func (self ThirdPartyClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ThirdPartyClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ThirdPartyClient) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ThirdPartyClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
 type Thread pointers.Trio[Thread]
 
 func (self Thread) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
@@ -9860,6 +10514,30 @@ func (self VideoStreamTheora) IsAlive(raw [3]uint64) bool {
 func (self VideoStreamTheora) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self VideoStreamTheora) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ViewLobbyResponse pointers.Trio[ViewLobbyResponse]
+
+func (self ViewLobbyResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ViewLobbyResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ViewLobbyResponse) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ViewLobbyResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type ViewLobbyResult pointers.Trio[ViewLobbyResult]
+
+func (self ViewLobbyResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self ViewLobbyResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self ViewLobbyResult) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
+
+func (self ViewLobbyResult) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type Viewport pointers.Trio[Viewport]
 
@@ -12036,6 +12714,48 @@ func (self XRVRS) IsAlive(raw [3]uint64) bool {
 func (self XRVRS) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }
 
 func (self XRVRS) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type YoutubePlayablesClient pointers.Trio[YoutubePlayablesClient]
+
+func (self YoutubePlayablesClient) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self YoutubePlayablesClient) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self YoutubePlayablesClient) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self YoutubePlayablesClient) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type YoutubePlayablesResponse pointers.Trio[YoutubePlayablesResponse]
+
+func (self YoutubePlayablesResponse) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self YoutubePlayablesResponse) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self YoutubePlayablesResponse) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self YoutubePlayablesResponse) Virtual(name string) reflect.Value { return reflect.Value{} }
+
+type YoutubePlayablesResult pointers.Trio[YoutubePlayablesResult]
+
+func (self YoutubePlayablesResult) Free() { (*(*Object)(unsafe.Pointer(&self))).Free() }
+func (self YoutubePlayablesResult) IsAlive(raw [3]uint64) bool {
+	return (*(*Object)(unsafe.Pointer(&self))).IsAlive(raw)
+}
+
+//go:nosplit
+func (self YoutubePlayablesResult) AsObject() [1]Object {
+	return (*(*[1]Object)(unsafe.Pointer(&self)))
+}
+
+func (self YoutubePlayablesResult) Virtual(name string) reflect.Value { return reflect.Value{} }
 
 type ZIPPacker pointers.Trio[ZIPPacker]
 

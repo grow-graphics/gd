@@ -118,22 +118,6 @@ func (self Instance) SetQuality(value BakeQuality) {
 	class(self).SetBakeQuality(value)
 }
 
-func (self Instance) Supersampling() bool {
-	return bool(class(self).IsSupersamplingEnabled())
-}
-
-func (self Instance) SetSupersampling(value bool) {
-	class(self).SetSupersamplingEnabled(value)
-}
-
-func (self Instance) SupersamplingFactor() Float.X {
-	return Float.X(Float.X(class(self).GetSupersamplingFactor()))
-}
-
-func (self Instance) SetSupersamplingFactor(value Float.X) {
-	class(self).SetSupersamplingFactor(float64(value))
-}
-
 func (self Instance) Bounces() int {
 	return int(int(class(self).GetBounces()))
 }
@@ -156,14 +140,6 @@ func (self Instance) Directional() bool {
 
 func (self Instance) SetDirectional(value bool) {
 	class(self).SetDirectional(value)
-}
-
-func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode {
-	return LightmapGIData.ShadowmaskMode(class(self).GetShadowmaskMode())
-}
-
-func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) {
-	class(self).SetShadowmaskMode(value)
 }
 
 func (self Instance) UseTextureForBounces() bool {
@@ -515,44 +491,6 @@ func (self class) GetMaxTextureSize() int64 { //gd:LightmapGI.get_max_texture_si
 }
 
 //go:nosplit
-func (self class) SetSupersamplingEnabled(enable bool) { //gd:LightmapGI.set_supersampling_enabled
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_supersampling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) IsSupersamplingEnabled() bool { //gd:LightmapGI.is_supersampling_enabled
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_supersampling_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetSupersamplingFactor(factor float64) { //gd:LightmapGI.set_supersampling_factor
-	var frame = callframe.New()
-	callframe.Arg(frame, factor)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_supersampling_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetSupersamplingFactor() float64 { //gd:LightmapGI.get_supersampling_factor
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_supersampling_factor, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
 func (self class) SetUseDenoiser(use_denoiser bool) { //gd:LightmapGI.set_use_denoiser
 	var frame = callframe.New()
 	callframe.Arg(frame, use_denoiser)
@@ -642,25 +580,6 @@ func (self class) IsDirectional() bool { //gd:LightmapGI.is_directional
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_is_directional, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetShadowmaskMode(mode LightmapGIData.ShadowmaskMode) { //gd:LightmapGI.set_shadowmask_mode
-	var frame = callframe.New()
-	callframe.Arg(frame, mode)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_set_shadowmask_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetShadowmaskMode() LightmapGIData.ShadowmaskMode { //gd:LightmapGI.get_shadowmask_mode
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[LightmapGIData.ShadowmaskMode](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGI.Bind_get_shadowmask_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

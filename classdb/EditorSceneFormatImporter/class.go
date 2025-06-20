@@ -84,6 +84,7 @@ type Any interface {
 	AsEditorSceneFormatImporter() Instance
 }
 type Interface interface {
+	GetImportFlags() int
 	//Return supported file extensions for this scene importer.
 	GetExtensions() []string
 	//Perform the bulk of the scene import logic here, for example using [GLTFDocument] or [FBXDocument].
@@ -101,6 +102,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
+func (self implementation) GetImportFlags() (_ int)     { return }
 func (self implementation) GetExtensions() (_ []string) { return }
 func (self implementation) ImportScene(path string, flags Flags, options map[any]any) (_ Object.Instance) {
 	return
@@ -108,6 +110,13 @@ func (self implementation) ImportScene(path string, flags Flags, options map[any
 func (self implementation) GetImportOptions(path string) { return }
 func (self implementation) GetOptionVisibility(path string, for_animation bool, option string) (_ any) {
 	return
+}
+func (Instance) _get_import_flags(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
 }
 
 /*
@@ -221,6 +230,14 @@ func New() Instance {
 	casted := Instance{*(*gdclass.EditorSceneFormatImporter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	return casted
+}
+
+func (class) _get_import_flags(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
 }
 
 /*
@@ -343,6 +360,8 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_import_flags":
+		return reflect.ValueOf(self._get_import_flags)
 	case "_get_extensions":
 		return reflect.ValueOf(self._get_extensions)
 	case "_import_scene":
@@ -358,6 +377,8 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_import_flags":
+		return reflect.ValueOf(self._get_import_flags)
 	case "_get_extensions":
 		return reflect.ValueOf(self._get_extensions)
 	case "_import_scene":

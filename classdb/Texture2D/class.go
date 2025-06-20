@@ -296,7 +296,7 @@ func (self Expanded) DrawRectRegion(canvas_item RID.CanvasItem, rect Rect2.Posit
 /*
 Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] is created each time). [Image]s can be accessed and manipulated directly.
 [b]Note:[/b] This will return [code]null[/code] if this [Texture2D] is invalid.
-[b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling [method get_image] every frame, especially on large textures.
+[b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
 func (self Instance) GetImage() Image.Instance { //gd:Texture2D.get_image
 	return Image.Instance(Advanced(self).GetImage())
@@ -526,7 +526,7 @@ func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, s
 /*
 Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] is created each time). [Image]s can be accessed and manipulated directly.
 [b]Note:[/b] This will return [code]null[/code] if this [Texture2D] is invalid.
-[b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused. Avoid calling [method get_image] every frame, especially on large textures.
+[b]Note:[/b] This will fetch the texture data from the GPU, which might cause performance problems when overused.
 */
 //go:nosplit
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image

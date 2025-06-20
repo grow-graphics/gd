@@ -118,19 +118,11 @@ func CompareLocales(locale_a string, locale_b string) int { //gd:TranslationServ
 }
 
 /*
-Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
+Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
 */
-func StandardizeLocale(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
+func StandardizeLocale(locale string) string { //gd:TranslationServer.standardize_locale
 	once.Do(singleton)
-	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
-}
-
-/*
-Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
-*/
-func StandardizeLocaleOptions(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
-	once.Do(singleton)
-	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
+	return string(Advanced().StandardizeLocale(String.New(locale)).String())
 }
 
 /*
@@ -391,13 +383,12 @@ func (self class) CompareLocales(locale_a String.Readable, locale_b String.Reada
 }
 
 /*
-Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]). If [param add_defaults] is [code]true[/code], the locale may have a default script or country added.
+Returns a [param locale] string standardized to match known locales (e.g. [code]en-US[/code] would be matched to [code]en_US[/code]).
 */
 //go:nosplit
-func (self class) StandardizeLocale(locale String.Readable, add_defaults bool) String.Readable { //gd:TranslationServer.standardize_locale
+func (self class) StandardizeLocale(locale String.Readable) String.Readable { //gd:TranslationServer.standardize_locale
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(locale)))
-	callframe.Arg(frame, add_defaults)
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TranslationServer.Bind_standardize_locale, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))

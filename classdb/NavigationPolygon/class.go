@@ -80,7 +80,7 @@ $NavigationRegion2D.navigation_polygon = new_navigation_mesh
 [/gdscript]
 [csharp]
 var newNavigationMesh = new NavigationPolygon();
-Vector2[] boundingOutline = [new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0)];
+var boundingOutline = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
 newNavigationMesh.AddOutline(boundingOutline);
 NavigationServer2D.BakeFromSourceGeometryData(newNavigationMesh, new NavigationMeshSourceGeometryData2D());
 GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
@@ -98,9 +98,9 @@ $NavigationRegion2D.navigation_polygon = new_navigation_mesh
 [/gdscript]
 [csharp]
 var newNavigationMesh = new NavigationPolygon();
-Vector2[] newVertices = [new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0)];
+var newVertices = new Vector2[] { new Vector2(0, 0), new Vector2(0, 50), new Vector2(50, 50), new Vector2(50, 0) };
 newNavigationMesh.Vertices = newVertices;
-int[] newPolygonIndices = [0, 1, 2, 3];
+var newPolygonIndices = new int[] { 0, 1, 2, 3 };
 newNavigationMesh.AddPolygon(newPolygonIndices);
 GetNode<NavigationRegion2D>("NavigationRegion2D").NavigationPolygon = newNavigationMesh;
 [/csharp]

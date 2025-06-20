@@ -201,6 +201,23 @@ func SpaceIsActive(space RID.Space3D) bool { //gd:PhysicsServer3D.space_is_activ
 }
 
 /*
+Manually advance [param space] forward in [param delta]. This technique can be used for speeding up physics simulations, as seen in advanced rollback-style networking, or for predicting outcomes in scenarios such as hitting a ball in a billiards game.
+[b]Note:[/b] If call this method with an active [param space] from [code]_physics_process()[/code], you should call [method space_flush_queries] afterwards. Otherwise, call [method space_flush_queries] beforehand.
+*/
+func SpaceStep(space RID.Any, delta Float.X) { //gd:PhysicsServer3D.space_step
+	once.Do(singleton)
+	Advanced().SpaceStep(RID.Any(space), float64(delta))
+}
+
+/*
+Flushes [param space]'s queries. It is necessary to call this method after calling [method space_step] with an active space from [code]_physics_process[/code]. Otherwise, call this method before calling [method space_step].
+*/
+func SpaceFlushQueries(space RID.Any) { //gd:PhysicsServer3D.space_flush_queries
+	once.Do(singleton)
+	Advanced().SpaceFlushQueries(RID.Any(space))
+}
+
+/*
 Sets the value for a space parameter. A list of available parameters is on the [enum SpaceParameter] constants.
 */
 func SpaceSetParam(space RID.Space3D, param SpaceParameter, value Float.X) { //gd:PhysicsServer3D.space_set_param
@@ -1238,6 +1255,22 @@ func JointClear(joint RID.Joint3D) { //gd:PhysicsServer3D.joint_clear
 	once.Do(singleton)
 	Advanced().JointClear(RID.Any(joint))
 }
+
+/*
+Enable or disable the joint.
+*/
+func JointSetEnabled(joint RID.Any, enabled bool) { //gd:PhysicsServer3D.joint_set_enabled
+	once.Do(singleton)
+	Advanced().JointSetEnabled(RID.Any(joint), enabled)
+}
+
+/*
+Gets the joint enabled state.
+*/
+func JointIsEnabled(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_enabled
+	once.Do(singleton)
+	return bool(Advanced().JointIsEnabled(RID.Any(joint)))
+}
 func JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, body_B RID.Body3D, local_B Vector3.XYZ) { //gd:PhysicsServer3D.joint_make_pin
 	once.Do(singleton)
 	Advanced().JointMakePin(RID.Any(joint), RID.Any(body_A), Vector3.XYZ(local_A), RID.Any(body_B), Vector3.XYZ(local_B))
@@ -1471,6 +1504,14 @@ func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer3D.get_pro
 	return int(int(Advanced().GetProcessInfo(process_info)))
 }
 
+/*
+Returns information about the current state of [param space]. See [enum ProcessInfo] for a list of available states.
+*/
+func SpaceGetLastProcessInfo(space RID.Any, process_info ProcessInfo) int { //gd:PhysicsServer3D.space_get_last_process_info
+	once.Do(singleton)
+	return int(int(Advanced().SpaceGetLastProcessInfo(RID.Any(space), process_info)))
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 
@@ -1694,6 +1735,32 @@ func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer3D.space
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
+}
+
+/*
+Manually advance [param space] forward in [param delta]. This technique can be used for speeding up physics simulations, as seen in advanced rollback-style networking, or for predicting outcomes in scenarios such as hitting a ball in a billiards game.
+[b]Note:[/b] If call this method with an active [param space] from [code]_physics_process()[/code], you should call [method space_flush_queries] afterwards. Otherwise, call [method space_flush_queries] beforehand.
+*/
+//go:nosplit
+func (self class) SpaceStep(space RID.Any, delta float64) { //gd:PhysicsServer3D.space_step
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	callframe.Arg(frame, delta)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_step, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Flushes [param space]'s queries. It is necessary to call this method after calling [method space_step] with an active space from [code]_physics_process[/code]. Otherwise, call this method before calling [method space_step].
+*/
+//go:nosplit
+func (self class) SpaceFlushQueries(space RID.Any) { //gd:PhysicsServer3D.space_flush_queries
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_flush_queries, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
 }
 
 /*
@@ -3351,6 +3418,33 @@ func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer3D.joint_clear
 	frame.Free()
 }
 
+/*
+Enable or disable the joint.
+*/
+//go:nosplit
+func (self class) JointSetEnabled(joint RID.Any, enabled bool) { //gd:PhysicsServer3D.joint_set_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, joint)
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_set_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Gets the joint enabled state.
+*/
+//go:nosplit
+func (self class) JointIsEnabled(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, joint)
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_joint_is_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 //go:nosplit
 func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ) { //gd:PhysicsServer3D.joint_make_pin
 	var frame = callframe.New()
@@ -3781,6 +3875,21 @@ func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsS
 	callframe.Arg(frame, process_info)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_get_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns information about the current state of [param space]. See [enum ProcessInfo] for a list of available states.
+*/
+//go:nosplit
+func (self class) SpaceGetLastProcessInfo(space RID.Any, process_info ProcessInfo) int64 { //gd:PhysicsServer3D.space_get_last_process_info
+	var frame = callframe.New()
+	callframe.Arg(frame, space)
+	callframe.Arg(frame, process_info)
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.PhysicsServer3D.Bind_space_get_last_process_info, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

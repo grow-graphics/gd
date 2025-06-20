@@ -87,6 +87,27 @@ type Any interface {
 }
 
 /*
+Sets the old color value.
+*/
+func (self Instance) SetOldColor(color Color.RGBA) { //gd:ColorPicker.set_old_color
+	Advanced(self).SetOldColor(Color.RGBA(color))
+}
+
+/*
+Toggles displaying old color.
+*/
+func (self Instance) SetDisplayOldColor(display bool) { //gd:ColorPicker.set_display_old_color
+	Advanced(self).SetDisplayOldColor(display)
+}
+
+/*
+Returns if the old color is being displayed.
+*/
+func (self Instance) IsDisplayingOldColor() bool { //gd:ColorPicker.is_displaying_old_color
+	return bool(Advanced(self).IsDisplayingOldColor())
+}
+
+/*
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
 [b]Note:[/b] The presets list is only for [i]this[/i] color picker.
 */
@@ -251,6 +272,43 @@ func (self class) GetPickColor() Color.RGBA { //gd:ColorPicker.get_pick_color
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[Color.RGBA](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_get_pick_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the old color value.
+*/
+//go:nosplit
+func (self class) SetOldColor(color Color.RGBA) { //gd:ColorPicker.set_old_color
+	var frame = callframe.New()
+	callframe.Arg(frame, color)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_set_old_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Toggles displaying old color.
+*/
+//go:nosplit
+func (self class) SetDisplayOldColor(display bool) { //gd:ColorPicker.set_display_old_color
+	var frame = callframe.New()
+	callframe.Arg(frame, display)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_set_display_old_color, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns if the old color is being displayed.
+*/
+//go:nosplit
+func (self class) IsDisplayingOldColor() bool { //gd:ColorPicker.is_displaying_old_color
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ColorPicker.Bind_is_displaying_old_color, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

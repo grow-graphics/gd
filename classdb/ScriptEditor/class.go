@@ -180,14 +180,6 @@ func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 	Advanced(self).GotoHelp(String.New(topic))
 }
 
-/*
-Updates the documentation for the given [param script] if the script's documentation is currently open.
-[b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
-*/
-func (self Instance) UpdateDocsFromScript(script Script.Instance) { //gd:ScriptEditor.update_docs_from_script
-	Advanced(self).UpdateDocsFromScript(script)
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.ScriptEditor
@@ -353,19 +345,6 @@ func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 	callframe.Arg(frame, pointers.Get(gd.InternalString(topic)))
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_goto_help, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Updates the documentation for the given [param script] if the script's documentation is currently open.
-[b]Note:[/b] This should be called whenever the script is changed to keep the open documentation state up to date.
-*/
-//go:nosplit
-func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(script[0])[0])
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ScriptEditor.Bind_update_docs_from_script, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance)) {

@@ -131,19 +131,31 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
+func OpenEncrypted(path string, mode_flags ModeFlags, key []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...))))
 }
 
 /*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
 Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
 [b]Note:[/b] The provided key must be 32 bytes long.
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
-func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
+func OpenEncrypted2(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted2
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted2(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+}
+
+/*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+[b]Note:[/b] The provided key must be 32 bytes long.
+Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
+*/
+func OpenEncrypted2Options(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted2
+	self := Instance{}
+	return Instance(Advanced(self).OpenEncrypted2(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
 }
 
 /*
@@ -483,17 +495,15 @@ func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
 /*
 Stores an integer as 8 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 255][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
-func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
-	return bool(Advanced(self).Store8(int64(value)))
+func (self Instance) Store8(value int) { //gd:FileAccess.store_8
+	Advanced(self).Store8(int64(value))
 }
 
 /*
 Stores an integer as 16 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 2^16 - 1][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64] or store a signed integer from the interval [code][-2^15, 2^15 - 1][/code] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
 [codeblocks]
 [gdscript]
@@ -533,130 +543,117 @@ public override void _Ready()
 [/csharp]
 [/codeblocks]
 */
-func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
-	return bool(Advanced(self).Store16(int64(value)))
+func (self Instance) Store16(value int) { //gd:FileAccess.store_16
+	Advanced(self).Store16(int64(value))
 }
 
 /*
 Stores an integer as 32 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 2^32 - 1][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
-func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
-	return bool(Advanced(self).Store32(int64(value)))
+func (self Instance) Store32(value int) { //gd:FileAccess.store_32
+	Advanced(self).Store32(int64(value))
 }
 
 /*
 Stores an integer as 64 bits in the file.
 [b]Note:[/b] The [param value] must lie in the interval [code][-2^63, 2^63 - 1][/code] (i.e. be a valid [int] value).
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) Store64(value int) bool { //gd:FileAccess.store_64
-	return bool(Advanced(self).Store64(int64(value)))
+func (self Instance) Store64(value int) { //gd:FileAccess.store_64
+	Advanced(self).Store64(int64(value))
 }
 
 /*
 Stores a half-precision floating-point number as 16 bits in the file.
 */
-func (self Instance) StoreHalf(value Float.X) bool { //gd:FileAccess.store_half
-	return bool(Advanced(self).StoreHalf(float64(value)))
+func (self Instance) StoreHalf(value Float.X) { //gd:FileAccess.store_half
+	Advanced(self).StoreHalf(float64(value))
 }
 
 /*
 Stores a floating-point number as 32 bits in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreFloat(value Float.X) bool { //gd:FileAccess.store_float
-	return bool(Advanced(self).StoreFloat(float64(value)))
+func (self Instance) StoreFloat(value Float.X) { //gd:FileAccess.store_float
+	Advanced(self).StoreFloat(float64(value))
 }
 
 /*
 Stores a floating-point number as 64 bits in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreDouble(value Float.X) bool { //gd:FileAccess.store_double
-	return bool(Advanced(self).StoreDouble(float64(value)))
+func (self Instance) StoreDouble(value Float.X) { //gd:FileAccess.store_double
+	Advanced(self).StoreDouble(float64(value))
 }
 
 /*
 Stores a floating-point number in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreReal(value Float.X) bool { //gd:FileAccess.store_real
-	return bool(Advanced(self).StoreReal(float64(value)))
+func (self Instance) StoreReal(value Float.X) { //gd:FileAccess.store_real
+	Advanced(self).StoreReal(float64(value))
 }
 
 /*
 Stores the given array of bytes in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buffer
-	return bool(Advanced(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...))))
+func (self Instance) StoreBuffer(buffer []byte) { //gd:FileAccess.store_buffer
+	Advanced(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...)))
 }
 
 /*
 Stores [param line] in the file followed by a newline character ([code]\n[/code]), encoding the text as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
-	return bool(Advanced(self).StoreLine(String.New(line)))
+func (self Instance) StoreLine(line string) { //gd:FileAccess.store_line
+	Advanced(self).StoreLine(String.New(line))
 }
 
 /*
 Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter [param delim] to use other than the default [code]","[/code] (comma). This delimiter must be one-character long.
 Text will be encoded as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_csv_line
-	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(",")))
+func (self Instance) StoreCsvLine(values []string) { //gd:FileAccess.store_csv_line
+	Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(","))
 }
 
 /*
 Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter [param delim] to use other than the default [code]","[/code] (comma). This delimiter must be one-character long.
 Text will be encoded as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
-	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(delim)))
+func (self Expanded) StoreCsvLine(values []string, delim string) { //gd:FileAccess.store_csv_line
+	Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(delim))
 }
 
 /*
 Stores [param string] in the file without a newline character ([code]\n[/code]), encoding the text as UTF-8.
 [b]Note:[/b] This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [method store_pascal_string] instead. For retrieving strings from a text file, you can use [code]get_buffer(length).get_string_from_utf8()[/code] (if you know the length) or [method get_as_text].
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
-	return bool(Advanced(self).StoreString(String.New(s)))
+func (self Instance) StoreString(s string) { //gd:FileAccess.store_string
+	Advanced(self).StoreString(String.New(s))
 }
 
 /*
 Stores any Variant value in the file. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
-	return bool(Advanced(self).StoreVar(variant.New(value), false))
+func (self Instance) StoreVar(value any) { //gd:FileAccess.store_var
+	Advanced(self).StoreVar(variant.New(value), false)
 }
 
 /*
 Stores any Variant value in the file. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
-	return bool(Advanced(self).StoreVar(variant.New(value), full_objects))
+func (self Expanded) StoreVar(value any, full_objects bool) { //gd:FileAccess.store_var
+	Advanced(self).StoreVar(variant.New(value), full_objects)
 }
 
 /*
 Stores the given [String] as a line in the file in Pascal format (i.e. also store the length of the string).
 Text will be encoded as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pascal_string
-	return bool(Advanced(self).StorePascalString(String.New(s)))
+func (self Instance) StorePascalString(s string) { //gd:FileAccess.store_pascal_string
+	Advanced(self).StorePascalString(String.New(s))
 }
 
 /*
@@ -797,14 +794,33 @@ Creates a new [FileAccess] object and opens an encrypted file in write or read m
 Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
 */
 //go:nosplit
-func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
+	var frame = callframe.New()
+	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
+	callframe.Arg(frame, mode_flags)
+	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
+	var r_ret = callframe.Ret[gd.EnginePointer](frame)
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_encrypted, frame.Array(0), r_ret.Addr())
+	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
+	frame.Free()
+	return ret
+}
+
+/*
+[b]Note:[/b] Compatibility method added from Godot 4.4.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+[b]Note:[/b] The provided key must be 32 bytes long.
+Returns [code]null[/code] if opening the file failed. You can use [method get_open_error] to check the error that occurred.
+*/
+//go:nosplit
+func (self class) OpenEncrypted2(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted2
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
 	callframe.Arg(frame, mode_flags)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv))))
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_encrypted, frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.FileAccess.Bind_open_encrypted2, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret.Get())}
 	frame.Free()
 	return ret
@@ -1299,24 +1315,20 @@ func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_v
 /*
 Stores an integer as 8 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 255][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 //go:nosplit
-func (self class) Store8(value int64) bool { //gd:FileAccess.store_8
+func (self class) Store8(value int64) { //gd:FileAccess.store_8
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_8, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores an integer as 16 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 2^16 - 1][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64] or store a signed integer from the interval [code][-2^15, 2^15 - 1][/code] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
 [codeblocks]
 [gdscript]
@@ -1352,203 +1364,166 @@ public override void _Ready()
 [/codeblocks]
 */
 //go:nosplit
-func (self class) Store16(value int64) bool { //gd:FileAccess.store_16
+func (self class) Store16(value int64) { //gd:FileAccess.store_16
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_16, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores an integer as 32 bits in the file.
 [b]Note:[/b] The [param value] should lie in the interval [code][0, 2^32 - 1][/code]. Any other value will overflow and wrap around.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 To store a signed integer, use [method store_64], or convert it manually (see [method store_16] for an example).
 */
 //go:nosplit
-func (self class) Store32(value int64) bool { //gd:FileAccess.store_32
+func (self class) Store32(value int64) { //gd:FileAccess.store_32
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_32, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores an integer as 64 bits in the file.
 [b]Note:[/b] The [param value] must lie in the interval [code][-2^63, 2^63 - 1][/code] (i.e. be a valid [int] value).
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) Store64(value int64) bool { //gd:FileAccess.store_64
+func (self class) Store64(value int64) { //gd:FileAccess.store_64
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_64, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores a half-precision floating-point number as 16 bits in the file.
 */
 //go:nosplit
-func (self class) StoreHalf(value float64) bool { //gd:FileAccess.store_half
+func (self class) StoreHalf(value float64) { //gd:FileAccess.store_half
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_half, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores a floating-point number as 32 bits in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreFloat(value float64) bool { //gd:FileAccess.store_float
+func (self class) StoreFloat(value float64) { //gd:FileAccess.store_float
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_float, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores a floating-point number as 64 bits in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreDouble(value float64) bool { //gd:FileAccess.store_double
+func (self class) StoreDouble(value float64) { //gd:FileAccess.store_double
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_double, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores a floating-point number in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreReal(value float64) bool { //gd:FileAccess.store_real
+func (self class) StoreReal(value float64) { //gd:FileAccess.store_real
 	var frame = callframe.New()
 	callframe.Arg(frame, value)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_real, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores the given array of bytes in the file.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_buffer
+func (self class) StoreBuffer(buffer Packed.Bytes) { //gd:FileAccess.store_buffer
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_buffer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores [param line] in the file followed by a newline character ([code]\n[/code]), encoding the text as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_line
+func (self class) StoreLine(line String.Readable) { //gd:FileAccess.store_line
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(line)))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter [param delim] to use other than the default [code]","[/code] (comma). This delimiter must be one-character long.
 Text will be encoded as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) bool { //gd:FileAccess.store_csv_line
+func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) { //gd:FileAccess.store_csv_line
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(values)))
 	callframe.Arg(frame, pointers.Get(gd.InternalString(delim)))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_csv_line, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores [param string] in the file without a newline character ([code]\n[/code]), encoding the text as UTF-8.
 [b]Note:[/b] This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [method store_pascal_string] instead. For retrieving strings from a text file, you can use [code]get_buffer(length).get_string_from_utf8()[/code] (if you know the length) or [method get_as_text].
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_string
+func (self class) StoreString(s String.Readable) { //gd:FileAccess.store_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores any Variant value in the file. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
 Internally, this uses the same encoding mechanism as the [method @GlobalScope.var_to_bytes] method.
 [b]Note:[/b] Not all properties are included. Only properties that are configured with the [constant PROPERTY_USAGE_STORAGE] flag set will be serialized. You can add a new usage flag to a property by overriding the [method Object._get_property_list] method in your class. You can also check how property usage is configured by calling [method Object._get_property_list]. See [enum PropertyUsageFlags] for the possible usage flags.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:FileAccess.store_var
+func (self class) StoreVar(value variant.Any, full_objects bool) { //gd:FileAccess.store_var
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalVariant(value)))
 	callframe.Arg(frame, full_objects)
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_var, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
 Stores the given [String] as a line in the file in Pascal format (i.e. also store the length of the string).
 Text will be encoded as UTF-8.
-[b]Note:[/b] If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
-func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.store_pascal_string
+func (self class) StorePascalString(s String.Readable) { //gd:FileAccess.store_pascal_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(s)))
-	var r_ret = callframe.Ret[bool](frame)
+	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.FileAccess.Bind_store_pascal_string, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
-	return ret
 }
 
 /*
@@ -1731,10 +1706,10 @@ type ModeFlags int //gd:FileAccess.ModeFlags
 
 const (
 	/*Opens the file for read operations. The cursor is positioned at the beginning of the file.*/
-	Read ModeFlags = 1
+	READ ModeFlags = 1
 	/*Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
 	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive].*/
-	Write ModeFlags = 2
+	WRITE ModeFlags = 2
 	/*Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.*/
 	ReadWrite ModeFlags = 3
 	/*Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.

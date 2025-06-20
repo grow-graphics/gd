@@ -112,7 +112,7 @@ public partial class ServerNode : Node
 	{
 	    private DtlsServer _dtls = new DtlsServer();
 	    private UdpServer _server = new UdpServer();
-	    private Godot.Collections.Array<PacketPeerDtls> _peers = [];
+	    private Godot.Collections.Array<PacketPeerDtls> _peers = new Godot.Collections.Array<PacketPeerDtls>();
 
 	    public override void _Ready()
 	    {

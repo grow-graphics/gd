@@ -99,8 +99,8 @@ func (self Instance) HasTexture(context string, name string) bool { //gd:RenderS
 /*
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
-func (self Instance) CreateTexture(context string, name string, data_format Rendering.DataFormat, usage_bits int, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool, discardable bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
-	return RID.Texture(Advanced(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique, discardable))
+func (self Instance) CreateTexture(context string, name string, data_format Rendering.DataFormat, usage_bits int, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
+	return RID.Texture(Advanced(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique))
 }
 
 /*
@@ -369,7 +369,7 @@ func (self class) HasTexture(context String.Name, name String.Name) bool { //gd:
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
 //go:nosplit
-func (self class) CreateTexture(context String.Name, name String.Name, data_format Rendering.DataFormat, usage_bits int64, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool, discardable bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
+func (self class) CreateTexture(context String.Name, name String.Name, data_format Rendering.DataFormat, usage_bits int64, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(context)))
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
@@ -380,7 +380,6 @@ func (self class) CreateTexture(context String.Name, name String.Name, data_form
 	callframe.Arg(frame, layers)
 	callframe.Arg(frame, mipmaps)
 	callframe.Arg(frame, unique)
-	callframe.Arg(frame, discardable)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderSceneBuffersRD.Bind_create_texture, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()

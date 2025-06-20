@@ -171,6 +171,14 @@ func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetTextAlignment(value)
 }
 
+func (self Instance) ExpandText() bool {
+	return bool(class(self).IsExpandText())
+}
+
+func (self Instance) SetExpandText(value bool) {
+	class(self).SetExpandText(value)
+}
+
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
@@ -401,6 +409,25 @@ func (self class) GetTextAlignment() GUI.HorizontalAlignment { //gd:Button.get_t
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetExpandText(enabled bool) { //gd:Button.set_expand_text
+	var frame = callframe.New()
+	callframe.Arg(frame, enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_set_expand_text, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsExpandText() bool { //gd:Button.is_expand_text
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Button.Bind_is_expand_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

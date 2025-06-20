@@ -23,7 +23,6 @@ import "graphics.gd/variant/Object"
 import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
-import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Transform3D"
@@ -351,21 +350,6 @@ Releases the image of the provided swapchain.
 */
 func (self Instance) OpenxrSwapchainRelease(swapchain int) { //gd:OpenXRAPIExtension.openxr_swapchain_release
 	Advanced(self).OpenxrSwapchainRelease(int64(swapchain))
-}
-
-/*
-Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code] struct.
-[b]Note:[/b] This method should only be called from the rendering thread.
-*/
-func (self Instance) GetProjectionLayer() int { //gd:OpenXRAPIExtension.get_projection_layer
-	return int(int(Advanced(self).GetProjectionLayer()))
-}
-
-/*
-Sets the render region to [param render_region], overriding the normal render target's rect.
-*/
-func (self Instance) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
-	Advanced(self).SetRenderRegion(Rect2i.PositionSize(render_region))
 }
 
 /*
@@ -911,32 +895,6 @@ func (self class) OpenxrSwapchainRelease(swapchain int64) { //gd:OpenXRAPIExtens
 	callframe.Arg(frame, swapchain)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_openxr_swapchain_release, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Returns a pointer to the render state's [code]XrCompositionLayerProjection[/code] struct.
-[b]Note:[/b] This method should only be called from the rendering thread.
-*/
-//go:nosplit
-func (self class) GetProjectionLayer() int64 { //gd:OpenXRAPIExtension.get_projection_layer
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_get_projection_layer, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Sets the render region to [param render_region], overriding the normal render target's rect.
-*/
-//go:nosplit
-func (self class) SetRenderRegion(render_region Rect2i.PositionSize) { //gd:OpenXRAPIExtension.set_render_region
-	var frame = callframe.New()
-	callframe.Arg(frame, render_region)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.OpenXRAPIExtension.Bind_set_render_region, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

@@ -134,14 +134,6 @@ func (self Instance) SetTargetNode(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
-func (self Instance) BoneName() string {
-	return string(class(self).GetBoneName().String())
-}
-
-func (self Instance) SetBoneName(value string) {
-	class(self).SetBoneName(String.New(value))
-}
-
 func (self Instance) Bone() int {
 	return int(int(class(self).GetBone()))
 }
@@ -180,14 +172,6 @@ func (self Instance) OriginFrom() OriginFrom {
 
 func (self Instance) SetOriginFrom(value OriginFrom) {
 	class(self).SetOriginFrom(value)
-}
-
-func (self Instance) OriginBoneName() string {
-	return string(class(self).GetOriginBoneName().String())
-}
-
-func (self Instance) SetOriginBoneName(value string) {
-	class(self).SetOriginBoneName(String.New(value))
 }
 
 func (self Instance) OriginBone() int {
@@ -378,25 +362,6 @@ func (self class) GetTargetNode() Path.ToNode { //gd:LookAtModifier3D.get_target
 }
 
 //go:nosplit
-func (self class) SetBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetBoneName() String.Readable { //gd:LookAtModifier3D.get_bone_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
 func (self class) SetBone(bone int64) { //gd:LookAtModifier3D.set_bone
 	var frame = callframe.New()
 	callframe.Arg(frame, bone)
@@ -506,25 +471,6 @@ func (self class) GetOriginFrom() OriginFrom { //gd:LookAtModifier3D.get_origin_
 	var r_ret = callframe.Ret[OriginFrom](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_from, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetOriginBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_origin_bone_name
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(bone_name)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetOriginBoneName() String.Readable { //gd:LookAtModifier3D.get_origin_bone_name
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
 	frame.Free()
 	return ret
 }

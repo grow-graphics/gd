@@ -137,14 +137,6 @@ func (self Instance) SetLightmapTextures(value []TextureLayered.Instance) {
 	class(self).SetLightmapTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
 }
 
-func (self Instance) ShadowmaskTextures() []TextureLayered.Instance {
-	return []TextureLayered.Instance(gd.ArrayAs[[]TextureLayered.Instance](gd.InternalArray(class(self).GetShadowmaskTextures())))
-}
-
-func (self Instance) SetShadowmaskTextures(value []TextureLayered.Instance) {
-	class(self).SetShadowmaskTextures(gd.ArrayFromSlice[Array.Contains[[1]gdclass.TextureLayered]](value))
-}
-
 func (self Instance) UsesSphericalHarmonics() bool {
 	return bool(class(self).IsUsingSphericalHarmonics())
 }
@@ -175,25 +167,6 @@ func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_lightmap_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetShadowmaskTextures(shadowmask_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_shadowmask_textures
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalArray(shadowmask_textures)))
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_set_shadowmask_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetShadowmaskTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_shadowmask_textures
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LightmapGIData.Bind_get_shadowmask_textures, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret.Get())))
 	frame.Free()
 	return ret
@@ -332,14 +305,3 @@ func init() {
 		return [1]gdclass.LightmapGIData{*(*gdclass.LightmapGIData)(unsafe.Pointer(&ptr))}
 	})
 }
-
-type ShadowmaskMode int //gd:LightmapGIData.ShadowmaskMode
-
-const (
-	/*Shadowmasking is disabled. No shadowmask texture will be created when baking lightmaps. Existing shadowmask textures will be removed during baking.*/
-	ShadowmaskModeNone ShadowmaskMode = 0
-	/*Shadowmasking is enabled. Directional shadows that are outside the [member DirectionalLight3D.directional_shadow_max_distance] will be rendered using the shadowmask texture. Shadows that are inside the range will be rendered using real-time shadows exclusively. This mode allows for more precise real-time shadows up close, without the potential "smearing" effect that can occur when using lightmaps with a high texel size. The downside is that when the camera moves fast, the transition between the real-time light and shadowmask can be obvious. Also, objects that only have shadows baked in the shadowmask (and no real-time shadows) won't display any shadows up close.*/
-	ShadowmaskModeReplace ShadowmaskMode = 1
-	/*Shadowmasking is enabled. Directional shadows will be rendered with real-time shadows overlaid on top of the shadowmask texture. This mode makes for smoother shadow transitions when the camera moves fast, at the cost of a potential smearing effect for directional shadows that are up close (due to the real-time shadow being mixed with a low-resolution shadowmask). Objects that only have shadows baked in the shadowmask (and no real-time shadows) will keep their shadows up close.*/
-	ShadowmaskModeOverlay ShadowmaskMode = 2
-)

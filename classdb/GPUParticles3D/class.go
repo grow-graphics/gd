@@ -95,19 +95,23 @@ type Any interface {
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:GPUParticles3D.restart
-	Advanced(self).Restart(false)
+	Advanced(self).Restart()
 }
 
 /*
-Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
-[b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
 */
-func (self Expanded) Restart(keep_seed bool) { //gd:GPUParticles3D.restart
-	Advanced(self).Restart(keep_seed)
+func (self Instance) RestartKeepSeed() { //gd:GPUParticles3D.restart_keep_seed
+	Advanced(self).RestartKeepSeed(true)
+}
+
+/*
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
+*/
+func (self Expanded) RestartKeepSeed(keep_seed bool) { //gd:GPUParticles3D.restart_keep_seed
+	Advanced(self).RestartKeepSeed(keep_seed)
 }
 
 /*
@@ -829,14 +833,24 @@ func (self class) GetSkin() [1]gdclass.Skin { //gd:GPUParticles3D.get_skin
 /*
 Restarts the particle emission cycle, clearing existing particles. To avoid particles vanishing from the viewport, wait for the [signal finished] signal before calling.
 [b]Note:[/b] The [signal finished] signal is only emitted by [member one_shot] emitters.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart(keep_seed bool) { //gd:GPUParticles3D.restart
+func (self class) Restart() { //gd:GPUParticles3D.restart
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
+*/
+//go:nosplit
+func (self class) RestartKeepSeed(keep_seed bool) { //gd:GPUParticles3D.restart_keep_seed
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.GPUParticles3D.Bind_restart_keep_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

@@ -65,7 +65,8 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 /*
 [EditorTranslationParserPlugin] is invoked when a file is being parsed to extract strings that require translation. To define the parsing and string extraction logic, override the [method _parse_file] method in script.
-The return value should be an [Array] of [PackedStringArray]s, one for each extracted translatable string. Each entry should contain [code][msgid, msgctxt, msgid_plural, comment][/code], where all except [code]msgid[/code] are optional. Empty strings will be ignored.
+Add the extracted strings to argument [code]msgids[/code] or [code]msgids_context_plural[/code] if context or plural is used.
+When adding to [code]msgids_context_plural[/code], you must add the data using the format [code]["A", "B", "C"][/code], where [code]A[/code] represents the extracted string, [code]B[/code] represents the context, and [code]C[/code] represents the plural version of the extracted string. If you want to add only context but not plural, put [code]""[/code] for the plural slot. The idea is the same if you only want to add plural but not context. See the code below for concrete examples.
 The extracted strings will be written into a POT file selected by user under "POT Generation" in "Localization" tab in "Project Settings" menu.
 Below shows an example of a custom parser that extracts strings from a CSV file to write into a POT.
 [codeblocks]
@@ -73,17 +74,14 @@ Below shows an example of a custom parser that extracts strings from a CSV file 
 @tool
 extends EditorTranslationParserPlugin
 
-func _parse_file(path):
+func _parse_file(path, msgids, msgids_context_plural):
 
-	var ret: Array[PackedStringArray] = []
 	var file = FileAccess.open(path, FileAccess.READ)
 	var text = file.get_as_text()
 	var split_strs = text.split(",", false)
 	for s in split_strs:
-	    ret.append(PackedStringArray([s]))
+	    msgids.append(s)
 	    #print("Extracted string: " + s)
-
-	return ret
 
 func _get_recognized_extensions():
 
@@ -97,51 +95,49 @@ using Godot;
 public partial class CustomParser : EditorTranslationParserPlugin
 
 	{
-	    public override Godot.Collections.Array<string[]> _ParseFile(string path)
+	    public override void _ParseFile(string path, Godot.Collections.Array<string> msgids, Godot.Collections.Array<Godot.Collections.Array> msgidsContextPlural)
 	    {
-	        Godot.Collections.Array<string[]> ret;
 	        using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 	        string text = file.GetAsText();
 	        string[] splitStrs = text.Split(",", allowEmpty: false);
 	        foreach (string s in splitStrs)
 	        {
-	            ret.Add([s]);
+	            msgids.Add(s);
 	            //GD.Print($"Extracted string: {s}");
 	        }
-	        return ret;
 	    }
 
 	    public override string[] _GetRecognizedExtensions()
 	    {
-	        return ["csv"];
+	        return new string[] { "csv" };
 	    }
 	}
 
 [/csharp]
 [/codeblocks]
-To add a translatable string associated with a context, plural, or comment:
+To add a translatable string associated with context or plural, add it to [code]msgids_context_plural[/code]:
 [codeblocks]
 [gdscript]
-# This will add a message with msgid "Test 1", msgctxt "context", msgid_plural "test 1 plurals", and comment "test 1 comment".
-ret.append(PackedStringArray(["Test 1", "context", "test 1 plurals", "test 1 comment"]))
+# This will add a message with msgid "Test 1", msgctxt "context", and msgid_plural "test 1 plurals".
+msgids_context_plural.append(["Test 1", "context", "test 1 plurals"])
 # This will add a message with msgid "A test without context" and msgid_plural "plurals".
-ret.append(PackedStringArray(["A test without context", "", "plurals"]))
+msgids_context_plural.append(["A test without context", "", "plurals"])
 # This will add a message with msgid "Only with context" and msgctxt "a friendly context".
-ret.append(PackedStringArray(["Only with context", "a friendly context"]))
+msgids_context_plural.append(["Only with context", "a friendly context", ""])
 [/gdscript]
 [csharp]
-// This will add a message with msgid "Test 1", msgctxt "context", msgid_plural "test 1 plurals", and comment "test 1 comment".
-ret.Add(["Test 1", "context", "test 1 plurals", "test 1 comment"]);
+// This will add a message with msgid "Test 1", msgctxt "context", and msgid_plural "test 1 plurals".
+msgidsContextPlural.Add(new Godot.Collections.Array{"Test 1", "context", "test 1 Plurals"});
 // This will add a message with msgid "A test without context" and msgid_plural "plurals".
-ret.Add(["A test without context", "", "plurals"]);
+msgidsContextPlural.Add(new Godot.Collections.Array{"A test without context", "", "plurals"});
 // This will add a message with msgid "Only with context" and msgctxt "a friendly context".
-ret.Add(["Only with context", "a friendly context"]);
+msgidsContextPlural.Add(new Godot.Collections.Array{"Only with context", "a friendly context", ""});
 [/csharp]
 [/codeblocks]
 [b]Note:[/b] If you override parsing logic for standard script types (GDScript, C#, etc.), it would be better to load the [code]path[/code] argument using [method ResourceLoader.load]. This is because built-in scripts are loaded as [Resource] type, not [FileAccess] type. For example:
 [codeblocks]
 [gdscript]
-func _parse_file(path):
+func _parse_file(path, msgids, msgids_context_plural):
 
 	var res = ResourceLoader.load(path, "Script")
 	var text = res.source_code
@@ -153,7 +149,7 @@ func _get_recognized_extensions():
 
 [/gdscript]
 [csharp]
-public override Godot.Collections.Array<string[]> _ParseFile(string path)
+public override void _ParseFile(string path, Godot.Collections.Array<string> msgids, Godot.Collections.Array<Godot.Collections.Array> msgidsContextPlural)
 
 	{
 	    var res = ResourceLoader.Load<Script>(path, "Script");
@@ -164,7 +160,7 @@ public override Godot.Collections.Array<string[]> _ParseFile(string path)
 public override string[] _GetRecognizedExtensions()
 
 	{
-	    return ["gd"];
+	    return new string[] { "gd" };
 	}
 
 [/csharp]
@@ -186,7 +182,9 @@ type Any interface {
 }
 type Interface interface {
 	//Override this method to define a custom parsing logic to extract the translatable strings.
-	ParseFile(path string) [][]string
+	ParseFile(path string, msgids []string, msgids_context_plural [][]any)
+	//If overridden, called after [method _parse_file] to get comments for the parsed entries. This method should fill the arrays with the same number of elements and in the same order as [method _parse_file].
+	GetComments(msgids_comment []string, msgids_context_plural_comment []string)
 	//Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 	GetRecognizedExtensions() []string
 }
@@ -196,24 +194,41 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ParseFile(path string) (_ [][]string)  { return }
+func (self implementation) ParseFile(path string, msgids []string, msgids_context_plural [][]any) {
+	return
+}
+func (self implementation) GetComments(msgids_comment []string, msgids_context_plural_comment []string) {
+	return
+}
 func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string) [][]string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string, msgids []string, msgids_context_plural [][]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
+		var msgids = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids))
+		var msgids_context_plural = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path.String())
-		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](ret)))
+		impl(self, path.String(), gd.ArrayAs[[]string](gd.InternalArray(msgids)), gd.ArrayAs[[][]any](gd.InternalArray(msgids_context_plural)))
+	}
+}
 
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+/*
+If overridden, called after [method _parse_file] to get comments for the parsed entries. This method should fill the arrays with the same number of elements and in the same order as [method _parse_file].
+*/
+func (Instance) _get_comments(impl func(ptr unsafe.Pointer, msgids_comment []string, msgids_context_plural_comment []string)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var msgids_comment = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(msgids_comment))
+		var msgids_context_plural_comment = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural_comment))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, gd.ArrayAs[[]string](gd.InternalArray(msgids_comment)), gd.ArrayAs[[]string](gd.InternalArray(msgids_context_plural_comment)))
 	}
 }
 
@@ -256,18 +271,30 @@ func New() Instance {
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (class) _parse_file(impl func(ptr unsafe.Pointer, path String.Readable) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_file(impl func(ptr unsafe.Pointer, path String.Readable, msgids Array.Contains[String.Readable], msgids_context_plural Array.Contains[Array.Any])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
+		var msgids = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids))
+		var msgids_context_plural = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural))
 		self := reflect.ValueOf(class).UnsafePointer()
-		ret := impl(self, path)
-		ptr, ok := pointers.End(gd.InternalArray(ret))
+		impl(self, path, msgids, msgids_context_plural)
+	}
+}
 
-		if !ok {
-			return
-		}
-		gd.UnsafeSet(p_back, ptr)
+/*
+If overridden, called after [method _parse_file] to get comments for the parsed entries. This method should fill the arrays with the same number of elements and in the same order as [method _parse_file].
+*/
+func (class) _get_comments(impl func(ptr unsafe.Pointer, msgids_comment Array.Contains[String.Readable], msgids_context_plural_comment Array.Contains[String.Readable])) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var msgids_comment = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0))))
+		defer pointers.End(gd.InternalArray(msgids_comment))
+		var msgids_context_plural_comment = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 1))))
+		defer pointers.End(gd.InternalArray(msgids_context_plural_comment))
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, msgids_comment, msgids_context_plural_comment)
 	}
 }
 
@@ -308,6 +335,8 @@ func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	case "_parse_file":
 		return reflect.ValueOf(self._parse_file)
+	case "_get_comments":
+		return reflect.ValueOf(self._get_comments)
 	case "_get_recognized_extensions":
 		return reflect.ValueOf(self._get_recognized_extensions)
 	default:
@@ -319,6 +348,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	case "_parse_file":
 		return reflect.ValueOf(self._parse_file)
+	case "_get_comments":
+		return reflect.ValueOf(self._get_comments)
 	case "_get_recognized_extensions":
 		return reflect.ValueOf(self._get_recognized_extensions)
 	default:

@@ -115,7 +115,7 @@ type Any interface {
 
 /*
 Converts a [Variant] var to JSON text and returns the result. Useful for serializing data to store or send over the network.
-[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. Therefore, converting a Variant to JSON text will convert all numerical values to [float] types.
+[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. If [code]filesystem/import/json/always_parse_numbers_as_double[/code] is [code]true[/code], converting a Variant to JSON text will convert all numerical values to [float] types. Otherwise, it will convert to either [float] or [int].
 [b]Note:[/b] If [param full_precision] is [code]true[/code], when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
 The [param indent] parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like [code]"   "[/code] will work. [code]\t[/code] and [code]\n[/code] can also be used for a tab indent, or to make a newline for each indent respectively.
 [b]Example output:[/b]
@@ -164,7 +164,7 @@ func Stringify(data any, indent string, full_precision bool) string { //gd:JSON.
 
 /*
 Converts a [Variant] var to JSON text and returns the result. Useful for serializing data to store or send over the network.
-[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. Therefore, converting a Variant to JSON text will convert all numerical values to [float] types.
+[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. If [code]filesystem/import/json/always_parse_numbers_as_double[/code] is [code]true[/code], converting a Variant to JSON text will convert all numerical values to [float] types. Otherwise, it will convert to either [float] or [int].
 [b]Note:[/b] If [param full_precision] is [code]true[/code], when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
 The [param indent] parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like [code]"   "[/code] will work. [code]\t[/code] and [code]\n[/code] can also be used for a tab indent, or to make a newline for each indent respectively.
 [b]Example output:[/b]
@@ -261,67 +261,39 @@ func (self Instance) GetErrorMessage() string { //gd:JSON.get_error_message
 }
 
 /*
-Converts a native engine type to a JSON-compliant value.
-By default, objects are ignored for security reasons, unless [param full_objects] is [code]true[/code].
-You can convert a native value to a JSON string like this:
-[codeblock]
-func encode_data(value, full_objects = false):
-
-	return JSON.stringify(JSON.from_native(value, full_objects))
-
-[/codeblock]
+Converts a JSON-compliant dictionary that was created with [method from_native] back to native engine types.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
-func FromNative(v any, full_objects bool) any { //gd:JSON.from_native
+func ToNative(json any, allow_classes bool, allow_scripts bool) any { //gd:JSON.to_native
 	self := Instance{}
-	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
+	return any(Advanced(self).ToNative(variant.New(json), allow_classes, allow_scripts).Interface())
 }
 
 /*
-Converts a native engine type to a JSON-compliant value.
-By default, objects are ignored for security reasons, unless [param full_objects] is [code]true[/code].
-You can convert a native value to a JSON string like this:
-[codeblock]
-func encode_data(value, full_objects = false):
-
-	return JSON.stringify(JSON.from_native(value, full_objects))
-
-[/codeblock]
+Converts a JSON-compliant dictionary that was created with [method from_native] back to native engine types.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
-func FromNativeOptions(v any, full_objects bool) any { //gd:JSON.from_native
+func ToNativeOptions(json any, allow_classes bool, allow_scripts bool) any { //gd:JSON.to_native
 	self := Instance{}
-	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
+	return any(Advanced(self).ToNative(variant.New(json), allow_classes, allow_scripts).Interface())
 }
 
 /*
-Converts a JSON-compliant value that was created with [method from_native] back to native engine types.
-By default, objects are ignored for security reasons, unless [param allow_objects] is [code]true[/code].
-You can convert a JSON string back to a native value like this:
-[codeblock]
-func decode_data(string, allow_objects = false):
-
-	return JSON.to_native(JSON.parse_string(string), allow_objects)
-
-[/codeblock]
+Converts a native engine type to a JSON-compliant dictionary.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
-func ToNative(json any, allow_objects bool) any { //gd:JSON.to_native
+func FromNative(v any, allow_classes bool, allow_scripts bool) any { //gd:JSON.from_native
 	self := Instance{}
-	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
+	return any(Advanced(self).FromNative(variant.New(v), allow_classes, allow_scripts).Interface())
 }
 
 /*
-Converts a JSON-compliant value that was created with [method from_native] back to native engine types.
-By default, objects are ignored for security reasons, unless [param allow_objects] is [code]true[/code].
-You can convert a JSON string back to a native value like this:
-[codeblock]
-func decode_data(string, allow_objects = false):
-
-	return JSON.to_native(JSON.parse_string(string), allow_objects)
-
-[/codeblock]
+Converts a native engine type to a JSON-compliant dictionary.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
-func ToNativeOptions(json any, allow_objects bool) any { //gd:JSON.to_native
+func FromNativeOptions(v any, allow_classes bool, allow_scripts bool) any { //gd:JSON.from_native
 	self := Instance{}
-	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
+	return any(Advanced(self).FromNative(variant.New(v), allow_classes, allow_scripts).Interface())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -354,7 +326,7 @@ func (self Instance) SetData(value any) {
 
 /*
 Converts a [Variant] var to JSON text and returns the result. Useful for serializing data to store or send over the network.
-[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. Therefore, converting a Variant to JSON text will convert all numerical values to [float] types.
+[b]Note:[/b] The JSON specification does not define integer or float types, but only a [i]number[/i] type. If [code]filesystem/import/json/always_parse_numbers_as_double[/code] is [code]true[/code], converting a Variant to JSON text will convert all numerical values to [float] types. Otherwise, it will convert to either [float] or [int].
 [b]Note:[/b] If [param full_precision] is [code]true[/code], when stringifying floats, the unreliable digits are stringified in addition to the reliable digits to guarantee exact decoding.
 The [param indent] parameter controls if and how something is indented; its contents will be used where there should be an indent in the output. Even spaces like [code]"   "[/code] will work. [code]\t[/code] and [code]\n[/code] can also be used for a tab indent, or to make a newline for each indent respectively.
 [b]Example output:[/b]
@@ -500,42 +472,34 @@ func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_messag
 }
 
 /*
-Converts a native engine type to a JSON-compliant value.
-By default, objects are ignored for security reasons, unless [param full_objects] is [code]true[/code].
-You can convert a native value to a JSON string like this:
-[codeblock]
-func encode_data(value, full_objects = false):
-    return JSON.stringify(JSON.from_native(value, full_objects))
-[/codeblock]
+Converts a JSON-compliant dictionary that was created with [method from_native] back to native engine types.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
 //go:nosplit
-func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //gd:JSON.from_native
+func (self class) ToNative(json variant.Any, allow_classes bool, allow_scripts bool) variant.Any { //gd:JSON.to_native
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(v)))
-	callframe.Arg(frame, full_objects)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(json)))
+	callframe.Arg(frame, allow_classes)
+	callframe.Arg(frame, allow_scripts)
 	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_from_native, frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_to_native, frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret
 }
 
 /*
-Converts a JSON-compliant value that was created with [method from_native] back to native engine types.
-By default, objects are ignored for security reasons, unless [param allow_objects] is [code]true[/code].
-You can convert a JSON string back to a native value like this:
-[codeblock]
-func decode_data(string, allow_objects = false):
-    return JSON.to_native(JSON.parse_string(string), allow_objects)
-[/codeblock]
+Converts a native engine type to a JSON-compliant dictionary.
+By default, classes and scripts are ignored for security reasons, unless [param allow_classes] or [param allow_scripts] are specified.
 */
 //go:nosplit
-func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { //gd:JSON.to_native
+func (self class) FromNative(v variant.Any, allow_classes bool, allow_scripts bool) variant.Any { //gd:JSON.from_native
 	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalVariant(json)))
-	callframe.Arg(frame, allow_objects)
+	callframe.Arg(frame, pointers.Get(gd.InternalVariant(v)))
+	callframe.Arg(frame, allow_classes)
+	callframe.Arg(frame, allow_scripts)
 	var r_ret = callframe.Ret[[3]uint64](frame)
-	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_to_native, frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.JSON.Bind_from_native, frame.Array(0), r_ret.Addr())
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret.Get())))
 	frame.Free()
 	return ret

@@ -94,6 +94,7 @@ func singleton() {
 
 /*
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
+When wrapping inner (nested) classes, use [code]$[/code] instead of [code].[/code] to separate them. For example, [code]JavaClassWrapper.wrap("android.view.WindowManager$LayoutParams")[/code] wraps the [b]WindowManager.LayoutParams[/b] class.
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
 func Wrap(name string) JavaClass.Instance { //gd:JavaClassWrapper.wrap
@@ -127,6 +128,7 @@ func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObj
 
 /*
 Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
+When wrapping inner (nested) classes, use [code]$[/code] instead of [code].[/code] to separate them. For example, [code]JavaClassWrapper.wrap("android.view.WindowManager$LayoutParams")[/code] wraps the [b]WindowManager.LayoutParams[/b] class.
 [b]Note:[/b] This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
 */
 //go:nosplit

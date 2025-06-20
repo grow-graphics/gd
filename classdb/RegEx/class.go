@@ -130,19 +130,11 @@ type Any interface {
 }
 
 /*
-Creates and compiles a new [RegEx] object. See also [method compile].
+Creates and compiles a new [RegEx] object.
 */
 func CreateFromString(pattern string) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(pattern), true))
-}
-
-/*
-Creates and compiles a new [RegEx] object. See also [method compile].
-*/
-func CreateFromStringOptions(pattern string, show_error bool) Instance { //gd:RegEx.create_from_string
-	self := Instance{}
-	return Instance(Advanced(self).CreateFromString(String.New(pattern), show_error))
+	return Instance(Advanced(self).CreateFromString(String.New(pattern)))
 }
 
 /*
@@ -153,17 +145,10 @@ func (self Instance) Clear() { //gd:RegEx.clear
 }
 
 /*
-Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If compilation fails, returns [constant FAILED] and when [param show_error] is [code]true[/code], details are printed to standard output.
+Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If an error is encountered, details are printed to standard output and an error is returned.
 */
 func (self Instance) Compile(pattern string) error { //gd:RegEx.compile
-	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), true)))
-}
-
-/*
-Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If compilation fails, returns [constant FAILED] and when [param show_error] is [code]true[/code], details are printed to standard output.
-*/
-func (self Expanded) Compile(pattern string, show_error bool) error { //gd:RegEx.compile
-	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), show_error)))
+	return error(gd.ToError(Advanced(self).Compile(String.New(pattern))))
 }
 
 /*
@@ -263,13 +248,12 @@ func New() Instance {
 }
 
 /*
-Creates and compiles a new [RegEx] object. See also [method compile].
+Creates and compiles a new [RegEx] object.
 */
 //go:nosplit
-func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
+func (self class) CreateFromString(pattern String.Readable) [1]gdclass.RegEx { //gd:RegEx.create_from_string
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
-	callframe.Arg(frame, show_error)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCallStatic(gd.Global.Methods.RegEx.Bind_create_from_string, frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.RegEx{gd.PointerWithOwnershipTransferredToGo[gdclass.RegEx](r_ret.Get())}
@@ -289,13 +273,12 @@ func (self class) Clear() { //gd:RegEx.clear
 }
 
 /*
-Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If compilation fails, returns [constant FAILED] and when [param show_error] is [code]true[/code], details are printed to standard output.
+Compiles and assign the search pattern to use. Returns [constant OK] if the compilation is successful. If an error is encountered, details are printed to standard output and an error is returned.
 */
 //go:nosplit
-func (self class) Compile(pattern String.Readable, show_error bool) Error.Code { //gd:RegEx.compile
+func (self class) Compile(pattern String.Readable) Error.Code { //gd:RegEx.compile
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalString(pattern)))
-	callframe.Arg(frame, show_error)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RegEx.Bind_compile, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Error.Code(r_ret.Get())

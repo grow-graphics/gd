@@ -66,7 +66,7 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 /*
-Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files are renamed or moved. They can be accessed with [code]uid://[/code].
+Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files can renamed or moved. They can be accessed with [code]uid://[/code].
 [ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
 */
 type Instance [1]gdclass.ResourceUID

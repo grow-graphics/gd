@@ -291,6 +291,20 @@ func LoadFromFile(path string) Instance { //gd:Image.load_from_file
 }
 
 /*
+Set the PNG flags used when saving the image to PNG. Defaults to [constant PNG_FLAG_FAST].
+*/
+func (self Instance) SetPngFlags(flags PNGFlags) { //gd:Image.set_png_flags
+	Advanced(self).SetPngFlags(flags)
+}
+
+/*
+Returns the PNG flags used when saving the image as a PNG.
+*/
+func (self Instance) GetPngFlags() PNGFlags { //gd:Image.get_png_flags
+	return PNGFlags(Advanced(self).GetPngFlags())
+}
+
+/*
 Saves the image as a PNG file to the file at [param path].
 */
 func (self Instance) SavePng(path string) error { //gd:Image.save_png
@@ -508,17 +522,10 @@ func (self Instance) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 }
 
 /*
-Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
+Converts the raw data from the sRGB colorspace to a linear scale.
 */
 func (self Instance) SrgbToLinear() { //gd:Image.srgb_to_linear
 	Advanced(self).SrgbToLinear()
-}
-
-/*
-Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
-*/
-func (self Instance) LinearToSrgb() { //gd:Image.linear_to_srgb
-	Advanced(self).LinearToSrgb()
 }
 
 /*
@@ -1134,6 +1141,31 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.Image { //gd:Ima
 }
 
 /*
+Set the PNG flags used when saving the image to PNG. Defaults to [constant PNG_FLAG_FAST].
+*/
+//go:nosplit
+func (self class) SetPngFlags(flags PNGFlags) { //gd:Image.set_png_flags
+	var frame = callframe.New()
+	callframe.Arg(frame, flags)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_set_png_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the PNG flags used when saving the image as a PNG.
+*/
+//go:nosplit
+func (self class) GetPngFlags() PNGFlags { //gd:Image.get_png_flags
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[PNGFlags](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_get_png_flags, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
 Saves the image as a PNG file to the file at [param path].
 */
 //go:nosplit
@@ -1404,24 +1436,13 @@ func (self class) PremultiplyAlpha() { //gd:Image.premultiply_alpha
 }
 
 /*
-Converts the raw data from the sRGB colorspace to a linear scale. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
+Converts the raw data from the sRGB colorspace to a linear scale.
 */
 //go:nosplit
 func (self class) SrgbToLinear() { //gd:Image.srgb_to_linear
 	var frame = callframe.New()
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_srgb_to_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Converts the entire image from the linear colorspace to the sRGB colorspace. Only works on images with [constant FORMAT_RGB8] or [constant FORMAT_RGBA8] formats.
-*/
-//go:nosplit
-func (self class) LinearToSrgb() { //gd:Image.linear_to_srgb
-	var frame = callframe.New()
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Image.Bind_linear_to_srgb, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2038,6 +2059,19 @@ const (
 	AstcFormat4x4 ASTCFormat = 0
 	/*Hint to indicate that the low quality 8×8 ASTC compression format should be used.*/
 	AstcFormat8x8 ASTCFormat = 1
+)
+
+type PNGFlags int //gd:Image.PNGFlags
+
+const (
+	/*This indicates that the RGB values of the in-memory bitmap do not correspond to the red, green and blue end-points defined by sRGB.*/
+	PngFlagNotSrgb PNGFlags = 1
+	/*On write emphasize speed over compression.
+	  The resultant PNG file will be larger but will be produced significantly faster, particular for large images.
+	  Do not use this option for images which will be distributed, only used it when producing intermediate files that will be read back in repeatedly.
+	  For a typical 24-bit image the option will double the read speed at the cost of increasing the image size by 25%,
+	  however for many more compressible images the PNG file can be 10 times larger with only a slight speed gain.*/
+	PngFlagFast PNGFlags = 2
 )
 
 type Metrics struct {

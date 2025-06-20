@@ -138,6 +138,14 @@ func (self Instance) SetExcludeNodesFromCollision(value bool) {
 	class(self).SetExcludeNodesFromCollision(value)
 }
 
+func (self Instance) DisableMode() DisableMode {
+	return DisableMode(class(self).GetDisableMode())
+}
+
+func (self Instance) SetDisableMode(value DisableMode) {
+	class(self).SetDisableMode(value)
+}
+
 //go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint3D.set_node_a
 	var frame = callframe.New()
@@ -214,6 +222,25 @@ func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude
 	return ret
 }
 
+//go:nosplit
+func (self class) SetDisableMode(mode DisableMode) { //gd:Joint3D.set_disable_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_set_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetDisableMode() DisableMode { //gd:Joint3D.get_disable_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[DisableMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Joint3D.Bind_get_disable_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
 /*
 Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
@@ -252,3 +279,13 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Joint3D", func(ptr gd.Object) any { return [1]gdclass.Joint3D{*(*gdclass.Joint3D)(unsafe.Pointer(&ptr))} })
 }
+
+type DisableMode int //gd:Joint3D.DisableMode
+
+const (
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [Joint3D].
+	  Automatically re-added to the physics simulation when the [Node] is processed again with initial transforms for bodies.*/
+	DisableModeRemove DisableMode = 0
+	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
+	DisableModeKeepActive DisableMode = 1
+)

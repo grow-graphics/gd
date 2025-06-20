@@ -16,6 +16,7 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/TextServer"
 import "graphics.gd/variant/Array"
@@ -127,6 +128,22 @@ func (self Instance) SetUri(value string) {
 	class(self).SetUri(String.New(value))
 }
 
+func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
+	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
+}
+
+func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
+	class(self).SetTextOverrunBehavior(value)
+}
+
+func (self Instance) TextAlignment() GUI.HorizontalAlignment {
+	return GUI.HorizontalAlignment(class(self).GetTextAlignment())
+}
+
+func (self Instance) SetTextAlignment(value GUI.HorizontalAlignment) {
+	class(self).SetTextAlignment(value)
+}
+
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
@@ -174,6 +191,44 @@ func (self class) GetText() String.Readable { //gd:LinkButton.get_text
 	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:LinkButton.set_text_overrun_behavior
+	var frame = callframe.New()
+	callframe.Arg(frame, overrun_behavior)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:LinkButton.get_text_overrun_behavior
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[TextServer.OverrunBehavior](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text_overrun_behavior, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTextAlignment(alignment GUI.HorizontalAlignment) { //gd:LinkButton.set_text_alignment
+	var frame = callframe.New()
+	callframe.Arg(frame, alignment)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_set_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetTextAlignment() GUI.HorizontalAlignment { //gd:LinkButton.get_text_alignment
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[GUI.HorizontalAlignment](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.LinkButton.Bind_get_text_alignment, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

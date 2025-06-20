@@ -69,6 +69,7 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 /*
 A container that accepts only two child controls, then arranges them horizontally or vertically and creates a divisor between them. The divisor can be dragged around to change the size relation between the child controls.
+Children can be collapsed/expanded at runtime if you drag against their half minimum size. See [member collapse_mode] for more info.
 */
 type Instance [1]gdclass.SplitContainer
 
@@ -120,6 +121,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) DraggingEnabled() bool {
+	return bool(class(self).IsDraggingEnabled())
+}
+
+func (self Instance) SetDraggingEnabled(value bool) {
+	class(self).SetDraggingEnabled(value)
+}
+
 func (self Instance) SplitOffset() int {
 	return int(int(class(self).GetSplitOffset()))
 }
@@ -134,14 +143,6 @@ func (self Instance) Collapsed() bool {
 
 func (self Instance) SetCollapsed(value bool) {
 	class(self).SetCollapsed(value)
-}
-
-func (self Instance) DraggingEnabled() bool {
-	return bool(class(self).IsDraggingEnabled())
-}
-
-func (self Instance) SetDraggingEnabled(value bool) {
-	class(self).SetDraggingEnabled(value)
 }
 
 func (self Instance) DraggerVisibility() DraggerVisibility {
@@ -160,28 +161,12 @@ func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }
 
-func (self Instance) DragAreaMarginBegin() int {
-	return int(int(class(self).GetDragAreaMarginBegin()))
+func (self Instance) CollapseMode() CollapseMode {
+	return CollapseMode(class(self).GetCollapseMode())
 }
 
-func (self Instance) SetDragAreaMarginBegin(value int) {
-	class(self).SetDragAreaMarginBegin(int64(value))
-}
-
-func (self Instance) DragAreaMarginEnd() int {
-	return int(int(class(self).GetDragAreaMarginEnd()))
-}
-
-func (self Instance) SetDragAreaMarginEnd(value int) {
-	class(self).SetDragAreaMarginEnd(int64(value))
-}
-
-func (self Instance) DragAreaOffset() int {
-	return int(int(class(self).GetDragAreaOffset()))
-}
-
-func (self Instance) SetDragAreaOffset(value int) {
-	class(self).SetDragAreaOffset(int64(value))
+func (self Instance) SetCollapseMode(value CollapseMode) {
+	class(self).SetCollapseMode(value)
 }
 
 func (self Instance) DragAreaHighlightInEditor() bool {
@@ -280,76 +265,19 @@ func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
 }
 
 //go:nosplit
-func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
+func (self class) SetCollapseMode(mode CollapseMode) { //gd:SplitContainer.set_collapse_mode
 	var frame = callframe.New()
-	callframe.Arg(frame, dragging_enabled)
+	callframe.Arg(frame, mode)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_collapse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
 //go:nosplit
-func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
+func (self class) GetCollapseMode() CollapseMode { //gd:SplitContainer.get_collapse_mode
 	var frame = callframe.New()
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set_drag_area_margin_begin
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_drag_area_margin_end
-	var frame = callframe.New()
-	callframe.Arg(frame, margin)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_margin_end, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag_area_offset
-	var frame = callframe.New()
-	callframe.Arg(frame, offset)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_drag_area_offset, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var r_ret = callframe.Ret[CollapseMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_get_collapse_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -369,6 +297,25 @@ func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContaine
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_drag_area_highlight_in_editor_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
+	var frame = callframe.New()
+	callframe.Arg(frame, dragging_enabled)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_set_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[bool](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.SplitContainer.Bind_is_dragging_enabled, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -451,13 +398,26 @@ func init() {
 type DraggerVisibility int //gd:SplitContainer.DraggerVisibility
 
 const (
-	/*The split dragger icon is always visible when [theme_item autohide] is [code]false[/code], otherwise visible only when the cursor hovers it.
-	  The size of the grabber icon determines the minimum [theme_item separation].
-	  The dragger icon is automatically hidden if the length of the grabber icon is longer than the split bar.*/
+	/*The split dragger is visible when the cursor hovers it.*/
 	DraggerVisible DraggerVisibility = 0
-	/*The split dragger icon is never visible regardless of the value of [theme_item autohide].
-	  The size of the grabber icon determines the minimum [theme_item separation].*/
+	/*The split dragger is never visible.*/
 	DraggerHidden DraggerVisibility = 1
-	/*The split dragger icon is not visible, and the split bar is collapsed to zero thickness.*/
+	/*The split dragger is never visible and its space collapsed.*/
 	DraggerHiddenCollapsed DraggerVisibility = 2
+)
+
+type CollapseMode int //gd:SplitContainer.CollapseMode
+
+const (
+	/*Hiding the first or second sortable control child will result in hiding the dragger and the other control child will fill the visible area.*/
+	CollapseNone CollapseMode = 0
+	/*Hiding the first sortable control child will keep the dragger visible and you will be able to drag again to show it.
+	  [b]Note:[/b] hiding the second sortable control will also hide the dragger.*/
+	CollapseFirst CollapseMode = 1
+	/*Hiding the second sortable control child will keep the dragger visible and you will be able to drag again to show it.
+	  [b]Note:[/b] hiding the first sortable control will also hide the dragger.*/
+	CollapseSecond CollapseMode = 2
+	/*Hiding the first or second sortable control child will keep the dragger visible and you will be able to drag again to show them.
+	  [b]Note:[/b] only one sortable control can be collapsed at time.*/
+	CollapseAll CollapseMode = 3
 )

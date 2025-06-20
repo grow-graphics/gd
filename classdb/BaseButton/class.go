@@ -193,6 +193,14 @@ func (self Instance) SetActionMode(value ActionMode) {
 	class(self).SetActionMode(value)
 }
 
+func (self Instance) SizeMode() SizeMode {
+	return SizeMode(class(self).GetSizeMode())
+}
+
+func (self Instance) SetSizeMode(value SizeMode) {
+	class(self).SetSizeMode(value)
+}
+
 func (self Instance) ButtonMask() Input.MouseButtonMask {
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
@@ -357,9 +365,9 @@ func (self class) IsDisabled() bool { //gd:BaseButton.is_disabled
 }
 
 //go:nosplit
-func (self class) SetActionMode(mode ActionMode) { //gd:BaseButton.set_action_mode
+func (self class) SetActionMode(action_mode ActionMode) { //gd:BaseButton.set_action_mode
 	var frame = callframe.New()
-	callframe.Arg(frame, mode)
+	callframe.Arg(frame, action_mode)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_set_action_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
@@ -370,6 +378,25 @@ func (self class) GetActionMode() ActionMode { //gd:BaseButton.get_action_mode
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[ActionMode](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_action_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSizeMode(size_mode SizeMode) { //gd:BaseButton.set_size_mode
+	var frame = callframe.New()
+	callframe.Arg(frame, size_mode)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_set_size_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+//go:nosplit
+func (self class) GetSizeMode() SizeMode { //gd:BaseButton.get_size_mode
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[SizeMode](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.BaseButton.Bind_get_size_mode, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -564,4 +591,15 @@ const (
 	ActionModeButtonPress ActionMode = 0
 	/*Require a press and a subsequent release before considering the button clicked.*/
 	ActionModeButtonRelease ActionMode = 1
+)
+
+type SizeMode int //gd:BaseButton.SizeMode
+
+const (
+	/*Ignores the size mode.*/
+	SizeModeIgnore SizeMode = 0
+	/*The height of the button will fit it's width when resized.*/
+	SizeModeFitWidth SizeMode = 1
+	/*The width of the button will fit it's height when resized.*/
+	SizeModeFitHeight SizeMode = 2
 )

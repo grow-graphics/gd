@@ -328,6 +328,20 @@ func (self Instance) FontGetAntialiasing(font_rid RID.Font) FontAntialiasing { /
 }
 
 /*
+Sets the LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (self Instance) FontSetLcdSubpixelLayout(font_rid RID.Any, lcd_subpixel_layout FontLCDSubpixelLayout) { //gd:TextServer.font_set_lcd_subpixel_layout
+	Advanced(self).FontSetLcdSubpixelLayout(RID.Any(font_rid), lcd_subpixel_layout)
+}
+
+/*
+Returns the LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+func (self Instance) FontGetLcdSubpixelLayout(font_rid RID.Any) FontLCDSubpixelLayout { //gd:TextServer.font_get_lcd_subpixel_layout
+	return FontLCDSubpixelLayout(Advanced(self).FontGetLcdSubpixelLayout(RID.Any(font_rid)))
+}
+
+/*
 If set to [code]true[/code], embedded font bitmap loading is disabled (bitmap-only and color fonts ignore this property).
 */
 func (self Instance) FontSetDisableEmbeddedBitmaps(font_rid RID.Font, disable_embedded_bitmaps bool) { //gd:TextServer.font_set_disable_embedded_bitmaps
@@ -2370,6 +2384,33 @@ func (self class) FontGetAntialiasing(font_rid RID.Any) FontAntialiasing { //gd:
 	callframe.Arg(frame, font_rid)
 	var r_ret = callframe.Ret[FontAntialiasing](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_antialiasing, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Sets the LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+//go:nosplit
+func (self class) FontSetLcdSubpixelLayout(font_rid RID.Any, lcd_subpixel_layout FontLCDSubpixelLayout) { //gd:TextServer.font_set_lcd_subpixel_layout
+	var frame = callframe.New()
+	callframe.Arg(frame, font_rid)
+	callframe.Arg(frame, lcd_subpixel_layout)
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_set_lcd_subpixel_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Returns the LCD subpixel layout used for font anti-aliasing. See [enum TextServer.FontLCDSubpixelLayout].
+*/
+//go:nosplit
+func (self class) FontGetLcdSubpixelLayout(font_rid RID.Any) FontLCDSubpixelLayout { //gd:TextServer.font_get_lcd_subpixel_layout
+	var frame = callframe.New()
+	callframe.Arg(frame, font_rid)
+	var r_ret = callframe.Ret[FontLCDSubpixelLayout](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TextServer.Bind_font_get_lcd_subpixel_layout, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

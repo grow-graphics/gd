@@ -99,18 +99,23 @@ func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUPar
 
 /*
 Restarts the particle emitter.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:CPUParticles2D.restart
-	Advanced(self).Restart(false)
+	Advanced(self).Restart()
 }
 
 /*
-Restarts the particle emitter.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
 */
-func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
-	Advanced(self).Restart(keep_seed)
+func (self Instance) RestartKeepSeed() { //gd:CPUParticles2D.restart_keep_seed
+	Advanced(self).RestartKeepSeed(true)
+}
+
+/*
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
+*/
+func (self Expanded) RestartKeepSeed(keep_seed bool) { //gd:CPUParticles2D.restart_keep_seed
+	Advanced(self).RestartKeepSeed(keep_seed)
 }
 
 /*
@@ -994,14 +999,24 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_te
 
 /*
 Restarts the particle emitter.
-If [param keep_seed] is [code]true[/code], the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
-func (self class) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
+func (self class) Restart() { //gd:CPUParticles2D.restart
+	var frame = callframe.New()
+	var r_ret = callframe.Nil
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
+	frame.Free()
+}
+
+/*
+Restarts the particle emitter and preserved the current random seed. Useful for seeking and playback.
+*/
+//go:nosplit
+func (self class) RestartKeepSeed(keep_seed bool) { //gd:CPUParticles2D.restart_keep_seed
 	var frame = callframe.New()
 	callframe.Arg(frame, keep_seed)
 	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_restart, self.AsObject(), frame.Array(0), r_ret.Addr())
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.CPUParticles2D.Bind_restart_keep_seed, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 

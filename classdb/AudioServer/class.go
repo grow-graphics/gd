@@ -148,7 +148,7 @@ func GetBusChannels(bus_idx Bus) int { //gd:AudioServer.get_bus_channels
 }
 
 /*
-Sets the volume in decibels of the bus at index [param bus_idx] to [param volume_db].
+Sets the volume of the bus at index [param bus_idx] to [param volume_db].
 */
 func SetBusVolumeDb(bus_idx Bus, volume_db Float.X) { //gd:AudioServer.set_bus_volume_db
 	once.Do(singleton)
@@ -161,24 +161,6 @@ Returns the volume of the bus at index [param bus_idx] in dB.
 func GetBusVolumeDb(bus_idx Bus) Float.X { //gd:AudioServer.get_bus_volume_db
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetBusVolumeDb(int64(bus_idx))))
-}
-
-/*
-Sets the volume as a linear value of the bus at index [param bus_idx] to [param volume_linear].
-[b]Note:[/b] Using this method is equivalent to calling [method set_bus_volume_db] with the result of [method @GlobalScope.linear_to_db] on a value.
-*/
-func SetBusVolumeLinear(bus_idx Bus, volume_linear Float.X) { //gd:AudioServer.set_bus_volume_linear
-	once.Do(singleton)
-	Advanced().SetBusVolumeLinear(int64(bus_idx), float64(volume_linear))
-}
-
-/*
-Returns the volume of the bus at index [param bus_idx] as a linear value.
-[b]Note:[/b] The returned value is equivalent to the result of [method @GlobalScope.db_to_linear] on the result of [method get_bus_volume_db].
-*/
-func GetBusVolumeLinear(bus_idx Bus) Float.X { //gd:AudioServer.get_bus_volume_linear
-	once.Do(singleton)
-	return Float.X(Float.X(Advanced().GetBusVolumeLinear(int64(bus_idx))))
 }
 
 /*
@@ -642,7 +624,7 @@ func (self class) GetBusChannels(bus_idx int64) int64 { //gd:AudioServer.get_bus
 }
 
 /*
-Sets the volume in decibels of the bus at index [param bus_idx] to [param volume_db].
+Sets the volume of the bus at index [param bus_idx] to [param volume_db].
 */
 //go:nosplit
 func (self class) SetBusVolumeDb(bus_idx int64, volume_db float64) { //gd:AudioServer.set_bus_volume_db
@@ -663,35 +645,6 @@ func (self class) GetBusVolumeDb(bus_idx int64) float64 { //gd:AudioServer.get_b
 	callframe.Arg(frame, bus_idx)
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Sets the volume as a linear value of the bus at index [param bus_idx] to [param volume_linear].
-[b]Note:[/b] Using this method is equivalent to calling [method set_bus_volume_db] with the result of [method @GlobalScope.linear_to_db] on a value.
-*/
-//go:nosplit
-func (self class) SetBusVolumeLinear(bus_idx int64, volume_linear float64) { //gd:AudioServer.set_bus_volume_linear
-	var frame = callframe.New()
-	callframe.Arg(frame, bus_idx)
-	callframe.Arg(frame, volume_linear)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_set_bus_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Returns the volume of the bus at index [param bus_idx] as a linear value.
-[b]Note:[/b] The returned value is equivalent to the result of [method @GlobalScope.db_to_linear] on the result of [method get_bus_volume_db].
-*/
-//go:nosplit
-func (self class) GetBusVolumeLinear(bus_idx int64) float64 { //gd:AudioServer.get_bus_volume_linear
-	var frame = callframe.New()
-	callframe.Arg(frame, bus_idx)
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioServer.Bind_get_bus_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

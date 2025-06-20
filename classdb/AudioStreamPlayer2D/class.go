@@ -173,14 +173,6 @@ func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
-func (self Instance) VolumeLinear() Float.X {
-	return Float.X(Float.X(class(self).GetVolumeLinear()))
-}
-
-func (self Instance) SetVolumeLinear(value Float.X) {
-	class(self).SetVolumeLinear(float64(value))
-}
-
 func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
@@ -191,10 +183,6 @@ func (self Instance) SetPitchScale(value Float.X) {
 
 func (self Instance) Playing() bool {
 	return bool(class(self).IsPlaying())
-}
-
-func (self Instance) SetPlaying(value bool) {
-	class(self).SetPlaying(value)
 }
 
 func (self Instance) Autoplay() bool {
@@ -302,25 +290,6 @@ func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer2D.get_volume_db
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_db, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-//go:nosplit
-func (self class) SetVolumeLinear(volume_linear float64) { //gd:AudioStreamPlayer2D.set_volume_linear
-	var frame = callframe.New()
-	callframe.Arg(frame, volume_linear)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-//go:nosplit
-func (self class) GetVolumeLinear() float64 { //gd:AudioStreamPlayer2D.get_volume_linear
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[float64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_linear, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -439,15 +408,6 @@ func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer2D.is_autopla
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
-}
-
-//go:nosplit
-func (self class) SetPlaying(enable bool) { //gd:AudioStreamPlayer2D.set_playing
-	var frame = callframe.New()
-	callframe.Arg(frame, enable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_playing, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
 }
 
 //go:nosplit

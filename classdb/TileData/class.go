@@ -246,7 +246,7 @@ func (self Instance) IsCollisionPolygonOneWay(layer_id int, polygon_index int) b
 }
 
 /*
-Sets the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
+Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 func (self Instance) SetCollisionPolygonOneWayMargin(layer_id int, polygon_index int, one_way_margin Float.X) { //gd:TileData.set_collision_polygon_one_way_margin
 	Advanced(self).SetCollisionPolygonOneWayMargin(int64(layer_id), int64(polygon_index), float64(one_way_margin))
@@ -878,7 +878,7 @@ func (self class) IsCollisionPolygonOneWay(layer_id int64, polygon_index int64) 
 }
 
 /*
-Sets the one-way margin (for one-way platforms) of the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
+Enables/disables one-way collisions on the polygon at index [param polygon_index] for TileSet physics layer with index [param layer_id].
 */
 //go:nosplit
 func (self class) SetCollisionPolygonOneWayMargin(layer_id int64, polygon_index int64, one_way_margin float64) { //gd:TileData.set_collision_polygon_one_way_margin

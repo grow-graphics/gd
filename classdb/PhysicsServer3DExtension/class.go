@@ -108,6 +108,8 @@ type Interface interface {
 	SpaceCreate() RID.Any
 	SpaceSetActive(space RID.Any, active bool)
 	SpaceIsActive(space RID.Any) bool
+	SpaceStep(space RID.Any, delta Float.X)
+	SpaceFlushQueries(space RID.Any)
 	SpaceSetParam(space RID.Any, param PhysicsServer3D.SpaceParameter, value Float.X)
 	SpaceGetParam(space RID.Any, param PhysicsServer3D.SpaceParameter) Float.X
 	SpaceGetDirectState(space RID.Any) PhysicsDirectSpaceState3D.Instance
@@ -237,6 +239,8 @@ type Interface interface {
 	SoftBodyIsPointPinned(body RID.Any, point_index int) bool
 	JointCreate() RID.Any
 	JointClear(joint RID.Any)
+	JointSetEnabled(joint RID.Any, enabled bool)
+	JointIsEnabled(joint RID.Any) bool
 	JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ)
 	PinJointSetParam(joint RID.Any, param PhysicsServer3D.PinJointParam, value Float.X)
 	PinJointGetParam(joint RID.Any, param PhysicsServer3D.PinJointParam) Float.X
@@ -276,6 +280,7 @@ type Interface interface {
 	Finish()
 	IsFlushingQueries() bool
 	GetProcessInfo(process_info PhysicsServer3D.ProcessInfo) int
+	SpaceGetLastProcessInfo(space RID.Any, process_info PhysicsServer3D.ProcessInfo) int
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -303,6 +308,8 @@ func (self implementation) ShapeGetCustomSolverBias(shape RID.Any) (_ Float.X)  
 func (self implementation) SpaceCreate() (_ RID.Any)                                 { return }
 func (self implementation) SpaceSetActive(space RID.Any, active bool)                { return }
 func (self implementation) SpaceIsActive(space RID.Any) (_ bool)                     { return }
+func (self implementation) SpaceStep(space RID.Any, delta Float.X)                   { return }
+func (self implementation) SpaceFlushQueries(space RID.Any)                          { return }
 func (self implementation) SpaceSetParam(space RID.Any, param PhysicsServer3D.SpaceParameter, value Float.X) {
 	return
 }
@@ -502,6 +509,8 @@ func (self implementation) SoftBodyPinPoint(body RID.Any, point_index int, pin b
 func (self implementation) SoftBodyIsPointPinned(body RID.Any, point_index int) (_ bool) { return }
 func (self implementation) JointCreate() (_ RID.Any)                                     { return }
 func (self implementation) JointClear(joint RID.Any)                                     { return }
+func (self implementation) JointSetEnabled(joint RID.Any, enabled bool)                  { return }
+func (self implementation) JointIsEnabled(joint RID.Any) (_ bool)                        { return }
 func (self implementation) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ) {
 	return
 }
@@ -581,6 +590,9 @@ func (self implementation) EndSync()                                            
 func (self implementation) Finish()                                                         { return }
 func (self implementation) IsFlushingQueries() (_ bool)                                     { return }
 func (self implementation) GetProcessInfo(process_info PhysicsServer3D.ProcessInfo) (_ int) { return }
+func (self implementation) SpaceGetLastProcessInfo(space RID.Any, process_info PhysicsServer3D.ProcessInfo) (_ int) {
+	return
+}
 func (Instance) _world_boundary_shape_create(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -734,6 +746,21 @@ func (Instance) _space_is_active(impl func(ptr unsafe.Pointer, space RID.Any) bo
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (Instance) _space_step(impl func(ptr unsafe.Pointer, space RID.Any, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, space, Float.X(delta))
+	}
+}
+func (Instance) _space_flush_queries(impl func(ptr unsafe.Pointer, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, space)
 	}
 }
 func (Instance) _space_set_param(impl func(ptr unsafe.Pointer, space RID.Any, param PhysicsServer3D.SpaceParameter, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1856,6 +1883,22 @@ func (Instance) _joint_clear(impl func(ptr unsafe.Pointer, joint RID.Any)) (cb g
 		impl(self, joint)
 	}
 }
+func (Instance) _joint_set_enabled(impl func(ptr unsafe.Pointer, joint RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
+		var enabled = gd.UnsafeGet[bool](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, joint, enabled)
+	}
+}
+func (Instance) _joint_is_enabled(impl func(ptr unsafe.Pointer, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, joint)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 func (Instance) _joint_make_pin(impl func(ptr unsafe.Pointer, joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -2192,6 +2235,15 @@ func (Instance) _get_process_info(impl func(ptr unsafe.Pointer, process_info Phy
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
+func (Instance) _space_get_last_process_info(impl func(ptr unsafe.Pointer, space RID.Any, process_info PhysicsServer3D.ProcessInfo) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		var process_info = gd.UnsafeGet[PhysicsServer3D.ProcessInfo](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, space, process_info)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
 func (self Instance) BodyTestMotionIsExcludingBody(body RID.Body3D) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
 	return bool(Advanced(self).BodyTestMotionIsExcludingBody(RID.Any(body)))
 }
@@ -2390,6 +2442,23 @@ func (class) _space_is_active(impl func(ptr unsafe.Pointer, space RID.Any) bool)
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, space)
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+func (class) _space_step(impl func(ptr unsafe.Pointer, space RID.Any, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		var delta = gd.UnsafeGet[float64](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, space, delta)
+	}
+}
+
+func (class) _space_flush_queries(impl func(ptr unsafe.Pointer, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, space)
 	}
 }
 
@@ -3642,6 +3711,24 @@ func (class) _joint_clear(impl func(ptr unsafe.Pointer, joint RID.Any)) (cb gd.E
 	}
 }
 
+func (class) _joint_set_enabled(impl func(ptr unsafe.Pointer, joint RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
+		var enabled = gd.UnsafeGet[bool](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		impl(self, joint, enabled)
+	}
+}
+
+func (class) _joint_is_enabled(impl func(ptr unsafe.Pointer, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, joint)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
 func (class) _joint_make_pin(impl func(ptr unsafe.Pointer, joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -4017,6 +4104,16 @@ func (class) _get_process_info(impl func(ptr unsafe.Pointer, process_info Physic
 	}
 }
 
+func (class) _space_get_last_process_info(impl func(ptr unsafe.Pointer, space RID.Any, process_info PhysicsServer3D.ProcessInfo) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args gd.Address, p_back gd.Address) {
+		var space = gd.UnsafeGet[RID.Any](p_args, 0)
+		var process_info = gd.UnsafeGet[PhysicsServer3D.ProcessInfo](p_args, 1)
+		self := reflect.ValueOf(class).UnsafePointer()
+		ret := impl(self, space, process_info)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
 //go:nosplit
 func (self class) BodyTestMotionIsExcludingBody(body RID.Any) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
 	var frame = callframe.New()
@@ -4088,6 +4185,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._space_set_active)
 	case "_space_is_active":
 		return reflect.ValueOf(self._space_is_active)
+	case "_space_step":
+		return reflect.ValueOf(self._space_step)
+	case "_space_flush_queries":
+		return reflect.ValueOf(self._space_flush_queries)
 	case "_space_set_param":
 		return reflect.ValueOf(self._space_set_param)
 	case "_space_get_param":
@@ -4346,6 +4447,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._joint_create)
 	case "_joint_clear":
 		return reflect.ValueOf(self._joint_clear)
+	case "_joint_set_enabled":
+		return reflect.ValueOf(self._joint_set_enabled)
+	case "_joint_is_enabled":
+		return reflect.ValueOf(self._joint_is_enabled)
 	case "_joint_make_pin":
 		return reflect.ValueOf(self._joint_make_pin)
 	case "_pin_joint_set_param":
@@ -4424,6 +4529,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_flushing_queries)
 	case "_get_process_info":
 		return reflect.ValueOf(self._get_process_info)
+	case "_space_get_last_process_info":
+		return reflect.ValueOf(self._space_get_last_process_info)
 	default:
 		return reflect.Value{}
 	}
@@ -4471,6 +4578,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._space_set_active)
 	case "_space_is_active":
 		return reflect.ValueOf(self._space_is_active)
+	case "_space_step":
+		return reflect.ValueOf(self._space_step)
+	case "_space_flush_queries":
+		return reflect.ValueOf(self._space_flush_queries)
 	case "_space_set_param":
 		return reflect.ValueOf(self._space_set_param)
 	case "_space_get_param":
@@ -4729,6 +4840,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._joint_create)
 	case "_joint_clear":
 		return reflect.ValueOf(self._joint_clear)
+	case "_joint_set_enabled":
+		return reflect.ValueOf(self._joint_set_enabled)
+	case "_joint_is_enabled":
+		return reflect.ValueOf(self._joint_is_enabled)
 	case "_joint_make_pin":
 		return reflect.ValueOf(self._joint_make_pin)
 	case "_pin_joint_set_param":
@@ -4807,6 +4922,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._is_flushing_queries)
 	case "_get_process_info":
 		return reflect.ValueOf(self._get_process_info)
+	case "_space_get_last_process_info":
+		return reflect.ValueOf(self._space_get_last_process_info)
 	default:
 		return reflect.Value{}
 	}

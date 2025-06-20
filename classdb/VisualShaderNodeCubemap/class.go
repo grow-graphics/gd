@@ -13,8 +13,8 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/classdb/Cubemap"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/classdb/TextureLayered"
 import "graphics.gd/classdb/VisualShaderNode"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -109,11 +109,11 @@ func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
-func (self Instance) CubeMap() TextureLayered.Instance {
-	return TextureLayered.Instance(class(self).GetCubeMap())
+func (self Instance) CubeMap() Cubemap.Instance {
+	return Cubemap.Instance(class(self).GetCubeMap())
 }
 
-func (self Instance) SetCubeMap(value TextureLayered.Instance) {
+func (self Instance) SetCubeMap(value Cubemap.Instance) {
 	class(self).SetCubeMap(value)
 }
 
@@ -145,7 +145,7 @@ func (self class) GetSource() Source { //gd:VisualShaderNodeCubemap.get_source
 }
 
 //go:nosplit
-func (self class) SetCubeMap(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeCubemap.set_cube_map
+func (self class) SetCubeMap(value [1]gdclass.Cubemap) { //gd:VisualShaderNodeCubemap.set_cube_map
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(value[0])[0])
 	var r_ret = callframe.Nil
@@ -154,11 +154,11 @@ func (self class) SetCubeMap(value [1]gdclass.TextureLayered) { //gd:VisualShade
 }
 
 //go:nosplit
-func (self class) GetCubeMap() [1]gdclass.TextureLayered { //gd:VisualShaderNodeCubemap.get_cube_map
+func (self class) GetCubeMap() [1]gdclass.Cubemap { //gd:VisualShaderNodeCubemap.get_cube_map
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.VisualShaderNodeCubemap.Bind_get_cube_map, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret.Get())}
+	var ret = [1]gdclass.Cubemap{gd.PointerWithOwnershipTransferredToGo[gdclass.Cubemap](r_ret.Get())}
 	frame.Free()
 	return ret
 }

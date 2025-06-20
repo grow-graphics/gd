@@ -89,7 +89,7 @@ func _ready():
 	# Perform a POST request. The URL below returns JSON as of writing.
 	# Note: Don't make simultaneous requests using a single HTTPRequest node.
 	# The snippet below is provided for reference only.
-	var body = JSON.new().stringify({"name": "Godette"})
+	var body = JSON.new().stringify({"name": "Blazia"})
 	error = http_request.request("https://httpbin.org/post", [], HTTPClient.METHOD_POST, body)
 	if error != OK:
 	    push_error("An error occurred in the HTTP request.")
@@ -126,7 +126,7 @@ public override void _Ready()
 	    // The snippet below is provided for reference only.
 	    string body = new Json().Stringify(new Godot.Collections.Dictionary
 	    {
-	        { "name", "Godette" }
+	        { "name", "Blazia" }
 	    });
 	    error = httpRequest.Request("https://httpbin.org/post", null, HttpClient.Method.Post, body);
 	    if (error != Error.Ok)

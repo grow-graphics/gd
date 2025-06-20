@@ -167,28 +167,9 @@ func (self Instance) TextureUpdate(texture RID.Texture, layer int, data []byte) 
 Returns the [param texture] data for the specified [param layer] as raw binary data. For 2D textures (which only have one layer), [param layer] must be [code]0[/code].
 [b]Note:[/b] [param texture] can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to retrieve this texture. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
 [b]Note:[/b] [param texture] requires the [constant TEXTURE_USAGE_CAN_COPY_FROM_BIT] to be retrieved. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
-[b]Note:[/b] This method will block the GPU from working until the data is retrieved. Refer to [method texture_get_data_async] for an alternative that returns the data in more performant way.
 */
 func (self Instance) TextureGetData(texture RID.Texture, layer int) []byte { //gd:RenderingDevice.texture_get_data
 	return []byte(Advanced(self).TextureGetData(RID.Any(texture), int64(layer)).Bytes())
-}
-
-/*
-Asynchronous version of [method texture_get_data]. RenderingDevice will call [param callback] in a certain amount of frames with the data the texture had at the time of the request.
-[b]Note:[/b] At the moment, the delay corresponds to the amount of frames specified by [member ProjectSettings.rendering/rendering_device/vsync/frame_queue_size].
-[b]Note:[/b] Downloading large textures can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [member ProjectSettings.rendering/rendering_device/staging_buffer/texture_download_region_size_px] and [member ProjectSettings.rendering/rendering_device/staging_buffer/block_size_kb] to improve the transfer speed at the cost of extra memory.
-[codeblock]
-func _texture_get_data_callback(array):
-
-	value = array.decode_u32(0)
-
-...
-
-rd.texture_get_data_async(texture, 0, _texture_get_data_callback)
-[/codeblock]
-*/
-func (self Instance) TextureGetDataAsync(texture RID.Texture, layer int, callback func(data []byte)) error { //gd:RenderingDevice.texture_get_data_async
-	return error(gd.ToError(Advanced(self).TextureGetDataAsync(RID.Any(texture), int64(layer), Callable.New(callback))))
 }
 
 /*
@@ -210,22 +191,6 @@ Returns [code]true[/code] if the [param texture] is valid, [code]false[/code] ot
 */
 func (self Instance) TextureIsValid(texture RID.Texture) bool { //gd:RenderingDevice.texture_is_valid
 	return bool(Advanced(self).TextureIsValid(RID.Any(texture)))
-}
-
-/*
-Updates the discardable property of [param texture].
-If a texture is discardable, its contents do not need to be preserved between frames. This flag is only relevant when the texture is used as target in a draw list.
-This information is used by [RenderingDevice] to figure out if a texture's contents can be discarded, eliminating unnecessary writes to memory and boosting performance.
-*/
-func (self Instance) TextureSetDiscardable(texture RID.Texture, discardable bool) { //gd:RenderingDevice.texture_set_discardable
-	Advanced(self).TextureSetDiscardable(RID.Any(texture), discardable)
-}
-
-/*
-Returns [code]true[/code] if the [param texture] is discardable, [code]false[/code] otherwise. See [RDTextureFormat] or [method texture_set_discardable].
-*/
-func (self Instance) TextureIsDiscardable(texture RID.Texture) bool { //gd:RenderingDevice.texture_is_discardable
-	return bool(Advanced(self).TextureIsDiscardable(RID.Any(texture)))
 }
 
 /*
@@ -417,15 +382,15 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) VertexBufferCreate(size_bytes int) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
+	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), false))
 }
 
 /*
 It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) VertexBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits))
+func (self Expanded) VertexBufferCreate(size_bytes int, data []byte, use_as_storage bool) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
+	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), use_as_storage))
 }
 
 /*
@@ -454,15 +419,15 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false, 0))
+	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false))
 }
 
 /*
 Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat, data []byte, use_restart_indices bool, creation_bits Rendering.BufferCreationBits) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New(data...)), use_restart_indices, creation_bits))
+func (self Expanded) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat, data []byte, use_restart_indices bool) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
+	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New(data...)), use_restart_indices))
 }
 
 /*
@@ -556,15 +521,15 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) UniformBufferCreate(size_bytes int) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
+	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...))))
 }
 
 /*
 Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) UniformBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits))
+func (self Expanded) UniformBufferCreate(size_bytes int, data []byte) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
+	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...))))
 }
 
 /*
@@ -572,15 +537,15 @@ Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffe
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 func (self Instance) StorageBufferCreate(size_bytes int) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0, 0))
+	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
 }
 
 /*
 Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffer[/url] with the specified [param data] and [param usage]. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
-func (self Expanded) StorageBufferCreate(size_bytes int, data []byte, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), usage, creation_bits))
+func (self Expanded) StorageBufferCreate(size_bytes int, data []byte, usage Rendering.StorageBufferUsage) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
+	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), usage))
 }
 
 /*
@@ -650,7 +615,6 @@ func (self Instance) BufferClear(buffer RID.Buffer, offset int, size_bytes int) 
 
 /*
 Returns a copy of the data of the specified [param buffer], optionally [param offset_bytes] and [param size_bytes] can be set to copy only a portion of the buffer.
-[b]Note:[/b] This method will block the GPU from working until the data is retrieved. Refer to [method buffer_get_data_async] for an alternative that returns the data in more performant way.
 */
 func (self Instance) BufferGetData(buffer RID.Buffer) []byte { //gd:RenderingDevice.buffer_get_data
 	return []byte(Advanced(self).BufferGetData(RID.Any(buffer), int64(0), int64(0)).Bytes())
@@ -658,54 +622,9 @@ func (self Instance) BufferGetData(buffer RID.Buffer) []byte { //gd:RenderingDev
 
 /*
 Returns a copy of the data of the specified [param buffer], optionally [param offset_bytes] and [param size_bytes] can be set to copy only a portion of the buffer.
-[b]Note:[/b] This method will block the GPU from working until the data is retrieved. Refer to [method buffer_get_data_async] for an alternative that returns the data in more performant way.
 */
 func (self Expanded) BufferGetData(buffer RID.Buffer, offset_bytes int, size_bytes int) []byte { //gd:RenderingDevice.buffer_get_data
 	return []byte(Advanced(self).BufferGetData(RID.Any(buffer), int64(offset_bytes), int64(size_bytes)).Bytes())
-}
-
-/*
-Asynchronous version of [method buffer_get_data]. RenderingDevice will call [param callback] in a certain amount of frames with the data the buffer had at the time of the request.
-[b]Note:[/b] At the moment, the delay corresponds to the amount of frames specified by [member ProjectSettings.rendering/rendering_device/vsync/frame_queue_size].
-[b]Note:[/b] Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [member ProjectSettings.rendering/rendering_device/staging_buffer/block_size_kb] to improve the transfer speed at the cost of extra memory.
-[codeblock]
-func _buffer_get_data_callback(array):
-
-	value = array.decode_u32(0)
-
-...
-
-rd.buffer_get_data_async(buffer, _buffer_get_data_callback)
-[/codeblock]
-*/
-func (self Instance) BufferGetDataAsync(buffer RID.Buffer, callback func(data []byte)) error { //gd:RenderingDevice.buffer_get_data_async
-	return error(gd.ToError(Advanced(self).BufferGetDataAsync(RID.Any(buffer), Callable.New(callback), int64(0), int64(0))))
-}
-
-/*
-Asynchronous version of [method buffer_get_data]. RenderingDevice will call [param callback] in a certain amount of frames with the data the buffer had at the time of the request.
-[b]Note:[/b] At the moment, the delay corresponds to the amount of frames specified by [member ProjectSettings.rendering/rendering_device/vsync/frame_queue_size].
-[b]Note:[/b] Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [member ProjectSettings.rendering/rendering_device/staging_buffer/block_size_kb] to improve the transfer speed at the cost of extra memory.
-[codeblock]
-func _buffer_get_data_callback(array):
-
-	value = array.decode_u32(0)
-
-...
-
-rd.buffer_get_data_async(buffer, _buffer_get_data_callback)
-[/codeblock]
-*/
-func (self Expanded) BufferGetDataAsync(buffer RID.Buffer, callback func(data []byte), offset_bytes int, size_bytes int) error { //gd:RenderingDevice.buffer_get_data_async
-	return error(gd.ToError(Advanced(self).BufferGetDataAsync(RID.Any(buffer), Callable.New(callback), int64(offset_bytes), int64(size_bytes))))
-}
-
-/*
-Returns the address of the given [param buffer] which can be passed to shaders in any way to access underlying data. Buffer must have been created with this feature enabled.
-[b]Note:[/b] You must check that the GPU supports this functionality by calling [method has_feature] with [constant SUPPORTS_BUFFER_DEVICE_ADDRESS] as a parameter.
-*/
-func (self Instance) BufferGetDeviceAddress(buffer RID.Buffer) int { //gd:RenderingDevice.buffer_get_device_address
-	return int(int(Advanced(self).BufferGetDeviceAddress(RID.Any(buffer))))
 }
 
 /*
@@ -825,7 +744,7 @@ A simple drawing operation might look like this (code is not a complete example)
 [codeblock]
 var rd = RenderingDevice.new()
 var clear_colors = PackedColorArray([Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0)])
-var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS)
+var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_READ, RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_DISCARD, clear_colors)
 
 # Draw opaque.
 rd.draw_list_bind_render_pipeline(draw_list, raster_pipeline)
@@ -840,15 +759,9 @@ rd.draw_list_draw(draw_list, false, 1, slice_triangle_count[i] * 3)
 
 rd.draw_list_end()
 [/codeblock]
-The [param draw_flags] indicates if the texture attachments of the framebuffer should be cleared or ignored. Only one of the two flags can be used for each individual attachment. Ignoring an attachment means that any contents that existed before the draw list will be completely discarded, reducing the memory bandwidth used by the render pass but producing garbage results if the pixels aren't replaced. The default behavior allows the engine to figure out the right operation to use if the texture is discardable, which can result in increased performance. See [RDTextureFormat] or [method texture_set_discardable].
-The [param breadcrumb] parameter can be an arbitrary 32-bit integer that is useful to diagnose GPU crashes. If Godot is built in dev or debug mode; when the GPU crashes Godot will dump all shaders that were being executed at the time of the crash and the breadcrumb is useful to diagnose what passes did those shaders belong to.
-It does not affect rendering behavior and can be set to 0. It is recommended to use [enum BreadcrumbMarker] enumerations for consistency but it's not required. It is also possible to use bitwise operations to add extra data. e.g.
-[codeblock]
-rd.draw_list_begin(fb[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS | 5)
-[/codeblock]
 */
-func (self Instance) DrawListBegin(framebuffer RID.Framebuffer) int { //gd:RenderingDevice.draw_list_begin
-	return int(int(Advanced(self).DrawListBegin(RID.Any(framebuffer), 0, Packed.New([1][]Color.RGBA{}[0]...), float64(1.0), int64(0), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), int64(0))))
+func (self Instance) DrawListBegin(framebuffer RID.Framebuffer, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction) int { //gd:RenderingDevice.draw_list_begin
+	return int(int(Advanced(self).DrawListBegin(RID.Any(framebuffer), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New([1][]Color.RGBA{}[0]...), float64(1.0), int64(0), Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)))))
 }
 
 /*
@@ -858,7 +771,7 @@ A simple drawing operation might look like this (code is not a complete example)
 [codeblock]
 var rd = RenderingDevice.new()
 var clear_colors = PackedColorArray([Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0)])
-var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS)
+var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_READ, RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_DISCARD, clear_colors)
 
 # Draw opaque.
 rd.draw_list_bind_render_pipeline(draw_list, raster_pipeline)
@@ -873,15 +786,9 @@ rd.draw_list_draw(draw_list, false, 1, slice_triangle_count[i] * 3)
 
 rd.draw_list_end()
 [/codeblock]
-The [param draw_flags] indicates if the texture attachments of the framebuffer should be cleared or ignored. Only one of the two flags can be used for each individual attachment. Ignoring an attachment means that any contents that existed before the draw list will be completely discarded, reducing the memory bandwidth used by the render pass but producing garbage results if the pixels aren't replaced. The default behavior allows the engine to figure out the right operation to use if the texture is discardable, which can result in increased performance. See [RDTextureFormat] or [method texture_set_discardable].
-The [param breadcrumb] parameter can be an arbitrary 32-bit integer that is useful to diagnose GPU crashes. If Godot is built in dev or debug mode; when the GPU crashes Godot will dump all shaders that were being executed at the time of the crash and the breadcrumb is useful to diagnose what passes did those shaders belong to.
-It does not affect rendering behavior and can be set to 0. It is recommended to use [enum BreadcrumbMarker] enumerations for consistency but it's not required. It is also possible to use bitwise operations to add extra data. e.g.
-[codeblock]
-rd.draw_list_begin(fb[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS | 5)
-[/codeblock]
 */
-func (self Expanded) DrawListBegin(framebuffer RID.Framebuffer, draw_flags Rendering.DrawFlags, clear_color_values []Color.RGBA, clear_depth_value Float.X, clear_stencil_value int, region Rect2.PositionSize, breadcrumb int) int { //gd:RenderingDevice.draw_list_begin
-	return int(int(Advanced(self).DrawListBegin(RID.Any(framebuffer), draw_flags, Packed.New(clear_color_values...), float64(clear_depth_value), int64(clear_stencil_value), Rect2.PositionSize(region), int64(breadcrumb))))
+func (self Expanded) DrawListBegin(framebuffer RID.Framebuffer, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values []Color.RGBA, clear_depth Float.X, clear_stencil int, region Rect2.PositionSize) int { //gd:RenderingDevice.draw_list_begin
+	return int(int(Advanced(self).DrawListBegin(RID.Any(framebuffer), initial_color_action, final_color_action, initial_depth_action, final_depth_action, Packed.New(clear_color_values...), float64(clear_depth), int64(clear_stencil), Rect2.PositionSize(region))))
 }
 
 /*
@@ -952,20 +859,6 @@ Submits [param draw_list] for rendering on the GPU. This is the raster equivalen
 */
 func (self Expanded) DrawListDraw(draw_list int, use_indices bool, instances int, procedural_vertex_count int) { //gd:RenderingDevice.draw_list_draw
 	Advanced(self).DrawListDraw(int64(draw_list), use_indices, int64(instances), int64(procedural_vertex_count))
-}
-
-/*
-Submits [param draw_list] for rendering on the GPU with the given parameters stored in the [param buffer] at [param offset]. Parameters being integers: vertex count, instance count, first vertex, first instance. And when using indices: index count, instance count, first index, vertex offset, first instance. Buffer must have been created with [constant STORAGE_BUFFER_USAGE_DISPATCH_INDIRECT] flag.
-*/
-func (self Instance) DrawListDrawIndirect(draw_list int, use_indices bool, buffer RID.Buffer) { //gd:RenderingDevice.draw_list_draw_indirect
-	Advanced(self).DrawListDrawIndirect(int64(draw_list), use_indices, RID.Any(buffer), int64(0), int64(1), int64(0))
-}
-
-/*
-Submits [param draw_list] for rendering on the GPU with the given parameters stored in the [param buffer] at [param offset]. Parameters being integers: vertex count, instance count, first vertex, first instance. And when using indices: index count, instance count, first index, vertex offset, first instance. Buffer must have been created with [constant STORAGE_BUFFER_USAGE_DISPATCH_INDIRECT] flag.
-*/
-func (self Expanded) DrawListDrawIndirect(draw_list int, use_indices bool, buffer RID.Buffer, offset int, draw_count int, stride int) { //gd:RenderingDevice.draw_list_draw_indirect
-	Advanced(self).DrawListDrawIndirect(int64(draw_list), use_indices, RID.Any(buffer), int64(offset), int64(draw_count), int64(stride))
 }
 
 /*
@@ -1136,13 +1029,6 @@ func (self Instance) GetCapturedTimestampName(index int) string { //gd:Rendering
 }
 
 /*
-Returns [code]true[/code] if the [param feature] is supported by the GPU.
-*/
-func (self Instance) HasFeature(feature Rendering.Features) bool { //gd:RenderingDevice.has_feature
-	return bool(Advanced(self).HasFeature(feature))
-}
-
-/*
 Returns the value of the specified [param limit]. This limit varies depending on the current graphics hardware (and sometimes the driver version). If the given limit is exceeded, rendering errors will occur.
 Limits for various graphics hardware can be found in the [url=https://vulkan.gpuinfo.org/]Vulkan Hardware Database[/url].
 */
@@ -1268,121 +1154,6 @@ func (self Instance) GetDriverResource(resource Rendering.DriverResource, rid RI
 	return int(int(Advanced(self).GetDriverResource(resource, RID.Any(rid), int64(index))))
 }
 
-/*
-Returns a string with a performance report from the past frame. Updates every frame.
-*/
-func (self Instance) GetPerfReport() string { //gd:RenderingDevice.get_perf_report
-	return string(Advanced(self).GetPerfReport().String())
-}
-
-/*
-Returns string report in CSV format using the following methods:
-- [method get_tracked_object_name]
-- [method get_tracked_object_type_count]
-- [method get_driver_total_memory]
-- [method get_driver_allocation_count]
-- [method get_driver_memory_by_object_type]
-- [method get_driver_allocs_by_object_type]
-- [method get_device_total_memory]
-- [method get_device_allocation_count]
-- [method get_device_memory_by_object_type]
-- [method get_device_allocs_by_object_type]
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-func (self Instance) GetDriverAndDeviceMemoryReport() string { //gd:RenderingDevice.get_driver_and_device_memory_report
-	return string(Advanced(self).GetDriverAndDeviceMemoryReport().String())
-}
-
-/*
-Returns the name of the type of object for the given [param type_index]. This value must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns the same string.
-The return value is important because it gives meaning to the types passed to [method get_driver_memory_by_object_type], [method get_driver_allocs_by_object_type], [method get_device_memory_by_object_type], and [method get_device_allocs_by_object_type]. Examples of strings it can return (not exhaustive):
-- DEVICE_MEMORY
-- PIPELINE_CACHE
-- SWAPCHAIN_KHR
-- COMMAND_POOL
-Thus if e.g. [code]get_tracked_object_name(5)[/code] returns "COMMAND_POOL", then [code]get_device_memory_by_object_type(5)[/code] returns the bytes used by the GPU for command pools.
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-func (self Instance) GetTrackedObjectName(type_index int) string { //gd:RenderingDevice.get_tracked_object_name
-	return string(Advanced(self).GetTrackedObjectName(int64(type_index)).String())
-}
-
-/*
-Returns how many types of trackable objects are.
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-func (self Instance) GetTrackedObjectTypeCount() int { //gd:RenderingDevice.get_tracked_object_type_count
-	return int(int(Advanced(self).GetTrackedObjectTypeCount()))
-}
-
-/*
-Returns how much bytes the GPU driver is using for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDriverTotalMemory() int { //gd:RenderingDevice.get_driver_total_memory
-	return int(int(Advanced(self).GetDriverTotalMemory()))
-}
-
-/*
-Returns how many allocations the GPU driver has performed for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDriverAllocationCount() int { //gd:RenderingDevice.get_driver_allocation_count
-	return int(int(Advanced(self).GetDriverAllocationCount()))
-}
-
-/*
-Same as [method get_driver_total_memory] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDriverMemoryByObjectType(atype int) int { //gd:RenderingDevice.get_driver_memory_by_object_type
-	return int(int(Advanced(self).GetDriverMemoryByObjectType(int64(atype))))
-}
-
-/*
-Same as [method get_driver_allocation_count] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDriverAllocsByObjectType(atype int) int { //gd:RenderingDevice.get_driver_allocs_by_object_type
-	return int(int(Advanced(self).GetDriverAllocsByObjectType(int64(atype))))
-}
-
-/*
-Returns how much bytes the GPU is using.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDeviceTotalMemory() int { //gd:RenderingDevice.get_device_total_memory
-	return int(int(Advanced(self).GetDeviceTotalMemory()))
-}
-
-/*
-Returns how many allocations the GPU has performed for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDeviceAllocationCount() int { //gd:RenderingDevice.get_device_allocation_count
-	return int(int(Advanced(self).GetDeviceAllocationCount()))
-}
-
-/*
-Same as [method get_device_total_memory] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDeviceMemoryByObjectType(atype int) int { //gd:RenderingDevice.get_device_memory_by_object_type
-	return int(int(Advanced(self).GetDeviceMemoryByObjectType(int64(atype))))
-}
-
-/*
-Same as [method get_device_allocation_count] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-func (self Instance) GetDeviceAllocsByObjectType(atype int) int { //gd:RenderingDevice.get_device_allocs_by_object_type
-	return int(int(Advanced(self).GetDeviceAllocsByObjectType(int64(atype))))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.RenderingDevice
@@ -1501,7 +1272,6 @@ func (self class) TextureUpdate(texture RID.Any, layer int64, data Packed.Bytes)
 Returns the [param texture] data for the specified [param layer] as raw binary data. For 2D textures (which only have one layer), [param layer] must be [code]0[/code].
 [b]Note:[/b] [param texture] can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [constant FINAL_ACTION_CONTINUE]) to retrieve this texture. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
 [b]Note:[/b] [param texture] requires the [constant TEXTURE_USAGE_CAN_COPY_FROM_BIT] to be retrieved. Otherwise, an error is printed and a empty [PackedByteArray] is returned.
-[b]Note:[/b] This method will block the GPU from working until the data is retrieved. Refer to [method texture_get_data_async] for an alternative that returns the data in more performant way.
 */
 //go:nosplit
 func (self class) TextureGetData(texture RID.Any, layer int64) Packed.Bytes { //gd:RenderingDevice.texture_get_data
@@ -1511,32 +1281,6 @@ func (self class) TextureGetData(texture RID.Any, layer int64) Packed.Bytes { //
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
-	return ret
-}
-
-/*
-Asynchronous version of [method texture_get_data]. RenderingDevice will call [param callback] in a certain amount of frames with the data the texture had at the time of the request.
-[b]Note:[/b] At the moment, the delay corresponds to the amount of frames specified by [member ProjectSettings.rendering/rendering_device/vsync/frame_queue_size].
-[b]Note:[/b] Downloading large textures can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [member ProjectSettings.rendering/rendering_device/staging_buffer/texture_download_region_size_px] and [member ProjectSettings.rendering/rendering_device/staging_buffer/block_size_kb] to improve the transfer speed at the cost of extra memory.
-[codeblock]
-func _texture_get_data_callback(array):
-    value = array.decode_u32(0)
-
-...
-
-rd.texture_get_data_async(texture, 0, _texture_get_data_callback)
-[/codeblock]
-*/
-//go:nosplit
-func (self class) TextureGetDataAsync(texture RID.Any, layer int64, callback Callable.Function) Error.Code { //gd:RenderingDevice.texture_get_data_async
-	var frame = callframe.New()
-	callframe.Arg(frame, texture)
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_get_data_async, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
 	frame.Free()
 	return ret
 }
@@ -1579,35 +1323,6 @@ func (self class) TextureIsValid(texture RID.Any) bool { //gd:RenderingDevice.te
 	callframe.Arg(frame, texture)
 	var r_ret = callframe.Ret[bool](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_is_valid, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Updates the discardable property of [param texture].
-If a texture is discardable, its contents do not need to be preserved between frames. This flag is only relevant when the texture is used as target in a draw list.
-This information is used by [RenderingDevice] to figure out if a texture's contents can be discarded, eliminating unnecessary writes to memory and boosting performance.
-*/
-//go:nosplit
-func (self class) TextureSetDiscardable(texture RID.Any, discardable bool) { //gd:RenderingDevice.texture_set_discardable
-	var frame = callframe.New()
-	callframe.Arg(frame, texture)
-	callframe.Arg(frame, discardable)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_set_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Returns [code]true[/code] if the [param texture] is discardable, [code]false[/code] otherwise. See [RDTextureFormat] or [method texture_set_discardable].
-*/
-//go:nosplit
-func (self class) TextureIsDiscardable(texture RID.Any) bool { //gd:RenderingDevice.texture_is_discardable
-	var frame = callframe.New()
-	callframe.Arg(frame, texture)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_texture_is_discardable, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret
@@ -1887,11 +1602,11 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) VertexBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.vertex_buffer_create
+func (self class) VertexBufferCreate(size_bytes int64, data Packed.Bytes, use_as_storage bool) RID.Any { //gd:RenderingDevice.vertex_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	callframe.Arg(frame, creation_bits)
+	callframe.Arg(frame, use_as_storage)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_vertex_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -1935,13 +1650,12 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) IndexBufferCreate(size_indices int64, format Rendering.IndexBufferFormat, data Packed.Bytes, use_restart_indices bool, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.index_buffer_create
+func (self class) IndexBufferCreate(size_indices int64, format Rendering.IndexBufferFormat, data Packed.Bytes, use_restart_indices bool) RID.Any { //gd:RenderingDevice.index_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_indices)
 	callframe.Arg(frame, format)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, use_restart_indices)
-	callframe.Arg(frame, creation_bits)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_index_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2062,11 +1776,10 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) UniformBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.uniform_buffer_create
+func (self class) UniformBufferCreate(size_bytes int64, data Packed.Bytes) RID.Any { //gd:RenderingDevice.uniform_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
-	callframe.Arg(frame, creation_bits)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_uniform_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2079,12 +1792,11 @@ Creates a [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffe
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [method free_rid] method.
 */
 //go:nosplit
-func (self class) StorageBufferCreate(size_bytes int64, data Packed.Bytes, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.storage_buffer_create
+func (self class) StorageBufferCreate(size_bytes int64, data Packed.Bytes, usage Rendering.StorageBufferUsage) RID.Any { //gd:RenderingDevice.storage_buffer_create
 	var frame = callframe.New()
 	callframe.Arg(frame, size_bytes)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))
 	callframe.Arg(frame, usage)
-	callframe.Arg(frame, creation_bits)
 	var r_ret = callframe.Ret[RID.Any](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_storage_buffer_create, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2206,7 +1918,6 @@ func (self class) BufferClear(buffer RID.Any, offset int64, size_bytes int64) Er
 
 /*
 Returns a copy of the data of the specified [param buffer], optionally [param offset_bytes] and [param size_bytes] can be set to copy only a portion of the buffer.
-[b]Note:[/b] This method will block the GPU from working until the data is retrieved. Refer to [method buffer_get_data_async] for an alternative that returns the data in more performant way.
 */
 //go:nosplit
 func (self class) BufferGetData(buffer RID.Any, offset_bytes int64, size_bytes int64) Packed.Bytes { //gd:RenderingDevice.buffer_get_data
@@ -2217,48 +1928,6 @@ func (self class) BufferGetData(buffer RID.Any, offset_bytes int64, size_bytes i
 	var r_ret = callframe.Ret[gd.PackedPointers](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_get_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.New[gd.PackedByteArray](r_ret.Get()))))
-	frame.Free()
-	return ret
-}
-
-/*
-Asynchronous version of [method buffer_get_data]. RenderingDevice will call [param callback] in a certain amount of frames with the data the buffer had at the time of the request.
-[b]Note:[/b] At the moment, the delay corresponds to the amount of frames specified by [member ProjectSettings.rendering/rendering_device/vsync/frame_queue_size].
-[b]Note:[/b] Downloading large buffers can have a prohibitive cost for real-time even when using the asynchronous method due to hardware bandwidth limitations. When dealing with large resources, you can adjust settings such as [member ProjectSettings.rendering/rendering_device/staging_buffer/block_size_kb] to improve the transfer speed at the cost of extra memory.
-[codeblock]
-func _buffer_get_data_callback(array):
-    value = array.decode_u32(0)
-
-...
-
-rd.buffer_get_data_async(buffer, _buffer_get_data_callback)
-[/codeblock]
-*/
-//go:nosplit
-func (self class) BufferGetDataAsync(buffer RID.Any, callback Callable.Function, offset_bytes int64, size_bytes int64) Error.Code { //gd:RenderingDevice.buffer_get_data_async
-	var frame = callframe.New()
-	callframe.Arg(frame, buffer)
-	callframe.Arg(frame, pointers.Get(gd.InternalCallable(callback)))
-	callframe.Arg(frame, offset_bytes)
-	callframe.Arg(frame, size_bytes)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_get_data_async, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = Error.Code(r_ret.Get())
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the address of the given [param buffer] which can be passed to shaders in any way to access underlying data. Buffer must have been created with this feature enabled.
-[b]Note:[/b] You must check that the GPU supports this functionality by calling [method has_feature] with [constant SUPPORTS_BUFFER_DEVICE_ADDRESS] as a parameter.
-*/
-//go:nosplit
-func (self class) BufferGetDeviceAddress(buffer RID.Any) int64 { //gd:RenderingDevice.buffer_get_device_address
-	var frame = callframe.New()
-	callframe.Arg(frame, buffer)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_buffer_get_device_address, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }
@@ -2400,7 +2069,7 @@ A simple drawing operation might look like this (code is not a complete example)
 [codeblock]
 var rd = RenderingDevice.new()
 var clear_colors = PackedColorArray([Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 0)])
-var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS)
+var draw_list = rd.draw_list_begin(framebuffers[i], RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_READ, RenderingDevice.INITIAL_ACTION_CLEAR, RenderingDevice.FINAL_ACTION_DISCARD, clear_colors)
 
 # Draw opaque.
 rd.draw_list_bind_render_pipeline(draw_list, raster_pipeline)
@@ -2415,23 +2084,19 @@ rd.draw_list_draw(draw_list, false, 1, slice_triangle_count[i] * 3)
 
 rd.draw_list_end()
 [/codeblock]
-The [param draw_flags] indicates if the texture attachments of the framebuffer should be cleared or ignored. Only one of the two flags can be used for each individual attachment. Ignoring an attachment means that any contents that existed before the draw list will be completely discarded, reducing the memory bandwidth used by the render pass but producing garbage results if the pixels aren't replaced. The default behavior allows the engine to figure out the right operation to use if the texture is discardable, which can result in increased performance. See [RDTextureFormat] or [method texture_set_discardable].
-The [param breadcrumb] parameter can be an arbitrary 32-bit integer that is useful to diagnose GPU crashes. If Godot is built in dev or debug mode; when the GPU crashes Godot will dump all shaders that were being executed at the time of the crash and the breadcrumb is useful to diagnose what passes did those shaders belong to.
-It does not affect rendering behavior and can be set to 0. It is recommended to use [enum BreadcrumbMarker] enumerations for consistency but it's not required. It is also possible to use bitwise operations to add extra data. e.g.
-[codeblock]
-rd.draw_list_begin(fb[i], RenderingDevice.CLEAR_COLOR_ALL, clear_colors, true, 1.0f, true, 0, Rect2(), RenderingDevice.OPAQUE_PASS | 5)
-[/codeblock]
 */
 //go:nosplit
-func (self class) DrawListBegin(framebuffer RID.Any, draw_flags Rendering.DrawFlags, clear_color_values Packed.Array[Color.RGBA], clear_depth_value float64, clear_stencil_value int64, region Rect2.PositionSize, breadcrumb int64) int64 { //gd:RenderingDevice.draw_list_begin
+func (self class) DrawListBegin(framebuffer RID.Any, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values Packed.Array[Color.RGBA], clear_depth float64, clear_stencil int64, region Rect2.PositionSize) int64 { //gd:RenderingDevice.draw_list_begin
 	var frame = callframe.New()
 	callframe.Arg(frame, framebuffer)
-	callframe.Arg(frame, draw_flags)
+	callframe.Arg(frame, initial_color_action)
+	callframe.Arg(frame, final_color_action)
+	callframe.Arg(frame, initial_depth_action)
+	callframe.Arg(frame, final_depth_action)
 	callframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values)))
-	callframe.Arg(frame, clear_depth_value)
-	callframe.Arg(frame, clear_stencil_value)
+	callframe.Arg(frame, clear_depth)
+	callframe.Arg(frame, clear_stencil)
 	callframe.Arg(frame, region)
-	callframe.Arg(frame, breadcrumb)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_begin, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
@@ -2555,23 +2220,6 @@ func (self class) DrawListDraw(draw_list int64, use_indices bool, instances int6
 	callframe.Arg(frame, procedural_vertex_count)
 	var r_ret = callframe.Nil
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_draw, self.AsObject(), frame.Array(0), r_ret.Addr())
-	frame.Free()
-}
-
-/*
-Submits [param draw_list] for rendering on the GPU with the given parameters stored in the [param buffer] at [param offset]. Parameters being integers: vertex count, instance count, first vertex, first instance. And when using indices: index count, instance count, first index, vertex offset, first instance. Buffer must have been created with [constant STORAGE_BUFFER_USAGE_DISPATCH_INDIRECT] flag.
-*/
-//go:nosplit
-func (self class) DrawListDrawIndirect(draw_list int64, use_indices bool, buffer RID.Any, offset int64, draw_count int64, stride int64) { //gd:RenderingDevice.draw_list_draw_indirect
-	var frame = callframe.New()
-	callframe.Arg(frame, draw_list)
-	callframe.Arg(frame, use_indices)
-	callframe.Arg(frame, buffer)
-	callframe.Arg(frame, offset)
-	callframe.Arg(frame, draw_count)
-	callframe.Arg(frame, stride)
-	var r_ret = callframe.Nil
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_draw_list_draw_indirect, self.AsObject(), frame.Array(0), r_ret.Addr())
 	frame.Free()
 }
 
@@ -2855,20 +2503,6 @@ func (self class) GetCapturedTimestampName(index int64) String.Readable { //gd:R
 }
 
 /*
-Returns [code]true[/code] if the [param feature] is supported by the GPU.
-*/
-//go:nosplit
-func (self class) HasFeature(feature Rendering.Features) bool { //gd:RenderingDevice.has_feature
-	var frame = callframe.New()
-	callframe.Arg(frame, feature)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_has_feature, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
 Returns the value of the specified [param limit]. This limit varies depending on the current graphics hardware (and sometimes the driver version). If the given limit is exceeded, rendering errors will occur.
 Limits for various graphics hardware can be found in the [url=https://vulkan.gpuinfo.org/]Vulkan Hardware Database[/url].
 */
@@ -3075,198 +2709,6 @@ func (self class) GetDriverResource(resource Rendering.DriverResource, rid RID.A
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[int64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_resource, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns a string with a performance report from the past frame. Updates every frame.
-*/
-//go:nosplit
-func (self class) GetPerfReport() String.Readable { //gd:RenderingDevice.get_perf_report
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_perf_report, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
-Returns string report in CSV format using the following methods:
-- [method get_tracked_object_name]
-- [method get_tracked_object_type_count]
-- [method get_driver_total_memory]
-- [method get_driver_allocation_count]
-- [method get_driver_memory_by_object_type]
-- [method get_driver_allocs_by_object_type]
-- [method get_device_total_memory]
-- [method get_device_allocation_count]
-- [method get_device_memory_by_object_type]
-- [method get_device_allocs_by_object_type]
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-//go:nosplit
-func (self class) GetDriverAndDeviceMemoryReport() String.Readable { //gd:RenderingDevice.get_driver_and_device_memory_report
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_and_device_memory_report, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
-Returns the name of the type of object for the given [param type_index]. This value must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns the same string.
-The return value is important because it gives meaning to the types passed to [method get_driver_memory_by_object_type], [method get_driver_allocs_by_object_type], [method get_device_memory_by_object_type], and [method get_device_allocs_by_object_type]. Examples of strings it can return (not exhaustive):
-- DEVICE_MEMORY
-- PIPELINE_CACHE
-- SWAPCHAIN_KHR
-- COMMAND_POOL
-Thus if e.g. [code]get_tracked_object_name(5)[/code] returns "COMMAND_POOL", then [code]get_device_memory_by_object_type(5)[/code] returns the bytes used by the GPU for command pools.
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-//go:nosplit
-func (self class) GetTrackedObjectName(type_index int64) String.Readable { //gd:RenderingDevice.get_tracked_object_name
-	var frame = callframe.New()
-	callframe.Arg(frame, type_index)
-	var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_tracked_object_name, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret.Get())))
-	frame.Free()
-	return ret
-}
-
-/*
-Returns how many types of trackable objects are.
-This is only used by Vulkan in debug builds. Godot must also be started with the [code]--extra-gpu-memory-tracking[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
-*/
-//go:nosplit
-func (self class) GetTrackedObjectTypeCount() int64 { //gd:RenderingDevice.get_tracked_object_type_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_tracked_object_type_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns how much bytes the GPU driver is using for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDriverTotalMemory() int64 { //gd:RenderingDevice.get_driver_total_memory
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_total_memory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns how many allocations the GPU driver has performed for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDriverAllocationCount() int64 { //gd:RenderingDevice.get_driver_allocation_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_allocation_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Same as [method get_driver_total_memory] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDriverMemoryByObjectType(atype int64) int64 { //gd:RenderingDevice.get_driver_memory_by_object_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_memory_by_object_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Same as [method get_driver_allocation_count] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDriverAllocsByObjectType(atype int64) int64 { //gd:RenderingDevice.get_driver_allocs_by_object_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_driver_allocs_by_object_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns how much bytes the GPU is using.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDeviceTotalMemory() int64 { //gd:RenderingDevice.get_device_total_memory
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_total_memory, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns how many allocations the GPU has performed for internal driver structures.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDeviceAllocationCount() int64 { //gd:RenderingDevice.get_device_allocation_count
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_allocation_count, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Same as [method get_device_total_memory] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDeviceMemoryByObjectType(atype int64) int64 { //gd:RenderingDevice.get_device_memory_by_object_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_memory_by_object_type, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Same as [method get_device_allocation_count] but filtered for a given object type.
-The type argument must be in range [code][0; get_tracked_object_type_count - 1][/code]. If [method get_tracked_object_type_count] is 0, then type argument is ignored and always returns 0.
-This is only used by Vulkan in debug builds and can return 0 when this information is not tracked or unknown.
-*/
-//go:nosplit
-func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:RenderingDevice.get_device_allocs_by_object_type
-	var frame = callframe.New()
-	callframe.Arg(frame, atype)
-	var r_ret = callframe.Ret[int64](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.RenderingDevice.Bind_get_device_allocs_by_object_type, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

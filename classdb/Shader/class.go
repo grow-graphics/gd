@@ -14,7 +14,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/classdb/Resource"
-import "graphics.gd/classdb/Texture"
+import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -95,7 +95,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Instance) SetDefaultTextureParameter(name string, texture Texture.Instance) { //gd:Shader.set_default_texture_parameter
+func (self Instance) SetDefaultTextureParameter(name string, texture Texture2D.Instance) { //gd:Shader.set_default_texture_parameter
 	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(0))
 }
 
@@ -104,7 +104,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Expanded) SetDefaultTextureParameter(name string, texture Texture.Instance, index int) { //gd:Shader.set_default_texture_parameter
+func (self Expanded) SetDefaultTextureParameter(name string, texture Texture2D.Instance, index int) { //gd:Shader.set_default_texture_parameter
 	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(index))
 }
 
@@ -113,8 +113,8 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Instance) GetDefaultTextureParameter(name string) Texture.Instance { //gd:Shader.get_default_texture_parameter
-	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(0)))
+func (self Instance) GetDefaultTextureParameter(name string) Texture2D.Instance { //gd:Shader.get_default_texture_parameter
+	return Texture2D.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(0)))
 }
 
 /*
@@ -122,8 +122,8 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] [param name] must match the name of the uniform in the code exactly.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
-func (self Expanded) GetDefaultTextureParameter(name string, index int) Texture.Instance { //gd:Shader.get_default_texture_parameter
-	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(index)))
+func (self Expanded) GetDefaultTextureParameter(name string, index int) Texture2D.Instance { //gd:Shader.get_default_texture_parameter
+	return Texture2D.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(index)))
 }
 
 /*
@@ -215,7 +215,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture, index int64) { //gd:Shader.set_default_texture_parameter
+func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture2D, index int64) { //gd:Shader.set_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, pointers.Get(texture[0])[0])
@@ -231,13 +231,13 @@ Returns the texture that is set as default for the specified parameter.
 [b]Note:[/b] If the sampler array is used use [param index] to access the specified texture.
 */
 //go:nosplit
-func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
+func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]gdclass.Texture2D { //gd:Shader.get_default_texture_parameter
 	var frame = callframe.New()
 	callframe.Arg(frame, pointers.Get(gd.InternalStringName(name)))
 	callframe.Arg(frame, index)
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Shader.Bind_get_default_texture_parameter, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret.Get())}
+	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret.Get())}
 	frame.Free()
 	return ret
 }

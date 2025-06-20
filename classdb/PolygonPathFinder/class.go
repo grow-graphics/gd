@@ -89,15 +89,15 @@ polygon_path_finder.setup(points, connections)
 [/gdscript]
 [csharp]
 var polygonPathFinder = new PolygonPathFinder();
-Vector2[] points =
-[
+var points = new Vector2[]
 
-	new Vector2(0.0f, 0.0f),
-	new Vector2(1.0f, 0.0f),
-	new Vector2(0.0f, 1.0f)
+	{
+	    new Vector2(0.0f, 0.0f),
+	    new Vector2(1.0f, 0.0f),
+	    new Vector2(0.0f, 1.0f)
+	};
 
-];
-int[] connections = [0, 1, 1, 2, 2, 0];
+var connections = new int[] { 0, 1, 1, 2, 2, 0 };
 polygonPathFinder.Setup(points, connections);
 [/csharp]
 [/codeblocks]
@@ -128,15 +128,15 @@ print(polygon_path_finder.is_point_inside(Vector2(1.0, 1.0))) # Prints false
 [/gdscript]
 [csharp]
 var polygonPathFinder = new PolygonPathFinder();
-Vector2[] points =
-[
+var points = new Vector2[]
 
-	new Vector2(0.0f, 0.0f),
-	new Vector2(1.0f, 0.0f),
-	new Vector2(0.0f, 1.0f)
+	{
+	    new Vector2(0.0f, 0.0f),
+	    new Vector2(1.0f, 0.0f),
+	    new Vector2(0.0f, 1.0f)
+	};
 
-];
-int[] connections = [0, 1, 1, 2, 2, 0];
+var connections = new int[] { 0, 1, 1, 2, 2, 0 };
 polygonPathFinder.Setup(points, connections);
 GD.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
 GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False
@@ -188,13 +188,13 @@ polygon_path_finder.setup(points, connections)
 [/gdscript]
 [csharp]
 var polygonPathFinder = new PolygonPathFinder();
-Vector2[] points =
-[
+var points = new Vector2[]
+{
     new Vector2(0.0f, 0.0f),
     new Vector2(1.0f, 0.0f),
     new Vector2(0.0f, 1.0f)
-];
-int[] connections = [0, 1, 1, 2, 2, 0];
+};
+var connections = new int[] { 0, 1, 1, 2, 2, 0 };
 polygonPathFinder.Setup(points, connections);
 [/csharp]
 [/codeblocks]
@@ -257,13 +257,13 @@ print(polygon_path_finder.is_point_inside(Vector2(1.0, 1.0))) # Prints false
 [/gdscript]
 [csharp]
 var polygonPathFinder = new PolygonPathFinder();
-Vector2[] points =
-[
+var points = new Vector2[]
+{
     new Vector2(0.0f, 0.0f),
     new Vector2(1.0f, 0.0f),
     new Vector2(0.0f, 1.0f)
-];
-int[] connections = [0, 1, 1, 2, 2, 0];
+};
+var connections = new int[] { 0, 1, 1, 2, 2, 0 };
 polygonPathFinder.Setup(points, connections);
 GD.Print(polygonPathFinder.IsPointInside(new Vector2(0.2f, 0.2f))); // Prints True
 GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints False

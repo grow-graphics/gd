@@ -90,6 +90,14 @@ func GetPhysicsInterpolationFraction() Float.X { //gd:Engine.get_physics_interpo
 }
 
 /*
+Returns the tick count at the start of the frame.
+*/
+func GetFrameTicks() int { //gd:Engine.get_frame_ticks
+	once.Do(singleton)
+	return int(int(Advanced().GetFrameTicks()))
+}
+
+/*
 Returns the total number of frames drawn since the engine started.
 [b]Note:[/b] On headless platforms, or if rendering is disabled with [code]--disable-render-loop[/code] via command line, this method always returns [code]0[/code]. See also [method get_process_frames].
 */
@@ -632,6 +640,19 @@ func (self class) GetTimeScale() float64 { //gd:Engine.get_time_scale
 	var frame = callframe.New()
 	var r_ret = callframe.Ret[float64](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_time_scale, self.AsObject(), frame.Array(0), r_ret.Addr())
+	var ret = r_ret.Get()
+	frame.Free()
+	return ret
+}
+
+/*
+Returns the tick count at the start of the frame.
+*/
+//go:nosplit
+func (self class) GetFrameTicks() int64 { //gd:Engine.get_frame_ticks
+	var frame = callframe.New()
+	var r_ret = callframe.Ret[int64](frame)
+	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.Engine.Bind_get_frame_ticks, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = r_ret.Get()
 	frame.Free()
 	return ret

@@ -102,7 +102,7 @@ An [InputEvent] can then be added to this action with [method action_add_event].
 */
 func AddAction(action string) { //gd:InputMap.add_action
 	once.Do(singleton)
-	Advanced().AddAction(String.Name(String.New(action)), float64(0.2))
+	Advanced().AddAction(String.Name(String.New(action)), float64(0.5))
 }
 
 /*

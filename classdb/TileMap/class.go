@@ -464,48 +464,6 @@ func (self Expanded) GetCellTileData(layer int, coords Vector2i.XY, use_proxies 
 }
 
 /*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellFlippedH(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_flipped_h
-	return bool(Advanced(self).IsCellFlippedH(int64(layer), Vector2i.XY(coords), false))
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
-*/
-func (self Expanded) IsCellFlippedH(layer int, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_h
-	return bool(Advanced(self).IsCellFlippedH(int64(layer), Vector2i.XY(coords), use_proxies))
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellFlippedV(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_flipped_v
-	return bool(Advanced(self).IsCellFlippedV(int64(layer), Vector2i.XY(coords), false))
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
-*/
-func (self Expanded) IsCellFlippedV(layer int, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_v
-	return bool(Advanced(self).IsCellFlippedV(int64(layer), Vector2i.XY(coords), use_proxies))
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is transposed. The result is valid only for atlas sources.
-*/
-func (self Instance) IsCellTransposed(layer int, coords Vector2i.XY) bool { //gd:TileMap.is_cell_transposed
-	return bool(Advanced(self).IsCellTransposed(int64(layer), Vector2i.XY(coords), false))
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is transposed. The result is valid only for atlas sources.
-*/
-func (self Expanded) IsCellTransposed(layer int, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_transposed
-	return bool(Advanced(self).IsCellTransposed(int64(layer), Vector2i.XY(coords), use_proxies))
-}
-
-/*
 Returns the coordinates of the tile for given physics body RID. Such RID can be retrieved from [method KinematicCollision2D.get_collider_rid], when colliding with a tile.
 */
 func (self Instance) GetCoordsForBodyRid(body RID.Body2D) Vector2i.XY { //gd:TileMap.get_coords_for_body_rid
@@ -1321,54 +1279,6 @@ func (self class) GetCellTileData(layer int64, coords Vector2i.XY, use_proxies b
 	var r_ret = callframe.Ret[gd.EnginePointer](frame)
 	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_get_cell_tile_data, self.AsObject(), frame.Array(0), r_ret.Addr())
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret.Get())}
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped horizontally. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellFlippedH(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_h
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_h, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is flipped vertically. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellFlippedV(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_flipped_v
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_flipped_v, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
-}
-
-/*
-Returns [code]true[/code] if the cell on layer [param layer] at coordinates [param coords] is transposed. The result is valid only for atlas sources.
-*/
-//go:nosplit
-func (self class) IsCellTransposed(layer int64, coords Vector2i.XY, use_proxies bool) bool { //gd:TileMap.is_cell_transposed
-	var frame = callframe.New()
-	callframe.Arg(frame, layer)
-	callframe.Arg(frame, coords)
-	callframe.Arg(frame, use_proxies)
-	var r_ret = callframe.Ret[bool](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.TileMap.Bind_is_cell_transposed, self.AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = r_ret.Get()
 	frame.Free()
 	return ret
 }

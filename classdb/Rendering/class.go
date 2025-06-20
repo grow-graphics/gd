@@ -558,8 +558,22 @@ const (
 	DataFormatG16B16r162plane422Unorm DataFormat = 216
 	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
 	DataFormatG16B16R163plane444Unorm DataFormat = 217
+	DataFormatAstc4x4SfloatBlock      DataFormat = 218
+	DataFormatAstc5x4SfloatBlock      DataFormat = 219
+	DataFormatAstc5x5SfloatBlock      DataFormat = 220
+	DataFormatAstc6x5SfloatBlock      DataFormat = 221
+	DataFormatAstc6x6SfloatBlock      DataFormat = 222
+	DataFormatAstc8x5SfloatBlock      DataFormat = 223
+	DataFormatAstc8x6SfloatBlock      DataFormat = 224
+	DataFormatAstc8x8SfloatBlock      DataFormat = 225
+	DataFormatAstc10x5SfloatBlock     DataFormat = 226
+	DataFormatAstc10x6SfloatBlock     DataFormat = 227
+	DataFormatAstc10x8SfloatBlock     DataFormat = 228
+	DataFormatAstc10x10SfloatBlock    DataFormat = 229
+	DataFormatAstc12x10SfloatBlock    DataFormat = 230
+	DataFormatAstc12x12SfloatBlock    DataFormat = 231
 	/*Represents the size of the [enum DataFormat] enum.*/
-	DataFormatMax DataFormat = 218
+	DataFormatMax DataFormat = 232
 )
 
 type BarrierMask int //gd:RenderingDevice.BarrierMask
@@ -747,24 +761,6 @@ type StorageBufferUsage int //gd:RenderingDevice.StorageBufferUsage
 
 const (
 	StorageBufferUsageDispatchIndirect StorageBufferUsage = 1
-)
-
-type BufferCreationBits int //gd:RenderingDevice.BufferCreationBits
-
-const (
-	/*Optionally, set this flag if you wish to use [method buffer_get_device_address] functionality. You must first check the GPU supports it:
-	  [codeblocks]
-	  [gdscript]
-	  rd = RenderingServer.get_rendering_device()
-
-	  if rd.has_feature(RenderingDevice.SUPPORTS_BUFFER_DEVICE_ADDRESS):
-	        storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS):
-	        storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
-	  [/gdscript]
-	  [/codeblocks]*/
-	BufferCreationDeviceAddressBit BufferCreationBits = 1
-	/*Set this flag so that it is created as storage. This is useful if Compute Shaders need access (for reading or writing) to the buffer, e.g. skeletal animations are processed in Compute Shaders which need access to vertex buffers, to be later consumed by vertex shaders as part of the regular rasterization pipeline.*/
-	BufferCreationAsStorageBit BufferCreationBits = 2
 )
 
 type UniformType int //gd:RenderingDevice.UniformType
@@ -1087,13 +1083,6 @@ const (
 	PipelineSpecializationConstantTypeFloat PipelineSpecializationConstantType = 2
 )
 
-type Features int //gd:RenderingDevice.Features
-
-const (
-	/*Features support for buffer device address extension.*/
-	SupportsBufferDeviceAddress Features = 6
-)
-
 type Limit int //gd:RenderingDevice.Limit
 
 const (
@@ -1171,12 +1160,6 @@ const (
 	LimitMaxViewportDimensionsX Limit = 35
 	/*Maximum viewport height (in pixels).*/
 	LimitMaxViewportDimensionsY Limit = 36
-	/*Returns the smallest value for [member ProjectSettings.rendering/scaling_3d/scale] when using the MetalFX temporal upscaler.
-	  [b]Note:[/b] The returned value is multiplied by a factor of [code]1000000[/code] to preserve 6 digits of precision. It must be divided by [code]1000000.0[/code] to convert the value to a floating point number.*/
-	LimitMetalfxTemporalScalerMinScale Limit = 46
-	/*Returns the largest value for [member ProjectSettings.rendering/scaling_3d/scale] when using the MetalFX temporal upscaler.
-	  [b]Note:[/b] The returned value is multiplied by a factor of [code]1000000[/code] to preserve 6 digits of precision. It must be divided by [code]1000000.0[/code] to convert the value to a floating point number.*/
-	LimitMetalfxTemporalScalerMaxScale Limit = 47
 )
 
 type MemoryType int //gd:RenderingDevice.MemoryType
@@ -1188,81 +1171,4 @@ const (
 	MemoryBuffers MemoryType = 1
 	/*Total memory taken. This is greater than the sum of [constant MEMORY_TEXTURES] and [constant MEMORY_BUFFERS], as it also includes miscellaneous memory usage.*/
 	MemoryTotal MemoryType = 2
-)
-
-type BreadcrumbMarker int //gd:RenderingDevice.BreadcrumbMarker
-
-const (
-	None                  BreadcrumbMarker = 0
-	ReflectionProbes      BreadcrumbMarker = 65536
-	SkyPass               BreadcrumbMarker = 131072
-	LightmapperPass       BreadcrumbMarker = 196608
-	ShadowPassDirectional BreadcrumbMarker = 262144
-	ShadowPassCube        BreadcrumbMarker = 327680
-	OpaquePass            BreadcrumbMarker = 393216
-	AlphaPass             BreadcrumbMarker = 458752
-	TransparentPass       BreadcrumbMarker = 524288
-	PostProcessingPass    BreadcrumbMarker = 589824
-	BlitPass              BreadcrumbMarker = 655360
-	UiPass                BreadcrumbMarker = 720896
-	DebugPass             BreadcrumbMarker = 786432
-)
-
-type DrawFlags int //gd:RenderingDevice.DrawFlags
-
-const (
-	/*Do not clear or ignore any attachments.*/
-	DrawDefaultAll DrawFlags = 0
-	/*Clear the first color attachment.*/
-	DrawClearColor0 DrawFlags = 1
-	/*Clear the second color attachment.*/
-	DrawClearColor1 DrawFlags = 2
-	/*Clear the third color attachment.*/
-	DrawClearColor2 DrawFlags = 4
-	/*Clear the fourth color attachment.*/
-	DrawClearColor3 DrawFlags = 8
-	/*Clear the fifth color attachment.*/
-	DrawClearColor4 DrawFlags = 16
-	/*Clear the sixth color attachment.*/
-	DrawClearColor5 DrawFlags = 32
-	/*Clear the seventh color attachment.*/
-	DrawClearColor6 DrawFlags = 64
-	/*Clear the eighth color attachment.*/
-	DrawClearColor7 DrawFlags = 128
-	/*Mask for clearing all color attachments.*/
-	DrawClearColorMask DrawFlags = 255
-	/*Clear all color attachments.*/
-	DrawClearColorAll DrawFlags = 255
-	/*Ignore the previous contents of the first color attachment.*/
-	DrawIgnoreColor0 DrawFlags = 256
-	/*Ignore the previous contents of the second color attachment.*/
-	DrawIgnoreColor1 DrawFlags = 512
-	/*Ignore the previous contents of the third color attachment.*/
-	DrawIgnoreColor2 DrawFlags = 1024
-	/*Ignore the previous contents of the fourth color attachment.*/
-	DrawIgnoreColor3 DrawFlags = 2048
-	/*Ignore the previous contents of the fifth color attachment.*/
-	DrawIgnoreColor4 DrawFlags = 4096
-	/*Ignore the previous contents of the sixth color attachment.*/
-	DrawIgnoreColor5 DrawFlags = 8192
-	/*Ignore the previous contents of the seventh color attachment.*/
-	DrawIgnoreColor6 DrawFlags = 16384
-	/*Ignore the previous contents of the eighth color attachment.*/
-	DrawIgnoreColor7 DrawFlags = 32768
-	/*Mask for ignoring all the previous contents of the color attachments.*/
-	DrawIgnoreColorMask DrawFlags = 65280
-	/*Ignore the previous contents of all color attachments.*/
-	DrawIgnoreColorAll DrawFlags = 65280
-	/*Clear the depth attachment.*/
-	DrawClearDepth DrawFlags = 65536
-	/*Ignore the previous contents of the depth attachment.*/
-	DrawIgnoreDepth DrawFlags = 131072
-	/*Clear the stencil attachment.*/
-	DrawClearStencil DrawFlags = 262144
-	/*Ignore the previous contents of the stencil attachment.*/
-	DrawIgnoreStencil DrawFlags = 524288
-	/*Clear all attachments.*/
-	DrawClearAll DrawFlags = 327935
-	/*Ignore the previous contents of all attachments.*/
-	DrawIgnoreAll DrawFlags = 720640
 )
