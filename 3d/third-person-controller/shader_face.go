@@ -4,7 +4,6 @@ import (
 	"graphics.gd/shaders/float"
 	"graphics.gd/shaders/pipeline/Spatial"
 	"graphics.gd/shaders/rgb"
-	"graphics.gd/shaders/rgba"
 	"graphics.gd/shaders/swizzle"
 	"graphics.gd/shaders/texture"
 	"graphics.gd/shaders/vec2"
@@ -46,7 +45,7 @@ func (s *FaceShader) Material(frag Spatial.Fragment) Spatial.Material {
 	iris = rgb.Mul(iris, float.Sub(1.0, s.ScreenColor.A))
 	var fill = rgb.Mul(swizzle.RGB(s.ScreenColor), s.ScreenColor.A)
 	return Spatial.Material{
-		Albedo:    rgba.New(0.0, 0.0, 0.0, 1.0),
+		Albedo:    rgb.New(0.0, 0.0, 0.0),
 		Specular:  float.New(0.25),
 		Roughness: float.New(0.45),
 		Emission:  rgb.Mul(rgb.Mul(rgb.Add(iris, fill), grid), s.Intensity),

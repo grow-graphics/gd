@@ -24,6 +24,7 @@ func main() {
 	classdb.Register[DemoPlayer](NewDemoPlayer)
 	classdb.Register[CharacterSkin](NewCharacterSkin)
 	classdb.Register[GrenadeLauncher](NewGrenadeLauncher)
+	classdb.Register[FaceShader](NewFaceShader)
 	startup.LoadingScene()
 	SceneTree.Add(NewFullScreenHandler())
 	startup.Scene()
