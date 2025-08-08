@@ -459,7 +459,7 @@ func main() {
                       className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      <span>View Examples</span>
+                      <span>View Samples</span>
                     </a>
                     <a
                       href="https://docs.godotengine.org/en/latest/"
