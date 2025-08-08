@@ -796,12 +796,12 @@ func main() {
                   Documentation
                 </a>
                 <a
-                  href="https://github.com/grow-graphics/eg"
+                  href="https://github.com/quaadgras/graphics.gd/tree/samples"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-gray-300 hover:text-white transition-colors"
                 >
-                  Examples
+                  Samples
                 </a>
                 <a
                   href="https://docs.godotengine.org/en/latest/"
