@@ -459,7 +459,7 @@ func main() {
                       className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      <span>View Samples</span>
+                      <span>View Sample Projects</span>
                     </a>
                     <a
                       href="https://docs.godotengine.org/en/latest/"
@@ -801,7 +801,7 @@ func main() {
                   rel="noopener noreferrer"
                   className="block text-gray-300 hover:text-white transition-colors"
                 >
-                  Samples
+                  Sample Projects
                 </a>
                 <a
                   href="https://docs.godotengine.org/en/latest/"
