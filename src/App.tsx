@@ -453,7 +453,7 @@ func main() {
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <a
-                      href="https://github.com/quaadgras/graphics.gd"
+                      href="https://github.com/quaadgras/graphics.gd/tree/samples"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
