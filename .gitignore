@@ -7,3 +7,8 @@ go.work.sum
 /2d/hello_triangle/graphics/main.tscn
 *export_presets.cfg
 *library_documentation.xml
+extension_api.json
+package-lock.json
+dist
+node_modules
+internal/graphics

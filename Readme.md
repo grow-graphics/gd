@@ -1,4 +1,7 @@
-Grow Graphics Examples
-========================
+# graphics.gd samples
 
-Run `gd run` inside an example to launch an example.
+Want to play around with the sample projects?
+
+$ `git clone --single-branch --branch samples https://github.com/quaadgras/graphics.gd`
+
+Run `gd run` inside any example to launch it.
