@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6uru8lfx45ma"]
+[gd_scene load_steps=2 format=3 uid="uid://b6uru8lfx45ma"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 12.0

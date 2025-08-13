@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bpdyvy2681m3i"]
+[gd_scene load_steps=8 format=3 uid="uid://bpdyvy2681m3i"]
 
 [ext_resource type="Texture2D" uid="uid://eds33w28pilu" path="res://player/shadow.png" id="9"]
 [ext_resource type="Texture2D" uid="uid://ds53oxkqrcumd" path="res://player/body.png" id="10"]
@@ -25,9 +25,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vi1hn"]
 _data = {
-"idle": SubResource("1"),
-"stagger": SubResource("2"),
-"walk": SubResource("3")
+&"idle": SubResource("1"),
+&"stagger": SubResource("2"),
+&"walk": SubResource("3")
 }
 
 [node name="Player" type="FiniteStateMachinePlayer"]

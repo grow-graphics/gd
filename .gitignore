@@ -12,3 +12,5 @@ package-lock.json
 dist
 node_modules
 internal/graphics
+releases/
+**/graphics/.gitignore

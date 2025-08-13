@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cdacdp11r3jua"]
+[gd_scene load_steps=8 format=3 uid="uid://cdacdp11r3jua"]
 
 [ext_resource type="Texture2D" uid="uid://7cfjw83v5m75" path="res://player/weapon/sword.png" id="2"]
 
@@ -221,11 +221,11 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6cp3i"]
 _data = {
-"SETUP": SubResource("1"),
-"attack_circular": SubResource("2"),
-"attack_fast": SubResource("3"),
-"attack_medium": SubResource("4"),
-"idle": SubResource("5")
+&"SETUP": SubResource("1"),
+&"attack_circular": SubResource("2"),
+&"attack_fast": SubResource("3"),
+&"attack_medium": SubResource("4"),
+&"idle": SubResource("5")
 }
 
 [node name="Sword" type="FiniteStateMachineSword"]
@@ -233,7 +233,6 @@ collision_layer = 16
 collision_mask = 3
 input_pickable = false
 monitorable = false
-
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
