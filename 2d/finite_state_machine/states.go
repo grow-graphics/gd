@@ -1,12 +1,16 @@
 package main
 
 import (
+	"strconv"
+
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/CharacterBody2D"
 	"graphics.gd/classdb/CircleShape2D"
 	"graphics.gd/classdb/CollisionShape2D"
 	"graphics.gd/classdb/InputEvent"
 	"graphics.gd/classdb/KinematicCollision2D"
+	"graphics.gd/classdb/Label"
+	"graphics.gd/classdb/Panel"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/Shape2D"
 	"graphics.gd/startup"
@@ -104,9 +108,29 @@ func (b *Bullet) Draw() {
 	b.AsCanvasItem().DrawCircle(Vector2.Zero, circle.Radius(), Color.X11.White)
 }
 
+type StatesStackDisplayer struct {
+	Panel.Extension[StatesStackDisplayer] `gd:"StatesStackDisplayer"`
+
+	Player  *Player        `gd:"../../Player"`
+	States  Label.Instance `gd:"%States"`
+	Numbers Label.Instance `gd:"%Numbers"`
+}
+
+func (s StatesStackDisplayer) Process(Float.X) {
+	var states_names = ""
+	var numbers = ""
+	for index, state := range s.Player.StatesStack() {
+		states_names += state + "\n"
+		numbers += strconv.Itoa(index) + "\n"
+	}
+	s.States.SetText(states_names)
+	s.Numbers.SetText(numbers)
+}
+
 func main() {
 	classdb.Register[Player](NewPlayer)
 	classdb.Register[Sword]()
 	classdb.Register[Bullet](NewBullet)
+	classdb.Register[StatesStackDisplayer]()
 	startup.Scene()
 }
