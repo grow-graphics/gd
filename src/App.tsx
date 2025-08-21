@@ -195,7 +195,7 @@ function App() {
               </button>
 
               <a
-                href="https://pkg.go.dev/graphics.gd"
+                href="https://the.graphics.gd/guide"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center space-x-2 border border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:shadow-lg"
@@ -453,22 +453,22 @@ func main() {
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <a
-                      href="https://github.com/quaadgras/graphics.gd/tree/samples"
+                      href="https://the.graphics.gd/guide"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      <span>View Sample Projects</span>
+                      <span>the.graphics.gd/guide</span>
                     </a>
                     <a
-                      href="https://docs.godotengine.org/en/latest/"
+                      href="https://github.com/quaadgras/graphics.gd/tree/samples"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      <span>Engine Documentation</span>
+                      <span>explore the sample projects</span>
                     </a>
                   </div>
                 </div>
@@ -788,7 +788,7 @@ func main() {
               <h4 className="text-lg font-semibold mb-4">Resources</h4>
               <div className="space-y-3">
                 <a
-                  href="https://pkg.go.dev/graphics.gd"
+                  href="https://the.graphics.gd/guide"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-gray-300 hover:text-white transition-colors"

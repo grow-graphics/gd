@@ -3,3 +3,7 @@
 package-lock.json
 extension_api.json
 graphics
+go.work
+go.work.sum
+internal/releases
+testing
