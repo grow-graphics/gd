@@ -1,0 +1,78 @@
+---
+title: Engine Lifecycle
+slug: guide/startup
+sidebar:
+  order: 18
+---
+import { Aside } from '@astrojs/starlight/components';
+
+
+`graphics.gd` projects have three options for managing the lifecycle of the engine.
+<Aside type="caution">you should only ever import "graphics.gd/startup" from your `main` package</Aside>
+
+## Go
+You can ignore the object-oriented nature of the engine entirely and use the `startup.Rendering` function
+to wait for rendering to be available, then you can iterate over each frame and use the [RenderingServer](https://pkg.go.dev/graphics.gd/classdb/RenderingServer)
+directly. Choose this option when porting an existing Go application to `graphics.gd` and when you will be
+porting existing rendering code to use the `RenderingServer`.
+
+```go
+package main
+
+import "graphics.gd/startup"
+
+func main() {
+	frames := startup.Rendering()
+	// engine has started, rendering is available
+	for frame := range frames {
+		// do something each frame
+	}
+}
+````
+
+## MainLoop
+You can also implement the `MainLoop.Interface` and register this with the Engine to replace the default
+`SceneTree`.
+```go
+package main
+
+import (
+	"graphics.gd/classdb/MainLoop"
+	"graphics.gd/startup"
+	"graphics.gd/variant/Float"
+)
+
+type MyMainLoop struct{
+	MainLoop.Implementation
+}
+
+func (m *MyMainLoop) Initialize() {} // do something when the engine starts
+func (m *MyMainLoop) Process(delta Float.X) {} // do something each frame
+func (m *MyMainLoop) Finalize() {} // do something when the engine shuts down
+
+func main() {
+	startup.MainLoop(new(MyMainLoop))
+}
+
+```
+
+## SceneTree
+You can also leave the default `SceneTree` main loop implementation in place and pass control
+to the engine using `startup.Scene()` which will block until the engine shuts down. Projects setup
+using the `gd` command will open the `main.tscn` by default.
+
+```go
+package main
+
+import (
+	"graphics.gd/classdb/SceneTree"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/startup"
+)
+
+func main() {
+	startup.LoadingScene() 		// (optional) wait until the engine is ready to load the scene.
+	SceneTree.Add(Node.New()) // (optional) setup the SceneTree, e.g. add nodes
+	startup.Scene() // starts up the scene and blocks until the engine shuts down.
+}
+```

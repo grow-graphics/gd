@@ -1,0 +1,43 @@
+---
+title: Instantiating Objects
+slug: guide/classdb/instantiation
+sidebar:
+  order: 40
+---
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside>ClassDB extensions registered by Go can be instantiated with the builtin `new` function.</Aside>
+
+
+Each object provided by the engine is available under the `graphics.gd/classdb`, they can be instantiated using the `New` function defined in their respective package.
+
+
+
+
+The `New` function will return the convenient `Instance` type, which will include all of the methods available on that object (which will be exclusively
+using convienience types and do not include any optional arguments). `Instance` values can be converted to both `Advanced` types for low-level use and
+`Extended` types (which include all optional arguments).
+
+
+```go
+package main
+
+import (
+	"graphics.gd/startup"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/variant/String"
+)
+
+func main() {
+	startup.Rendering()
+
+	var node Node.Instance = Node.New()
+	node.SetName("Hello World")
+
+	var advanced = Node.Advanced(node)
+	advanced.SetName(String.New("Hello World"))
+
+	var id Node.ID = node.ID() // all instances have an ID type and method.
+	fmt.Println("Node ID:", id)
+}
+```

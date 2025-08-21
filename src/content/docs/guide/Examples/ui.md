@@ -1,5 +1,5 @@
 ---
-title: Hello Name (UI)
+title: UI
 description: Simple UI example.
 ---
 

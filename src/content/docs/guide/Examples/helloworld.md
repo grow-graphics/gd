@@ -3,13 +3,10 @@ title: Hello World
 description: Your first hello world!
 ---
 
-### Hello World Example
-
-
 Installing the module
 
 ```sh
-go install graphics.gd/cmd/gd@master
+go install graphics.gd/cmd/gd@release
 ```
 
 Create a new go project

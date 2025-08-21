@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-The `gd` command can be installed using `go install`, this command is a drop in replacement for the `go` command for working with graphics.gd projects.
+The `gd` command can be installed using `go install`, this command is a drop in replacement for the `go` command for working with `graphics.gd` projects.
 
 ```sh
 go install graphics.gd/cmd/gd@release
