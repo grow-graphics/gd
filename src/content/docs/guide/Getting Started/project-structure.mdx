@@ -1,0 +1,51 @@
+---
+title: Project Structure
+slug: guide/project-structure
+sidebar:
+  order: 2
+---
+import { FileTree } from '@astrojs/starlight/components';
+
+Here's the recommended directory structure to follow for a graphics.gd project, start with a `main.go` file (or a few files)
+and gradually add `internal` packages as needed.
+
+All your assets and media should be sensibly organised underneath the `graphics` directory.
+
+<FileTree>
+- project_name/
+    - graphics
+        - project.godot
+        - main.tscn
+        - library.gdextension
+        - .gitignore
+        - export_presets.cfg
+        - asset_category1
+            - myimage.png
+            - myshader.shader
+        - asset_category2
+            - myfont.ttf
+            - myaudio.ogg
+        - asset_category3
+            - myscene.tscn
+            - myscript.gd
+    - internal
+        - mypackage1
+            - mypackage1.go
+            - mypackage1_test.go
+        - mypackage2
+            - otherlogic.go
+            - mypackage2.go
+    - releases
+        - windows
+            - amd64/
+            - arm64/
+        - linux
+            - amd64/
+            - arm64/
+        - macos
+            - universal/
+    - .gitignore
+    - go.mod
+    - go.sum
+    - main.go
+</FileTree>
