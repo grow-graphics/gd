@@ -14,6 +14,7 @@ import (
 	"graphics.gd/classdb/World2D"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Transform2D"
 	"graphics.gd/variant/Vector2"
@@ -109,7 +110,7 @@ func (p *Player) Ready() {
 }
 
 func (p *Player) Input(event InputEvent.Instance) {
-	if event, ok := classdb.As[InputEventMouseMotion.Instance](event); ok {
+	if event, ok := Object.As[InputEventMouseMotion.Instance](event); ok {
 		p.AsNode2D().SetPosition(event.AsInputEventMouse().Position())
 	}
 }

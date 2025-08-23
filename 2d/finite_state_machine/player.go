@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"strings"
 
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/AnimationPlayer"
 	"graphics.gd/classdb/CharacterBody2D"
 	"graphics.gd/classdb/Input"
@@ -17,6 +16,7 @@ import (
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/Timer"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -130,7 +130,7 @@ func (p *Player) UnhandledInput(event InputEvent.Instance) {
 			return
 		}
 		gun.CooldownTimer.Start()
-		b, _ := classdb.As[*Bullet](Node.Instance(bullet.Instantiate()))
+		b, _ := Object.As[*Bullet](Node.Instance(bullet.Instantiate()))
 		b.AsNode2D().SetPosition(gun.AsNode2D().GlobalPosition())
 		b.direction = p.look_direction
 		gun.AsNode().AddChild(b.AsNode())

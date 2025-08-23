@@ -6,6 +6,7 @@ import (
 	"graphics.gd/classdb/Input"
 	"graphics.gd/startup"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2"
 
 	_ "graphics.gd/startup"
@@ -48,7 +49,7 @@ type PongCeilingFloor struct {
 }
 
 func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := classdb.As[*PongBall](area); ok {
+	if ball, ok := Object.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.Add(ball.Direction, Vector2.XY{0, Float.X(cf.BounceDirection)}))
 	}
 }
@@ -82,7 +83,7 @@ func (p *PongPaddle) Process(delta Float.X) {
 
 // OnAreaEntered should be hooked up to the "area_entered" signal of the PongPaddle node.
 func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := classdb.As[*PongBall](area); ok {
+	if ball, ok := Object.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.New(p.BallDirection, Float.RandomBetween(-1, 1)))
 	}
 }
@@ -92,7 +93,7 @@ type PongWall struct {
 }
 
 func (w *PongWall) OnAreaEntered(area Area2D.Instance) {
-	if ball, ok := classdb.As[*PongBall](area); ok {
+	if ball, ok := Object.As[*PongBall](area); ok {
 		ball.Reset()
 	}
 }

@@ -17,6 +17,7 @@ import (
 	"graphics.gd/startup"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -77,7 +78,7 @@ func (m *Main) OnStartTimerTimeout() {
 
 func (m *Main) OnMobTimerTimeout() {
 	// Create a new instance of the Mob scene.
-	mob, ok := classdb.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
+	mob, ok := Object.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
 	if !ok {
 		fmt.Println("failed to cast!")
 		return

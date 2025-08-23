@@ -11,6 +11,7 @@ import (
 	"graphics.gd/startup"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Vector2i"
 )
 
@@ -96,7 +97,7 @@ func (level *Level) TileDataRuntimeUpdate(_ Vector2i.XY, data TileData.Instance)
 }
 
 func (level *Level) OnSecretDetectorBodyEntered(body Node2D.Instance) {
-	if _, ok := classdb.As[CharacterBody2D.Instance](body); !ok {
+	if _, ok := Object.As[CharacterBody2D.Instance](body); !ok {
 		return
 	}
 	level.player_in_secret = true
@@ -104,7 +105,7 @@ func (level *Level) OnSecretDetectorBodyEntered(body Node2D.Instance) {
 }
 
 func (level *Level) OnSecretDetectorBodyExited(body Node2D.Instance) {
-	if _, ok := classdb.As[CharacterBody2D.Instance](body); !ok {
+	if _, ok := Object.As[CharacterBody2D.Instance](body); !ok {
 		return
 	}
 	level.player_in_secret = false

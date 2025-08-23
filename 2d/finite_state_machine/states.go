@@ -17,6 +17,7 @@ import (
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Rect2"
 	"graphics.gd/variant/Vector2"
 )
@@ -104,7 +105,7 @@ func (b *Bullet) PhysicsProcess(delta Float.X) {
 }
 
 func (b *Bullet) Draw() {
-	circle, _ := classdb.As[CircleShape2D.Instance](Shape2D.Instance(b.CollisionShape2D.Shape()))
+	circle, _ := Object.As[CircleShape2D.Instance](Shape2D.Instance(b.CollisionShape2D.Shape()))
 	b.AsCanvasItem().DrawCircle(Vector2.Zero, circle.Radius(), Color.X11.White)
 }
 
