@@ -21,5 +21,7 @@ graphics.gd v0.0.0-20250813130125-a53ecec67e7a h1:893SCEjTPdLW2rYPDX00IKRI+UBz9h
 graphics.gd v0.0.0-20250813130125-a53ecec67e7a/go.mod h1:ZVCdPp0JPNt/UOOQ2r+JDte/W28Or2YbHoGWEwjSDL8=
 graphics.gd v0.0.0-20250813213310-4593bcf4cb94 h1:yXkEHgX9pBJxkTxdjplxMTNzCIlOsuqS1+ztFuJUtco=
 graphics.gd v0.0.0-20250813213310-4593bcf4cb94/go.mod h1:ZVCdPp0JPNt/UOOQ2r+JDte/W28Or2YbHoGWEwjSDL8=
+graphics.gd v0.0.0-20250823045020-127a0aaa8c4f h1:nige9f7BZh+w/wkIxpv3rvj/531emgmnNx4c0h5LIzc=
+graphics.gd v0.0.0-20250823045020-127a0aaa8c4f/go.mod h1:ZVCdPp0JPNt/UOOQ2r+JDte/W28Or2YbHoGWEwjSDL8=
 runtime.link v0.0.0-20250131052539-992a5f0be9db h1:pmEAAhIKeeisn2bXh43ZSULNXsrveRC/iDxBLoc0RC8=
 runtime.link v0.0.0-20250131052539-992a5f0be9db/go.mod h1:bs9lT/R79BfIAGcCHrCWiEdDec5nUNSBBjDmAvAsasU=
