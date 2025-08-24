@@ -1,5 +1,6 @@
 import { defineConfig, passthroughImageService } from "astro/config";
 import starlight from "@astrojs/starlight";
+import starlightGiscus from "starlight-giscus";
 
 // https://astro.build/config
 export default defineConfig({
