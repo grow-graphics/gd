@@ -133,11 +133,11 @@ func (coin *Coin) SpawnWithDelay(delay Float.X) {
 
 func (coin *Coin) OnBodyEntered(body Node3D.Instance) {
 	if player, ok := Object.As[*DemoPlayer](Node3D.Instance(body)); ok {
-		coin.SetTarget(player)
+		coin.setTarget(player)
 	}
 }
 
-func (coin *Coin) SetTarget(target CoinCollector) {
+func (coin *Coin) setTarget(target CoinCollector) {
 	PhysicsServer3D.BodyAddCollisionException(coin.AsCollisionObject3D().GetRid(), target.Body3D())
 	if coin.target == nil {
 		coin.AsRigidBody3D().SetSleeping(true)

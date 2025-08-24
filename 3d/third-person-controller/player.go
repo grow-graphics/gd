@@ -398,7 +398,7 @@ func NewCameraController() *CameraController {
 	}
 }
 
-func (p *CameraController) UnhandledInput(event InputEvent.Instance) {
+func (p *CameraController) Input(event InputEvent.Instance) {
 	p.mouse_input = Object.Is[InputEventMouseMotion.Instance](event) && Input.MouseMode() == Input.MouseModeCaptured
 	if p.mouse_input {
 		event := Object.To[InputEventMouseMotion.Instance](event)
