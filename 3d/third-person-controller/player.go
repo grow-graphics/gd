@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/AnimationNodeOneShot"
 	"graphics.gd/classdb/AnimationNodeStateMachinePlayback"
 	"graphics.gd/classdb/AnimationPlayer"
@@ -628,7 +627,7 @@ func NewCharacterSkin() *CharacterSkin {
 }
 
 func (skin *CharacterSkin) state_machine() AnimationNodeStateMachinePlayback.Instance {
-	return Object.Get(skin.AnimationTree, "parameters/StateMachine/playback").(classdb.AnimationNodeStateMachinePlayback)
+	return Object.Get(skin.AnimationTree, "parameters/StateMachine/playback").(AnimationNodeStateMachinePlayback.Instance)
 }
 
 func (skin *CharacterSkin) Moving() bool {

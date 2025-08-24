@@ -1,7 +1,6 @@
 package main
 
 import (
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/Animation"
 	"graphics.gd/classdb/AnimationNodeStateMachinePlayback"
 	"graphics.gd/classdb/AnimationPlayer"
@@ -161,7 +160,7 @@ type BeeBotRenderer struct {
 }
 
 func (r *BeeBotRenderer) state_machine() AnimationNodeStateMachinePlayback.Instance {
-	return Object.Get(r.AnimationTree, "parameters/StateMachine/playback").(classdb.AnimationNodeStateMachinePlayback)
+	return Object.Get(r.AnimationTree, "parameters/StateMachine/playback").(AnimationNodeStateMachinePlayback.Instance)
 }
 
 func (r *BeeBotRenderer) Ready() {
@@ -299,7 +298,7 @@ type BeetleRenderer struct {
 }
 
 func (r *BeetleRenderer) main_state_machine() AnimationNodeStateMachinePlayback.Instance {
-	return Object.Get(r.AnimationTree, "parameters/StateMachine/playback").(classdb.AnimationNodeStateMachinePlayback)
+	return Object.Get(r.AnimationTree, "parameters/StateMachine/playback").(AnimationNodeStateMachinePlayback.Instance)
 }
 
 func (r *BeetleRenderer) Ready() {
