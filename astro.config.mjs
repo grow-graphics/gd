@@ -21,6 +21,14 @@ export default defineConfig({
           href: "https://github.com/quaadgras/graphics.gd",
         },
       ],
+      plugins: [
+        starlightGiscus({
+          repo: "quaadgras/graphics.gd",
+          repoId: "R_kgDOH2vsEw",
+          category: "Documentation",
+          categoryId: "DIC_kwDOH2vsE84Cuhec",
+        }),
+      ],
       customCss: ["./src/styles/iframe.css"],
       sidebar: [
         {
