@@ -1,6 +1,6 @@
 ---
 title: Why Godot + Go?
-description: An Introduction
+slug: guide/introduction
 sidebar:
   order: 1
 ---

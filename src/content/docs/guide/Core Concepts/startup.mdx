@@ -1,14 +1,14 @@
 ---
-title: Engine Lifecycle
+title: Engine Integration Patterns
 slug: guide/startup
 sidebar:
-  order: 18
+  order: 11
 ---
 import { Aside } from '@astrojs/starlight/components';
 
 
-`graphics.gd` projects have three options for managing the lifecycle of the engine.
-<Aside type="caution">you should only ever import "graphics.gd/startup" from your `main` package</Aside>
+`graphics.gd` projects have a few different options for integrating with the engine.
+<Aside type="caution">you should only import "graphics.gd/startup" from your `main` Go package</Aside>
 
 ## Go
 You can ignore the object-oriented nature of the engine entirely and use the `startup.Rendering` function

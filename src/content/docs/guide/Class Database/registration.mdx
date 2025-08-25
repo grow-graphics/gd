@@ -1,9 +1,11 @@
 ---
-title: Class Registration
-slug: guide/classdb/registration
+title: Registration
+slug: guide/classdb/register
 sidebar:
   order: 30
 ---
+import { Aside } from '@astrojs/starlight/components';
+
 
 In order to register a new class that will be available within the editor, create a Go struct that embeds the
 `T.Extension` type of the object you would like to extend.
@@ -44,6 +46,10 @@ func main() {
 }
 
 ```
+
+<Aside>It is also acceptable to register your class within a packages' `init` function, so that you don't
+    have to keep track of everything within `main`.</Aside>
+
 
 ### Struct Tags
 `graphics.gd` will automatically register everything inside your struct for use with scripts, struct tags
