@@ -596,10 +596,8 @@ func main() {
               { name: "Linux", status: "stable" },
               { name: "macOS", status: "stable" },
               { name: "Android", status: "experimental" },
-              { name: "iOS", status: "untested" },
-              { name: "Web", status: "experimental" },
-              { name: "Steam Deck", status: "stable" },
-              { name: "Meta Quest", status: "experimental" },
+              { name: "iOS", status: "experimental" },
+              { name: "Web", status: "stable" },
             ].map((platform) => (
               <div key={platform.name} className="text-center">
                 <div className="bg-gray-100 rounded-2xl p-6 hover:bg-gray-200 transition-colors">
