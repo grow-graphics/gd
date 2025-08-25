@@ -1,5 +1,5 @@
 ---
-title: Registering New Classes
+title: Class Registration
 slug: guide/classdb/registration
 sidebar:
   order: 30
@@ -44,3 +44,128 @@ func main() {
 }
 
 ```
+
+### Struct Tags
+`graphics.gd` will automatically register everything inside your struct for use with scripts, struct tags
+are available for more control on how struct fields will be presented to the engine.
+
+* `gd:"rename"` sets the name of of the property within the engine.
+*  `range:"min_value, max_value, step, flags"` configures the allowed range of values for the property, this property will be represented as a slider in the editor.
+* `group:"name"` sets the associated group that the property will be organised under within the editor.
+
+### Constructors
+Go doesn't have constructors like `.gd` script, instead, if you have a function that you are use to initialize your
+structures, you can register this with the engine, so that it will be used as the constructor by scripts.
+
+```go
+package main
+
+import (
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/startup"
+)
+
+type MapContainer struct {
+	Node.Extension[MapContainer]
+
+	my_map map[string]string
+}
+
+func NewMapContainer() *MapContainer {
+	return &MapContainer{
+		my_map: make(map[string]string),
+	}
+}
+
+func main() {
+	classdb.Register[MyClass](NewMapContainer)
+	startup.Scene()
+}
+```
+
+### Static Functions
+You can register additional functions to be bundled with your class and available to scripts by passing them
+to `classdb.Register`. You can also rename these functions by passing a `map[string]any`.
+
+```go
+package main
+
+import (
+	"graphics.gd/classdb"
+	"graphics.gd/variant/Object"
+	"graphics.gd/startup"
+)
+
+type UtilityFunctions struct { Object.Extension[UtilityFunctions] }
+
+func DoSomething() {}
+
+func main() {
+	classdb.Register[UtilityFunctions](DoSomething)
+	startup.Scene()
+}
+```
+
+### Renaming Functions
+Functions and methods can be renamed inside the engine by passing a `map[string]any` to `classdb.Register` with the
+functions and methods you would like to specify the name of.
+
+```go
+package main
+
+import (
+	"graphics.gd/classdb"
+	"graphics.gd/variant/Object"
+	"graphics.gd/startup"
+)
+
+type MyObject struct { Object.Extension[MyObject] }
+func (*MyObject) DoSomething() {}
+
+func main() {
+	classdb.Register[RenamedFunctions](map[string]any{
+		"do_something_renamed": MyObject.DoSomething,
+	})
+	startup.Scene()
+}
+```
+
+
+### Constants and Enums
+If you use the `graphics.gd/variant/Enum` package to define your enums, they will be
+registered automatically if they are used by any functions or methods. You can also
+register constants by passing them in a `map[string]int` to `classdb.Register`.
+
+```go
+package main
+
+import (
+	"graphics.gd/classdb"
+	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Enum"
+	"graphics.gd/startup"
+)
+
+const (
+	MyConstant = 1
+)
+
+type MyEnum Enum.Int[struct{
+	SomeValue MyEnum
+}]
+
+var MyEnums = Enum.Values[MyEnum]()
+
+type HasEnumsConstants struct { Object.Extension[HasEnumsConstants] }
+func (*HasEnumsConstants) Enum() MyEnum {
+	return MyEnums.SomeValue
+}
+
+func main() {
+	classdb.Register[HasEnumsConstants](map[string]int{
+		"MY_CONSTANT": MyConstant,
+	})
+	startup.Scene()
+}
+````
