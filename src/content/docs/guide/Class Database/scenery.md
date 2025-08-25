@@ -1,5 +1,5 @@
 ---
-title: Populating Nodes
+title: Auto Populating Nodes
 slug: guide/classdb/populating-nodes
 ---
 

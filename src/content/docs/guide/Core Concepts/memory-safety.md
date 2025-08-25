@@ -1,11 +1,11 @@
 ---
-title: Memory Safety
-slug: guide/memory-safety
+title: Memory Management
+slug: guide/memory-management
 sidebar:
   order: 21
 ---
 
-Thanks to the garbage collector in Go, you shouldn't need to worry about memory safety.
+Thanks to the garbage collector in Go, you shouldn't need to worry about memory management.
 
 `graphics.gd` will track any Godot pointers that you reference each frame and will invalidate them once
 they've remained unused for two whole frames. As such, if you need to keep an Object
