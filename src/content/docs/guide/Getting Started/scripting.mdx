@@ -25,8 +25,8 @@ type MyStruct struct {
 }
 ```
 
-`.gd` identifiers are `snake_case`, class names are `PascalCase`, scripts typically use an underscore
-to denote a private property.
+`.gd` identifiers are `snake_case`, class names are `PascalCase`, a preceding underscore is
+used to denote a private property.
 
 ```gdscript
 class_name MyClass
@@ -39,13 +39,13 @@ var _private_property
 ### Programming Paradigms
 Go is a statically typed procedural programming language, code is organised into packages, these are directories
 with one or more `.go` files each with a collection of types and functions that can all reference each other. Each
-Go file can independently import other Go packages by their path (typically a Github path, or a path within the
-project's Go module).
+Go file can independently import other Go packages by their path (typically a Github repository, or a path within
+the Go module).
 
 ```go
 package logic
 
-import "things"
+import "path/to/things"
 
 type MyData struct {
 	x int
