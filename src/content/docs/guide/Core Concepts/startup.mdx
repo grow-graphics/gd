@@ -10,7 +10,7 @@ import { Aside } from '@astrojs/starlight/components';
 `graphics.gd` projects have a few different options for integrating with the engine.
 <Aside type="caution">you should only import "graphics.gd/startup" from your `main` Go package</Aside>
 
-## Go
+### Go
 You can ignore the object-oriented nature of the engine entirely and use the `startup.Rendering` function
 to wait for rendering to be available, then you can iterate over each frame and use the [RenderingServer](https://pkg.go.dev/graphics.gd/classdb/RenderingServer)
 directly. Choose this option when porting an existing Go application to `graphics.gd` and when you will be
@@ -30,8 +30,8 @@ func main() {
 }
 ````
 
-## MainLoop
-You can also implement the `MainLoop.Interface` and register this with the Engine to replace the default
+### MainLoop
+Alternatively, implement the `MainLoop.Interface` and register this with the Engine to replace the default
 `SceneTree`.
 ```go
 package main
@@ -56,8 +56,8 @@ func main() {
 
 ```
 
-## SceneTree
-You can also leave the default `SceneTree` main loop implementation in place and pass control
+### SceneTree
+Otherwise, leave the default `SceneTree` main loop implementation in place and pass control
 to the engine using `startup.Scene()` which will block until the engine shuts down. Projects setup
 using the `gd` command will open the `main.tscn` by default.
 
@@ -74,5 +74,23 @@ func main() {
 	startup.LoadingScene() 		// (optional) wait until the engine is ready to load the scene.
 	SceneTree.Add(Node.New()) // (optional) setup the SceneTree, e.g. add nodes
 	startup.Scene() // starts up the scene and blocks until the engine shuts down.
+}
+```
+
+
+### AsExtension
+Want to create extensions that can be redistributed to other Godot engine users? Please note that only
+a single Go runtime can be active within any OS process, so all Go extensions within a project should
+be built together into a single shared library.
+
+```go
+package main
+
+import (
+	"graphics.gd/startup"
+)
+
+func main() {
+	startup.AsExtension()
 }
 ```
