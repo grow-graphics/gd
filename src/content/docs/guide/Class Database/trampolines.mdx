@@ -27,7 +27,7 @@ created by `graphics.gd` for methods and functions, is that they use reflection 
 
 If a class has any exported methods intended for use in high performance scenarios (called by scripts many many
 times per frame), then you should create a trampoline for it. This is a special function that accepts
-raw `variant.Any` values from the engine and calls your function with them.
+raw `variant.Arguments` values from the engine and calls your function with them.
 
 You only need to create one trampoline per combination of arguments, so if you have two different methods with the same signature,
 you only need to create one trampoline for both methods.
