@@ -22,7 +22,7 @@ to provide the best possible memory safety protections when working with the eng
 a memory safety issue, this means either `graphics.gd` or the engine is at fault, please [open an issue](https://github.com/quaadgras/graphics.gd/issues/new/choose).
 
 ### Globals
-If you initalise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
+If you initialise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
 are only valid after:
 
   * `startup.LoadingScene` is called, or
