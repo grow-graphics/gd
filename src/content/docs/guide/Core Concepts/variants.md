@@ -75,7 +75,7 @@ overhead when making calls to the engine. You can import these packages in any G
 
 ### Bring Your Own Vectors
 The functions available within the `Vector2`, `Vector2i`, `Vector3`, `Vector3i`, `Vector4`, and `Vector4i` packages
-can operate any matching vector types (as long as they share the same underlying `struct`), they are not requred by
+can operate with any matching vector types (as long as they share the same underlying `struct`), they are not requred by
 `graphics.gd` and you are more than welcome to define your own vector types with their own set of methods .
 
 ```go
