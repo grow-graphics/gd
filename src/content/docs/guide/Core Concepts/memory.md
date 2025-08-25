@@ -11,7 +11,7 @@ Thanks to the garbage collector in Go, you shouldn't need to worry about memory 
 they've remained unused for two entire frames. As such, if you need to keep any Objects
 or high-performance reference types (`Array.Any`, `Packed.Array[T]`, `Dictionary.Any`, `Signal.Any`,
 `Callable.Function`, `String.Readable`, `String.Name`, `Path.ToNode`) around in Go for longer than a frame, you should either do something with the
-reference every frame to keep it alive, or, in the case of Objects, store the ID of the object
+reference each frame to keep it alive, or, in the case of Objects, store the ID of the object
 instead of the `Object.Instance` itself.
 
 If you are sticking with convienence types and `Object.ID` (each classdb object has it's own typed ID available), you won't run into any problems here.
