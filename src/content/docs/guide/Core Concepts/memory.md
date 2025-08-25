@@ -21,7 +21,29 @@ that has been invalidated, (this may terminate your application). `graphics.gd` 
 to provide the best possible memory safety protections when working with the engine, if you run into
 a memory safety issue, this means either `graphics.gd` or the engine is at fault, please [open an issue](https://github.com/quaadgras/graphics.gd/issues/new/choose).
 
-## Goroutines
+### Globals
+If you initalise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
+are only valid once ether:
+
+  * [startup.LoadingScene] is called.
+  * [startup.Rendering] is called or when they are accessed inside a method called by the engine.
+  * [startup.Scene] is called.
+
+If accessed earlier, these objects will panic-on-use.
+
+```go
+package main
+
+import "graphics.gd/classdb/Sprite2D"
+
+var global = Sprite2D.New()
+```
+
+If you assign newly created objects to these globals, they still need to be used every frame and unless you made a copy first,
+the original reference will be lost. Therefore, unless you really know what you are doing, do not assign new objects to any
+global variables after the engine has started up.
+
+### Goroutines
 
 Memory safety protections only apply within a single thread, please be careful when using goroutines and make sure only to use
 [Thread Safe APIs](https://docs.godotengine.org/en/latest/tutorials/performance/thread_safe_apis.html).
