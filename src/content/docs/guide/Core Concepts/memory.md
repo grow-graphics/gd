@@ -25,9 +25,9 @@ a memory safety issue, this means either `graphics.gd` or the engine is at fault
 If you initalise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
 are only valid after:
 
-  * [startup.LoadingScene] is called, or
-  * [startup.Rendering] is called, or
-  * [startup.Scene] is called, or
+  * `startup.LoadingScene` is called, or
+  * `startup.Rendering` is called, or
+  * `startup.Scene` is called, or
   * they are accessed inside a method called by the engine
 
 If accessed earlier, these objects will panic-on-use.
