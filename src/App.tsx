@@ -849,7 +849,7 @@ func main() {
                 © 2025 Quentin Quaadgras. Licensed under MIT License.
               </p>
               <p className="text-gray-400 text-sm">
-                Built with ❤️ for the Go and game development community
+                Built with ❤️ for the Go and graphics/game development community
               </p>
             </div>
           </div>
