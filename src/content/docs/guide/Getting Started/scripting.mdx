@@ -1,0 +1,139 @@
+---
+title: Scripting Reference
+slug: guide/scripting-reference
+---
+
+`graphics.gd` is compatible with the builtin `.gd` scripting language of the engine, please refer to this
+page for general information on the differences and similarities between Go and `.gd` scripts.
+
+
+### Identifiers
+Go uses `PascalCase` for exported identifiers. If a struct field or method begins with a lowercase
+letter in Go (ie. `snake_case` or `camelCase`), then such identifiers are private and restricted
+by the compiler to be accessed only within the package they are defined in and these identifiers
+are not made available to scripts.
+
+Packages are typically named after the general concept of functionality they provide.
+
+```go
+package myproject
+
+type MyStruct struct {
+    PublicField string
+    private_field string
+    someOtherPrivateField string
+}
+```
+
+`.gd` identifiers are `snake_case`, class names are `PascalCase`, scripts typically use an underscore
+to denote a private property.
+
+```gdscript
+class_name MyClass
+extends Object
+
+var public_property
+var _private_property
+```
+
+### Programming Paradigms
+Go is a statically typed procedural programming language, code is organised into packages, these are directories
+with one or more `.go` files each with a collection of types and functions that can all reference each other. Each
+Go file can independently import other Go packages by their path (typically a Github path, or a path within the
+project's Go module).
+
+```go
+package logic
+
+import "things"
+
+type MyData struct {
+	x int
+}
+
+func (d MyData) DoSomething() {
+	things.Do(d.x)
+}
+```
+
+`.gd` scripts are dynamically-typed and object-oriented, each file corresponds to a class which can have a number
+of properties and methods. Other classes can be loaded into the script by their resource path. Global classes can
+be references without loading (this includes classes defined by Go).
+
+```gdscript
+extends Object
+
+var Things = load("res://path/to/things.gd")
+
+var x: int
+
+func do_something():
+  Things.do(x)
+```
+
+### Mathematical Functions
+Go has a standard libary `math` package. `graphics.gd` includes packages for each variant type with common functions.
+
+```go
+import "math" // float64 math
+import "graphics.gd/variant/Vector2" // Vector2 math
+
+var r = math.Sin(0.5)
+var d = Vector2.Dot(Vector2.New(1, 2), Vector2.New(3, 4))
+```
+
+`.gd` scripts have builtin math functions that can be used with any supported variant type. These are the same
+functions that are available in the Go `variant` packages.
+
+```gdscript
+extends Object
+
+var r = sin(0.5)
+var d = dot(Vector2(1, 2), Vector2(3, 4))
+```
+
+### Resource Loading
+In Go, resources can be pre-loaded using the `Resource` package, unlike most `classdb` functionality, this can be
+performed in a global variable instead of inside a function. Note that the resource type needs to be specified.
+
+```go
+package main
+
+import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/PackedScene"
+
+var MyResource = Resource.Load[PackedScene.Is[Node.Instance]]("res://path/to/scene.tscn")
+```
+
+`.gd` scripts have a builtin function to load resources.
+
+```gdscript
+extends Object
+
+var my_resource = load("res://path/to/scene.tscn")
+```
+
+### Signals
+Signals can be defined in Go by adding them as a field, signals are safe to emit from goroutines (handlers will be queued).
+
+```go
+package main
+
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Signal"
+
+type MyFunctionality struct {
+	Object.Extension[MyFunctionality]
+
+	SomethingHappened Signal.Solo[string]
+}
+```
+
+In `.gd` scripts, signals have their own keyword.
+
+```gdscript
+extends Object
+
+signal something_happened(value)
+
+```

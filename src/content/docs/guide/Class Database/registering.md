@@ -9,7 +9,7 @@ In order to register a new class that will be available within the editor, creat
 `T.Extension` type of the object you would like to extend.
 
 All struct fields beginning with an uppercase letter will be exported as properties in the editor, and all methods
-beginning with an uppercase letter will be exported for use in scripts.
+beginning with an uppercase letter will be exported for use in `.gd` scripts.
 
 ```go
 package main
