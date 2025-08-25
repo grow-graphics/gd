@@ -15,13 +15,14 @@ import (
 	"graphics.gd/variant/Vector2"
 )
 
+var sprite = Sprite2D.New()
+
 func main() {
 	classdb.Register[MyFirstShader]()
 	classdb.Register[MyFirstShader2D]()
 	classdb.Register[MyFirstShader2D_Texture]()
 	classdb.Register[MyFirstShader2D_UV]()
 	startup.LoadingScene()
-	sprite := startup.Pin(Sprite2D.New())
 
 	size := DisplayServer.WindowGetSize(0)
 
