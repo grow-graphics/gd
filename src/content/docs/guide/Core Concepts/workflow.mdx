@@ -55,3 +55,18 @@ information to reconstruct this state.
 Each hot-reload will permanently increase memory usage until the application is restarted.
 This feature is only available for the purpose of convenience and to keep the editor running
 whilst editing code, do not expect the equivalent runtime performance of a freshly launched application.
+
+### Snapshots <Badge text="planned feature" variant="note" />
+<Aside type="caution">
+    This feature is not available yet but you can still use the information here to help inform
+    the architecture of your project in case you want to be able to levarage shapshots as
+    soon as they become available.
+</Aside>
+
+As a consequence of supporting hot-reloads, `graphics.gd` will also feature the functionality to take
+snapshots of the entire application state, as if it were being hot-reloaded. This enables an application
+to be resumed from a previously captured state. The same limitations apply to snapshots as to
+hot-reloads.
+
+Snapshots will be suitable to use as a quick save/load function for an application. On mobile platforms,
+snapshots can be used to preserve application state when the device sleeps or the application is suspended.
