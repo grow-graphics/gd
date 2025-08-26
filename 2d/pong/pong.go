@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/Input"
@@ -48,6 +50,11 @@ type PongCeilingFloor struct {
 	BounceDirection int
 }
 
+func (cf *PongCeilingFloor) Ready() {
+	fmt.Println(cf.BounceDirection)
+	cf.AsArea2D().OnAreaEntered(cf.OnAreaEntered)
+}
+
 func (cf *PongCeilingFloor) OnAreaEntered(area Area2D.Instance) {
 	if ball, ok := Object.As[*PongBall](area); ok {
 		ball.Direction = Vector2.Normalized(Vector2.Add(ball.Direction, Vector2.XY{0, Float.X(cf.BounceDirection)}))
@@ -71,6 +78,7 @@ func (p *PongPaddle) Ready() {
 	var n = p.AsNode().Name()
 	p.up = n + "_move_up"
 	p.down = n + "_move_down"
+	p.AsArea2D().OnAreaEntered(p.OnAreaEntered)
 }
 
 func (p *PongPaddle) Process(delta Float.X) {
@@ -90,6 +98,10 @@ func (p *PongPaddle) OnAreaEntered(area Area2D.Instance) {
 
 type PongWall struct {
 	Area2D.Extension[PongWall] `gd:"PongWall"`
+}
+
+func (w *PongWall) Ready() {
+	w.AsArea2D().OnAreaEntered(w.OnAreaEntered)
 }
 
 func (w *PongWall) OnAreaEntered(area Area2D.Instance) {

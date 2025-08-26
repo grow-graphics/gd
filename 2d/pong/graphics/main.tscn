@@ -82,10 +82,3 @@ bounce_direction = -1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PongCeilingFloor2"]
 position = Vector2(574.75, 673.5)
 shape = SubResource("RectangleShape2D_8rkxe")
-
-[connection signal="area_entered" from="PongWall" to="PongWall" method="on_area_entered"]
-[connection signal="area_entered" from="PongWall2" to="PongWall2" method="on_area_entered"]
-[connection signal="area_entered" from="Player1" to="Player1" method="on_area_entered"]
-[connection signal="area_entered" from="Player2" to="Player2" method="on_area_entered"]
-[connection signal="area_entered" from="PongCeilingFloor" to="PongCeilingFloor" method="on_area_entered"]
-[connection signal="area_entered" from="PongCeilingFloor2" to="PongCeilingFloor2" method="on_area_entered"]
