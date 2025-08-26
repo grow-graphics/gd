@@ -1,0 +1,60 @@
+---
+title: The Development Workflow
+slug: guide/workflow
+sidebar:
+  order: 10
+---
+import { Aside } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
+
+Start with a `main.go` file, model your project in Go using structs to represent the
+world, space or state of your project. With its simple type-safe syntax, Go is an
+excellent language for theory building and conceptual representation.
+
+```go
+package idea
+
+import "graphics.gd/classdb/Node"
+
+type Project struct {
+	Node.Extension[Project]
+}
+````
+
+Keep creating more data structures to represent the concepts of what you are aiming to
+build. Explore the `classdb` to discover all the functionality the engine provides.
+Think about how you can use these features to build your project.
+
+When you want to organise the visual appearance of the project, use the `gd` command to
+launch the engine's editor. The editor is excellent for importing media, managing assets
+and designing the visual + spatial elements of your project.
+
+
+### Hot Reloads <Badge text="planned feature" variant="note" />
+<Aside type="caution">
+    This feature is not available yet but you can still use the information here to help inform
+    the architecture of your project in case you want to be able to levarage hot reloading as
+    soon as it becomes supported.
+</Aside>
+
+`graphics.gd` aims to support hot-reloading during `gd` or `gd run` so that when you
+make any changes to Go source files whilst the project or editor is running, they will
+be recompiled into either a wasm binary or a Go plugin and the running application will
+switch over to using any newly compiled code.
+
+If you stick to using exported struct fields, `startup.Scene` and avoid depending on
+globals or anonymous functions, this may "just work" for you, otherwise, if you are using
+`startup.Rendering` or require globals or persistent callables, then there will be internal
+state not available to the new version of the code. Register `startup.OnUnload` and
+`startup.OnReload` functions to coordinate and transfer this state.
+
+If any non-serializable state is required for specific class extensions, you can also implement
+the `OnUnload() Dictionary.Any` and `OnReload(Dictionary.Any)` methods in order to transfer
+this state, if you need to communicate with any previously running code in some unavoidable way
+(ie. to access native functionality from wasm) consider registering an API with the engine
+instead of a class, as APIs will always execute from the version of the code that they were
+instantiated within (they can be called from any version of the code).
+
+Each hot-reload will permanently increase memory usage until the application is restarted.
+This feature is only available for the purpose of convenience and to keep the editor running
+whilst editing code, do not expect the equivalent runtime performance of a freshly launched application.

@@ -50,7 +50,7 @@ func (m *MyClass) ThisFunctionAllocates(a int64, b float64) {}
 func main() {
 	classdb.Register[MyClass](
 		classdb.MakeTrampoline(func(instance *MyClass, method func(*MyClass, int64, float64), args variant.Arguments) {
-				fn(instance, args.Get(0).Int64(), args.Get(1).Float64())
+				method(instance, args.Get(0).Int64(), args.Get(1).Float64())
 		})
 	)
 	startup.Scene()
