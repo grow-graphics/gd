@@ -8,6 +8,7 @@ import (
 	"graphics.gd/classdb/Node"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/Vector2"
 )
 
@@ -17,7 +18,7 @@ type Player struct {
 	Speed      int        // How fast the player will move (pixels/sec).
 	ScreenSize Vector2.XY // Size of the game window.
 
-	Hit chan<- struct{} `gd:"hit"`
+	Hit Signal.Void `gd:"hit"`
 
 	AnimatedSprite2D AnimatedSprite2D.Instance
 	CollisionShape3D CollisionShape3D.Instance
@@ -84,7 +85,7 @@ func (p *Player) Start(pos Vector2.XY) {
 func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
 	p.AsCanvasItem().Hide()
 	p.CollisionShape3D.SetDisabled(true)
-	p.Hit <- struct{}{}
+	p.Hit.Emit()
 	Callable.Defer(Callable.New(func() {
 		p.CollisionShape3D.SetDisabled(true)
 	}))

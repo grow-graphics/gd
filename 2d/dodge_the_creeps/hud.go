@@ -9,6 +9,7 @@ import (
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/SceneTreeTimer"
 	"graphics.gd/classdb/Timer"
+	"graphics.gd/variant/Signal"
 )
 
 type HUD struct {
@@ -19,7 +20,7 @@ type HUD struct {
 	StartButton  Button.Instance
 	ScoreLabel   Label.Instance
 
-	StartGame chan<- struct{} `gd:"start_game"`
+	StartGame Signal.Void `gd:"start_game"`
 }
 
 func (h *HUD) ShowMessage(text string) {
@@ -48,7 +49,7 @@ func (h *HUD) UpdateScore(score int) {
 
 func (h *HUD) OnStartButtonPressed() {
 	h.StartButton.AsCanvasItem().Hide()
-	h.StartGame <- struct{}{}
+	h.StartGame.Emit()
 }
 
 func (h *HUD) OnMessageTimerTimeout() {
