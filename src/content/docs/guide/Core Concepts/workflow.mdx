@@ -45,15 +45,12 @@ switch over to using any newly compiled code.
 If you stick to using exported struct fields, `startup.Scene` and avoid depending on
 globals or anonymous functions, this may "just work" for you, otherwise, if you are using
 `startup.Rendering` or require globals or persistent callables, then there will be internal
-state not available to the new version of the code. Register `startup.OnUnload` and
-`startup.OnReload` functions to coordinate and transfer this state.
+state not available to the new version of the code. Register `startup.OnSuspend` and
+`startup.OnRestore` functions to coordinate and transfer this state.
 
 If any non-serializable state is required for specific class extensions, you can also implement
-the `OnUnload() Dictionary.Any` and `OnReload(Dictionary.Any)` methods in order to transfer
-this state, if you need to communicate with any previously running code in some unavoidable way
-(ie. to access native functionality from wasm) consider registering an API with the engine
-instead of a class, as APIs will always execute from the version of the code that they were
-instantiated within (they can be called from any version of the code).
+`Suspend(Dictionary.Any)` and `Restore(Dictionary.Any)` methods in order to record any required
+information to reconstruct this state.
 
 Each hot-reload will permanently increase memory usage until the application is restarted.
 This feature is only available for the purpose of convenience and to keep the editor running
