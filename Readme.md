@@ -1,4 +1,5 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fquaadgras%2Fgraphics.gd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fquaadgras%2Fgraphics.gd?ref=badge_shield)
 
 A safe performant way to work with graphics and game development in Go by
 building on top of any Open Source, actively maintained GDExtension hosts (ie. Godot 4.4).
@@ -179,3 +180,6 @@ Lastly, spread the word and let people know about graphics.gd!
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
 you can use the Godot engine. If you use this project for any commercially successful products, please
 consider [financially supporting us](https://buy.stripe.com/4gw14maETbnX3vOcMM) to show your appreciation!
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fquaadgras%2Fgraphics.gd.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fquaadgras%2Fgraphics.gd?ref=badge_large)
