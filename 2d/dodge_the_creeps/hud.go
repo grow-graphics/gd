@@ -31,7 +31,7 @@ func (h *HUD) ShowMessage(text string) {
 
 func (h *HUD) ShowGameOver() {
 	h.ShowMessage("Game Over")
-	h.MessageTimer.OnTimeout(h.ShowTitle)
+	h.MessageTimer.OnTimeout(h.ShowTitle, Signal.OneShot)
 }
 
 func (h *HUD) ShowTitle() {
