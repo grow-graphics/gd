@@ -5,7 +5,7 @@ import (
 	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/CollisionShape3D"
 	"graphics.gd/classdb/Input"
-	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Node2D"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Signal"
@@ -82,7 +82,7 @@ func (p *Player) Start(pos Vector2.XY) {
 	p.CollisionShape3D.SetDisabled(false)
 }
 
-func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
+func (p *Player) OnPlayerBodyEntered(body Node2D.Instance) {
 	if !p.AsCanvasItem().Visible() {
 		return
 	}
