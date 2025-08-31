@@ -83,8 +83,10 @@ func (p *Player) Start(pos Vector2.XY) {
 }
 
 func (p *Player) OnPlayerBodyEntered(body Node.Instance) {
+	if !p.AsCanvasItem().Visible() {
+		return
+	}
 	p.AsCanvasItem().Hide()
-	p.CollisionShape3D.SetDisabled(true)
 	p.Hit.Emit()
 	Callable.Defer(Callable.New(func() {
 		p.CollisionShape3D.SetDisabled(true)
