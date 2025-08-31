@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/Input"
@@ -51,7 +49,6 @@ type PongCeilingFloor struct {
 }
 
 func (cf *PongCeilingFloor) Ready() {
-	fmt.Println(cf.BounceDirection)
 	cf.AsArea2D().OnAreaEntered(cf.OnAreaEntered)
 }
 
