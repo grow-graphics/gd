@@ -30,14 +30,14 @@ func main() {
 	sprite.AsNode2D().SetPosition(Vector2.New(size.X/2, size.Y/2))
 	sprite.AsNode2D().SetScale(Vector2.New(5, 5))
 
-	var materials = []Material.Any{
-		new(MyFirstShader2D_Texture),
-		new(MyFirstShader),
-		new(MyFirstShader2D),
-		new(MyFirstShader2D_UV),
+	var materials = []func() Material.Any{
+		func() Material.Any { return new(MyFirstShader2D_Texture) },
+		func() Material.Any { return new(MyFirstShader) },
+		func() Material.Any { return new(MyFirstShader2D) },
+		func() Material.Any { return new(MyFirstShader2D_UV) },
 	}
 	var index int
-	sprite.AsCanvasItem().SetMaterial(materials[index].AsMaterial())
+	sprite.AsCanvasItem().SetMaterial(materials[index]().AsMaterial())
 
 	button := Button.New()
 	button.SetText("Switch Shader")
@@ -49,7 +49,7 @@ func main() {
 	button.AsBaseButton().OnPressed(func() {
 		index++
 		index %= len(materials)
-		sprite.AsCanvasItem().SetMaterial(materials[index].AsMaterial())
+		sprite.AsCanvasItem().SetMaterial(materials[index]().AsMaterial())
 	})
 	SceneTree.Add(sprite)
 	SceneTree.Add(button)
