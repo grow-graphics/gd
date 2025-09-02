@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bcgrggue2d1ax"
 path.s3tc="res://.godot/imported/dark_bark_orm.png-ab3920f1925442b1d5ad14c8c2fdbe1d.s3tc.ctex"
+path.etc2="res://.godot/imported/dark_bark_orm.png-ab3920f1925442b1d5ad14c8c2fdbe1d.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Environment/dark_bark/dark_bark_orm.png"
-dest_files=["res://.godot/imported/dark_bark_orm.png-ab3920f1925442b1d5ad14c8c2fdbe1d.s3tc.ctex"]
+dest_files=["res://.godot/imported/dark_bark_orm.png-ab3920f1925442b1d5ad14c8c2fdbe1d.s3tc.ctex", "res://.godot/imported/dark_bark_orm.png-ab3920f1925442b1d5ad14c8c2fdbe1d.etc2.ctex"]
 
 [params]
 

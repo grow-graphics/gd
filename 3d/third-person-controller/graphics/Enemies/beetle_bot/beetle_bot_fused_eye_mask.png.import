@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://3upig7nmgp3q"
 path.s3tc="res://.godot/imported/beetle_bot_fused_eye_mask.png-075f6627c95674d7504f9e1ab17febf2.s3tc.ctex"
+path.etc2="res://.godot/imported/beetle_bot_fused_eye_mask.png-075f6627c95674d7504f9e1ab17febf2.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Enemies/beetle_bot/beetle_bot_fused_eye_mask.png"
-dest_files=["res://.godot/imported/beetle_bot_fused_eye_mask.png-075f6627c95674d7504f9e1ab17febf2.s3tc.ctex"]
+dest_files=["res://.godot/imported/beetle_bot_fused_eye_mask.png-075f6627c95674d7504f9e1ab17febf2.s3tc.ctex", "res://.godot/imported/beetle_bot_fused_eye_mask.png-075f6627c95674d7504f9e1ab17febf2.etc2.ctex"]
 
 [params]
 

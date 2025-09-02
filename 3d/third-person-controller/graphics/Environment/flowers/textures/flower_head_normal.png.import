@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://rqrvv1eud2n1"
 path.s3tc="res://.godot/imported/flower_head_normal.png-06801e51a262e5cd93b2f9c399c8cad5.s3tc.ctex"
+path.etc2="res://.godot/imported/flower_head_normal.png-06801e51a262e5cd93b2f9c399c8cad5.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Environment/flowers/textures/flower_head_normal.png"
-dest_files=["res://.godot/imported/flower_head_normal.png-06801e51a262e5cd93b2f9c399c8cad5.s3tc.ctex"]
+dest_files=["res://.godot/imported/flower_head_normal.png-06801e51a262e5cd93b2f9c399c8cad5.s3tc.ctex", "res://.godot/imported/flower_head_normal.png-06801e51a262e5cd93b2f9c399c8cad5.etc2.ctex"]
 
 [params]
 

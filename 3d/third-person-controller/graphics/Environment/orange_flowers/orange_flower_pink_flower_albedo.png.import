@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpee2r4w5ghjp"
 path.s3tc="res://.godot/imported/orange_flower_pink_flower_albedo.png-7c3aabbb097bc7ad39a5936cd288aef1.s3tc.ctex"
+path.etc2="res://.godot/imported/orange_flower_pink_flower_albedo.png-7c3aabbb097bc7ad39a5936cd288aef1.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://Environment/orange_flowers/orange_flower_pink_flower_albedo.png"
-dest_files=["res://.godot/imported/orange_flower_pink_flower_albedo.png-7c3aabbb097bc7ad39a5936cd288aef1.s3tc.ctex"]
+dest_files=["res://.godot/imported/orange_flower_pink_flower_albedo.png-7c3aabbb097bc7ad39a5936cd288aef1.s3tc.ctex", "res://.godot/imported/orange_flower_pink_flower_albedo.png-7c3aabbb097bc7ad39a5936cd288aef1.etc2.ctex"]
 
 [params]
 
