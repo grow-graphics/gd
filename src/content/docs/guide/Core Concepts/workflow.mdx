@@ -7,6 +7,16 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 import { Badge } from '@astrojs/starlight/components';
 
+You can add `graphics.gd` to your Go project by running `go get -u graphics.gd@release`, run
+this whenever you want to update to the latest rolling release version of `graphics.gd`.
+
+<Aside>
+    Don't forget to update the `gd` command too! It doesn't stay in sync automatically.
+    Run `go install graphics.gd/cmd/gd@release` outside of your project directory to do this.
+</Aside>
+
+### Best Practices
+
 Start with a `main.go` file, model your project in Go using structs to represent the
 world, space or state of your project. With its simple type-safe syntax, Go is an
 excellent language for theory building and conceptual representation.
