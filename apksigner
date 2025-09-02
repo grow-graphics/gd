@@ -1,1 +1,8 @@
- native-image --no-fallback   -jar apksigner.jar   -H:+ReportExceptionStackTraces   -H:ConfigurationFileDirectories=META-INF/native-image   --enable-all-security-services   --enable-native-access=ALL-UNNAMED  -H:ReflectionConfigurationFiles=reflect.json --initialize-at-run-time=sun.security.pkcs11.P11Util
+native-image \
+    --no-fallback \
+    -jar apksigner.jar \
+    -H:+ReportExceptionStackTraces \
+    -H:ConfigurationFileDirectories=META-INF/native-image \
+    --enable-all-security-services \
+    --enable-native-access=ALL-UNNAMED \
+    --initialize-at-run-time=sun.security.pkcs11.P11Util
