@@ -595,7 +595,7 @@ func main() {
               { name: "Windows", status: "stable" },
               { name: "Linux", status: "stable" },
               { name: "macOS", status: "stable" },
-              { name: "Android", status: "experimental" },
+              { name: "Android", status: "stable" },
               { name: "iOS", status: "experimental" },
               { name: "Web", status: "stable" },
             ].map((platform) => (
