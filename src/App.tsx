@@ -176,8 +176,9 @@ function App() {
             </h1>
 
             <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              A safe, performant way to work with graphics and game development
-              in Go by building on top of
+              A cross platform 2D/3D graphics runtime for Go suitable for
+              building native mobile apps, gdextensions, multimedia
+              applications, games and more!
               <span className="font-semibold text-teal-600">
                 {" "}
                 Godot 4.4
