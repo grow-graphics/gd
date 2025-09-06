@@ -179,11 +179,6 @@ function App() {
               A cross platform 2D/3D graphics runtime for Go suitable for
               building native mobile apps, gdextensions, multimedia
               applications, games and more!
-              <span className="font-semibold text-teal-600">
-                {" "}
-                Godot 4.4
-              </span>{" "}
-              and other Open Source GDExtension hosts.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
