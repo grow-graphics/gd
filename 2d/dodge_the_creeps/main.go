@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 
 	"graphics.gd/classdb"
@@ -80,7 +79,7 @@ func (m *Main) OnMobTimerTimeout() {
 	// Create a new instance of the Mob scene.
 	mob, ok := Object.As[RigidBody2D.Instance](Node.Instance(m.MobScene.Instantiate()))
 	if !ok {
-		fmt.Println("failed to cast!")
+		panic("failed to cast!")
 		return
 	}
 
