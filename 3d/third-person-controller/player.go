@@ -81,7 +81,7 @@ type DemoPlayer struct {
 	UI struct {
 		AimReticle     ColorRect.Instance     `gd:"%AimRecticle"`
 		CoinsContainer HBoxContainer.Instance `gd:"%CoinsContainer"`
-	}
+	} `gd:"-"`
 
 	StepSound    AudioStreamPlayer3D.Instance `gd:"StepSound"`
 	LandingSound AudioStreamPlayer3D.Instance `gd:"LandingSound"`

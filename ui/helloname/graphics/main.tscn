@@ -1,20 +1,51 @@
 [gd_scene format=3 uid="uid://bmhmiv43fqo4c"]
 
 [node name="Node" type="HelloName"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Name" type="TextEdit" parent="."]
-offset_left = 434.0
-offset_top = 227.0
-offset_right = 641.0
-offset_bottom = 265.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -103.5
+offset_top = -19.0
+offset_right = 103.5
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Button" type="Button" parent="."]
-offset_left = 650.0
-offset_top = 228.0
-offset_right = 712.0
-offset_bottom = 268.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 107.0
+offset_top = -18.0
+offset_right = 169.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Press"
 
 [node name="Text" type="Label" parent="."]
-
-[node name="HelloName" type="HelloName" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 35.0
+offset_right = 170.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2

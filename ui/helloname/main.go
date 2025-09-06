@@ -5,13 +5,13 @@ import (
 	"graphics.gd/startup"
 
 	"graphics.gd/classdb/Button"
+	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/Label"
-	"graphics.gd/classdb/Node2D"
 	"graphics.gd/classdb/TextEdit"
 )
 
 type HelloName struct {
-	Node2D.Extension[HelloName]
+	Control.Extension[HelloName]
 
 	Name   TextEdit.Instance
 	Text   Label.Instance
