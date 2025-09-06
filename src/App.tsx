@@ -768,6 +768,14 @@ func main() {
                   <Github className="h-6 w-6" />
                 </a>
                 <a
+                  href="https://x.com/splizard"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </a>
+                <a
                   href="https://pkg.go.dev/graphics.gd"
                   target="_blank"
                   rel="noopener noreferrer"
