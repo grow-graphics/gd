@@ -31,38 +31,13 @@ echo 'export PATH="$PATH:$GOPATH/bin"' >> ~/.bashrc && source ~/.bashrc
 </TabItem>
 </Tabs>
 
-## Godot
-The `gd` command will look for `godot` in your `$PATH` - make sure you have the right version installed (typically this will be the latest stable version of Godot).
+### Other Dependencies
+`graphics.gd` will automatically manage other dependencies as-needed. If you do
+insist on downloading/installing them yourself set `GDTOOLCHAIN=local`.
 
-https://godotengine.org/download/
-
-<Aside>On Linux and MacOS, the `gd` command line tool will attempt to automatically download and use the correct version of `godot` for you if it's not already installed.</Aside>
-
-## Zig
-In order for Go code to work together with the C++ code in the Godot Engine, you'll need a C compiler. We officially
-support [The Zig Compiler](https://ziglang.org/download/) as it supports full cross-compilation, if you just want to
-build for your current platform, you may prefer to use your system C compiler, make sure `CC` is set accordingly.
-
-<Aside> `graphics.gd` can build projects for any supported platforms on any operating system (this includes building for macOS on Windows/Linux without needing access to Apple hardware).</Aside>
-
-<Tabs>
-<TabItem label="Windows">
-Please ensure that Zig is added to your `PATH` after you've extracted it to a convieniant location on your computer.
-
-```powershell
-setx PATH "%PATH%;C:\place\you\extracted\zig-windows-x86_64-your-version"
-```
-</TabItem>
-<TabItem label="macOS">
-You can use [Homebrew](https://brew.sh/) to install Zig:
-```sh
-brew install zig
-```
-</TabItem>
-<TabItem label="Linux">
-You should be able to install Zig using your package manager.
-```sh
-snap install zig
-```
-</TabItem>
-</Tabs>
+* [godot](https://godotengine.org)
+* [zig](https://ziglang.org)
+* [vpk](https://velopack.io)
+* [adb](https://developer.android.com/tools/adb)
+* [apksigner](https://developer.android.com/tools/apksigner)
+* [upx](https://upx.github.io/)

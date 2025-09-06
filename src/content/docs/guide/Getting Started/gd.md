@@ -36,7 +36,7 @@ CC="zig cc" go build -o example.so -buildmode=c-shared
 
 Everything you would have to setup for yourself if you were using `go` directly:
 
-* downloads and runs Godot for you on supported platforms.
+* downloads and installs dependencies for you on supported platforms.
 * creates a `graphics` directory to house the godot project.
 * creates a blank `project.godot` and `main.tscn`.
 * creates the `.gdextension` library and enables it.
