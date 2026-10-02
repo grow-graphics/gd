@@ -764,11 +764,11 @@ func lastSentinel(s string) (code int, ok bool) {
 	return code, ok
 }
 
-func (android Android) BuildMain(...string) error {
+func (android Android) BuildMain(args ...string) error {
 	if runtime.GOOS == "android" {
-		return android.buildMainOnDevice()
+		return android.buildMainOnDevice(args...)
 	}
-	if err := android.Build(); err != nil {
+	if err := android.Build(args...); err != nil {
 		return xray.New(err)
 	}
 	GOARCH := "arm64"
@@ -1058,8 +1058,8 @@ func (android Android) packageAab(apkPath string) error {
 // musl editor built as tooling by gd's main flow performs the headless
 // export; the desktop .aab/Play-Store pipeline is skipped because its java
 // tooling (apktool/aapt2/bundletool) does not run on bionic.
-func (android Android) buildMainOnDevice() error {
-	apkPath, signed, err := android.exportOnDevice(false)
+func (android Android) buildMainOnDevice(args ...string) error {
+	apkPath, signed, err := android.exportOnDevice(false, args...)
 	if err != nil {
 		return xray.New(err)
 	}
