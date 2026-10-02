@@ -91,9 +91,9 @@ func (MacOS) Build(args ...string) error {
 	return nil
 }
 
-func (macos MacOS) BuildMain(...string) error {
+func (macos MacOS) BuildMain(args ...string) error {
 	if BuildMode() == "libgodot" {
-		return macos.buildMainLibgodot()
+		return macos.buildMainLibgodot(args...)
 	}
 	if err := macos.Build(); err != nil {
 		return xray.New(err)

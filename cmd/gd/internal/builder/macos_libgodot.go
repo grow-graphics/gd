@@ -38,7 +38,7 @@ var macosSlices = []macosSlice{
 
 // buildMainLibgodot exports the project as an app whose executable is the
 // Go program with the engine linked into it.
-func (macos MacOS) buildMainLibgodot() error {
+func (macos MacOS) buildMainLibgodot(args ...string) error {
 	custom, ok := customEngine()
 	if !ok {
 		return fmt.Errorf("gd: build/mode=libgodot needs an engine to link, set engine/repository or engine/strip_unused_classes in project.godot")
@@ -70,7 +70,7 @@ func (macos MacOS) buildMainLibgodot() error {
 	var executables []string
 	minimum := targets[0].minimum
 	for _, slice := range targets {
-		executable, err := macos.linkLibgodot(custom, slice)
+		executable, err := macos.linkLibgodot(custom, slice, args)
 		if err != nil {
 			return err
 		}
@@ -150,7 +150,7 @@ func (macos MacOS) buildMainLibgodot() error {
 
 // linkLibgodot builds the engine and the Go program for one architecture
 // and links them into an executable, returning its path.
-func (macos MacOS) linkLibgodot(custom engine, slice macosSlice) (string, error) {
+func (macos MacOS) linkLibgodot(custom engine, slice macosSlice, args []string) (string, error) {
 	libgodot, err := custom.macos(slice.GOARCH)
 	if err != nil {
 		return "", xray.New(err)
@@ -169,9 +169,9 @@ func (macos MacOS) linkLibgodot(custom engine, slice macosSlice) (string, error)
 	if err := os.Setenv("GOARCH", slice.GOARCH); err != nil {
 		return "", xray.New(err)
 	}
-	tags := mergeTags("macos", "archive")
+	args, tags := userTags(mergeTags("macos", "archive"), args)
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", slice.GOARCH))
-	args, err := archiver(nil)
+	args, err = archiver(args)
 	if err != nil {
 		return "", xray.New(err)
 	}

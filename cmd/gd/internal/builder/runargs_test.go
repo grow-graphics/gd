@@ -88,3 +88,20 @@ func TestUserTags(t *testing.T) {
 		t.Errorf("userTags of a space-separated list = %q", tags)
 	}
 }
+
+func TestWithLinkerFlag(t *testing.T) {
+	for _, test := range []struct {
+		args, want []string
+	}{
+		{nil, []string{"-ldflags=-extar=ar"}},
+		{[]string{"-v"}, []string{"-v", "-ldflags=-extar=ar"}},
+		{[]string{"-ldflags=-s -w"}, []string{"-ldflags=-s -w -extar=ar"}},
+		// the user's flags come after gd's, and are the ones that go takes.
+		{[]string{"-ldflags=-s -w", "-ldflags=-X main.v=1"}, []string{"-ldflags=-s -w", "-ldflags=-X main.v=1 -extar=ar"}},
+		{[]string{"-ldflags=-s -w", "--ldflags", "-X main.v=1", "-v"}, []string{"-ldflags=-s -w", "--ldflags", "-X main.v=1 -extar=ar", "-v"}},
+	} {
+		if got := withLinkerFlag(test.args, "-extar=ar"); !slices.Equal(got, test.want) {
+			t.Errorf("withLinkerFlag(%q) = %q, want %q", test.args, got, test.want)
+		}
+	}
+}

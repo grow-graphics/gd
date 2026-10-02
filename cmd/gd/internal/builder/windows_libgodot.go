@@ -49,7 +49,7 @@ func (windows Windows) buildMainLibgodot(GOARCH string, args ...string) error {
 	if err := os.Setenv("CC", zig+" cc -target "+target); err != nil {
 		return xray.New(err)
 	}
-	tags := mergeTags("windows", "archive")
+	args, tags := userTags(mergeTags("windows", "archive"), args)
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.a", GOARCH))
 	args, err = archiver(args)
 	if err != nil {

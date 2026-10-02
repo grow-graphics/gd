@@ -354,8 +354,7 @@ func warnEngineVersion(src string) {
 // archiver returns the go build arguments, with `-buildmode=c-archive`
 // told to pack its archive with zig's ar (through gd's shim) instead of
 // the host's: macOS's ar leaves the objects of other systems out of the
-// archive's index, and their linkers then find nothing in it. The flag is
-// folded into any -ldflags among the arguments, as go takes the last.
+// archive's index, and their linkers then find nothing in it.
 func archiver(args []string) ([]string, error) {
 	zig, err := tooling.Zig.Lookup()
 	if err != nil {
@@ -365,13 +364,28 @@ func archiver(args []string) ([]string, error) {
 	if err := shim.Install(bin, shim.Config{Zig: zig, Cache: filepath.Join(gdpaths.Lib, "cache")}, "ar"); err != nil {
 		return nil, err
 	}
-	extar := "-extar=" + filepath.Join(bin, "ar")
+	return withLinkerFlag(args, "-extar="+filepath.Join(bin, "ar")), nil
+}
+
+// withLinkerFlag returns the go build arguments with a flag for the linker
+// added to them. go only takes the last -ldflags that it is given, so the
+// flag is folded into that one: gd's own when it is the only one, and the
+// user's when they pass theirs after it.
+func withLinkerFlag(args []string, flag string) []string {
 	args = slices.Clone(args)
-	for i, arg := range args {
-		if strings.HasPrefix(arg, "-ldflags=") {
-			args[i] = arg + " " + extar
-			return args, nil
+	for i := len(args) - 1; i >= 0; i-- {
+		name, _, inline := strings.Cut(args[i], "=")
+		if name != "-ldflags" && name != "--ldflags" {
+			continue
+		}
+		if inline {
+			args[i] += " " + flag
+			return args
+		}
+		if i+1 < len(args) {
+			args[i+1] += " " + flag
+			return args
 		}
 	}
-	return append(args, "-ldflags="+extar), nil
+	return append(args, "-ldflags="+flag)
 }
