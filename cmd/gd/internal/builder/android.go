@@ -113,25 +113,17 @@ func (android Android) build(testing, bake bool, args ...string) error {
 		}
 	}
 	out := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH))
-	ldflags := "-ldflags=-checklinkname=0"
-	// A -ldflags passed in (gd build's "-s -w") joins these rather than
-	// replacing them: go build keeps only the last -ldflags it is given.
-	rest := args[:0:0]
-	for _, arg := range args {
-		if flags, ok := strings.CutPrefix(arg, "-ldflags="); ok {
-			ldflags += " " + flags
-			continue
-		}
-		rest = append(rest, arg)
-	}
-	args = rest
+	// The build needs these whichever -ldflags it ends up with: gd build's
+	// "-s -w" is only a default, a -ldflags from the user replaces it.
+	ldflags := "-checklinkname=0"
 	if bake {
 		ldflags += bakedEnvFlags()
 	}
+	args = withLinkerFlag(args, ldflags)
 	if testing {
-		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", ldflags, "-buildmode=c-shared", "-o", out)...)
+		return tooling.Go.Action("test", args, append(fastcbFlags("android", ""), "-c", "-buildmode=c-shared", "-o", out)...)
 	}
-	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), ldflags, "-buildmode=c-shared", "-o", out)...)
+	return tooling.Go.Action("build", args, append(fastcbFlags("android", ""), "-buildmode=c-shared", "-o", out)...)
 }
 
 // setupHostExportTools prepares everything godot's android export needs on a

@@ -95,7 +95,7 @@ func (macos MacOS) BuildMain(args ...string) error {
 	if BuildMode() == "libgodot" {
 		return macos.buildMainLibgodot(args...)
 	}
-	if err := macos.Build(); err != nil {
+	if err := macos.Build(args...); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
