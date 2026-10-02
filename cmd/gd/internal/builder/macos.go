@@ -111,7 +111,7 @@ func (macos MacOS) Run(args ...string) error {
 	if runtime.GOOS != "darwin" {
 		return fmt.Errorf("gd run: cannot run darwin/universal executable on %v/%v", runtime.GOOS, runtime.GOARCH)
 	}
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if err := tooling.Go.Action("build", build, append(fastcbFlags("macos", ""), "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.dylib", runtime.GOARCH)))...); err != nil {
 		return xray.New(err)
 	}

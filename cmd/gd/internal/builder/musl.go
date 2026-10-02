@@ -110,11 +110,12 @@ func (musl Musl) Build(args ...string) (err error) {
 		return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 	}
 	libgo := filepath.Join(project.GraphicsDirectory, fmt.Sprintf("musl_%v.a", GOARCH))
+	args, tags := userTags(muslTags(), args)
 	args, err = archiver(args)
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Go.Action("build", args, "-tags", muslTags(), "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
+	if err := tooling.Go.Action("build", args, "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo); err != nil {
 		return xray.New(err)
 	}
 	// Forward each linked package's #cgo LDFLAGS to the final link. `go build`
@@ -125,7 +126,7 @@ func (musl Musl) Build(args ...string) (err error) {
 	// archives pull in.
 	zigArgs := append([]string{"cc", "-target", target}, musl.objects...)
 	zigArgs = append(zigArgs, musl.lib, libgo)
-	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", muslTags(), "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
+	cgoLDFLAGS, err := tooling.Go.Output("list", "-tags", tags, "-deps", "-f", "{{range .CgoLDFLAGS}}{{println .}}{{end}}", ".")
 	if err != nil {
 		return xray.New(err)
 	}
@@ -308,7 +309,7 @@ func (musl Musl) Run(args ...string) error {
 	if runtime.GOOS != "linux" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd run: cannot run linux/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if err := musl.Build(build...); err != nil {
 		return xray.New(err)
 	}
@@ -377,7 +378,8 @@ func (musl Musl) Test(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Go.Action("test", args, append(ar, "-c", "-tags", muslTags(), "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo)...); err != nil {
+	args, tags := userTags(muslTags(), args)
+	if err := tooling.Go.Action("test", args, append(ar, "-c", "-tags", tags, "-buildmode=c-archive", "-overlay="+overlay, "-o", libgo)...); err != nil {
 		return xray.New(err)
 	}
 	libgodot, err := tooling.LibGodotEditor.LookupPlatform("musl", GOARCH)

@@ -287,6 +287,15 @@ func gd(args ...string) error {
 				return builder.Musl{}.Test(append(faster_compile, testArgs(musl_args[1:]...)...)...)
 			}
 		} else {
+			hostBuildArgs := []string{"-gcflags=graphics.gd/classdb/...=-N -l"}
+			// `gd run` on a musl host runs the project in the editor built
+			// here, so this is the build its go flags are for (by the time
+			// Musl.Run gets them there is nothing left to build). A run that
+			// targets something else only uses the editor as tooling.
+			if target := os.Getenv("GOOS"); len(args) > 0 && args[0] == "run" && runtime.GOOS == "linux" && (target == "" || target == "musl") {
+				build, _ := builder.SplitRunArgs(args[1:])
+				hostBuildArgs = append(hostBuildArgs, build...)
+			}
 			build_godot = func() error {
 				GOARCH := os.Getenv("GOARCH")
 				os.Setenv("GOARCH", runtime.GOARCH)
@@ -297,7 +306,7 @@ func gd(args ...string) error {
 				}
 				os.Chdir(project.Directory)
 				defer os.Chdir(current)
-				return builder.Musl{}.Build("-gcflags=graphics.gd/classdb/...=-N -l")
+				return builder.Musl{}.Build(hostBuildArgs...)
 			}
 		}
 		if os.Getenv("GOOS") == "" {

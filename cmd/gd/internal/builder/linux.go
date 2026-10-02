@@ -121,7 +121,7 @@ func (linux Linux) Run(args ...string) error {
 	if runtime.GOOS != "linux" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd run: cannot run linux/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if err := linux.Build(build...); err != nil {
 		return xray.New(err)
 	}

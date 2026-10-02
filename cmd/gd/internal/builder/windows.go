@@ -86,7 +86,7 @@ func (windows Windows) Run(args ...string) error {
 	if runtime.GOOS != "windows" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd test: cannot run windows/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if err := windows.Build(build...); err != nil {
 		return xray.New(err)
 	}

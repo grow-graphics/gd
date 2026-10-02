@@ -51,7 +51,7 @@ func (browser Browser) Build(args ...string) error {
 
 func (browser Browser) Run(args ...string) error {
 	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if err := browser.Build(build...); err != nil {
 		return xray.New(err)
 	}

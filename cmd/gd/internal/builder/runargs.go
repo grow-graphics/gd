@@ -20,7 +20,7 @@ var goBuildFlags = map[string]bool{
 	"debug-actiongraph": true, "debug-runtime-trace": true, "debug-trace": true,
 }
 
-// splitRunArgs routes the arguments of `gd run` to the command each of them
+// SplitRunArgs routes the arguments of `gd run` to the command each of them
 // is for: the flags of `go build` (along with their values) configure the
 // build, everything else is for the engine that runs the project, so that
 //
@@ -33,7 +33,10 @@ var goBuildFlags = map[string]bool{
 // where a short flag means something to each (-p) it is the go one. Anything
 // from the engine's own "--" (or "++") separator onwards is for the project
 // and reaches it untouched.
-func splitRunArgs(args []string) (build, engine []string) {
+//
+// The build flags come back in the one spelling (-name=value) that the
+// builders look for when they fold their own tags and linker flags in.
+func SplitRunArgs(args []string) (build, engine []string) {
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 		if arg == "--" || arg == "++" {
@@ -55,20 +58,47 @@ func splitRunArgs(args []string) (build, engine []string) {
 			engine = append(engine, arg)
 			continue
 		}
-		build = append(build, arg)
+		arg = "-" + strings.TrimLeft(arg, "-")
 		if value && !inline && i+1 < len(args) {
 			i++
-			build = append(build, args[i])
+			arg += "=" + args[i]
 		}
+		build = append(build, arg)
 	}
 	return build, engine
 }
 
-// splitDeviceRunArgs is [splitRunArgs] for the targets that `gd run` installs
+// userTags takes the -tags flag out of the arguments for go and returns the
+// tags with those in base: go keeps only the last -tags that it is given, so
+// one that is passed along would replace the tags gd builds with, instead of
+// adding to them.
+func userTags(base string, args []string) (rest []string, tags string) {
+	tags = base
+	for i := 0; i < len(args); i++ {
+		name, value, inline := strings.Cut(args[i], "=")
+		if name != "-tags" && name != "--tags" {
+			rest = append(rest, args[i])
+			continue
+		}
+		if !inline {
+			if i++; i == len(args) {
+				break
+			}
+			value = args[i]
+		}
+		// the last one counts, as it does for go.
+		tags = strings.Join(append(strings.Split(base, ","), strings.FieldsFunc(value, func(r rune) bool {
+			return r == ',' || r == ' '
+		})...), ",")
+	}
+	return rest, tags
+}
+
+// splitDeviceRunArgs is [SplitRunArgs] for the targets that `gd run` installs
 // and launches on a device, where there is no command line to hand the
 // engine's arguments to.
 func splitDeviceRunArgs(args []string) (build []string) {
-	build, engine := splitRunArgs(args)
+	build, engine := SplitRunArgs(args)
 	if len(engine) > 0 {
 		fmt.Fprintln(os.Stderr, "gd: ignoring", strings.Join(engine, " "), "— engine arguments cannot be passed to a project launched on a device")
 	}
