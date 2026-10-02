@@ -121,13 +121,14 @@ func (linux Linux) Run(args ...string) error {
 	if runtime.GOOS != "linux" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd run: cannot run linux/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	if err := linux.Build(args...); err != nil {
+	build, engine := splitRunArgs(args)
+	if err := linux.Build(build...); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return tooling.Godot.Exec(args...)
+	return tooling.Godot.Exec(engine...)
 }
 
 func (Linux) Test(args ...string) error {

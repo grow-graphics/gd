@@ -135,7 +135,7 @@ func (mq MetaQuest) BuildMain(args ...string) error {
 }
 
 func (mq MetaQuest) Run(args ...string) error {
-	if err := mq.Build(args...); err != nil {
+	if err := mq.Build(splitDeviceRunArgs(args)...); err != nil {
 		return xray.New(err)
 	}
 	adb, err := tooling.AndroidDebugBridge.Lookup()

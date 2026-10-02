@@ -86,13 +86,14 @@ func (windows Windows) Run(args ...string) error {
 	if runtime.GOOS != "windows" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd test: cannot run windows/%v executable on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	if err := windows.Build(args...); err != nil {
+	build, engine := splitRunArgs(args)
+	if err := windows.Build(build...); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return tooling.Godot.Exec(args...)
+	return tooling.Godot.Exec(engine...)
 }
 
 func (Windows) Test(args ...string) error {

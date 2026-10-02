@@ -111,7 +111,8 @@ func (macos MacOS) Run(args ...string) error {
 	if runtime.GOOS != "darwin" {
 		return fmt.Errorf("gd run: cannot run darwin/universal executable on %v/%v", runtime.GOOS, runtime.GOARCH)
 	}
-	if err := tooling.Go.Action("build", args, append(fastcbFlags("macos", ""), "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.dylib", runtime.GOARCH)))...); err != nil {
+	build, engine := splitRunArgs(args)
+	if err := tooling.Go.Action("build", build, append(fastcbFlags("macos", ""), "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.dylib", runtime.GOARCH)))...); err != nil {
 		return xray.New(err)
 	}
 	err := lipo.Execute(os.Stdout, os.Stderr,
@@ -128,7 +129,7 @@ func (macos MacOS) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return tooling.Godot.Exec(args...)
+	return tooling.Godot.Exec(engine...)
 }
 
 func (MacOS) Test(args ...string) error {

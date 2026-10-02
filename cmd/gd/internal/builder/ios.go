@@ -440,7 +440,7 @@ func androidLocalIP() (net.IP, error) {
 }
 
 func (ios IOS) Run(args ...string) error {
-	if err := ios.BuildMain(args...); err != nil {
+	if err := ios.BuildMain(splitDeviceRunArgs(args)...); err != nil {
 		return xray.New(err)
 	}
 

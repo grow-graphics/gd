@@ -312,6 +312,7 @@ func setupHostExportTools(debug_keystore string) error {
 }
 
 func (android Android) Run(args ...string) error {
+	args = splitDeviceRunArgs(args)
 	var debug_keystore string
 	switch runtime.GOOS {
 	case "linux":

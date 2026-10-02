@@ -51,7 +51,8 @@ func (browser Browser) Build(args ...string) error {
 
 func (browser Browser) Run(args ...string) error {
 	os.Remove(filepath.Join(project.GraphicsDirectory, "library.gdextension"))
-	if err := browser.Build(args...); err != nil {
+	build, engine := splitRunArgs(args)
+	if err := browser.Build(build...); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
@@ -71,10 +72,7 @@ func (browser Browser) Run(args ...string) error {
 			return xray.New(err)
 		}
 		var argsQuoted = []string{`"js"`}
-		for _, arg := range args {
-			if arg == "-x" {
-				continue
-			}
+		for _, arg := range engine {
 			argsQuoted = append(argsQuoted, strconv.Quote(arg))
 		}
 		wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(argsQuoted, ", ")+"]"))
