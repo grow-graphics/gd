@@ -74,8 +74,11 @@ func init() {
 				// The frames have stopped, so nothing sweeps the objects Go
 				// was still holding in the last of them: release them here
 				// (one pass to expire, one to free) or they leak at exit.
+				// Likewise the ones made off the main thread, which wait
+				// on the garbage collector.
 				gdreference.GC(gd.Free)
 				gdreference.GC(gd.Free)
+				gdreference.FreeThreadObjects()
 				pointers.Cycle()
 				pointers.Cycle()
 				close(shutdown)

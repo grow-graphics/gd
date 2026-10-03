@@ -5,7 +5,6 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
 )
 
@@ -119,16 +118,7 @@ func OwnObject(obj gdextension.Object, free func(gdextension.Object)) Object {
 		result.assigned.objectID = id
 	} else {
 		sentinel = new(object)
-		cleanup := runtime.AddCleanup(sentinel, func(obj gdextension.Object) {
-			// Queue the free behind any still-buffered cross-thread calls
-			// that reference the object: the wrapper was necessarily alive
-			// when those were recorded, so FIFO order runs the free after
-			// every queued use. A deferred callable would instead run at
-			// the next Callable.Cycle, which can precede the frame drain.
-			ring.Threads.Defer(func() {
-				free(obj)
-			})
-		}, obj)
+		cleanup := ownThreadObject(sentinel, obj, free)
 		*sentinel = *(*object)(unsafe.Pointer(&cleanup))
 	}
 	result.assigned.inEngine = obj
@@ -260,8 +250,7 @@ func EndObject(obj Object) (gdextension.Object, bool) {
 		*obj.sentinel = object{}
 		pool_free = append(pool_free, obj.sentinel)
 	case TypeThread:
-		cleanup := (*runtime.Cleanup)(unsafe.Pointer(obj.sentinel))
-		cleanup.Stop()
+		disownThreadObject((*runtime.Cleanup)(unsafe.Pointer(obj.sentinel)))
 		// The engine owns the object now: leave the wrapper usable as a
 		// looked-up borrow (parity with the pooled main-thread case) so a
 		// goroutine can keep calling methods on a node it has handed over,
