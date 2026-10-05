@@ -138,6 +138,9 @@ func call_main_in_steps() iter.Seq[bool] {
 	return func(yield func(bool) bool) {
 		defer func() {
 			if r := recover(); r != nil {
+				if _, ok := r.(mainIsOver); ok {
+					return
+				}
 				fmt.Println(r)
 				debug.PrintStack()
 			}

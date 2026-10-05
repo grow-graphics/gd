@@ -22,6 +22,7 @@ import (
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/internal/ring"
 	"graphics.gd/internal/threadcheck"
@@ -96,6 +97,14 @@ func reloadsCleanup() {
 	for _, cleanup := range slices.Backward(gd.Cleanups()) {
 		cleanup()
 	}
+	// The frames have stopped, so nothing sweeps the objects Go
+	// was still holding in the last of them: release them here
+	// (one pass to expire, one to free) or they leak at exit.
+	// Likewise the ones made off the main thread, which wait on the
+	// garbage collector.
+	gdreference.GC(gd.Free)
+	gdreference.GC(gd.Free)
+	gdreference.FreeThreadObjects()
 	pointers.Cycle()
 	pointers.Cycle()
 	internal.Linked = false
@@ -143,6 +152,11 @@ func init() {
 		// EveryFrame does: otherwise a QueueRedraw from Process waits for
 		// the next value-returning call or a full ring (256 calls).
 		ring.Main.Flush()
+		// The same frame sweep the native EveryFrame runs: without it
+		// nothing ever releases the objects the guest creates.
+		keep_reachable_instances_alive()
+		gd.CycleAnchors()
+		gdreference.GC(gd.Free)
 		pointers.Cycle()
 	}
 	gdextension.On.MainLoop.FinalFrame = func() {}

@@ -57,6 +57,14 @@ var reloadsSession func()
 // be a no-op rather than a second session or a second engine.
 var reloadsDone bool
 
+// reloadsLeaveMain ends the reloads host's main function without
+// returning to the project's code.
+var reloadsLeaveMain = func() {}
+
+// mainIsOver is the panic [reloadsLeaveMain] unwinds the main coroutine
+// with, when the extension was loaded into a godot process.
+type mainIsOver struct{}
+
 // Scene starts up the SceneTree and blocks until the engine shuts down.
 func Scene() {
 	if reloadsDone {
@@ -93,6 +101,10 @@ func LoadingScene() {
 		// and the engine finds no GoMainLoop (#333). Run the session
 		// here instead; the project's later Scene call finds it done.
 		Scene()
+		// The engine is gone, and whatever the project does between
+		// here and its Scene call expects a live one (that code ran
+		// inside the guest): the host's main ends here.
+		reloadsLeaveMain()
 		return
 	}
 	if startup == nil {

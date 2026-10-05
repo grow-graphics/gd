@@ -40,6 +40,7 @@ import (
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 	"github.com/tetratelabs/wazero/sys"
 	"graphics.gd/classdb"
+	EngineClass "graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Startup"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
@@ -80,6 +81,10 @@ var reloadsParked atomic.Bool
 
 var reloadsAwaitingBuild atomic.Bool
 
+// reloadsFirstFrame records that the engine has reached its first frame:
+// the main loop exists, so the scene tree is there for the project to use.
+var reloadsFirstFrame bool
+
 // reloadsPark yields control from the main coroutine back to the
 // engine; the reloads frame chain resumes it when there is something
 // for the guest session to do (swap, shutdown, or a fresh build).
@@ -103,6 +108,12 @@ func reloadsWakeWanted() bool {
 
 func init() {
 	reloadsSession = reloadsRun
+	reloadsLeaveMain = func() {
+		if reloadsCShared {
+			panic(mainIsOver{})
+		}
+		os.Exit(0)
+	}
 }
 
 // reloadsBase gives the reloads host access to the engine handle shared
@@ -741,6 +752,9 @@ func reloadsForwardCallbacks() {
 	}
 	firstFrame := gdextension.On.MainLoop.FirstFrame
 	gdextension.On.MainLoop.FirstFrame = func() {
+		// The host's own first frame resumes the main coroutine, which
+		// is how a guest waiting in reloadsHostReady gets going.
+		reloadsFirstFrame = true
 		firstFrame()
 		if g := reloadsGuest.Load(); g != nil {
 			reloadsCall(g.on_first_frame, nil)
@@ -801,6 +815,19 @@ func reloadsHostReady(_ context.Context, m api.Module, stack []uint64) {
 	reloadsClassesMu.Lock()
 	fmt.Fprintln(os.Stderr, "graphics.gd: serving classes:", reloadsClasses)
 	reloadsClassesMu.Unlock()
+	if reloadsCShared && !EngineClass.IsEditorHint() {
+		// The guest's startup.LoadingScene is this call, and it promises
+		// the project a running engine. Loaded into a godot process, the
+		// first session gets here from the scene-level initialization
+		// callback, before the main loop exists: wait for the first
+		// frame, where a native build resumes its main, or the project's
+		// SceneTree.Add finds no tree and drops the node. The editor
+		// keeps going: nothing there should end up in its scene tree.
+		for !reloadsFirstFrame && !reloadsWakeWanted() {
+			reloadsPark()
+		}
+		reloadsUnwindDeadGuest()
+	}
 }
 
 func reloadsHostYield(_ context.Context, m api.Module, stack []uint64) {
