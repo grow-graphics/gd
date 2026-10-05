@@ -59,6 +59,15 @@ func init() {
 				initJumponly()
 			}
 			if level == 2 && !initDone {
+				// The engine initialises its scene level on the thread that goes
+				// on to instantiate the main scene and run the frames, which in
+				// a godot process is not the thread that initialised the Go
+				// runtime. Adopt it now: the first frame (which re-runs Init)
+				// comes after the main scene has been instantiated, so until
+				// then the constructors of its nodes would take the engine's
+				// main thread for some other thread, and the objects they make
+				// would wait on the garbage collector instead of the frames.
+				threadcheck.Init()
 				ring.Threads.Open()
 				for _, fn := range internal.StartupFunctions {
 					fn()
