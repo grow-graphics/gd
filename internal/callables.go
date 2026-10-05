@@ -134,6 +134,14 @@ func InternalCallable(fn CallableType.Function) Callable {
 	if fn == (CallableType.Function{}) {
 		return Callable{}
 	}
+	// A plain Go function goes to the engine as itself, so that the engine's
+	// arguments convert to the parameter types the function declares (a
+	// Dictionary to a struct, an Object to an extension class). Through
+	// fn.Call they would only reach it in their convenience form, which
+	// reflect cannot pass to such a parameter (#337).
+	if value := CallableType.Receiver(fn); value != nil && reflect.TypeOf(value).Kind() == reflect.Func && CallableType.BoundArgumentsCount(fn) == 0 {
+		return NewComparableCallable(value, fn)
+	}
 	return NewComparableCallable(fn.Call, fn)
 }
 

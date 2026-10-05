@@ -419,6 +419,9 @@ func convertToGoStruct(rtype reflect.Type, engineValue any) (reflect.Value, erro
 		var structure = reflect.New(rtype).Elem()
 		var dictionary = value
 		for field, rvalue := range structure.Fields() {
+			if !field.IsExported() {
+				continue
+			}
 			name := field.Name
 			if tag := field.Tag.Get("gd"); tag != "" {
 				name = tag

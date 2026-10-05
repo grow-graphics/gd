@@ -5,12 +5,15 @@ package gd_test
 import (
 	"testing"
 
+	"graphics.gd/classdb"
+	"graphics.gd/classdb/Area2D"
 	"graphics.gd/classdb/Node2D"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Signal"
+	"graphics.gd/variant/Vector2"
 )
 
 type CustomSignal struct {
@@ -111,6 +114,80 @@ func TestSignalString(t *testing.T) {
 		signal.Emit(gd.NewVariant("Hello World"))
 		if triggered != 4 {
 			t.Fatalf("Expected 4 triggers, got %d", triggered)
+		}
+	})
+}
+
+type SignalPayload struct {
+	Position Vector2.XY
+	Speed    Vector2.XY `gd:"speed"`
+
+	hidden int
+}
+
+type SignalBullet struct {
+	Area2D.Extension[SignalBullet]
+
+	Position Vector2.XY
+	Speed    Vector2.XY
+}
+
+type SignalShooter struct {
+	Node2D.Extension[SignalShooter]
+
+	Fired   Signal.Solo[SignalPayload]
+	Shot    Signal.Solo[SignalBullet]
+	Spawned Signal.Solo[*SignalBullet]
+	Scored  Signal.Pair[variant.Any, any]
+}
+
+func init() {
+	classdb.Register[SignalBullet]()
+	classdb.Register[SignalShooter]()
+}
+
+// TestSignalStructs tests that a Go function connected to the signal of an
+// extension class receives the values the signal was emitted with, as the
+// types the function declares. The engine carries a struct as a Dictionary
+// and an extension class as an Object, which used to reach the function as
+// a map[any]any, failing the call. This is the bug reported in
+// https://github.com/quaadgras/graphics.gd/issues/337
+func TestSignalStructs(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		shooter := new(SignalShooter)
+		shooter.AsObject()
+		position, speed := Vector2.XY{X: 1, Y: 2}, Vector2.XY{X: -30, Y: -400}
+
+		var fired []SignalPayload
+		shooter.Fired.Call(func(payload SignalPayload) { fired = append(fired, payload) })
+		shooter.Fired.Emit(SignalPayload{Position: position, Speed: speed, hidden: 1})
+		if len(fired) != 1 || fired[0] != (SignalPayload{Position: position, Speed: speed}) {
+			t.Fatalf("struct: got %+v", fired)
+		}
+
+		// a struct that embeds a class extension is carried by its fields
+		// like any other struct, the copy has an engine object of its own.
+		var shot []Vector2.XY
+		shooter.Shot.Call(func(bullet SignalBullet) { shot = append(shot, bullet.Position, bullet.Speed) })
+		shooter.Shot.Emit(SignalBullet{Position: position, Speed: speed})
+		if len(shot) != 2 || shot[0] != position || shot[1] != speed {
+			t.Fatalf("struct embedding an extension: got %+v", shot)
+		}
+
+		var spawned []*SignalBullet
+		shooter.Spawned.Attach(Callable.New(func(bullet *SignalBullet) { spawned = append(spawned, bullet) }))
+		bullet := &SignalBullet{Position: position, Speed: speed}
+		shooter.Spawned.Emit(bullet)
+		if len(spawned) != 1 || spawned[0] != bullet {
+			t.Fatalf("extension pointer: got %v, want %p", spawned, bullet)
+		}
+
+		var scored []any
+		shooter.Scored.Call(func(a variant.Any, b any) { scored = append(scored, a.Interface(), b) })
+		shooter.Scored.Emit(variant.New(5), "points")
+		shooter.Scored.Emit(variant.Nil, nil)
+		if len(scored) != 4 || scored[0] != 5 || scored[1] != "points" || scored[2] != nil || scored[3] != nil {
+			t.Fatalf("variants: got %#v", scored)
 		}
 	})
 }
