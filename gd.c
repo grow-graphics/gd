@@ -1067,7 +1067,13 @@ void gd_object_extension_setup(uintptr_t obj, uintptr_t name, uintptr_t instance
     gdextension_object_set_instance_binding((GDExtensionObjectPtr)obj, gd_library, (void *)instance, &instance_binding_callbacks);
 };
 uintptr_t gd_object_extension_fetch(uintptr_t obj) {
-    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)obj, gd_library, &instance_binding_callbacks);
+    // No callbacks: a plain lookup. With callbacks, Godot calls
+    // create_callback when the object has no binding for this library, and
+    // ours returns NULL for every object that is not a Go extension. Godot
+    // then appends a {token, NULL} entry to the object's binding array on
+    // every fetch, so the array grows without bound. A Go extension still
+    // finds the binding that gd_object_extension_setup stored.
+    return (uintptr_t)gdextension_object_get_instance_binding((GDExtensionObjectPtr)obj, gd_library, NULL);
 };
 void gd_object_extension_close(uintptr_t obj) {
     gdextension_object_free_instance_binding((GDExtensionObjectPtr)obj, gd_library);
