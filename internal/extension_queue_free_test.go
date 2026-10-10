@@ -21,7 +21,16 @@ func TestExtensionQueueFreeThenCollected(t *testing.T) {
 				node.AsNode().QueueFree()
 			}
 			runtime.GC()
-			time.Sleep(time.Millisecond) // lets the cleanups run before the frame ends
+			// let the cleanups run before the frame ends
+			if runtime.GOOS == "js" {
+				// a callback cannot block on wasm, the engine is waiting
+				// on this very call: yield to the other goroutines.
+				for range 100 {
+					runtime.Gosched()
+				}
+			} else {
+				time.Sleep(time.Millisecond)
+			}
 			runtime.GC()
 		})
 		for range 3 { // the frames in which the frees happen
