@@ -714,11 +714,23 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 		s, _ := reflect.TypeAssert[gdclass.Pointer](value)
 		instance.setStrong(s)
 	}
-	instance.cleanup = runtime.AddCleanup(super, func(raw gdextension.Object) {
+	// When Go drops the value, its engine object is freed at the end of the
+	// frame. The engine may free the object first (queue_free, a parent
+	// that is freed): once the cleanup has run, stopping it in Free comes
+	// too late, so the deferred free looks the object up by its instance ID
+	// and leaves it alone when it is already gone.
+	type owned struct {
+		raw gdextension.Object
+		id  gdextension.ObjectID
+	}
+	instance.cleanup = runtime.AddCleanup(super, func(obj owned) {
 		Callable.Defer(Callable.New(func() {
-			gd.Free(raw)
+			if gdextension.Host.Objects.Lookup(obj.id) != obj.raw {
+				return
+			}
+			gd.Free(obj.raw)
 		}))
-	}, gdreference.GetObject(*super))
+	}, owned{gdreference.GetObject(*super), gdreference.PinnedObjectID(super)})
 	for _, field := range class.Singletons {
 		if singleton, ok := singletons.Lookup(field.Type.Elem()); ok {
 			value.Elem().FieldByIndex(field.Index).Set(singleton)

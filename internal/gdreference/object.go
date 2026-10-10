@@ -135,6 +135,9 @@ func NewObject() Object {
 	}
 }
 
+// PinnedObjectID returns the instance ID that [PinObject] recorded for obj.
+func PinnedObjectID(obj *Object) gdextension.ObjectID { return obj.assigned.objectID }
+
 // GetObject returns the underlying engine pointer for an [Object].
 func GetObject(obj Object) gdextension.Object {
 	if obj.sentinel == nil {
