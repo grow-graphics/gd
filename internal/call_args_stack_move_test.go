@@ -3,12 +3,15 @@
 package gd_test
 
 import (
+	"fmt"
 	"runtime"
 	"sync"
 	"testing"
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/Node"
+	gd "graphics.gd/internal"
+	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
 )
 
@@ -73,6 +76,29 @@ func TestCallArgsStackMove(t *testing.T) {
 		}
 		for _, node := range nodes {
 			node.AsNode().QueueFree()
+		}
+	})
+}
+
+// TestCallableResultStackMove calls a Go function through the engine's
+// Callable (callv), and the function moves the goroutine stack before it
+// returns. The engine writes the result after that: it must still arrive.
+func TestCallableResultStackMove(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		engine := gd.InternalCallable(Callable.New(func() int {
+			growStack(4000)
+			var wg sync.WaitGroup
+			for range 64 {
+				wg.Go(func() { growStack(48) })
+			}
+			wg.Wait()
+			return 42
+		}))
+		for round := range 5 {
+			runtime.GC() // lets the stack shrink, so that every round moves it again
+			if got := engine.Call().ConvenientInterface(); fmt.Sprint(got) != "42" {
+				t.Fatalf("round %d: got %v, want 42", round, got)
+			}
 		}
 	})
 }

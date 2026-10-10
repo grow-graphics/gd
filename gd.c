@@ -1896,6 +1896,21 @@ void gd_variant_type_unsafe_call(ANY self, uintptr_t fn, ANY result, UINT64(shap
     void *points[16]; GD_STAGE uint8_t argc = stage_callframe(2, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)self, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result, argc);
 }
+#ifndef __EMSCRIPTEN__
+// gd_callable_callv_24 is Callable.callv with everything by value: the
+// callable and its argument array live on the C stack for the call, and the
+// result goes back through the return value. The function being called can be
+// Go code that moves the calling goroutine's stack, so nothing here may point
+// into it (see the staged call frames above), least of all the result, which
+// the engine writes last.
+result_24 gd_callable_callv_24(uintptr_t fn, uint64_t c1, uint64_t c2, uintptr_t array) {
+    uint64_t self[2] = {c1, c2};
+    void *points[1] = {&array};
+    result_24 result = {};
+    ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr)&self[0], (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result, 1);
+    return result;
+}
+#endif
 uintptr_t gd_variant_type_evaluator(uint32_t op, uint32_t a, uint32_t b) {
     return (uintptr_t)gdextension_variant_get_ptr_operator_evaluator((GDExtensionVariantOperator)op, (GDExtensionVariantType)a, (GDExtensionVariantType)b);
 }

@@ -18,6 +18,7 @@ package noescape
 // extern result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, uint64_t shape, void *args);
 //
 // extern result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, int64_t argc, void *args, void *err);
+// extern result_24 gd_callable_callv_24(uintptr_t fn, uint64_t c1, uint64_t c2, uintptr_t array);
 //
 import "C"
 import (
@@ -208,4 +209,15 @@ func object_method_call_noescape(object gdextension.Object, method gdextension.M
 func object_method_call(object gdextension.Object, method gdextension.MethodForClass, result *gdextension.Variant, args []gdextension.Variant, err *gdextension.CallError) {
 	raw := C.gd_object_call_24(C.uintptr_t(object), C.uintptr_t(method), C.int64_t(len(args)), unsafe.Pointer(unsafe.SliceData(args)), unsafe.Pointer(err))
 	*result = *(*gdextension.Variant)(unsafe.Pointer(&raw))
+}
+
+// CallableCallv is Callable.callv with the callable, the argument array and
+// the result all passed by value, so that nothing the engine reads or writes
+// during the call sits on the calling goroutine's stack: the function being
+// called can be Go code, and Go code can move that stack.
+func CallableCallv(callv gdextension.MethodForBuiltinType, callable gdextension.Callable, args gdextension.Array) gdextension.Variant {
+	threadcheck.EnterCall()
+	raw := C.gd_callable_callv_24(C.uintptr_t(callv), C.uint64_t(callable[0]), C.uint64_t(callable[1]), C.uintptr_t(args[0]))
+	threadcheck.LeaveCall()
+	return *(*gdextension.Variant)(unsafe.Pointer(&raw))
 }

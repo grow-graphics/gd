@@ -65,3 +65,25 @@ func object_method_call_noescape(object gdextension.Object, method gdextension.M
 func object_method_call(object gdextension.Object, method gdextension.MethodForClass, result *gdextension.Variant, args []gdextension.Variant, err *gdextension.CallError) {
 	gdextension.Host.Objects.Call(object, method, gdextension.CallReturns[gdextension.Variant](result), len(args), gdextension.CallAccepts[gdextension.Variant](unsafe.SliceData(args)), gdextension.CallReturns[gdextension.CallError](err))
 }
+
+// CallableCallv is Callable.callv. The callable, the argument and the result
+// are handed to the Host function, which makes them escape to the heap: the
+// function being called can be Go code that moves the calling goroutine's
+// stack, and the engine writes the result after it has returned.
+func CallableCallv(callv gdextension.MethodForBuiltinType, callable gdextension.Callable, args gdextension.Array) gdextension.Variant {
+	frame := new(struct {
+		self   gdextension.Callable
+		result gdextension.Variant
+		args   struct{ gdextension.Array }
+	})
+	frame.self = callable
+	frame.args.Array = args
+	gdextension.Host.Builtin.Types.Unsafe.Call(
+		gdextension.CallMutates[any](unsafe.Pointer(&frame.self)),
+		callv,
+		gdextension.CallReturns[any](unsafe.Pointer(&frame.result)),
+		gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8,
+		gdextension.CallAccepts[any](unsafe.Pointer(&frame.args)),
+	)
+	return frame.result
+}

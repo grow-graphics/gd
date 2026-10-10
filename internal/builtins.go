@@ -173,18 +173,19 @@ func (c Callable) GetArgumentCount() int64 {
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), builtin.Callable.get_argument_count, gdextension.SizeInt|gdextension.SizeCallable<<4, nil)
 }
 func (c Callable) Call(args ...Variant) Variant {
-	var ptr = pointers.Get(c)
 	var array = NewArray()
 	array.Resize(int64(len(args)))
 	for i, arg := range args {
 		array.SetIndex(int64(i), arg)
 	}
 	defer array.Free()
-	return pointers.New[Variant]([3]uint64(callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
-		gdextension.Array
-	}{
-		pointers.Get(array),
-	}))))
+	if threadcheck.Main() {
+		ring.Main.Flush()
+	}
+	// Not callBuiltinMethod: the function being called can be Go code that
+	// moves this goroutine's stack, and the engine writes the result after
+	// it has returned (see noescape.CallableCallv).
+	return pointers.New[Variant]([3]uint64(noescape.CallableCallv(builtin.Callable.callv, gdextension.Callable(pointers.Get(c)), pointers.Get(array))))
 }
 func (c Callable) CallDeferred() Variant {
 	var ptr = gdextension.Callable(pointers.Get(c))
