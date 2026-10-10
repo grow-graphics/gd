@@ -4,7 +4,9 @@ package ring
 
 // #include <stdint.h>
 // extern void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_index);
+// extern void gd_ring_flush_main(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_index);
 // extern void *gd_ring_flush_g0_addr(void);
+// extern void *gd_ring_flush_main_g0_addr(void);
 // extern void gd_ring_adopt(void *ring, uint32_t *crash_index, void *threads_shared, void *threads_entries);
 import "C"
 import (
@@ -32,6 +34,9 @@ var flushPack struct {
 // flushG0Addr holds gd_ring_flush_g0's address (a constant), resolved at init.
 var flushG0Addr = C.gd_ring_flush_g0_addr()
 
+// flushMainG0Addr holds gd_ring_flush_main_g0's address, resolved at init.
+var flushMainG0Addr = C.gd_ring_flush_main_g0_addr()
+
 func init() { flushPack.crashIndex = &CrashIndex }
 
 // adopted tracks whether Main has been handed to C. Main-thread only.
@@ -52,11 +57,25 @@ func Adopt() {
 }
 
 func flush(entries unsafe.Pointer, tail, head uint32) {
+	// A batch of the main ring runs from a copy (gd_ring_flush_main in gd.c),
+	// so that calls buffered by a nested callback cannot overwrite the batch's
+	// calls that have not run yet. The cross-thread ring (MPSC) runs in place:
+	// callers read results back out of its entries, and its claim protocol
+	// never reuses a slot that is still running.
+	main := entries == unsafe.Pointer(&Main.Entries[0])
 	if threadcheck.Main() && fastcb.Resident() {
 		flushPack.entries = entries
 		flushPack.tail = tail
 		flushPack.head = head
-		fastcb.CallC(flushG0Addr, unsafe.Pointer(&flushPack))
+		if main {
+			fastcb.CallC(flushMainG0Addr, unsafe.Pointer(&flushPack))
+		} else {
+			fastcb.CallC(flushG0Addr, unsafe.Pointer(&flushPack))
+		}
+		return
+	}
+	if main {
+		C.gd_ring_flush_main(entries, C.uint32_t(tail), C.uint32_t(head), (*C.uint32_t)(unsafe.Pointer(&CrashIndex)))
 		return
 	}
 	C.gd_ring_flush(entries, C.uint32_t(tail), C.uint32_t(head), (*C.uint32_t)(unsafe.Pointer(&CrashIndex)))

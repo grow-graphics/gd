@@ -1122,6 +1122,49 @@ void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_
     }
     *crash_index = 0xFFFFFFFF;
 }
+// gd_ring_flush_main runs a batch of the main thread's call ring from a copy.
+// A call in the batch can call back into Go (a setter that emits a signal,
+// add_child running _ready), and Go then buffers more calls into the same ring
+// while the batch is running. The tail has already moved past the batch, so
+// after 256 - (batch size) new calls the new entries land on the batch's own
+// slots: its calls that had not run yet would be lost, and the new calls in
+// their slots would run twice. Each nesting depth gets its own copy, so a
+// nested batch cannot write over a batch that is still running. Main thread
+// only (the ring is), so plain statics suffice.
+static ring_entry **gd_ring_copies = NULL;
+static uint32_t gd_ring_copies_len = 0;
+static uint32_t gd_ring_copy_depth = 0;
+void gd_ring_flush_main(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_index) {
+    if (tail == head) return;
+    if (gd_ring_copy_depth == gd_ring_copies_len) {
+        ring_entry **grown = (ring_entry **)realloc(gd_ring_copies, (gd_ring_copies_len + 1) * sizeof(ring_entry *));
+        ring_entry *copy = (ring_entry *)malloc(256 * sizeof(ring_entry));
+        if (grown == NULL || copy == NULL) abort();
+        gd_ring_copies = grown;
+        gd_ring_copies[gd_ring_copies_len++] = copy;
+    }
+    ring_entry *copy = gd_ring_copies[gd_ring_copy_depth++];
+    ring_entry *ring = (ring_entry *)entries;
+    // Copy the call (object, method, shape, packed arguments). gd_ring_flush
+    // clears the result slot itself, and the PC stays in the Go ring for the
+    // crash report.
+    for (uint32_t i = tail; i != head; i++) {
+        memcpy(&copy[i & 0xFF], &ring[i & 0xFF], offsetof(ring_entry, result));
+    }
+    gd_ring_flush(copy, tail, head, crash_index);
+    gd_ring_copy_depth--;
+}
+struct gd_ring_flush_main_pack {
+    void     *entries;
+    uint32_t  tail;
+    uint32_t  head;
+    uint32_t *crash_index;
+};
+void gd_ring_flush_main_g0(void *v) {
+    struct gd_ring_flush_main_pack *p = (struct gd_ring_flush_main_pack *)v;
+    gd_ring_flush_main(p->entries, p->tail, p->head, p->crash_index);
+}
+void *gd_ring_flush_main_g0_addr(void) { return (void*)&gd_ring_flush_main_g0; }
 // C-side draining of the main thread's call ring at engine->Go callback
 // boundaries. Go registers the ring once from the main thread (gd_ring_adopt);
 // after that, the callback trampolines call gd_ring_drain when a callback
@@ -1223,7 +1266,7 @@ static void gd_ring_drain(void) {
         while (r->tail != r->head) {
             uint32_t tail = r->tail, head = r->head;
             r->tail = head;
-            gd_ring_flush(r->entries, tail, head, gd_ring_main_crash_index);
+            gd_ring_flush_main(r->entries, tail, head, gd_ring_main_crash_index);
         }
     }
     gd_ring_drain_threads();
@@ -1233,7 +1276,7 @@ static void gd_ring_drain(void) {
     if (r != NULL && r->tail != r->head) {
         uint32_t tail = r->tail, head = r->head;
         r->tail = head;
-        gd_ring_flush(r->entries, tail, head, gd_ring_main_crash_index);
+        gd_ring_flush_main(r->entries, tail, head, gd_ring_main_crash_index);
     }
 }
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {

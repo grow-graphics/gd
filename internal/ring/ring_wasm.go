@@ -4,7 +4,18 @@ package ring
 
 import "unsafe"
 
-var shadowRing uint32
+// A flushed call can call back into Go, and that Go code can buffer and flush
+// more calls while the outer flush is still running in the engine. Each flush
+// nesting depth therefore copies into, and runs from, its own shadow ring: a
+// nested flush can never write over the entries of a flush that has not
+// finished. Flushes at the same depth run one after another, so they share it.
+//
+// shadowRings[d] is the Godot-memory copy of the ring for a flush at
+// nesting depth d. Allocated on first use, kept for the life of the program.
+var shadowRings []uint32
+
+// flushDepth counts the flushes that are running (wasm is single-threaded).
+var flushDepth int
 
 //go:wasmimport gd ring_flush
 func wasm_gd_ring_flush(entries uint32, stride uint32, tail uint32, head uint32)
@@ -19,10 +30,13 @@ func wasm_gd_bulk_copy(godot_dst uint32, go_src uint32, length uint32)
 func Adopt() {}
 
 func flush(entries unsafe.Pointer, tail, head uint32) {
-	if shadowRing == 0 {
-		shadowRing = wasm_gd_memory_malloc(Size * uint32(unsafe.Sizeof(Entry{})))
-	}
 	entrySize := uint32(unsafe.Sizeof(Entry{}))
+	if flushDepth == len(shadowRings) {
+		shadowRings = append(shadowRings, wasm_gd_memory_malloc(Size*entrySize))
+	}
+	shadowRing := shadowRings[flushDepth]
+	flushDepth++
+	defer func() { flushDepth-- }()
 	start := tail & Mask
 	end := head & Mask
 	base := uint32(uintptr(entries))
