@@ -8,9 +8,11 @@ import (
 	"testing"
 
 	"graphics.gd/classdb"
+	"graphics.gd/classdb/ClassDB"
 	"graphics.gd/classdb/Node"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdreference"
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
@@ -142,5 +144,72 @@ func TestPropertyPanic(t *testing.T) {
 		}
 		marker.QueueFree()
 		node.AsNode().QueueFree()
+	})
+}
+
+// PanicConstructorNode's constructor panics.
+type PanicConstructorNode struct {
+	Node.Extension[PanicConstructorNode] `gd:"PanicConstructorNode"`
+
+	Value int
+}
+
+func NewPanicConstructorNode() *PanicConstructorNode {
+	panic("a panic in a constructor (expected by TestConstructorPanic)")
+}
+
+// PanicOnCreateNode's creation hook panics.
+type PanicOnCreateNode struct {
+	Node.Extension[PanicOnCreateNode] `gd:"PanicOnCreateNode"`
+
+	Value int
+}
+
+func (p *PanicOnCreateNode) OnCreate() {
+	p.Value = 7
+	panic("a panic in a creation hook (expected by TestConstructorPanic)")
+}
+
+// Registered at startup, like the classes of a project are: a class that is
+// registered later can only be instantiated by the editor.
+func init() {
+	classdb.Register[PanicConstructorNode](NewPanicConstructorNode)
+	classdb.Register[PanicOnCreateNode]()
+}
+
+// TestConstructorPanic has the engine create objects of extension classes
+// whose constructor, or creation hook, panics. The engine is waiting for an
+// object: it must get one, with the instance left empty (or as far as the
+// hook got), and the panic must not unwind through the engine.
+func TestConstructorPanic(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		var reached any
+		var made [2]any
+		func() {
+			defer func() { reached = recover() }()
+			made[0] = ClassDB.Instantiate("PanicConstructorNode")
+			made[1] = ClassDB.Instantiate("PanicOnCreateNode")
+		}()
+		if reached != nil {
+			t.Fatalf("the panic unwound through the engine: %v", reached)
+		}
+		first, ok := made[0].(gdreference.Object)
+		if !ok {
+			t.Fatalf("no object for the class whose constructor panics: got %T", made[0])
+		}
+		empty, ok := Object.As[*PanicConstructorNode](Object.Instance([1]gdreference.Object{first}))
+		if !ok || empty.Value != 0 {
+			t.Fatalf("constructor panic: got %+v (%v), want an empty instance", empty, ok)
+		}
+		second, ok := made[1].(gdreference.Object)
+		if !ok {
+			t.Fatalf("no object for the class whose creation hook panics: got %T", made[1])
+		}
+		hooked, ok := Object.As[*PanicOnCreateNode](Object.Instance([1]gdreference.Object{second}))
+		if !ok || hooked.Value != 7 {
+			t.Fatalf("creation hook panic: got %+v (%v), want the instance as the hook left it", hooked, ok)
+		}
+		empty.AsNode().QueueFree()
+		hooked.AsNode().QueueFree()
 	})
 }

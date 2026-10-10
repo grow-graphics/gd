@@ -317,7 +317,17 @@ func Register[T Class](exports ...any) {
 					i := String.FindLast(name, ".")
 					name = name[i+1:]
 					if String.HasPrefix(name, "New") && rvalue.Type().NumIn() == 0 && rvalue.Type().NumOut() == 1 && rvalue.Type().Out(0) == reflect.PointerTo(classType) {
-						impl.Constructor = func() reflect.Value {
+						impl.Constructor = func() (value reflect.Value) {
+							// The engine expects an object back whatever
+							// happens in here: if the constructor panics
+							// (or returns nil), the panic is reported and
+							// the instance starts out empty instead.
+							defer func() {
+								if !value.IsValid() || value.IsNil() {
+									value = reflect.New(classType)
+								}
+							}()
+							defer gd.Recover()
 							return rvalue.Call(nil)[0]
 						}
 					} else if strings.Count(path.Base(fname), ".") > 1 {
@@ -981,6 +991,9 @@ func (instance *instanceImplementation) Interface() (gdclass.Pointer, bool) {
 }
 
 func (instance *instanceImplementation) OnCreate(value reflect.Value) {
+	// A panic in these hooks is reported and the instance is kept as it is:
+	// the engine is in the middle of creating the object and needs it back.
+	defer gd.Recover()
 	val, ok := instance.Interface()
 	if !ok {
 		return
