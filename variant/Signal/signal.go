@@ -125,6 +125,12 @@ type Void struct {
 	Any
 }
 
+// Call connects the specified function to this signal. The function will be called
+// whenever this signal is emitted.
+func (signal Void) Call(fn func()) {
+	signal.Any.Attach(Callable.New(fn))
+}
+
 // Emit the signal to all connected signal handlers. Safe to call from any goroutine.
 // This function is safe to call from any goroutine.
 func (signal Void) Emit() {
