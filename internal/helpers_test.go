@@ -35,6 +35,18 @@ func (c *channelTB) FailNow() {
 	c.calls <- func(t *testing.T) { t.Helper(); t.FailNow() }
 	panic(fatalSentinel{})
 }
+func (c *channelTB) Skip(args ...any) {
+	c.calls <- func(t *testing.T) { t.Helper(); t.Skip(args...) }
+	panic(fatalSentinel{})
+}
+func (c *channelTB) Skipf(format string, args ...any) {
+	c.calls <- func(t *testing.T) { t.Helper(); t.Skipf(format, args...) }
+	panic(fatalSentinel{})
+}
+func (c *channelTB) SkipNow() {
+	c.calls <- func(t *testing.T) { t.Helper(); t.SkipNow() }
+	panic(fatalSentinel{})
+}
 func (c *channelTB) Fail() {
 	c.calls <- func(t *testing.T) { t.Fail() }
 }
@@ -89,6 +101,18 @@ func (c *channelB) Fatalf(format string, args ...any) {
 }
 func (c *channelB) FailNow() {
 	c.calls <- func(b *testing.B) { b.Helper(); b.FailNow() }
+	panic(fatalSentinel{})
+}
+func (c *channelB) Skip(args ...any) {
+	c.calls <- func(b *testing.B) { b.Helper(); b.Skip(args...) }
+	panic(fatalSentinel{})
+}
+func (c *channelB) Skipf(format string, args ...any) {
+	c.calls <- func(b *testing.B) { b.Helper(); b.Skipf(format, args...) }
+	panic(fatalSentinel{})
+}
+func (c *channelB) SkipNow() {
+	c.calls <- func(b *testing.B) { b.Helper(); b.SkipNow() }
 	panic(fatalSentinel{})
 }
 func (c *channelB) Fail() {
