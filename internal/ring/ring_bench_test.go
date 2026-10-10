@@ -33,7 +33,7 @@ const shapeVector2 = 5 << 4
 func BenchmarkBufferDrain(b *testing.B) {
 	var arg [16]byte
 	var sink uintptr
-	Main.head, Main.tail = 0, 0
+	Main.head, Main.tail, Main.floor = 0, 0, 0
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		Main.Buffer(uintptr(i), 42, shapeVector2, unsafe.Pointer(&arg), 7)
@@ -41,6 +41,7 @@ func BenchmarkBufferDrain(b *testing.B) {
 			e := &Main.Entries[Main.tail&Mask]
 			sink += e.Object + e.Method + uintptr(e.Shape) + e.PC + uintptr(e.Args[0])
 			Main.tail++
+			Main.floor = Main.tail
 		}
 	}
 	runtime.KeepAlive(sink)
@@ -51,11 +52,11 @@ func BenchmarkBufferDrain(b *testing.B) {
 // callback does. It isolates the enqueue side.
 func BenchmarkBufferBatch(b *testing.B) {
 	var arg [16]byte
-	Main.head, Main.tail = 0, 0
+	Main.head, Main.tail, Main.floor = 0, 0, 0
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		if Main.head-Main.tail >= Size-1 {
-			Main.tail = Main.head // discard; the flush is not what is measured
+			Main.tail, Main.floor = Main.head, Main.head // discard; the flush is not what is measured
 		}
 		Main.Buffer(uintptr(i), 42, shapeVector2, unsafe.Pointer(&arg), 7)
 	}

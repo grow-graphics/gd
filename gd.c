@@ -1132,14 +1132,16 @@ void gd_ring_flush(void *entries, uint32_t tail, uint32_t head, uint32_t *crash_
 typedef struct {
     uint32_t head;
     uint32_t tail;
+    uint32_t floor;
+    uint32_t depth;
     ring_entry entries[256];
 } gd_ring_buffer;
 #ifdef __cplusplus
-static_assert(offsetof(gd_ring_buffer, entries) == 8,
-    "gd_ring_buffer prefix must match ring.Ring (head, tail uint32)");
+static_assert(offsetof(gd_ring_buffer, entries) == 16,
+    "gd_ring_buffer prefix must match ring.Ring (head, tail, floor, depth uint32)");
 #else
-_Static_assert(offsetof(gd_ring_buffer, entries) == 8,
-    "gd_ring_buffer prefix must match ring.Ring (head, tail uint32)");
+_Static_assert(offsetof(gd_ring_buffer, entries) == 16,
+    "gd_ring_buffer prefix must match ring.Ring (head, tail, floor, depth uint32)");
 #endif
 // gd_mpsc_shared mirrors the Go side's ring.mpscShared: the C-visible state of
 // the cross-thread (MPSC) command ring. head and seq are written by producer
@@ -1213,28 +1215,38 @@ static void gd_ring_drain_threads(void) {
     if (released) s->cdrained = 1;
     s->draining = 0;
 }
+// gd_ring_main_flush runs the pending entries of the main ring: the same
+// protocol as the Go side's Ring.Flush. Claim-then-execute: tail advances
+// before executing, so re-entrant flushes (nested callbacks buffering and
+// flushing) only see newly-buffered entries. The claimed slots stay in use
+// until the batch returns, floor keeps the Go side's Buffer off them: it
+// holds at the start of the outermost running batch, and follows tail again
+// once nothing is running. A nested batch hands its slots back when it is
+// done and nothing was buffered behind it.
+static void gd_ring_main_flush(gd_ring_buffer *r) {
+    uint32_t tail = r->tail, head = r->head;
+    r->tail = head;
+    r->depth++;
+    gd_ring_flush(r->entries, tail, head, gd_ring_main_crash_index);
+    r->depth--;
+    if (r->depth == 0) {
+        r->floor = r->tail;
+    } else if (r->head == r->tail) {
+        r->head = tail;
+        r->tail = tail;
+    }
+}
 static void gd_ring_drain(void) {
     if (!gd_ring_owner) return;
     gd_ring_buffer *r = gd_ring_main;
     if (r != NULL) {
-        // Claim-then-execute, the same protocol as the Go side's Flush:
-        // advance tail before executing, so re-entrant flushes (nested
-        // callbacks buffering and flushing) only see newly-buffered entries.
-        while (r->tail != r->head) {
-            uint32_t tail = r->tail, head = r->head;
-            r->tail = head;
-            gd_ring_flush(r->entries, tail, head, gd_ring_main_crash_index);
-        }
+        while (r->tail != r->head) gd_ring_main_flush(r);
     }
     gd_ring_drain_threads();
     // A threads entry can buffer main-ring work via a nested callback whose
     // own trampoline drained it already; this final sweep only catches calls
     // buffered by paths without a drain of their own (cheap when empty).
-    if (r != NULL && r->tail != r->head) {
-        uint32_t tail = r->tail, head = r->head;
-        r->tail = head;
-        gd_ring_flush(r->entries, tail, head, gd_ring_main_crash_index);
-    }
+    if (r != NULL && r->tail != r->head) gd_ring_main_flush(r);
 }
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
