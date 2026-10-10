@@ -112,6 +112,16 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 	return true
 }
 
+// propertyFieldByName returns the field of the struct with the given Go name,
+// unless it is tagged gd:"-", as such a field is not a property.
+func propertyFieldByName(rvalue reflect.Value, name string) reflect.Value {
+	rfield, ok := rvalue.Type().FieldByName(name)
+	if !ok || rfield.Tag.Get("gd") == "-" {
+		return reflect.Value{}
+	}
+	return rvalue.FieldByIndex(rfield.Index)
+}
+
 // Set needs to reference++ any resources that are sucessfully set.
 func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant) bool {
 	val, ok := instance.Interface()
@@ -123,7 +133,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		Set(string, any) bool
 	})
 	rvalue := reflect.ValueOf(val).Elem()
-	field := rvalue.FieldByName(sname)
+	field := propertyFieldByName(rvalue, sname)
 	if !field.IsValid() || !field.CanSet() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
 			if !rfield.IsExported() {
@@ -131,10 +141,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if tag == "-" {
-				if hasSetter {
-					return setter.Set(sname, value.ConvenientInterface())
-				}
-				return false
+				continue // not a property, the fields after it still are.
 			}
 			if hasTag && !rfield.Anonymous && tag == sname {
 				field = rvalue.FieldByIndex(rfield.Index)
@@ -233,7 +240,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	})
 	sname := name.String()
 	rvalue := reflect.ValueOf(val).Elem()
-	field := rvalue.FieldByName(String.ToPascalCase(sname))
+	field := propertyFieldByName(rvalue, String.ToPascalCase(sname))
 	if !field.IsValid() {
 		for _, rfield := range reflect.VisibleFields(rvalue.Type()) {
 			if !rfield.IsExported() {
@@ -241,7 +248,7 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
 			if tag == "-" {
-				break
+				continue
 			}
 			if hasTag && !rfield.Anonymous && tag == sname {
 				field = rvalue.FieldByIndex(rfield.Index)

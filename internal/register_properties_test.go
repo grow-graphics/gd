@@ -214,3 +214,45 @@ func TestRegisterUnrecognizedPropertySetter(t *testing.T) {
 		}
 	})
 }
+
+type TestingSkippedProperties struct {
+	Node.Extension[TestingSkippedProperties]
+
+	Before  int
+	Skipped bool `gd:"-"`
+	After   int
+	Renamed int `gd:"renamed_after"`
+}
+
+func init() {
+	classdb.Register[TestingSkippedProperties]()
+}
+
+// TestSetPropertiesAfterSkippedField covers issue #342: a field tagged gd:"-"
+// is left out of the properties of its class, the fields declared after it are
+// still properties that the engine can set.
+func TestSetPropertiesAfterSkippedField(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		obj := &TestingSkippedProperties{}
+		Object.Set(obj, "before", 1)
+		Object.Set(obj, "after", 2)
+		Object.Set(obj, "renamed_after", 3)
+		if got := Object.Get(obj, "renamed_after"); got != 3 {
+			t.Errorf("renamed_after = %v, wanted 3", got)
+		}
+		if obj.Before != 1 || obj.After != 2 || obj.Renamed != 3 {
+			t.Errorf("before, after, renamed_after = %d, %d, %d, wanted 1, 2, 3", obj.Before, obj.After, obj.Renamed)
+		}
+		// the skipped field is not reachable by either of its names.
+		obj.Skipped = true
+		if got := Object.Get(obj, "skipped"); got != nil {
+			t.Errorf("skipped = %v, wanted nil", got)
+		}
+		Object.Set(obj, "Skipped", false)
+		Object.Set(obj, "skipped", false)
+		Object.Get(obj, "after") // flush the queued sets
+		if !obj.Skipped {
+			t.Error("a field tagged gd:\"-\" was set as a property")
+		}
+	})
+}
