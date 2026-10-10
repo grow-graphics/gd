@@ -534,9 +534,52 @@ uint8_t prepare_callframe(int skip, void **frame, uint64_t shape, ANY args) {
     if (i < 16 - skip) frame[i] = NULL;
     return i;
 }
+// Staged call frames. The arguments of a call that Go makes through cgo sit
+// in a packed struct on the calling goroutine's stack, and the engine binds
+// its const-reference parameters straight to that memory. A callback into Go
+// during the call can grow the goroutine's stack, which moves it: whatever the
+// method reads from its parameters afterwards would come from the abandoned
+// copy, memory that Go is free to hand out again. So the entry points that Go
+// calls directly copy the arguments onto the C stack first, which never
+// moves. Only where the arguments are inputs: the helpers that write through
+// them (setters, constructors into native memory, a builtin's self) keep
+// the caller's memory. The ring and the resident packs are Go globals and need no copy, and
+// on the web the arguments are already in the engine's memory.
+#ifdef __EMSCRIPTEN__
+    #define GD_STAGE
+    #define stage_callframe(skip, frame, shape, args) prepare_callframe(skip, frame, shape, args)
+    #define stage_variants(frame, argc, args) prepare_variants(frame, argc, args)
+#else
+    #define GD_STAGE uint8_t staged[1024];
+    #define stage_callframe(skip, frame, shape, args) staged_callframe(skip, frame, shape, args, staged)
+    #define stage_variants(frame, argc, args) staged_variants(frame, argc, args, staged, sizeof staged)
+    static inline uint8_t staged_callframe(int skip, void **frame, uint64_t shape, ANY args, uint8_t *staged) {
+        ptrdiff_t offset = 0;
+        int i = 0;
+        for (uint64_t s = shape >> (skip * 4); s; s >>= 4, i++) {
+            Shape code = (Shape)(s & 0xF);
+            offset = ALIGN_UP(offset, gd_shape_aligns[code]);
+            frame[i] = staged + offset;
+            offset += gd_shape_sizes[code];
+        }
+        if (i < 16 - skip) frame[i] = NULL;
+        // 15 arguments of at most 64 bytes each always fit.
+        if (offset) memcpy(staged, (const void *)args, (size_t)offset);
+        return i;
+    }
+    static inline void staged_variants(void **frame, uint32_t argc, ANY args, uint8_t *staged, size_t room) {
+        size_t size = (size_t)argc * 24;
+        if (size > room) { // more than the frame holds anyway
+            prepare_variants(frame, argc, args);
+            return;
+        }
+        if (size) memcpy(staged, (const void *)args, size);
+        prepare_variants(frame, argc, (ANY)staged);
+    }
+#endif
 uintptr_t gd_builtin_name(uintptr_t name, INT64(hash)) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)&name, INT64_FROM(hash));}
 void gd_builtin_call(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE uint8_t argc = stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrUtilityFunction)fn)((GDExtensionTypePtr)result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
 void gd_callable_create(uintptr_t id, UINT64(object), ANY result) {
@@ -1033,11 +1076,11 @@ uintptr_t gd_object_make(uintptr_t name) {
     return (uintptr_t)gdextension_classdb_construct_object3((GDExtensionConstStringNamePtr)&name);
 };
 void gd_object_call(uintptr_t obj, uintptr_t fn, ANY result, INT argc, ANY args, ANY err) {
-    void *points[16]; prepare_variants(&points[0], argc, args);
+    void *points[16]; GD_STAGE stage_variants(&points[0], argc, args);
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, INT argc, ANY args, ANY err) {
-    void *points[16]; prepare_variants(&points[0], argc, args);
+    void *points[16]; GD_STAGE stage_variants(&points[0], argc, args);
     result_24 result = {};
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)&result, (GDExtensionCallError*)err);
     return result;
@@ -1089,7 +1132,7 @@ uintptr_t gd_object_method_lookup(uintptr_t class_name, uintptr_t method, INT64(
     return (uintptr_t)gdextension_classdb_get_method_bind((GDExtensionConstStringNamePtr)&class_name, (GDExtensionConstStringNamePtr)&method, INT64_FROM(hash));
 };
 void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
 };
 typedef struct {
@@ -1255,7 +1298,7 @@ static void gd_ring_drain(void) {
     if (r != NULL && r->tail != r->head) gd_ring_main_flush(r);
 }
 uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     uint64_t result = 0;
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
@@ -1359,19 +1402,19 @@ void gd_ring_flush_g0(void *v) {
 }
 void *gd_ring_flush_g0_addr(void) { return (void*)&gd_ring_flush_g0; }
 result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_16 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
 result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_32 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
 };
 result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
-    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE stage_callframe(1, &points[0], UINT64_FROM(shape), args);
     result_64 result = {};
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
     return result;
@@ -1437,7 +1480,7 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
     return (uintptr_t)gdextension_script_instance_create3(&info, (GDExtensionScriptInstanceDataPtr)&instance);
 };
 void gd_object_script_call(uintptr_t obj, uintptr_t method, ANY result, INT argc, ANY args, ANY err) {
-    void *points[16]; points[1] = 0; prepare_variants(&points[0], argc, args);
+    void *points[16]; GD_STAGE points[1] = 0; stage_variants(&points[0], argc, args);
     gdextension_object_call_script_method((GDExtensionObjectPtr)obj, (GDExtensionConstStringNamePtr)&method, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 void gd_object_script_setup(uintptr_t obj, uintptr_t instance) {
@@ -1657,7 +1700,7 @@ void gd_variant_unsafe_from_native(uint32_t vtype, ANY result, UINT64(shape), AN
     variant_from_type_constructors[vtype]((GDExtensionUninitializedVariantPtr)result, points[0]);
 };
 void gd_variant_type_call(uint32_t vtype, uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
-    void *points[16]; prepare_variants(&points[0], argc, args);
+    void *points[16]; GD_STAGE stage_variants(&points[0], argc, args);
     gdextension_variant_call_static((GDExtensionVariantType)vtype, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 bool gd_variant_type_convertable(uint32_t a, uint32_t b, bool strict) {
@@ -1699,7 +1742,7 @@ void gd_variant_copy(UINT64(v1), UINT64(v2), UINT64(v3), ANY result) {
 };
 void gd_variant_call(UINT64(v1), UINT64(v2), UINT64(v3), uintptr_t name, ANY result, INT argc, ANY args, ANY err) {
     uint64_t self[3] = {UINT64_FROM(v1), UINT64_FROM(v2), UINT64_FROM(v3)};
-    void *points[16]; prepare_variants(&points[0], argc, args);
+    void *points[16]; GD_STAGE stage_variants(&points[0], argc, args);
     gdextension_variant_call(&self, (GDExtensionConstStringNamePtr)&name, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 bool gd_variant_eval(uint32_t op, UINT64(a1), UINT64(a2), UINT64(a3), UINT64(b1), UINT64(b2), UINT64(b3), ANY result) {
@@ -1799,7 +1842,8 @@ void gd_variant_unsafe_eval(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
     ((GDExtensionPtrOperatorEvaluator)fn)(points[0], points[1], (GDExtensionTypePtr)result);
 };
 void gd_variant_unsafe_call(uintptr_t fn, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE uint8_t argc = stage_callframe(1, &points[0], UINT64_FROM(shape), args);
+    points[0] = (void *)args; // self is modified in place, it stays where the caller has it
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)points[0], (const GDExtensionConstTypePtr*)&points[1], (GDExtensionTypePtr)result, argc);
 };
 void gd_variant_unsafe_free(UINT64(v1), UINT64(v2), UINT64(v3)) {
@@ -1849,7 +1893,7 @@ void gd_variant_type_make(uint32_t vtype, ANY result, INT argc, ANY args, ANY er
     gdextension_variant_construct((GDExtensionVariantType)vtype, (GDExtensionUninitializedVariantPtr)result, (const GDExtensionConstVariantPtr *)&points[0], argc, (GDExtensionCallError*)err);
 }
 void gd_variant_type_unsafe_call(ANY self, uintptr_t fn, ANY result, UINT64(shape), ANY args) {
-    void *points[16]; uint8_t argc = prepare_callframe(2, &points[0], UINT64_FROM(shape), args);
+    void *points[16]; GD_STAGE uint8_t argc = stage_callframe(2, &points[0], UINT64_FROM(shape), args);
     ((GDExtensionPtrBuiltInMethod)fn)((GDExtensionTypePtr*)self, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result, argc);
 }
 uintptr_t gd_variant_type_evaluator(uint32_t op, uint32_t a, uint32_t b) {
