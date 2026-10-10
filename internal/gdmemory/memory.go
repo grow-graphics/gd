@@ -11,19 +11,43 @@ import (
 	"graphics.gd/internal/gdextension"
 )
 
-var arguments gdextension.Pointer
-var receiver gdextension.Pointer
-var results [2]gdextension.Pointer
-var current int
+// buffers is one set of engine-side buffers for the calls made at one
+// callback depth.
+//
+// A call can still be using its buffers when the engine calls back into Go:
+// Object.emit_signal hands each connected handler pointers into the argument
+// buffer of the emit_signal call. So an engine call made from inside a
+// callback must not reuse the buffers of the call that is running. Each
+// callback depth (see depth) has its own set. Calls at the same depth run one
+// after another, so they share that depth's set.
+type buffers struct {
+	arguments gdextension.Pointer
+	receiver  gdextension.Pointer
+	results   [2]gdextension.Pointer
+	current   int
+}
 
-var setup = sync.OnceFunc(func() {
-	arguments = gdextension.Host.Memory.Malloc(64 * 64)
-	receiver = gdextension.Host.Memory.Malloc(64 * 64 / 16)
-	for i := range results {
-		results[i] = gdextension.Host.Memory.Malloc(64 * 64)
-		gdextension.Host.Memory.Clear(results[i], 64*64)
+// frames[d] holds the buffers of callback depth d, allocated on first use and
+// kept for the life of the program.
+var frames []*buffers
+
+func frame() *buffers {
+	d := depth()
+	for len(frames) <= d {
+		b := &buffers{
+			arguments: gdextension.Host.Memory.Malloc(64 * 64),
+			receiver:  gdextension.Host.Memory.Malloc(64 * 64 / 16),
+		}
+		for i := range b.results {
+			b.results[i] = gdextension.Host.Memory.Malloc(64 * 64)
+			gdextension.Host.Memory.Clear(b.results[i], 64*64)
+		}
+		frames = append(frames, b)
 	}
-})
+	return frames[d]
+}
+
+var setup = sync.OnceFunc(func() { frame() })
 
 // CopyArguments copies arguments from args to the arguments buffer, respecting Go's alignment rules.
 func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[T]) gdextension.Pointer {
@@ -31,7 +55,7 @@ func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[
 	if args == nil {
 		return 0
 	}
-	return copyIntoEngine(shape.SizeArguments(), unsafe.Pointer(args), arguments)
+	return copyIntoEngine(shape.SizeArguments(), unsafe.Pointer(args), frame().arguments)
 }
 
 // CopyReceiver copies the receiver into the receiver buffer, respecting Go's alignment rules.
@@ -40,7 +64,7 @@ func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T
 	if self == nil {
 		return 0
 	}
-	return copyIntoEngine((shape & 0b11110000).SizeArguments(), unsafe.Pointer(self), receiver)
+	return copyIntoEngine((shape & 0b11110000).SizeArguments(), unsafe.Pointer(self), frame().receiver)
 }
 
 func copyIntoEngine(bytes int, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {
@@ -76,12 +100,13 @@ func copyIntoEngine(bytes int, args unsafe.Pointer, into gdextension.Pointer) gd
 func MakeResult(shape gdextension.Shape) gdextension.Pointer {
 	setup()
 	// alternating between two buffers for results
-	if current == 0 {
-		current = 1
+	b := frame()
+	if b.current == 0 {
+		b.current = 1
 	} else {
-		current = 0
+		b.current = 0
 	}
-	return results[current]
+	return b.results[b.current]
 }
 
 func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdextension.Pointer) {
@@ -120,6 +145,7 @@ func CopyVariants[T any](args gdextension.CallAccepts[T], n int) gdextension.Poi
 	setup()
 	var offset int
 	var data = unsafe.Pointer(args)
+	arguments := frame().arguments
 	for i := range n {
 		gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset), *(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
 		gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+16), *(*uint64)(unsafe.Add(data, uintptr(i*24+16))))

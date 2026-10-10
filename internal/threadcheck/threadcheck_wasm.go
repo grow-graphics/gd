@@ -39,6 +39,7 @@ func Main() bool { return true }
 func EnterFrame() uintptr {
 	prev := frameG
 	frameG = currentg()
+	frameDepth++
 	return prev
 }
 
@@ -46,7 +47,17 @@ func EnterFrame() uintptr {
 // EnterFrame.
 func LeaveFrame(prev uintptr) {
 	frameG = prev
+	frameDepth--
 }
+
+// frameDepth counts the engine->Go exports that are running (see EnterFrame).
+var frameDepth int
+
+// FrameDepth reports how many engine->Go callbacks are running: 0 outside any
+// callback, 1 inside a callback, 2 inside a callback made by an engine call
+// from a callback, and so on. internal/gdmemory uses it to give the engine
+// calls of each depth their own argument buffers.
+func FrameDepth() int { return frameDepth }
 
 // FrameTemporaries reports whether the calling goroutine is frame-aligned:
 // either the goroutine executing the current engine callback, or the
