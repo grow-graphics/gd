@@ -39,6 +39,7 @@ func init() {
 		return
 	}
 	dispatch := func(instance, userdata, result, args uintptr) {
+		defer gd.Recover()
 		pv := (*pinnedVirtualFunc)(unsafe.Pointer(userdata))
 		if pv.tick != nil && instance != 0 {
 			pv.tick(unsafe.Pointer(instance), Float.X(gd.UnsafeGet[float64](gdextension.Pointer(args), 0)))

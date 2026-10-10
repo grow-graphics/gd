@@ -188,11 +188,12 @@ func init() {
 				gdmemory.Set(gdextension.Pointer(rid), uint64(0))
 			},
 			Notification: func(instance gdextension.ExtensionInstanceID, what int32, reverse bool) {
+				defer gd.Recover()
 				instances.Get(instance).Notification(Object.Notification(what), reverse)
 				gdreference.Barrier()
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-				//defer gd.Recover()
+				defer gd.Recover()
 				var receiver *instanceImplementation
 				if instance != 0 {
 					receiver = instances.Get(instance)
@@ -201,6 +202,7 @@ func init() {
 				gdreference.Barrier()
 			},
 			Called: func(instance gdextension.ExtensionInstanceID, callData gdextension.Pointer, result gdextension.Returns[any], args gdextension.Accepts[any]) {
+				defer gd.Recover()
 				pv := (*pinnedVirtualFunc)(*(*unsafe.Pointer)(unsafe.Pointer(&callData))) // runtime.Pinned, so this is ok.
 				if pv.tick != nil && instance != 0 {
 					pv.tick(unsafe.Pointer(uintptr(instance)), Float.X(gd.UnsafeGet[float64](gdextension.Pointer(args), 0)))
