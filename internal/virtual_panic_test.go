@@ -14,6 +14,7 @@ import (
 	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 )
 
 // PanicProcessNode's _process panics on demand.
@@ -79,6 +80,65 @@ func TestVirtualPanic(t *testing.T) {
 					t.Fatalf("after the panics, call %d: got %q, want %q", i, got, want)
 				}
 			}
+		}
+		marker.QueueFree()
+		node.AsNode().QueueFree()
+	})
+}
+
+// PanicPropertyNode's dynamic property hooks panic.
+type PanicPropertyNode struct {
+	Node.Extension[PanicPropertyNode] `gd:"PanicPropertyNode"`
+
+	gets, sets int
+}
+
+func (p *PanicPropertyNode) Get(name string) any {
+	p.gets++
+	panic("a panic in a property getter (expected by TestPropertyPanic)")
+}
+
+func (p *PanicPropertyNode) Set(name string, value any) bool {
+	p.sets++
+	panic("a panic in a property setter (expected by TestPropertyPanic)")
+}
+
+var registerPanicProperty = sync.OnceFunc(func() { classdb.Register[PanicPropertyNode]() })
+
+// TestPropertyPanic panics inside the property hooks of an extension class.
+// Like a panic in a virtual method, it must stop where the engine called
+// into Go: the engine then treats the property as one the hooks do not
+// handle, and the Go code that asked for it carries on.
+func TestPropertyPanic(t *testing.T) {
+	registerPanicProperty()
+	runOnMain(t, func(t testing.TB) {
+		node := new(PanicPropertyNode)
+		node.AsNode().SetName("Probe")
+		marker := Node.New()
+		for round := range 3 {
+			want := fmt.Sprintf("After%d", round)
+			var reached any
+			var name any
+			var got string
+			func() {
+				defer func() { reached = recover() }()
+				name = Object.Get(node, "name")         // the getter panics, the engine answers
+				Object.Set(node, "no_such_property", 1) // queued: the setter panics
+				marker.SetName(want)                    // queued behind it
+				got = marker.Name()                     // runs the batch
+			}()
+			if reached != nil {
+				t.Fatalf("round %d: the panic unwound through the engine: %v", round, reached)
+			}
+			if name != "Probe" {
+				t.Fatalf("round %d: got name %v, want %q", round, name, "Probe")
+			}
+			if got != want {
+				t.Fatalf("round %d: the call queued behind the panic was lost: got %q, want %q", round, got, want)
+			}
+		}
+		if node.gets == 0 || node.sets == 0 {
+			t.Fatalf("the hooks did not run: %d gets, %d sets", node.gets, node.sets)
 		}
 		marker.QueueFree()
 		node.AsNode().QueueFree()

@@ -129,9 +129,11 @@ func init() {
 		},
 		Instance: gdextension.CallbacksForExtensionInstance{
 			Set: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, value gdextension.Variant) bool {
+				defer gd.Recover()
 				return instances.Get(instance).Set(pointers.Let[gd.StringName](field), pointers.Let[gd.Variant](value).Copy())
 			},
 			Get: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, result gdextension.Returns[gdextension.Variant]) bool {
+				defer gd.Recover()
 				v, ok := instances.Get(instance).Get(pointers.Let[gd.StringName](field))
 				if !ok {
 					return false
@@ -145,15 +147,19 @@ func init() {
 				return true
 			},
 			PropertyList: func(instance gdextension.ExtensionInstanceID) gdextension.PropertyList {
+				defer gd.Recover()
 				return instances.Get(instance).GetPropertyList()
 			},
 			PropertyValidation: func(instance gdextension.ExtensionInstanceID, list gdextension.PropertyList) bool {
+				defer gd.Recover()
 				return instances.Get(instance).ValidateProperty(list)
 			},
 			PropertyHasDefault: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName) bool {
+				defer gd.Recover()
 				return instances.Get(instance).PropertyCanRevert(pointers.Let[gd.StringName](field))
 			},
 			PropertyGetDefault: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, result gdextension.Returns[gdextension.Variant]) bool {
+				defer gd.Recover()
 				v, ok := instances.Get(instance).PropertyGetRevert(pointers.Let[gd.StringName](field))
 				if ok {
 					raw, ok := pointers.End(v)
@@ -166,6 +172,7 @@ func init() {
 				return ok
 			},
 			Stringify: func(instance gdextension.ExtensionInstanceID) gdextension.String {
+				defer gd.Recover()
 				s, ok := instances.Get(instance).ToString()
 				if ok {
 					raw, ok := pointers.End(s)
