@@ -187,6 +187,12 @@ func (method MethodForClass) Call(self gdextension.Object, args ...gdextension.V
 		// fast path for their nested callbacks matters most here.
 		return residentVariantCall(self, method, args)
 	}
+	// result and err must not sit on this goroutine's stack: the engine
+	// writes the error after the method has run, and a callback into Go
+	// during the call can move the stack, so the write would land on the
+	// copy that was left behind. They are on the heap only because the
+	// closure below captures them and escapes. Keep it that way: if that
+	// branch moves out of this function, allocate them explicitly.
 	var result gdextension.Variant
 	var err gdextension.CallError
 	if main || threadcheck.Engine() {
