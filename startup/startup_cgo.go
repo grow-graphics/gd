@@ -36,6 +36,12 @@ var exitDone = false
 var toolUsed = false
 var testMainStarted = false
 
+// importOnly records that the engine was started with --import: it imports
+// the project's resources and quits. A test binary serving as the importer
+// must not start its suite in that process, the engine would shut down in
+// the middle of it.
+var importOnly = false
+
 func init() {
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
@@ -48,7 +54,10 @@ func init() {
 				// which is what lets the test editor also serve as the importer.
 				for i := 0; i < len(os.Args); i++ {
 					switch os.Args[i] {
-					case "--headless", "--import", "-race":
+					case "--import":
+						importOnly = true
+						fallthrough
+					case "--headless", "-race":
 						os.Args = append(os.Args[:i], os.Args[i+1:]...)
 						i--
 					}
@@ -235,7 +244,7 @@ func init() {
 		threadcheck.Init()
 		// FirstFrame can fire more than once (e.g. on android), so guard the
 		// test main: spawning it per frame would run the whole suite repeatedly.
-		if testing.Testing() && !toolUsed && !testMainStarted {
+		if testing.Testing() && !toolUsed && !testMainStarted && !importOnly {
 			testMainStarted = true
 			// On platforms where the process's stdout/stderr are discarded
 			// (android), route the test output somewhere the harness can read
