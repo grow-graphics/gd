@@ -717,6 +717,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 	instance := class.reloadInstance(value, super)
 	id := instances.New(instance, value)
 	gdextension.Host.Objects.Extension.Setup(gdreference.GetObject(*super), pointers.Get(class.Name), id)
+	instance.carrySignals()
 	if keepalive := compile_keepalive_for_class(reflect.PointerTo(class.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}
@@ -758,6 +759,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super *gdre
 
 	var signals []signalChan
 	var chSignals []signalChan
+	var carries []func()
 	for _, field := range visibleFieldsCached(value.Type()) {
 		if !field.IsExported() || field.Name == "Object" {
 			continue
@@ -773,7 +775,13 @@ func (class classImplementation) reloadInstance(value reflect.Value, super *gdre
 		// Signal fields need to have their values injected into the field, so that they can be used (emitted).
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			signal := pointers.Pin(gd.NewSignalOf([1]gdreference.Object{*super}, gd.NewStringName(name)))
-			rvalue.Interface().(Signal.Pointer).SetAny(Signal.Via(gd.WrapSignal(signal)))
+			// the engine does not know the signal until the object is set up
+			// as an instance of the class, so any functions that were already
+			// connected to the field (in a constructor, or before the value
+			// had an object) are carried over by [instanceImplementation.carrySignals]
+			if carry := rvalue.Interface().(Signal.Pointer).Rebind(Signal.Via(gd.WrapSignal(signal))); carry != nil {
+				carries = append(carries, carry)
+			}
 			signals = append(signals, signalChan{
 				signal: signal,
 			})
@@ -800,11 +808,23 @@ func (class classImplementation) reloadInstance(value reflect.Value, super *gdre
 		Type:       class.Type,
 		weak:       weak.Make(super),
 		signals:    signals,
+		carries:    carries,
 		isEditor:   !class.Tool && Engine.IsEditorHint(),
 		isMainLoop: class.isMainLoop,
 	}
 	impl.engineMemory = allocateFields(value.Type(), value.Addr().UnsafePointer())
 	return impl
+}
+
+// carrySignals connects the functions that were connected to the signal
+// fields of the value before it had an object (#343). It has to follow
+// the set up of the object as an instance of the class, as the engine
+// refuses a connection to a signal the object does not have yet.
+func (instance *instanceImplementation) carrySignals() {
+	for _, carry := range instance.carries {
+		carry()
+	}
+	instance.carries = nil
 }
 
 // GetVirtual resolves the implementation of a virtual method by its
@@ -924,6 +944,9 @@ type instanceImplementation struct {
 	weak    weak.Pointer[gdreference.Object]
 	cleanup runtime.Cleanup
 	signals []signalChan
+	// carries connect the functions that were connected to the signal
+	// fields of the value before it had an object, see [carrySignals].
+	carries []func()
 
 	// engineMemory holds the allocations behind the class's
 	// [Engine.Allocated] fields, handed back when the engine frees the

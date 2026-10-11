@@ -32,6 +32,7 @@ func adoptForReload(class gdextension.ExtensionClassID, raw gdextension.Object) 
 	instance := impl.reloadInstance(value, super)
 	id := instances.New(instance, value)
 	gdextension.Host.Objects.Extension.Setup(raw, pointers.Get(impl.Name), id)
+	instance.carrySignals()
 	if keepalive := compile_keepalive_for_class(reflect.PointerTo(impl.Type)); keepalive != nil {
 		roots.Insert(value, keepalive)
 	}

@@ -12,6 +12,7 @@ import (
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/Vector2"
 )
@@ -188,6 +189,65 @@ func TestSignalStructs(t *testing.T) {
 		shooter.Scored.Emit(variant.Nil, nil)
 		if len(scored) != 4 || scored[0] != 5 || scored[1] != "points" || scored[2] != nil || scored[3] != nil {
 			t.Fatalf("variants: got %#v", scored)
+		}
+	})
+}
+
+type SignalEarly struct {
+	Area2D.Extension[SignalEarly]
+
+	Removed Signal.Void
+	Scored  Signal.Solo[int]
+
+	score int
+}
+
+func NewSignalEarly() *SignalEarly {
+	early := new(SignalEarly)
+	early.Scored.Call(func(points int) { early.score += points })
+	return early
+}
+
+func init() { classdb.Register[SignalEarly](NewSignalEarly) }
+
+// TestSignalCallBeforeObject tests that a function connected to the signal
+// field of an extension class, before the value has an engine object, is
+// called when the signal is emitted later. The connection used to be made
+// on a copy of the field and was lost, so the signal was emitted to nobody.
+// This is the bug reported in https://github.com/quaadgras/graphics.gd/issues/343
+func TestSignalCallBeforeObject(t *testing.T) {
+	runOnMain(t, func(t testing.TB) {
+		bullet := new(SignalEarly)
+		var removed int
+		bullet.Removed.Call(func() { removed++ })
+		before := bullet.Removed // a copy made before the value has an object.
+		bullet.Removed.Emit()
+		if removed != 1 {
+			t.Fatalf("before the object: got %d calls, want 1", removed)
+		}
+		cast, ok := Object.As[*SignalEarly](bullet.AsArea2D())
+		if !ok || cast != bullet {
+			t.Fatalf("Object.As: got %p %v, want %p", cast, ok, bullet)
+		}
+		cast.Removed.Emit()
+		if removed != 2 {
+			t.Fatalf("after the object: got %d calls, want 2", removed)
+		}
+		before.Emit()
+		if removed != 3 {
+			t.Fatalf("through the earlier copy: got %d calls, want 3", removed)
+		}
+		gd.NewSignalOf(bullet.AsObject(), gd.NewStringName("removed")).Emit()
+		if removed != 4 {
+			t.Fatalf("from the engine: got %d calls, want 4", removed)
+		}
+
+		// connections made by a registered constructor.
+		made := NewSignalEarly()
+		made.AsObject()
+		made.Scored.Emit(3)
+		if made.score != 3 {
+			t.Fatalf("constructor: got %d, want 3", made.score)
 		}
 	})
 }

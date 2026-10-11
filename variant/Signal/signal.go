@@ -22,8 +22,33 @@ type Any struct {
 
 func (any *Any) SetAny(other Any) { *any = other }
 
+// Rebind is like SetAny, except that the consumers attached to the signal
+// before it had an implementation are not lost: the function returned, if
+// any, attaches them to the other signal and has the copies made of the
+// signal in the meantime follow it. It is separate from the rebinding so
+// that it can be called once the other signal is ready for consumers.
+func (any *Any) Rebind(other Any) (carry func()) {
+	local, ok := any.proxy.(*localFirst)
+	*any = other
+	if !ok || other.proxy == nil {
+		return nil
+	}
+	return func() {
+		local.mutex.Lock()
+		defer local.mutex.Unlock()
+		if local.proxy != nil {
+			return
+		}
+		for _, consumer := range local.consumers {
+			other.proxy.Attach(other.state, consumer.Callable, consumer.Flags)
+		}
+		local.proxy, local.state, local.consumers = other.proxy, other.state, nil
+	}
+}
+
 type Pointer interface {
 	SetAny(Any)
+	Rebind(Any) func()
 }
 
 // Nil reference value, do not modify.
@@ -49,8 +74,8 @@ const (
 // If the signal is already connected, returns [Error.InvalidParameter]
 func (signal *Any) Attach(consumer Callable.Function, flags ...Flags) error { //gd:Signal.connect
 	var f Flags
-	for _, f := range flags {
-		f |= f
+	for _, flag := range flags {
+		f |= flag
 	}
 	if signal.proxy == nil {
 		signal.proxy = &localFirst{}
@@ -127,7 +152,7 @@ type Void struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Void) Call(fn func()) {
+func (signal *Void) Call(fn func()) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -145,7 +170,7 @@ type Solo[A any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Solo[A]) Call(fn func(A)) {
+func (signal *Solo[A]) Call(fn func(A)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -162,7 +187,7 @@ type Pair[A, B any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Pair[A, B]) Call(fn func(A, B)) {
+func (signal *Pair[A, B]) Call(fn func(A, B)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -179,7 +204,7 @@ type Trio[A, B, C any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Trio[A, B, C]) Call(fn func(A, B, C)) {
+func (signal *Trio[A, B, C]) Call(fn func(A, B, C)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -196,7 +221,7 @@ type Quad[A, B, C, D any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Quad[A, B, C, D]) Call(fn func(A, B, C, D)) {
+func (signal *Quad[A, B, C, D]) Call(fn func(A, B, C, D)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -213,7 +238,7 @@ type Quin[A, B, C, D, E any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Quin[A, B, C, D, E]) Call(fn func(A, B, C, D, E)) {
+func (signal *Quin[A, B, C, D, E]) Call(fn func(A, B, C, D, E)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
@@ -231,7 +256,7 @@ type Hexa[A, B, C, D, E, F any] struct {
 
 // Call connects the specified function to this signal. The function will be called
 // whenever this signal is emitted.
-func (signal Hexa[A, B, C, D, E, F]) Call(fn func(A, B, C, D, E, F)) {
+func (signal *Hexa[A, B, C, D, E, F]) Call(fn func(A, B, C, D, E, F)) {
 	signal.Any.Attach(Callable.New(fn))
 }
 
