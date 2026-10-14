@@ -16,6 +16,7 @@ package startup
 
 import (
 	"iter"
+	"os"
 	"slices"
 
 	EngineClass "graphics.gd/classdb/Engine"
@@ -64,6 +65,15 @@ const (
 
 func (engine *engineAsSharedLibrary) Start() {
 	reloads_ready()
+	if EngineClass.IsEditorHint() {
+		// A native build never runs the project's main past LoadingScene
+		// in the editor (stop_main): the code after it expects a running
+		// game, and in a godot process the editor is still in the middle
+		// of its scene-level initialization here (#344). Serve the
+		// session from here and end main once it is over.
+		engine.Scene()
+		os.Exit(0)
+	}
 }
 
 func (engine *engineAsSharedLibrary) Scene() {
