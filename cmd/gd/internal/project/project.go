@@ -302,7 +302,8 @@ func SetupIcon() error {
 func Import() error {
 	_, missing_godot_dir := os.Stat(filepath.Join(GraphicsDirectory, ".godot"))
 	_, missing_icon_remap := os.Stat(filepath.Join(GraphicsDirectory, "icon.svg.import"))
-	if !os.IsNotExist(missing_godot_dir) && !os.IsNotExist(missing_icon_remap) {
+	stale := staleImports(GraphicsDirectory)
+	if !os.IsNotExist(missing_godot_dir) && !os.IsNotExist(missing_icon_remap) && len(stale) == 0 {
 		return nil
 	}
 	current, err := os.Getwd()
@@ -315,7 +316,68 @@ func Import() error {
 	if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
 		return xray.New(err)
 	}
+	// Godot leaves an .import file alone when the asset's content is unchanged
+	// (only its modification time moved, as after a git checkout), so bring the
+	// .import files of the assets checked above up to date, or the next run
+	// would import again for nothing.
+	now := time.Now()
+	for _, asset := range stale {
+		if _, err := os.Stat(asset + ".import"); err == nil {
+			os.Chtimes(asset+".import", now, now)
+		}
+	}
 	return xray.New(os.Chdir(current))
+}
+
+// importable lists the file extensions that Godot imports as resources (and so
+// writes an .import file beside), as opposed to loading them directly.
+var importable = map[string]bool{
+	// scenes and models
+	".glb": true, ".gltf": true, ".obj": true, ".fbx": true, ".dae": true, ".blend": true,
+	// images
+	".png": true, ".jpg": true, ".jpeg": true, ".webp": true, ".svg": true, ".bmp": true,
+	".tga": true, ".exr": true, ".hdr": true, ".dds": true, ".ktx": true, ".ktx2": true,
+	// audio
+	".wav": true, ".ogg": true, ".mp3": true,
+	// fonts
+	".ttf": true, ".otf": true, ".woff": true, ".woff2": true, ".pfb": true, ".pfm": true, ".fnt": true,
+	// other
+	".csv": true, ".bmfont": true,
+}
+
+// staleImports walks the graphics directory for importable assets that have no
+// .import file beside them, or that were modified after it, and returns their
+// paths. Like Godot, it skips hidden directories (such as the .godot cache)
+// and directories marked with a .gdignore file.
+func staleImports(dir string) []string {
+	var stale []string
+	filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return nil
+		}
+		if d.IsDir() {
+			if path != dir && strings.HasPrefix(d.Name(), ".") {
+				return filepath.SkipDir
+			}
+			if _, err := os.Stat(filepath.Join(path, ".gdignore")); err == nil {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if !importable[strings.ToLower(filepath.Ext(path))] {
+			return nil
+		}
+		info, err := d.Info()
+		if err != nil {
+			return nil
+		}
+		imported, err := os.Stat(path + ".import")
+		if err != nil || info.ModTime().After(imported.ModTime()) {
+			stale = append(stale, path)
+		}
+		return nil
+	})
+	return stale
 }
 
 // termuxHeadlessCommand reports whether this on-device (Termux) invocation is
