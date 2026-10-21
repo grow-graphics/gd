@@ -158,6 +158,9 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 	defer func() {
 		compiled_keepalives[rtype] = keepalive
 	}()
+	if keepalive_skips(rtype.PkgPath()) {
+		return nil
+	}
 	switch rtype.Kind() {
 	case reflect.Struct:
 		is_extension_class := rtype.Implements(reflect.TypeFor[gdclass.Interface]())
@@ -317,6 +320,41 @@ func compile_keepalive_locked(rtype reflect.Type) (keepalive func(reflect.Value)
 	default:
 		return nil
 	}
+}
+
+// keepalive_skipped holds the package paths added by [SkipKeepAlive], guarded
+// by compiled_keepalives_mu.
+var keepalive_skipped []string
+
+// SkipKeepAlive stops the keepalive walk from entering named types of the
+// given packages and their subpackages. Call it from an init function, before
+// the first walk of a type from these packages: types already walked stay
+// walked.
+func SkipKeepAlive(pkgs ...string) {
+	compiled_keepalives_mu.Lock()
+	defer compiled_keepalives_mu.Unlock()
+	keepalive_skipped = append(keepalive_skipped, pkgs...)
+}
+
+// keepalive_skips reports whether the walk must not enter named types from
+// this package. They hold no engine references, and they are changed by other
+// goroutines under their own locks: walking an extension's context.Context
+// iterated cancelCtx.children while an HTTP goroutine added and removed child
+// contexts, a fatal "concurrent map iteration and map write".
+func keepalive_skips(pkg string) bool {
+	switch pkg {
+	case "context", "net", "sync", "sync/atomic", "time", "os", "io", "bufio":
+		return true
+	}
+	if strings.HasPrefix(pkg, "net/") || strings.HasPrefix(pkg, "crypto/") {
+		return true
+	}
+	for _, skipped := range keepalive_skipped {
+		if pkg == skipped || strings.HasPrefix(pkg, skipped+"/") {
+			return true
+		}
+	}
+	return false
 }
 
 // scratch_reusable reports whether one scratch value can be reused for
