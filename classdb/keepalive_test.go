@@ -1,8 +1,13 @@
 package classdb
 
 import (
+	"context"
+	"net/http"
 	"reflect"
+	"strconv"
+	"sync"
 	"testing"
+	"time"
 
 	"graphics.gd/classdb/MeshInstance3D"
 	"graphics.gd/classdb/Node"
@@ -130,5 +135,123 @@ func TestKeepAlive_MapOfPointers(t *testing.T) {
 	}
 	if walked != len(outer.entries) {
 		t.Fatalf("walked %d of %d map entries", walked, len(outer.entries))
+	}
+}
+
+// TestKeepAlive_StandardLibrary: values of the standard library types that
+// other goroutines change under their own locks are not walked. Walking an
+// extension's context.Context iterated cancelCtx.children while an HTTP
+// goroutine added and removed child contexts, a fatal "concurrent map
+// iteration and map write" on the main thread.
+func TestKeepAlive_StandardLibrary(t *testing.T) {
+	type Held struct {
+		ctx    context.Context
+		server *http.Server
+		wg     sync.WaitGroup
+		at     time.Time
+	}
+	if fn := compile_keepalive(reflect.TypeFor[Held]()); fn != nil {
+		t.Fatal("compile_keepalive walks into standard library types")
+	}
+}
+
+// TestKeepAlive_SkipList: the built-in list names packages and their
+// subpackages, not other packages that only share a prefix.
+func TestKeepAlive_SkipList(t *testing.T) {
+	for pkg, want := range map[string]bool{
+		"context": true, "net": true, "net/http": true, "crypto/tls": true,
+		"sync": true, "sync/atomic": true, "time": true, "os": true, "io": true, "bufio": true,
+		"": false, "main": false, "container/list": false, "netx": false, "graphics.gd/classdb": false,
+	} {
+		if got := keepalive_skips(pkg); got != want {
+			t.Errorf("keepalive_skips(%q) = %v, want %v", pkg, got, want)
+		}
+	}
+}
+
+// TestKeepAlive_SkipKeepAlive: a package outside the built-in list is walked
+// until it is added with [SkipKeepAlive], then its subpackages are skipped too.
+func TestKeepAlive_SkipKeepAlive(t *testing.T) {
+	t.Cleanup(func() {
+		compiled_keepalives_mu.Lock()
+		defer compiled_keepalives_mu.Unlock()
+		keepalive_skipped = nil
+	})
+	type Before struct{ node Node.Instance }
+	type After struct{ node Node.Instance }
+	if compile_keepalive(reflect.TypeFor[Before]()) == nil {
+		t.Fatal("compile_keepalive does not walk a type outside the built-in list")
+	}
+	SkipKeepAlive("graphics.gd/classdb")
+	if compile_keepalive(reflect.TypeFor[Before]()) == nil {
+		t.Fatal("SkipKeepAlive changed a type that was already walked")
+	}
+	if compile_keepalive(reflect.TypeFor[After]()) != nil {
+		t.Fatal("compile_keepalive walks into a package given to SkipKeepAlive")
+	}
+	for pkg, want := range map[string]bool{
+		"graphics.gd/classdb":     true,
+		"graphics.gd/classdb/sub": true,
+		"graphics.gd/classdbx":    false,
+		"graphics.gd":             false,
+	} {
+		if got := keepalive_skips(pkg); got != want {
+			t.Errorf("keepalive_skips(%q) = %v, want %v", pkg, got, want)
+		}
+	}
+}
+
+// TestKeepAlive_SkipKeepAliveConcurrent: SkipKeepAlive is safe next to the
+// compile and cache lookups that the walk and adopted classes make.
+func TestKeepAlive_SkipKeepAliveConcurrent(t *testing.T) {
+	t.Cleanup(func() {
+		compiled_keepalives_mu.Lock()
+		defer compiled_keepalives_mu.Unlock()
+		keepalive_skipped = nil
+	})
+	type Held struct{ node Node.Instance }
+	var wg sync.WaitGroup
+	for i := range 8 {
+		wg.Go(func() {
+			for range 100 {
+				SkipKeepAlive("example.com/skip" + strconv.Itoa(i))
+				compile_keepalive(reflect.TypeFor[Held]())
+			}
+		})
+	}
+	wg.Wait()
+}
+
+// TestKeepAlive_ContextChildren walks a context.Context while another
+// goroutine adds and cancels children of it, which is how a request context
+// is used. Unpatched it ends in a fatal error within a second.
+func TestKeepAlive_ContextChildren(t *testing.T) {
+	type Held struct {
+		ctx context.Context
+		any any
+	}
+	parent, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	held := Held{ctx: parent, any: parent}
+	stop := make(chan struct{})
+	var wg sync.WaitGroup
+	wg.Go(func() {
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+				_, cancel := context.WithCancel(parent)
+				cancel()
+			}
+		}
+	})
+	defer wg.Wait()
+	defer close(stop)
+	for deadline := time.Now().Add(time.Second); time.Now().Before(deadline); {
+		clear(skips)
+		if fn := compile_keepalive(reflect.TypeFor[Held]()); fn != nil {
+			fn(reflect.ValueOf(&held).Elem())
+		}
 	}
 }
